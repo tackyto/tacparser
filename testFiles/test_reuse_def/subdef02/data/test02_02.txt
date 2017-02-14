@@ -1,0 +1,9 @@
+# comment test
+# コメントテスト
+"リテラル" # コメント
+
+hoge fuga piyo 再解析失敗 # comment "literal in comment " # hoge
+a.b.c.d  hoge
+"literal #not comment" not comment #comment ""
+
+not comment 再解析失敗

@@ -1,0 +1,9 @@
+Subdef02 <- ( Comment / Literal / Other )*
+
+Comment <- r"#.+$"
+Literal <- r'"(\\.|[^"\\])*"'
+Other <- r"[^\"#]+"
+
+Other <-- ( Word / Spacing )+
+Word <- r"[a-zA-Z0-9_.-:&%$!/|\\]+"
+Spacing <- r'[ \t\r\n]+'

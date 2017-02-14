@@ -1,0 +1,30 @@
+0 : Main : (0, 44)
+    1 : Hoge : (0, 5)
+        @Tarminal : (0, 4) "hoge"
+        0 : Spacing : (4, 5)
+            @Tarminal : (4, 5) " "
+    0 : Any : (5, 40)
+        1 : FooFoo : (5, 12)
+            @Tarminal : (5, 11) "FooFoo"
+            0 : Spacing : (11, 12)
+                @Tarminal : (11, 12) " "
+        3 : BarBar : (12, 19)
+            @Tarminal : (12, 18) "BarBar"
+            2 : Spacing : (18, 19)
+                @Tarminal : (18, 19) " "
+        4 : Foo : (19, 22)
+            @Tarminal : (19, 22) "Foo"
+        6 : BazBaz : (22, 29)
+            @Tarminal : (22, 28) "BazBaz"
+            5 : Spacing : (28, 29)
+                @Tarminal : (28, 29) " "
+        8 : Qux : (29, 33)
+            @Tarminal : (29, 32) "Qux"
+            7 : Spacing : (32, 33)
+                @Tarminal : (32, 33) " "
+        10 : QuxQux : (33, 40)
+            @Tarminal : (33, 39) "QuxQux"
+            9 : Spacing : (39, 40)
+                @Tarminal : (39, 40) " "
+    18 : Hoge : (40, 44)
+        @Tarminal : (40, 44) "hoge"

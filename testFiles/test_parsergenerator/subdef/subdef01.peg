@@ -1,0 +1,24 @@
+Main <- Hoge Any+ Hoge
+Hoge <- "hoge" Spacing?
+Any <- Foo / Bar / Baz / Qux
+
+Foo <- "Foo" Spacing?
+Bar <- "Bar" Spacing?
+Baz <- "Baz" Spacing?
+Qux <- "Qux" Spacing?
+
+Spacing <- r"\s+"
+
+Any <-- FooFoo
+      / BarBar
+      / BazBaz
+      / QuxQux
+      / Foo
+      / Bar
+      / Baz
+      / Qux
+
+FooFoo <- "FooFoo" Spacing?
+BarBar <- "BarBar" Spacing?
+BazBaz <- "BazBaz" Spacing?
+QuxQux <- "QuxQux" Spacing?

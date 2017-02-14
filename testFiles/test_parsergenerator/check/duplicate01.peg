@@ -1,0 +1,5 @@
+FOO <- "hoge"
+Foo <- "fuga"
+
+BAR <- "hoge"
+bar <- "fuga"

@@ -1,0 +1,7 @@
+Foo <- Bar Baz
+Bar <- Qux
+Qux <- '1'
+
+Baz <- Quux '0'
+Quux <- Corge Baz
+Corge <- ''

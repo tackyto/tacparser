@@ -1,0 +1,423 @@
+# Antlrv4 の文法を解析するための構文定義
+# LexBasic -> Lexer -> Parser
+# とりあえず基本的なところだけ
+
+# // The main entry point for parsing a v4 grammar.
+#grammarSpec
+#   : DOC_COMMENT* grammarType identifier SEMI prequelConstruct* rules modeSpec* EOF
+#   ;
+AntlrV4 <- DOC_COMMENT* GrammarType Identifier SEMI PrequelConstruct* Rules ModeSpec _EOF
+
+#grammarType
+#   : (LEXER GRAMMAR | PARSER GRAMMAR | GRAMMAR)
+#   ;
+GrammarType <- (LEXER GRAMMAR / PARSER GRAMMAR / GRAMMAR)
+
+# // This is the list of all constructs that can be declared before
+# // the set of rules that compose the grammar, and is invoked 0..n
+# // times by the grammarPrequel rule.
+# prequelConstruct
+#   : optionsSpec
+#   | delegateGrammars
+#   | tokensSpec
+#   | channelsSpec
+#   | action
+#   ;
+PrequelConstruct <- OptionsSpec / DelegateGrammars / TokenSpec / ChannelsSpec / Action
+
+# // ------------
+# // Options - things that affect analysis and/or code generation
+# optionsSpec
+#    : OPTIONS LBRACE (option SEMI)* RBRACE
+#    ;
+OptionsSpec <- OPTIONS LBRACE ( Option SEMI )* RBRACE
+
+# option
+#    : identifier ASSIGN optionValue
+#    ;
+Option <- Identifier ASSIGN OptionValue
+
+# optionValue
+#    : identifier (DOT identifier)*
+#    | STRING_LITERAL
+#    | actionBlock
+#    | INT
+#    ;
+OptionValue <- Identifier ( DOT Identifier )*
+             / STRING_LITERAL
+             / ActionBlock
+             / INT
+
+# // ------------
+# // Delegates
+# delegateGrammars
+#    : IMPORT delegateGrammar (COMMA delegateGrammar)* SEMI
+#    ;
+DelegateGrammars <- IMPORT DelegateGrammar ( COMMA DelegateGrammar )* SEMI
+
+# delegateGrammar
+#    : identifier ASSIGN identifier
+#    | identifier
+#    ;
+DelegateGrammar <- Identifier ASSIGN Identifier / Identifier
+
+# // ------------
+# // Tokens & Channels
+# tokensSpec
+#    : TOKENS LBRACE idList? RBRACE
+#    ;
+TokensSpec <- TOKENS LBRACE IdList? RBRACE
+
+# channelsSpec
+#    : CHANNELS LBRACE idList? RBRACE
+#    ;
+ChannelsSpec <- CHANNELS LBRACE IdList? RBRACE
+
+# idList
+#    : identifier (COMMA identifier)* COMMA?
+#    ;
+IdList <- Identifier ( COMMA Identifier )* COMMA?
+
+# // Match stuff like @parser::members {int i;}
+# action
+#    : AT (actionScopeName COLONCOLON)? identifier actionBlock
+#    ;
+Action <- AT ( ActionScopeName COLONCOLON )? Identifier ActionBlock
+
+# // Scope names could collide with keywords; allow them as ids for action scopes
+# actionScopeName
+#    : identifier
+#    | LEXER
+#    | PARSER
+#    ;
+ActionScopeName <- Identifier / LEXER / PARSER
+
+# actionBlock
+#    : BEGIN_ACTION ACTION_CONTENT* END_ACTION
+#    ;
+ActionBlock <- BAEGIN_ACTION ACTION_CONTENT* END_ACTION
+
+# argActionBlock
+#    : BEGIN_ARGUMENT ARGUMENT_CONTENT* END_ARGUMENT
+#    ;
+ArgActionBlock <- BEGIN_ARGUMENT ARGUMENT_CONTENT* END_ARGUMENT
+
+# modeSpec
+#    : MODE identifier SEMI lexerRuleSpec*
+#    ;
+ModeSpec <- MODE Identifier SEMI LexerRuleSpec*
+
+# rules
+#    : ruleSpec*
+#    ;
+Rules <- RuleSpec*
+
+# ruleSpec
+#    : parserRuleSpec
+#    | lexerRuleSpec
+#    ;
+RuleSpec <- ParserRuleSpec / LexerRuleSpec
+
+# parserRuleSpec
+#    : DOC_COMMENT* ruleModifiers? RULE_REF argActionBlock? ruleReturns? throwsSpec? localsSpec? rulePrequel* COLON ruleBlock SEMI exceptionGroup
+#    ;
+ParserRuleSpec <- DOC_COMMENT* RuleModifiers?
+                  RULE_REF ArgActionBlock? RuleReturns?
+                  ThrowsSpec? LocalsSpec?
+                  RulePrequel* CLON RuleBlock SEMI ExceptionGroup
+
+# exceptionGroup
+#    : exceptionHandler* finallyClause?
+#    ;
+ExceptionGroup <- ExceptionHandler* FinallyClause?
+
+# exceptionHandler
+#    : CATCH argActionBlock actionBlock
+#    ;
+ExceptionHandler <- CATCH ArgActionBlock ActionBlock
+
+# finallyClause
+#    : FINALLY actionBlock
+#    ;
+FinallyClause <- FINALLY ActionBlock
+
+# rulePrequel
+#    : optionsSpec
+#    | ruleAction
+#    ;
+RulePrequel <- OptionsSpec / RuleAction
+
+# ruleReturns
+#    : RETURNS argActionBlock
+#    ;
+RuleReturns <- RETURNS ArgActionBlock
+
+# // --------------
+# // Exception spec
+# throwsSpec
+#    : THROWS identifier (COMMA identifier)*
+#    ;
+ThrowsSpec <- THROWS Identifier ( COMMA Identifier )*
+
+# localsSpec
+#    : LOCALS argActionBlock
+#    ;
+LocalsSpec <- LOCALS ArgActionBlock
+
+# /** Match stuff like @init {int i;} */
+# ruleAction
+#    : AT identifier actionBlock
+#    ;
+RuleAction <- AT Identifier ActionBlock
+
+# ruleModifiers
+#    : ruleModifier +
+#    ;
+RuleModifiers <- RuleModifier+
+
+# // An individual access modifier for a rule. The 'fragment' modifier
+# // is an internal indication for lexer rules that they do not match
+# // from the input but are like subroutines for other lexer rules to
+# // reuse for certain lexical patterns. The other modifiers are passed
+# // to the code generation templates and may be ignored by the template
+# // if they are of no use in that language.
+# ruleModifier
+#    : PUBLIC
+#    | PRIVATE
+#    | PROTECTED
+#    | FRAGMENT
+#    ;
+RuleModifier <- PUBLIC / PRIVATE / PROTECTED FRAGMENT
+
+# ruleBlock
+#    : ruleAltList
+#    ;
+RuleBlock <- RuleAltList
+
+# ruleAltList
+#    : labeledAlt (OR labeledAlt)*
+#    ;
+RuleAltList <- LabeledAlt ( OR LaveledAlt )*
+
+# labeledAlt
+#    : alternative (POUND identifier)?
+#    ;
+LabeledAlt <- Alternative ( POUND Identifier )?
+
+# // --------------------
+# // Lexer rules
+# lexerRuleSpec
+#    : DOC_COMMENT* FRAGMENT? TOKEN_REF COLON lexerRuleBlock SEMI
+#    ;
+LexerRuleSpec <- DOC_COMMENT* FRAGMENT? TOKEN_REF COLON LexerRuleBlock SEMI
+
+# lexerRuleBlock
+#    : lexerAltList
+#    ;
+LexerRuleBlock <- LexerAltList
+
+# lexerAltList
+#    : lexerAlt (OR lexerAlt)*
+#    ;
+LexerAltList <- LexerAlt ( OR LexerAlt )*
+
+# lexerAlt
+#    : lexerElements lexerCommands?
+#    |
+#    // explicitly allow empty alts
+#    ;
+LexerAlt <- LexlerElements LexerCommands? / ""
+
+# lexerElements
+#    : lexerElement +
+#    ;
+LexerElements <- LexerElement +
+
+# lexerElement
+#    : labeledLexerElement ebnfSuffix?
+#    | lexerAtom ebnfSuffix?
+#    | lexerBlock ebnfSuffix?
+#    | actionBlock QUESTION?
+#    ;
+LexerElement <- LabeledLexerElement EbnfSuffix?
+              / LexerAtom EbnfSuffix?
+              / LexerBlock EbnfSuffix?
+              / ActionBlock QUESTION?
+
+# // but preds can be anywhere
+# labeledLexerElement
+#    : identifier (ASSIGN | PLUS_ASSIGN) (lexerAtom | block)
+#    ;
+LabeledLexerElement <- Identifier ( ASSIGN / PLUS_ASSIGN ) ( LexerAtom / Block )
+
+# lexerBlock
+#    : LPAREN lexerAltList RPAREN
+#    ;
+LexerBlock <- LPAREN LexerAltList RPAREN
+
+# // E.g., channel(HIDDEN), skip, more, mode(INSIDE), push(INSIDE), pop
+# lexerCommands
+#    : RARROW lexerCommand (COMMA lexerCommand)*
+#    ;
+LexerCommands <- RARROW LexerCommand ( COMMA LexerCommand )*
+
+# lexerCommand
+#    : lexerCommandName LPAREN lexerCommandExpr RPAREN
+#    | lexerCommandName
+#    ;
+LexerCommand <- LexerCommandName LPAREN LexerCommandExpr RPAREN
+              / LexerCommandName
+
+# lexerCommandName
+#    : identifier
+#    | MODE
+#    ;
+LexerCommandName <- Identifier / MODE
+
+# lexerCommandExpr
+#    : identifier
+#    | INT
+#    ;
+LexerCommandExpr <- Identifier / INT
+
+# // --------------------
+# // Rule Alts
+# altList
+#    : alternative (OR alternative)*
+#    ;
+AltList <- Alternative ( OR Alternative )*
+
+# alternative
+#    : elementOptions? element +
+#    |
+#    // explicitly allow empty alts
+#    ;
+Alternative <- ElementOptions? Element+ / ""
+
+# element
+#    : labeledElement (ebnfSuffix |)
+#    | atom (ebnfSuffix |)
+#    | ebnf
+#    | actionBlock QUESTION?
+#    ;
+Element <- LabeledElement ( EbnfSuffix / "" )
+         / Atom ( EbnfSuffix / "" )
+         / Ebnf
+         / ActionBlock QUESTION?
+
+# labeledElement
+#    : identifier (ASSIGN | PLUS_ASSIGN) (atom | block)
+#    ;
+LabeledElement <- Identifier ( ASSIGN / PLUS_ASSIGN ) ( Atom / Block )
+
+# // --------------------
+# // EBNF and blocks
+# ebnf
+#    : block blockSuffix?
+#    ;
+Ebnf <- Block BlockSuffix?
+
+# blockSuffix
+#    : ebnfSuffix
+#    ;
+BlockSuffix <- EbnfSuffix
+
+# ebnfSuffix
+#    : QUESTION QUESTION?
+#    | STAR QUESTION?
+#    | PLUS QUESTION?
+#    ;
+EbnfSuffix <- QUESTION QUESTION?
+            / STAR QUESTION?
+            / PLUS QUESTION?
+
+# lexerAtom
+#    : characterRange
+#    | terminal
+#    | notSet
+#    | LEXER_CHAR_SET
+#    | DOT elementOptions?
+#    ;
+LexerAtom <- CharactoerRange / Terminal / NotSet / LEXER_CHAR_SET / DOT ElementOptions?
+
+# atom
+#    : characterRange
+#    | terminal
+#    | ruleref
+#    | notSet
+#    | DOT elementOptions?
+#    ;
+Atom <- CharacterRange / Terminal / Ruleref / NotSet / Dot ElementOptions?
+
+# // --------------------
+# // Inverted element set
+# notSet
+#    : NOT setElement
+#    | NOT blockSet
+#    ;
+NotSet <- NOT SetElement / NOT BlockSet
+
+# blockSet
+#    : LPAREN setElement (OR setElement)* RPAREN
+#    ;
+BlockSet <- LPAREN SetElement ( OR SetElement )* RPAREN
+
+# setElement
+#    : TOKEN_REF elementOptions?
+#    | STRING_LITERAL elementOptions?
+#    | characterRange
+#    | LEXER_CHAR_SET
+#    ;
+SetElement <- TOKEN_REF ElementOptions?
+            / STRING_LITERAL ElementOptions?
+            / CharacterRang
+            / LEXER_CHAR_SET
+
+# // -------------
+# // Grammar Block
+# block
+#    : LPAREN (optionsSpec? ruleAction* COLON)? altList RPAREN
+#    ;
+Block <- LPAREN ( OptionsSpec? RuleAction* COLON)? AltList RPAREN
+
+# // ----------------
+# // Parser rule ref
+# ruleref
+#    : RULE_REF argActionBlock? elementOptions?
+#    ;
+RuleRef <- RULE_REF ArgActionBlock? ElementOptions?
+
+# // ---------------
+# // Character Range
+# characterRange
+#    : STRING_LITERAL RANGE STRING_LITERAL
+#    ;
+CharacterRange <- STRING_LITERAL RANGE STRING_LITERAL
+
+# terminal
+#    : TOKEN_REF elementOptions?
+#    | STRING_LITERAL elementOptions?
+#    ;
+Terminal <- TOKEN_REF ElementOptions?
+          / STRING_LITERAL ElementOptions?
+
+# // Terminals may be adorned with certain options when
+# // reference in the grammar: TOK<,,,>
+# elementOptions
+#    : LT elementOption (COMMA elementOption)* GT
+#    ;
+ElementOptions <- LT ElementOption ( COMMA ElementOption)* GT
+
+# elementOption
+#    : identifier
+#    | identifier ASSIGN (identifier | STRING_LITERAL)
+#    ;
+ElementOption <- Identifier / Identifier ASSIGN ( Identifier / STRING_LITERAL )
+
+# identifier
+#    : RULE_REF
+#    | TOKEN_REF
+#    ;
+Identigier <- RULE_REF / TOKEN_REF
+
+
