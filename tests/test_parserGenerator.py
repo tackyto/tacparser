@@ -1,12 +1,11 @@
 # -*- coding:utf-8 -*-
 
-import os
 import filecmp
-
+import os
 import unittest
 
-import tacparser
-from expegparser import ExPegParser
+from app.baseparser import ParseException
+from app.expegparser import ExPegParser
 from parsergenerator import ParserGenerator, SyntaxCheckFailedException
 
 
@@ -148,12 +147,11 @@ class TestParserGenerator(unittest.TestCase):
         curdir = os.path.join(os.getcwd(), "check")
         filepath = os.path.join(curdir, "notfound.peg")
 
-        with self.assertRaises(tacparser.ParseException) as err:
+        with self.assertRaises(ParseException) as err:
             ParserGenerator(filepath, "utf-8")
 
         msg = err.exception.args[0]
-        expstr = "File C:\\python\\TacParser\\testFiles\\" \
-                 "test_parsergenerator\\check\\notfound.peg not found"
+        expstr = "File {0} not found".format(filepath)
         self.assertEqual(msg, expstr)
 
 

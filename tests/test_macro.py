@@ -3,7 +3,7 @@ import filecmp
 import os
 import unittest
 
-from parsergenerator import ParserGenerator
+import parsergenerator
 from testFiles.test_macro.macro01 import macro01
 
 
@@ -33,6 +33,6 @@ if __name__ == '__main__':
 
     filepath = os.path.join(path, "macro01", "macro01.peg")
     outfilepath = os.path.join(path, "macro01", "macro01.py")
-    ParserGenerator(filepath, "utf-8").generate_file("Macro01", outfilepath)
+    parsergenerator.ParserGenerator(filepath, "utf-8").generate_file("Macro01", outfilepath)
 
     unittest.main()

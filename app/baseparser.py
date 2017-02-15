@@ -1,11 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import copy
-
 import logging
-
-from node import TerminalNode, NonTerminalNode, FailureNode, complete_tree
-from reader import FileReader, StringReader
 
 # 標準の Logger
 default_logger = logging.getLogger(__name__)
@@ -595,26 +591,307 @@ class Parser(object):
         self._cache[(typename, startpos)] = False, ()
         return False, ()
 
+# -*- coding:utf-8 -*-
 
-class FuncSet(object):
-    u"""関数と、実行結果のセット
-    set() で input の関数を実行する。
-    get() で f の実行結果を返す。
 
-    input : 関数
+class Node(object):
+    u"""ノードを示す基底クラス"""
+
+    def __init__(self):
+        self.startpos = 0
+        self.endpos = 0
+        self.nodenum = 0
+        self.parent = None
+        self.children = ()
+        self.type = ""
+        self.__linenum = 0
+        self.__column = 0
+
+    def set_position(self, startpos, endpos):
+        self.startpos = startpos
+        self.endpos = endpos
+
+    def set_linecolumn(self, linenum, column):
+        self.__linenum = linenum
+        self.__column = column
+
+    def get_linecolumn(self):
+        return self.__linenum, self.__column
+
+    def get_str(self, _dict=None): pass
+
+    def print_tree(self, level=0): pass
+
+    def get_childnode(self, nodetype): pass
+
+    def search_node(self, nodetype, deepsearch_flg=False): pass
+
+    def is_failure(self):
+        return False
+
+
+class NonTerminalNode(Node):
+    u"""非終端ノードを表すクラス。
+    このノードは子ノードを持つ。
     """
 
-    def __init__(self, f):
-        self.function = f
-        self.result = None
+    def __init__(self, nodetype, startpos, endpos, children):
+        Node.__init__(self)
+        self.type = nodetype
+        self.startpos = startpos
+        self.endpos = endpos
+        self.children = children
 
-    def set(self):
-        self.result = self.function()
-        return self.result
+    def setchildren(self, children):
+        self.children = children
 
-    def get(self):
-        return self.result
+    def get_str(self, _dict=None):
+        u"""ノードで取得した文字列を返す
 
+        :param _dict: ノードの置き換えに利用する辞書。
+        :return: そのノードで読み込んだ文字列
+        """
+        if _dict is not None and self.type in _dict:
+            return _dict[self.type]
+
+        ret = ""
+        for r in self.children:
+            ret += r.get_str(_dict)
+        return ret
+
+    def print_tree(self, level=0):
+        u"""ツリー情報を返す"""
+        ret = " " * 4 * level \
+              + str(self.nodenum) + " : " \
+              + self.type + " : (" \
+              + str(self.startpos) \
+              + ", " + str(self.endpos) + ")\n"
+        for n in self.children:
+            if n:
+                ret += n.print_tree(level + 1)
+        return ret
+
+    def get_childnode(self, nodetype):
+        u"""指定されたノードタイプ [nodetype] の子ノードをリストにして返す。"""
+        return [x for x in self.children if x.type == nodetype]
+
+    def search_node(self, nodetype, deepsearch_flg=False):
+        u"""自身以下のノードを探索し、[nodetype] に一致するノードのリストを返す。
+
+        :param nodetype:ノードタイプ
+        :param deepsearch_flg:対象のノードが見つかった場合、そのノードの子を探索するか否か
+        :return: ノードのリスト
+        """
+        # TODO : [課題] 遅いと思う。ロジック改善
+        nl = []
+        if self.type == nodetype:
+            nl.append(self)
+            if not deepsearch_flg:
+                return nl
+        for cn in self.children:
+            if isinstance(cn, NonTerminalNode):
+                nl.extend(cn.search_node(nodetype, deepsearch_flg))
+        return nl
+
+
+class TerminalNode(Node):
+    u"""終端ノードを示すクラス"""
+
+    def __init__(self, s):
+        Node.__init__(self)
+        self.termstr = s
+
+    def get_str(self, _dict=None):
+        return self.termstr
+
+    def print_tree(self, level=0):
+        return " " * 4 * level + "@Tarminal : (" \
+               + str(self.startpos) + ", " \
+               + str(self.endpos) + ") \"" \
+               + self.termstr + "\"\n"
+
+
+class FailureNode(Node):
+    u"""解析失敗時に作成するノードを示すクラス"""
+
+    def __init__(self, s):
+        Node.__init__(self)
+        self.termstr = s
+
+    def get_str(self, _dict=None):
+        return self.termstr
+
+    def print_tree(self, level=0):
+        return " " * 4 * level + "@Failure : (" \
+               + str(self.startpos) + ", " \
+               + str(self.endpos) + ") \"" \
+               + self.termstr + "\"\n"
+
+    def is_failure(self):
+        return True
+
+
+class Reader(object):
+    u"""文字列解析のための読み込みクラス
+    contents は、読み込んだ文字列全体
+    position は、現在の位置情報
+    matchLiteral, matchRegexp で読み進める。
+    """
+
+    def __init__(self, contents):
+        u"""初期化
+
+        :param contents: 読み込み内容（文字列）
+        """
+        self.contents = contents
+        self.__position = 0
+        self.maxposition = 0
+        self.length = len(self.contents)
+        self.__linepos__ = []
+        # 部分的な構文解析時に使用する終了判定位置
+        self.__endposition = -1
+
+    def match_literal(self, literal, flg=False, nocase=False):
+        u"""contentsの次が指定したリテラルにマッチした場合、読み進める。
+
+        :param literal: Unicode文字列
+        :param flg: 成功時ファイルを読み進めるか否か
+        :param nocase: 大文字小文字を区別するか否か(true=区別しない)
+        :return: 先頭matchの成否, 文字列
+        """
+        nextstr = self.contents[self.__position:self.__position + len(literal)]
+        if 0 < self.__endposition < self.__position + len(literal):
+            return False, None
+        if (not nocase) and nextstr == literal:
+            if flg:
+                self.__position += len(literal)
+                self.getmaxposition()
+            return True, literal
+        elif nocase and nextstr.lower() == literal.lower():
+            if flg:
+                self.__position += len(literal)
+                self.getmaxposition()
+            return True, nextstr
+        else:
+            return False, None
+
+    def match_regexp(self, reg, flg=False):
+        u"""contentsの次が指定した正規表現にマッチした場合、読み進める。
+
+        :param reg: 正規表現
+        :param flg: 成功時ファイルを読み進めるか否か
+        :return: 先頭matchの成否, 文字列
+        """
+        if self.__endposition < 0:
+            m = reg.match(self.contents[self.__position:])
+        else:
+            m = reg.match(self.contents[self.__position:self.__endposition])
+        if m:
+            mg = m.group(0)
+            if flg:
+                self.__position += len(mg)
+            self.getmaxposition()
+            return True, mg
+        else:
+            return False, None
+
+    def getmaxposition(self):
+        u"""それまでに読み進めることができた位置の最大値を返す。
+
+        :return: maxposition (position の最大値)
+        """
+        if self.__position > self.maxposition:
+            self.maxposition = self.__position
+        return self.maxposition
+
+    def pos2linecolumn(self, pos):
+        u"""文字カウント を 行番号、列番号に変換する
+
+        :param pos: 位置情報（文字カウント）
+        :return: 位置情報（行数、行のカラム数）
+        """
+        if len(self.__linepos__) == 0:
+            line_pos = 0
+            for l in self.contents.splitlines(True):
+                line_pos += len(l)
+                self.__linepos__.append(line_pos)
+
+        linepos_l, linenum, column = 0, 0, 0
+        for linepos in self.__linepos__:
+            if linepos > pos >= linepos_l:
+                column = pos - linepos_l
+                return linenum + 1, column, self.contents[pos]
+            linenum += 1
+            linepos_l = linepos
+
+        if pos == linepos_l:
+            if linenum < 2:
+                # 空ファイルまたは1行のみのファイル
+                return linenum, pos, ""
+            return linenum, pos - self.__linepos__[-2], ""
+
+        raise IndexError("over File length <{0}>, contents length={1}".format(pos, len(self.contents)))
+
+    def getmaxlinecolumn(self):
+        u"""maxposition の文字カウントの行列を返す
+
+        :return: 位置情報(maxposition の行数、行のカラム数)
+        """
+        return self.pos2linecolumn(self.maxposition)
+
+    def get_position(self):
+        u"""読み取り位置を返す
+        :return: ファイル位置
+        """
+        return self.__position
+
+    def set_position(self, n):
+        u"""contents上の読み取り位置を設定する。
+        :param n: 読み取り位置
+        :return:
+        """
+        if n > self.length:
+            raise ValueError
+        self.__position = n
+        self.getmaxposition()
+
+    def partial_reposition(self, startpos, endpos):
+        u"""contents上の開始位置、終了位置、maxlengthを再設定する。
+
+        :param startpos:
+        :param endpos:
+        :return:
+        """
+        if startpos > self.length:
+            raise ValueError
+        self.__position = startpos
+
+        if endpos > self.length:
+            raise ValueError
+        self.__endposition = endpos
+        self.maxposition = startpos
+        self.length = len(self.contents)
+
+    def is_end(self):
+        u"""終端に達しているか否かを判断する関数
+
+        :return: 読み込み位置が終端とイコールの場合、True, それ以外の場合、False
+        """
+        if self.__position >= self.length:
+            return True
+        else:
+            return False
+
+
+class FileReader(Reader):
+    def __init__(self, filepath, encoding):
+        with open(filepath, "r", encoding=encoding) as f:
+            Reader.__init__(self, f.read())
+
+
+class StringReader(Reader):
+    def __init__(self, string):
+        Reader.__init__(self, string)
 
 class TacParserException(Exception):
     u"""Base class for exceptions in this module."""
@@ -630,3 +907,27 @@ class ParseException(TacParserException):
 
     def __str__(self):
         return self.__repr__()
+
+
+def preorder_travel(root, func, *args):
+    func(root, *args)
+    for cn in root.children:
+        preorder_travel(cn, func, *args)
+
+
+def postorder_travel(root, func, *args):
+    for cn in root.children:
+        postorder_travel(cn, func, *args)
+    func(root, *args)
+
+
+def complete_tree(root):
+    u"""ツリーの各ノードに親ノードを設定する。
+
+    :param root: ルートノード
+    :return:
+    """
+    for cn in root.children:
+        cn.parent = root
+        if isinstance(cn, NonTerminalNode):
+            complete_tree(cn)

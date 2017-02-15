@@ -2,7 +2,7 @@ import filecmp
 import os
 import unittest
 
-from expegparser import ExPegParser
+from app.expegparser import ExPegParser
 
 
 class TestExPegParser(unittest.TestCase):

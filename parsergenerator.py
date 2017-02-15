@@ -1,14 +1,14 @@
 # -*- coding:utf-8 -*-
+import logging.config
 import os
 import sys
-import logging.config
 
-from expegparser import ExPegParser
-from node import FailureNode, postorder_travel, NonTerminalNode
-from tacparser import TacParserException, ParseException
+from app.baseparser import TacParserException, ParseException, postorder_travel, FailureNode, NonTerminalNode
+
+from app.expegparser import ExPegParser
 
 # 標準の Logger
-logging.config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
+logging.config.fileConfig(os.path.join(os.path.dirname(__file__), 'app', 'logging.conf'))
 default_logger = logging.getLogger(__name__)
 
 
@@ -55,7 +55,7 @@ class ParserGenerator(object):
 
         self.__logger.debug(u"Generate file string start.")
         impstr = u"# -*- coding:utf-8 -*-\n\n" \
-                 u"from tacparser import Parser\n" \
+                 u"from app.baseparser import Parser\n" \
                  u"import re\n\n\n"
 
         preparserstr = u"class " + parsername + u"(Parser):\n\n" \
@@ -653,18 +653,14 @@ class SyntaxCheckFailedException(TacParserException):
 if __name__ == "__main__":
 
     argc = len(sys.argv)
-    if argc < 4 or argc > 5:
-        msg = "Usage: # python %s inputfile outputfile parsername [encoding]" % sys.argv[0]
+    if argc < 2 or argc > 5:
+        msg = "Usage: # python %s inputfile [outputfile] [parsername] [encoding]" % sys.argv[0]
         print(msg, file=sys.stderr)
         quit()
 
     _inputpath = sys.argv[1]
-    _outputfile = sys.argv[2]
-    _parsername = sys.argv[3]
+    _outputfile = None if argc == 2 else sys.argv[2]
+    _parsername = None if argc <= 3 else sys.argv[3]
+    _encoding_name = "utf-8" if argc <= 4 else sys.argv[4]
 
-    _encoding_name = "utf-8"
-    if argc == 5:
-        _encoding_name = sys.argv[4]
-
-    # parsername, outfilepath
     ParserGenerator(_inputpath, _encoding_name).generate_file(_parsername, _outputfile)

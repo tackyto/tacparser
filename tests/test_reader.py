@@ -1,10 +1,10 @@
 # -*- coding:utf-8 -*-
 
-import unittest
 import os
 import re
+import unittest
 
-from reader import FileReader
+from app.baseparser import FileReader
 
 
 class TestFileReaderMethods(unittest.TestCase):

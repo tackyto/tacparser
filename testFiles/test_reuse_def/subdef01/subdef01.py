@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 
-from tacparser import Parser
 import re
+
+from app.baseparser import Parser
 
 
 class SubDef01(Parser):
