@@ -1,0 +1,4 @@
+[console_scripts]
+tacparser-gen = tacparser.parsergenerator:main
+tacparser-genexpeg = tacparser.parsergenerator:main
+

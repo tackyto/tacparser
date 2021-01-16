@@ -4,15 +4,19 @@ import filecmp
 import os
 import unittest
 
-from app.baseparser import ParseException
-from app.expegparser import ExPegParser
-from parsergenerator import ParserGenerator, SyntaxCheckFailedException
+from tacparser import (
+    ParseException, 
+    ParserGenerator, 
+    ExPegParser,
+    ParserGenerator, 
+    SyntaxCheckFailedException
+)
 
 
 class TestParserGenerator(unittest.TestCase):
     def setUp(self):
         path = os.path.normpath(os.path.join(os.path.dirname(__file__),
-                                             "../testFiles/test_parsergenerator"))
+                                             "./testFiles/test_parsergenerator"))
         os.chdir(path)
 
     def test_get_reg_value(self):
@@ -23,35 +27,35 @@ class TestParserGenerator(unittest.TestCase):
         parser = ExPegParser()
         generator = ParserGenerator("dummy.txt", "utf-8")
 
-        test_string = u'r"[a-zA-Z]*" '
+        test_string = 'r"[a-zA-Z]*" '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
         regstr = generator.get_reg_value(node)
-        self.assertEqual(u'u"[a-zA-Z]*", re.M', regstr)
+        self.assertEqual('"[a-zA-Z]*", regex.M', regstr)
 
-        test_string = u'r"[a-zA-Z]*":mXA '
+        test_string = 'r"[a-zA-Z]*":mXA '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
         regstr = generator.get_reg_value(node)
-        self.assertEqual(u'u"[a-zA-Z]*", re.A | re.X', regstr)
+        self.assertEqual('"[a-zA-Z]*", regex.A | regex.X', regstr)
 
-        test_string = u'r"[a-zA-Z]*":XA '
+        test_string = 'r"[a-zA-Z]*":XA '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
         regstr = generator.get_reg_value(node)
-        self.assertEqual(u'u"[a-zA-Z]*", re.A | re.M | re.X', regstr)
+        self.assertEqual('"[a-zA-Z]*", regex.A | regex.M | regex.X', regstr)
 
-        test_string = u'r"[a-zA-Z]*":XAIS '
+        test_string = 'r"[a-zA-Z]*":XAIS '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
         regstr = generator.get_reg_value(node)
-        self.assertEqual(u'u"[a-zA-Z]*", re.A | re.I | re.M | re.S | re.X', regstr)
+        self.assertEqual('"[a-zA-Z]*", regex.A | regex.I | regex.M | regex.S | regex.X', regstr)
 
-        test_string = u'r"[a-zA-Z]*":XAISAIS '
+        test_string = 'r"[a-zA-Z]*":XAISAIS '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
         regstr = generator.get_reg_value(node)
-        self.assertEqual(u'u"[a-zA-Z]*", re.A | re.I | re.M | re.S | re.X', regstr)
+        self.assertEqual('"[a-zA-Z]*", regex.A | regex.I | regex.M | regex.S | regex.X', regstr)
 
     def test_generate_peg(self):
         curdir = os.path.join(os.getcwd(), "peg")

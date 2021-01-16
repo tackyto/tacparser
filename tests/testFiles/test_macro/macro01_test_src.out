@@ -1,0 +1,19 @@
+0 : Main : (0, 45)
+    1 : Hoge : (0, 22)
+        @Tarminal : (0, 20) "HogeHOGEhogehogeHoGe"
+        0 : Spacing : (20, 22)
+            @Tarminal : (20, 22) "
+
+"
+    3 : Fuga : (22, 32)
+        @Tarminal : (22, 30) "FUGAFUGA"
+        2 : Spacing : (30, 32)
+            @Tarminal : (30, 32) "
+
+"
+    5 : Piyo : (32, 45)
+        @Tarminal : (32, 44) "PIYOpiyoPIYO"
+        4 : Spacing : (44, 45)
+            @Tarminal : (44, 45) "
+"
+    6 : _EOF : (45, 45)

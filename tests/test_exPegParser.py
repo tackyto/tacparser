@@ -2,7 +2,7 @@ import filecmp
 import os
 import unittest
 
-from app.expegparser import ExPegParser
+from tacparser.expegparser import ExPegParser
 
 
 class TestExPegParser(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestExPegParser(unittest.TestCase):
         self.parser = ExPegParser()
         self.regdict = {}
         path = os.path.normpath(os.path.join(os.path.dirname(__file__),
-                                             "../testFiles/test_expegparser"))
+                                             "./testFiles/test_expegparser"))
         os.chdir(path)
 
     def test_p_regularexp(self):
@@ -36,16 +36,16 @@ class TestExPegParser(unittest.TestCase):
 
     def test_p_literal(self):
         string = u'"aaa" '
-        flg, node = self.parser.parse_string(string, self.parser.p_literal, "Literal")
+        flg, _ = self.parser.parse_string(string, self.parser.p_literal, "Literal")
         self.assertTrue(flg)
 
         string = u"'bbb' "
-        flg, node = self.parser.parse_string(string, self.parser.p_literal, "Literal")
+        flg, _ = self.parser.parse_string(string, self.parser.p_literal, "Literal")
         self.assertTrue(flg)
 
         # 追加構文 オプション
         string = u"'bbb':I "
-        flg, node = self.parser.parse_string(string, self.parser.p_literal, "Literal")
+        flg, _ = self.parser.parse_string(string, self.parser.p_literal, "Literal")
         self.assertTrue(flg)
 
     def test_expegparser(self):
@@ -54,7 +54,7 @@ class TestExPegParser(unittest.TestCase):
         filepath = os.path.join(curdir, "expeg_test.in")
 
         parser = ExPegParser()
-        flg, result = parser.parse_file(filepath, "utf-8")
+        _, result = parser.parse_file(filepath, "utf-8")
 
         pathoutfile = os.path.join(os.getcwd(), "expeg_test_src.out")
         pathoutfile_dist = os.path.join(os.getcwd(), "expeg_test_dist.out")

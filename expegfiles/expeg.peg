@@ -42,16 +42,8 @@ Parameter <- COMMERCIAL_AT ParameterName
 Expression <- Selection / Sequence
 Selection <- Sequence (SLASH Sequence)+
 Sequence   <- MultiSequence / SingleSequence
-MultiSequence <- Term Term+
-SingleSequence <- Term
-
-# (追加構文：未実装)
-# Term : １つの項を表す
-#   Assignment : 代入項 Xxxxx=$a
-#   Prefix : 通常の項
-Term <- Assignment / Prefix
-Assignment <- Prefix EQUAL AssignmentVariable
-AssignmentVariable <- DOLLAR_SIGN ParameterName
+MultiSequence <- Prefix Prefix+
+SingleSequence <- Prefix
 
 # Prefix : 読み取り方法の表現
 #   Andprefix : 先読み &Xxxxx

@@ -4,12 +4,12 @@ import os
 import re
 import unittest
 
-from app.baseparser import FileReader
+from tacparser import FileReader
 
 
 class TestFileReaderMethods(unittest.TestCase):
     def setUp(self):
-        path = os.path.normpath(os.path.join(os.path.dirname(__file__), "../testFiles/test_reader"))
+        path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_reader"))
         os.chdir(path)
 
     def test_filereader_init01(self):

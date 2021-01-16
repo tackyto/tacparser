@@ -1,26 +1,28 @@
 # -*- coding:utf-8 -*-
 import filecmp
 import os
+import importlib
 import unittest
 
-from parsergenerator import ParserGenerator
-from testFiles.test_reuse_def.subdef01 import subdef01
-from testFiles.test_reuse_def.subdef02 import subdef02parser
+from tacparser import ParserGenerator
+from .testmodules import subdef01
+from .testmodules import subdef02parser
 
 
 class TestReuseDefinition(unittest.TestCase):
     def setUp(self):
-        set_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "../testFiles/test_reuse_def"))
+        generate()
+        set_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_reuse_def"))
         os.chdir(set_path)
 
     def test_resusedef01(self):
         parser = subdef01.SubDef01()
         curdir = os.path.join(os.getcwd(), "subdef01")
-        subdef01_path = os.path.join(curdir, "data", "test01.txt")
-        flg, node = parser.parse_file(subdef01_path, "utf-8", "Main")
+        subdef01_path = os.path.join(curdir, "test01.txt")
+        _, node = parser.parse_file(subdef01_path, "utf-8", "Main")
 
-        pathoutfile = os.path.join(curdir, "data","subdef01_test_src.out")
-        pathoutfile_dist = os.path.join(curdir, "data","subdef01_test_dist.out")
+        pathoutfile = os.path.join(curdir, "subdef01_test_src.out")
+        pathoutfile_dist = os.path.join(curdir, "subdef01_test_dist.out")
 
         with open(pathoutfile, "w", encoding="utf-8") as fout:
             fout.write(node.print_tree())
@@ -30,11 +32,11 @@ class TestReuseDefinition(unittest.TestCase):
     def test_test_resusedef02(self):
         parser = subdef02parser.Subdef02Parser()
         curdir = os.path.join(os.getcwd(), "subdef02")
-        subdef01_path = os.path.join(curdir, "data", "test02.txt")
-        flg, node = parser.parse_file(subdef01_path, "utf-8", "Subdef02")
+        subdef01_path = os.path.join(curdir, "test02.txt")
+        _, node = parser.parse_file(subdef01_path, "utf-8", "Subdef02")
 
-        pathoutfile = os.path.join(curdir, "data", "subdef02_test_src.out")
-        pathoutfile_dist = os.path.join(curdir, "data", "subdef02_test_dist.out")
+        pathoutfile = os.path.join(curdir, "subdef02_test_src.out")
+        pathoutfile_dist = os.path.join(curdir, "subdef02_test_dist.out")
 
         with open(pathoutfile, "w", encoding="utf-8") as fout:
             fout.write(node.print_tree())
@@ -44,11 +46,11 @@ class TestReuseDefinition(unittest.TestCase):
     def test_test_resusedef02_02(self):
         parser = subdef02parser.Subdef02Parser()
         curdir = os.path.join(os.getcwd(), "subdef02")
-        subdef01_path = os.path.join(curdir, "data", "test02_02.txt")
-        flg, node = parser.parse_file(subdef01_path, "utf-8", "Subdef02")
+        subdef01_path = os.path.join(curdir, "test02_02.txt")
+        _, node = parser.parse_file(subdef01_path, "utf-8", "Subdef02")
 
-        pathoutfile = os.path.join(curdir, "data", "subdef02_02_test_src.out")
-        pathoutfile_dist = os.path.join(curdir, "data", "subdef02_02_test_dist.out")
+        pathoutfile = os.path.join(curdir, "subdef02_02_test_src.out")
+        pathoutfile_dist = os.path.join(curdir, "subdef02_02_test_dist.out")
 
         with open(pathoutfile, "w", encoding="utf-8") as fout:
             fout.write(node.print_tree())
@@ -56,16 +58,21 @@ class TestReuseDefinition(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
 
-if __name__ == '__main__':
+def generate():
     path = os.path.normpath(os.path.join(os.path.dirname(__file__),
-                                         "../testFiles/test_reuse_def"))
+                                         "testmodules"))
 
-    filepath = os.path.join(path, "subdef01", "subdef01.peg")
-    outfilepath = os.path.join(path, "subdef01", "subdef01.py")
+    filepath = os.path.join(path, "subdef01.peg")
+    outfilepath = os.path.join(path, "subdef01.py")
     ParserGenerator(filepath, "utf-8").generate_file("SubDef01", outfilepath)
 
-    filepath = os.path.join(path, "subdef02", "subdef02.peg")
-    outfilepath = os.path.join(path, "subdef02", "subdef02.py")
+    filepath = os.path.join(path, "subdef02.peg")
+    outfilepath = os.path.join(path, "subdef02parser.py")
     ParserGenerator(filepath).generate_file()
 
+    importlib.reload(subdef01)
+    importlib.reload(subdef02parser)
+
+
+if __name__ == '__main__':
     unittest.main()
