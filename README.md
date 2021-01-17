@@ -2,12 +2,16 @@
 
 PEGを拡張した記法で記載した文法ファイルからparserを生成するparsergeneratorです。
 
-## 使い方
+## インストール
+ダウンロードしたフォルダ直下で以下のコマンドを実行
 
-`$ python parsergenerator.py inputfile [outputfile] [parsername] [encoding]`  
+`$ pip install .`  
+
+## パーサーの作成
+`$ tacparser-gen inputfile [outputfile] [parsername] [encoding]`  
 
 例)  
-`$ python parsergenerator.py sample.peg sampleparser.py`  
+`$ tacparser-gen sample.peg sampleparser.py`  
 
 outputfile, parsername, encoding を指定しなかった場合、それぞれ、
 * outputfile : [pegのルートノード名].lower() + "parser" + ".py"
@@ -22,7 +26,7 @@ XXXParser を作成した場合
 
 ```
 from xxx import XXXParser
-from tacparser.baseparser import preorder_travel, postorder_travel
+from tacparser import preorder_travel, postorder_travel
 
 parser = XXXParser()
 parser.parse_file(inputfilepath, encoding)

@@ -651,7 +651,7 @@ class SyntaxCheckFailedException(TacParserException):
 def main():
     argc = len(sys.argv)
     if argc < 2 or argc > 5:
-        msg = "Usage: # python %s inputfile [outputfile] [parsername] [encoding]" % sys.argv[0]
+        msg = "Usage: # tacparser-gen input_peg_file [output_parser] [parsername] [encoding]"
         print(msg, file=sys.stderr)
         quit()
 
