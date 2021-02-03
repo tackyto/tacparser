@@ -153,18 +153,18 @@ class PegParser(Parser):
 
     def p_class(self):
         # Class <- '[' (!']' Range)* ']' Spacing
-        return self._seq(self._l(u'['),
-                         self._rpt(self._seq(self._not(self._l(u']')),
+        return self._seq(self._l('['),
+                         self._rpt(self._seq(self._not(self._l(']')),
                                              self._p(self.p_range, "Range")
                                              ), 0),
-                         self._l(u']'),
+                         self._l(']'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_range(self):
         # Range <- Char '-' Char / Char
         return self._sel(self._seq(self._p(self.p_char, "Char"),
-                                   self._l(u'-'),
+                                   self._l('-'),
                                    self._p(self.p_char, "Char")
                                    ),
                          self._p(self.p_char, "Char")
@@ -183,77 +183,77 @@ class PegParser(Parser):
         #         / '\\' r"[0-2][0-7][0-7]"
         #         / '\\' r"[0-7][0-7]?"
         #         / !'\\' r"."
-        return self._sel(self._seq(self._l(u'\\\\'),
+        return self._sel(self._seq(self._l('\\\\'),
                                    self._r(self._reg_p_char0)
                                    ),
-                         self._seq(self._l(u'\\\\'),
+                         self._seq(self._l('\\\\'),
                                    self._r(self._reg_p_char1)
                                    ),
-                         self._seq(self._l(u'\\\\'),
+                         self._seq(self._l('\\\\'),
                                    self._r(self._reg_p_char2)
                                    ),
-                         self._seq(self._not(self._l(u'\\\\')),
+                         self._seq(self._not(self._l('\\\\')),
                                    self._r(self._reg_p_char3)
                                    )
                          )
 
     def p_leftarrow(self):
         # LEFTARROW <- '<-' Spacing
-        return self._seq(self._l(u'<-'),
+        return self._seq(self._l('<-'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_slash(self):
         # SLASH <- '/' Spacing
-        return self._seq(self._l(u'/'),
+        return self._seq(self._l('/'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_and(self):
         # AND <- '&' Spacing
-        return self._seq(self._l(u'&'),
+        return self._seq(self._l('&'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_not(self):
         # NOT <- '!' Spacing
-        return self._seq(self._l(u'!'),
+        return self._seq(self._l('!'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_question(self):
         # QUESTION <- '?' Spacing
-        return self._seq(self._l(u'?'),
+        return self._seq(self._l('?'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_star(self):
         # STAR <- '*' Spacing
-        return self._seq(self._l(u'*'),
+        return self._seq(self._l('*'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_plus(self):
         # PLUS <- '+' Spacing
-        return self._seq(self._l(u'+'),
+        return self._seq(self._l('+'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_open(self):
         # OPEN <- '(' Spacing
-        return self._seq(self._l(u'('),
+        return self._seq(self._l('('),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_close(self):
         # CLOSE <- ')' Spacing
-        return self._seq(self._l(u')'),
+        return self._seq(self._l(')'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
     def p_dot(self):
         # DOT <- '.' Spacing
-        return self._seq(self._l(u'.'),
+        return self._seq(self._l('.'),
                          self._p(self.p_spacing, "Spacing")
                          )
 
@@ -267,7 +267,7 @@ class PegParser(Parser):
 
     def p_comment(self):
         # Comment <- '#' (!EndOfLine r".")* EndOfLine
-        return self._seq(self._l(u'#'),
+        return self._seq(self._l('#'),
                          self._rpt(self._seq(self._not(self._p(self.p_endofline, "EndOfLine")),
                                              self._r(self._reg_p_comment0)
                                              ), 0),
@@ -276,16 +276,16 @@ class PegParser(Parser):
 
     def p_space(self):
         # Space <- ' ' / '\t' / EndOfLine
-        return self._sel(self._l(u' '),
-                         self._l(u'\\t'),
+        return self._sel(self._l(' '),
+                         self._l('\\t'),
                          self._p(self.p_endofline, "EndOfLine")
                          )
 
     def p_endofline(self):
         # EndOfLine <- '\r\n' / '\n' / '\r'
-        return self._sel(self._l(u'\\r\\n'),
-                         self._l(u'\\n'),
-                         self._l(u'\\r')
+        return self._sel(self._l('\\r\\n'),
+                         self._l('\\n'),
+                         self._l('\\r')
                          )
 
     _reg_p_endoffile0 = regex.compile(".", regex.M)

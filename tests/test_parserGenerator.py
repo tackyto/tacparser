@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-
 import filecmp
 import os
 import unittest
@@ -20,7 +18,7 @@ class TestParserGenerator(unittest.TestCase):
         os.chdir(path)
 
     def test_get_reg_value(self):
-        u"""
+        """
         正規表現オプション
         :return:
         """

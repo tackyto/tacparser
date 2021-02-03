@@ -1,4 +1,3 @@
-# -*- coding:utf-8 -*-
 import filecmp
 import os
 import importlib
@@ -23,7 +22,7 @@ class TestReuseDefinition(unittest.TestCase):
         pathoutfile = os.path.join(curdir, "macro01_test_src.out")
         pathoutfile_dist = os.path.join(curdir, "macro01_test_dist.out")
 
-        with open(pathoutfile, "w", encoding="utf-8") as fout:
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(node.print_tree())
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))

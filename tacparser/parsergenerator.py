@@ -79,7 +79,7 @@ class ParserGenerator(object):
             str_subdef_list += "        self.def_subtypename = [" + subtype_str + "]\n"
 
         self.__logger.debug("Output to file \"{0}\" start.".format(outfilepath))
-        with open(outfilepath, "w", encoding='utf-8') as fout:
+        with open(outfilepath, "w", encoding='utf-8', newline="\n") as fout:
             fout.write(impstr + preparserstr + str_def_list + str_subdef_list + strparser)
 
         self.__logger.info("Generating Parser ended successfully.")
@@ -220,7 +220,7 @@ class ParserGenerator(object):
         if tree.type == "SingleQuotesLiteral":
             d = {"Spacing": ""}
             cont = tree.search_node("SingleQuotesLiteralContents")
-            return "u'" + cont[0].get_str(d).replace("\\", "\\\\").replace("'", "\\'") + "'"
+            return "'" + cont[0].get_str(d).replace("\\", "\\\\").replace("'", "\\'") + "'"
 
         elif tree.type == "DoubleQuotesLiteral":
             d = {"Spacing": ""}

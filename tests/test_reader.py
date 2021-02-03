@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-
 import os
 import re
 import unittest
@@ -55,59 +53,59 @@ class TestFileReaderMethods(unittest.TestCase):
         # 正規表現での取得
         file = os.path.join(os.getcwd(), "test01_02.txt")
         r = FileReader(file, "utf-8")
-        flg, rlt = r.match_regexp(re.compile(u"\n"))
+        flg, rlt = r.match_regexp(re.compile("\n"))
 
         self.assertTrue(flg)
         self.assertIsNotNone(rlt)
 
     def test_filereader_read(self):
-        u"""
+        """
         文字列の読み込み
         :return:
         """
         file = os.path.join(os.getcwd(), "test02.txt")
         r = FileReader(file, "utf-8")
 
-        flg, rlt = r.match_regexp(re.compile(u"abcd"))
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"abcd", 0))
+        flg, rlt = r.match_regexp(re.compile("abcd"))
+        self.assertEqual((flg, rlt, r.get_position()), (True, "abcd", 0))
 
-        flg, rlt = r.match_regexp(re.compile(u"abcd"), True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"abcd", 4))
+        flg, rlt = r.match_regexp(re.compile("abcd"), True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "abcd", 4))
 
-        r.match_regexp(re.compile(u"\\s*"), True)
+        r.match_regexp(re.compile("\\s*"), True)
 
-        flg, rlt = r.match_regexp(re.compile(u"b*"), True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"bbbb", 9))
+        flg, rlt = r.match_regexp(re.compile("b*"), True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "bbbb", 9))
 
-        r.match_regexp(re.compile(u"\\s*"), True)
+        r.match_regexp(re.compile("\\s*"), True)
 
-        flg, rlt = r.match_literal(u"cccc", True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"cccc", 14))
+        flg, rlt = r.match_literal("cccc", True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "cccc", 14))
 
-        r.match_regexp(re.compile(u"\\s*"), True)
+        r.match_regexp(re.compile("\\s*"), True)
 
-        flg, rlt = r.match_literal(u"aaaa", False)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"aaaa", 15))
+        flg, rlt = r.match_literal("aaaa", False)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "aaaa", 15))
 
     def test_filereader_read_zenkaku(self):
-        u"""
+        """
         全角文字列の読み込み
         :return:
         """
         file = os.path.join(os.getcwd(), "test03.txt")
         r = FileReader(file, "utf-8")
 
-        flg, rlt = r.match_literal(u"あいうえお", True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"あいうえお", 5))
+        flg, rlt = r.match_literal("あいうえお", True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "あいうえお", 5))
 
-        r.match_regexp(re.compile(u"\\s*"), True)
+        r.match_regexp(re.compile("\\s*"), True)
 
         r.set_position(0)
-        flg, rlt = r.match_regexp(re.compile(u"あいうえお"), True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"あいうえお", 5))
+        flg, rlt = r.match_regexp(re.compile("あいうえお"), True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "あいうえお", 5))
 
     def test_filereader_read_regexp(self):
-        u"""
+        """
         正規表現のエスケープについてのテスト
         :return:
         """
@@ -117,39 +115,39 @@ class TestFileReaderMethods(unittest.TestCase):
         _reg_p_literal1 = re.compile(u'"(\\\\"|[^"])*"')
 
         flg, rlt = r.match_regexp(_reg_p_literal1, True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"\"[nrt'\\\"\\[\\]\\\\]\"", 16))
+        self.assertEqual((flg, rlt, r.get_position()), (True, "\"[nrt'\\\"\\[\\]\\\\]\"", 16))
 
-        flg, rlt = r.match_regexp(re.compile(u"(\\s|\\r|\\n)*"), True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"\n", 17))
+        flg, rlt = r.match_regexp(re.compile("(\\s|\\r|\\n)*"), True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "\n", 17))
 
-        _reg_p_literal2 = re.compile(u"[nrt'\\\"\\[\\]\\\\]*")
+        _reg_p_literal2 = re.compile("[nrt'\\\"\\[\\]\\\\]*")
         flg, rlt = r.match_regexp(_reg_p_literal2, True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"[nrt'\\\"\\[\\]\\\\]'[\"]'", 36))
+        self.assertEqual((flg, rlt, r.get_position()), (True, "[nrt'\\\"\\[\\]\\\\]'[\"]'", 36))
 
     def test_filereader_read_nocase(self):
-        u"""
+        """
         文字列の読み込み
         :return:
         """
         file = os.path.join(os.getcwd(), "test02.txt")
         r = FileReader(file, "utf-8")
 
-        flg, rlt = r.match_literal(u"abcd", nocase=False)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"abcd", 0))
+        flg, rlt = r.match_literal("abcd", nocase=False)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "abcd", 0))
 
-        flg, rlt = r.match_literal(u"ABCD", nocase=True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"abcd", 0))
+        flg, rlt = r.match_literal("ABCD", nocase=True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "abcd", 0))
 
-        flg, rlt = r.match_literal(u"ABCD", True, nocase=True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"abcd", 4))
+        flg, rlt = r.match_literal("ABCD", True, nocase=True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "abcd", 4))
 
-        r.match_regexp(re.compile(u"\\s*"), True)
+        r.match_regexp(re.compile("\\s*"), True)
 
-        flg, rlt = r.match_literal(u"BBBB", True, False)
+        flg, rlt = r.match_literal("BBBB", True, False)
         self.assertEqual((flg, rlt, r.get_position()), (False, None, 5))
 
-        flg, rlt = r.match_literal(u"BBBB", True, True)
-        self.assertEqual((flg, rlt, r.get_position()), (True, u"bbbb", 9))
+        flg, rlt = r.match_literal("BBBB", True, True)
+        self.assertEqual((flg, rlt, r.get_position()), (True, "bbbb", 9))
 
 
 if __name__ == '__main__':
