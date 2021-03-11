@@ -9,6 +9,9 @@ class Parser(object):
     """構文解析を実行するクラス"""
 
     def __init__(self, logger=default_logger):
+        """
+
+        """
         # ロガー
         self.__logger = logger
 
@@ -48,18 +51,35 @@ class Parser(object):
                 setattr(self, def_key, def_func)
 
     def get_tree(self):
-        """構文解析結果を返す
-        :return: tree
+        """
+        構文解析結果を返す
+       
+        Returns
+        ----------
+        tree : None | Node
+            構文解析結果のルートノード
         """
         return self._tree
 
     def parse_file(self, filepath, encoding="utf-8", typename=None):
-        """与えられたファイルパスを指定したエンコードで読み込み、タイプtypename を起点に構文解析を行う
+        """
+        与えられたファイルパスを指定したエンコードで読み込み、タイプtypename を起点に構文解析を行う
 
-        :param filepath: ファイルパス
-        :param encoding: ファイルのエンコード
-        :param typename: 起点ノードのタイプ名
-        :return:
+        Parameters
+        ----------
+        filepath : str
+            ファイルパス
+        encoding : str
+            ファイルのエンコード
+        typename : str
+            起点ノードのタイプ名
+
+        Returns
+        ----------
+        result : boolean
+            構文解析の成功/失敗
+        tree : None | Node
+            構文解析結果のルートノード
         """
         self.__initialize()
 
@@ -68,7 +88,7 @@ class Parser(object):
         try:
             self._reader = FileReader(filepath, encoding)
         except (FileNotFoundError, IOError):
-            self.__logger.fatal("Wrong file or file path. \"{0}\"")
+            self.__logger.fatal("Wrong file or file path. \"{0}\"".format(filepath))
             raise
 
         if not typename:
@@ -77,13 +97,17 @@ class Parser(object):
         try:
             rootexp = self.def_dict[typename]
         except KeyError:
-            self.__logger.fatal("TypeName \"{0}\" was not found")
+            self.__logger.fatal("TypeName \"{0}\" was not found".format(typename))
             raise
 
         self.__logger.info("Parsing file  \"{0}\" started. rule:{1}".format(filepath, typename))
 
         # ルートの解析実行
-        self._result, self._tree = self._parse(rootexp, typename)
+        try:
+            self._result, self._tree = self._parse(rootexp, typename)
+        except RecursionError:
+            self.__logger.fatal("RecursionError!")
+            return False, None
 
         if not self._result:
             msg = self._tree.get_str() if isinstance(self._tree, FailureNode) else filepath
@@ -106,12 +130,24 @@ class Parser(object):
         return self._result, self._tree
 
     def parse_string(self, string, rootexp, typename=None):
-        """与えられた文字列を読み込み、関数 fを起点に構文解析を行う
+        """
+        与えられた文字列を読み込み、関数 fを起点に構文解析を行う
 
-        :param string: 構文解析対象文字列
-        :param rootexp: 構文解析の起点となる式
-        :param typename: 起点ノードのタイプ名
-        :return:
+        Parameters
+        ----------
+        string : str
+            構文解析対象文字列
+        rootexp : function
+            構文解析の起点となる式
+        typename : str
+            起点ノードのタイプ名
+
+        Returns
+        ----------
+        result : boolean
+            構文解析の成功/失敗
+        tree : None | Node
+            構文解析結果のルートノード
         """
         self.__initialize()
 
@@ -128,10 +164,20 @@ class Parser(object):
         return self._result, self._tree
 
     def sub_parse(self, subdef_name):
-        """多重解析を実行する
+        """
+        多重解析を実行する
 
-        :param subdef_name: サブ構文のタイプ
-        :return: flg:解析の成否, result_list:結果ノードのリスト
+        Parameters
+        ----------
+        subdef_name : str
+            サブ構文のタイプ
+
+        Returns
+        ----------
+        flg : bool
+            解析の成否
+        result_list : list[Node]
+            結果ノードのリスト
         """
         self.__initialize()
         nodelist = self._tree.search_node(subdef_name)
@@ -165,12 +211,21 @@ class Parser(object):
         return retflg, result_list
 
     def reconstruct_tree(self, typelist, skiplist):
-        """ツリーの再構成を行う。
+        """
+        ツリーの再構成を行う。
         ここで、root のノードは変更しない
 
-        :param typelist: 再構成に用いるノードのリスト
-        :param skiplist: スキップするノードのリスト
-        :return: 再構成したツリー
+        Parameters
+        ----------
+        typelist : list
+            再構成に用いるノードのリスト
+        skiplist : list
+            スキップするノードのリスト
+        
+        Returns
+        ----------
+        tree : Node
+            再構成したツリー
         """
 
         def reconstructnode(n, _typelist, _skiplist):
@@ -210,12 +265,24 @@ class Parser(object):
         return newroot
 
     def _parse(self, f, typename, end_pos=None):
-        """構文解析を実行する。
+        """
+        構文解析を実行する。
 
-        :param f: 構文解析の開始点になる関数
-        :param typename: ルートノードのタイプ名
-        :param end_pos: 対象文字列の指定の位置まで解析する場合に指定。再解析時に使用
-        :return: 構文解析の成否, 解析結果のルートノード
+        Parameters
+        ----------
+        f : function
+            構文解析の開始点になる関数
+        typename : str
+            ルートノードのタイプ名
+        end_pos : int
+            対象文字列の指定の位置まで解析する場合に指定。再解析時に使用
+
+        Returns
+        ----------
+        result : bool
+            構文解析の成功/失敗
+        tree : None | Node
+            構文解析結果のルートノード
         """
 
         # 起点の関数を取得
@@ -241,27 +308,47 @@ class Parser(object):
             return flg, node
 
     def top(self):
-        """構文解析のルートになる関数
+        """
+        構文解析のルートになる関数
         各parserでオーバーライドされる
         """
         pass
 
     def _seq(self, *x):
-        """連続を表現する関数を返す関数。
+        """
+        連続を表現する関数を返す関数。
 
-        :param x: 結果が[flg, Node]のタプルを返す関数のタプル
-        :return: 関数
+        Parameters
+        ----------
+        x : function
+            結果が[flg, Node]のタプルを返す関数のタプル
+
+        Returns
+        ----------
+        seq : function
+            関数
         """
 
         def seq(r, *_x):
-            """input の関数を順に実行する。
+            """
+            nput の関数を順に実行する。
             実行結果、作成ノード を受け取り、すべての input に対して成功した場合、
             ( True, input 関数で作成されたノードの連結 ) を返す。
             いずれかの実行に失敗した場合、( False, () ) を返す。
 
-            :param r: リーダー
-            :param _x: 結果が[flg, Node]のタプルを返す関数のタプル
-            :return: 実行結果, ノードのタプル
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+            _x : function
+                結果が[flg, Node]のタプルを返す関数のタプル
+
+            Returns
+            ----------
+            result : bool
+                実行結果
+            node : toupble[Node]
+                ノードのタプル
             """
             ret = ()
             n = r.get_position()
@@ -278,21 +365,39 @@ class Parser(object):
         return lambda: seq(self._reader, *x)
 
     def _sel(self, *x):
-        """選択を表現する関数を返す関数。
+        """
+        選択を表現する関数を返す関数。
 
-        :param x: 結果が[flg, Node]のタプルを返す関数のタプル
-        :return: 関数
+        Parameters
+        ----------
+        x : tuple[function]
+            結果が[flg, Node]のタプルを返す関数のタプル
+
+        Returns
+        ----------
+        func : function
         """
 
         def sel(r, *_x):
-            """input の関数を順に実行する。
+            """
+            input の関数を順に実行する。
             実行結果、作成ノード を受け取り、いずれかの input に対して成功した場合、
             ( True, input 関数で作成されたノードの連結 ) を返す。
             すべての input の実行に失敗した場合、( False, () ) を返す。
 
-            :param r: リーダー
-            :param _x: 実行結果, ノードのタプルを返す関数のタプル
-            :return: 実行結果, ノードのタプル
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+            _x : function
+                結果が[flg, Node]のタプルを返す関数のタプル
+
+            Returns
+            ----------
+            result : bool
+                実行結果
+            node : toupble[Node]
+                ノードのタプル
             """
             pos = r.get_position()
             for func in _x:
@@ -309,23 +414,45 @@ class Parser(object):
     def _rpt(self, f, min_num, max_num=-1):
         """繰り返しを表現する関数を返す関数。
 
-        :param f: 結果が[flg, Node]のタプルを返す関数
-        :param min_num: 繰り返し回数の最小値
-        :param max_num: 繰り返し回数の最大値、デフォルトは制限なし
-        :return: 関数
+        Parameters
+        ----------
+        f : function
+            結果が[flg, Node]のタプルを返す関数
+        min_num : int
+            繰り返し回数の最小値
+        max_num : int
+            繰り返し回数の最大値、デフォルトは制限なし
+       
+        Returns
+        ----------
+        rpt : function
+            関数
         """
 
         def rpt(r, _f, _min_num, _max_num=-1):
-            """input の関数群を最大 max_num 回 繰り返し実行する。
+            """
+            input の関数群を最大 max_num 回 繰り返し実行する。
             実行結果、作成ノード を受け取り、実行回数が min_num 以上の場合
             ( True, input 関数で作成されたノード ) を返す。
             input の実行に失敗し、実行回数が min_num 未満の場合、( False, () ) を返す。
 
-            :param r: リーダー
-            :param _f: 実行する関数
-            :param _min_num: 繰り返し回数の最小値
-            :param _max_num: 繰り返し回数の最大値、デフォルトは制限なし
-            :return: 実行結果, ノードのタプル
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+            _f : function
+                実行する関数
+            _min_num : int
+                繰り返し回数の最小値
+            _max_num : int
+                繰り返し回数の最大値、デフォルトは制限なし
+
+            Returns
+            ----------
+            result : bool
+                実行結果
+            node : toupble[Node]
+                ノードのタプル
             """
             pos = r.get_position()
             ret = ()
@@ -350,14 +477,16 @@ class Parser(object):
 
     @staticmethod
     def _opt(f):
-        """オプションを表現する関数を返す関数。
+        """
+        オプションを表現する関数を返す関数。
 
         :param f: 結果が[flg, Node]のタプルを返す関数
         :return: 関数
         """
 
         def opt(_f):
-            """input の関数を実行する。
+            """
+            input の関数を実行する。
             実行結果、作成ノード を受け取り、すべてに成功した場合
             ( True, input 関数で作成されたノードの連結 ) を返す。
             input の実行に失敗した場合、( True, () ) を返す。
@@ -371,14 +500,16 @@ class Parser(object):
         return lambda: opt(f)
 
     def _and(self, f):
-        """「条件：読み込み成功」を表現する関数を返す関数。
+        """
+        「条件：読み込み成功」を表現する関数を返す関数。
 
         :param f: 結果が[flg, Node]のタプルを返す関数
         :return: 関数
         """
 
         def __and(r, _f):
-            """input の関数を実行する。
+            """
+            nput の関数を実行する。
             実行結果、作成ノード を受け取り、成功した場合
             ( True, None ) を返し、失敗した場合、( False, () ) を返す。
 
@@ -394,14 +525,16 @@ class Parser(object):
         return lambda: __and(self._reader, f)
 
     def _not(self, f):
-        """「条件：読み込み失敗」を表現する関数を返す関数。
+        """
+        「条件：読み込み失敗」を表現する関数を返す関数。
 
         :param f: 結果が[flg, Node]のタプルを返す関数のタプル
         :return: 関数
         """
 
         def __not(r, _f):
-            """input の関数を実行する。
+            """
+            input の関数を実行する。
             実行結果、作成ノード を受け取り、成功した場合
             ( False, () ) を返し、失敗した場合、( True, () ) を返す。
 
@@ -418,14 +551,16 @@ class Parser(object):
         return lambda: __not(self._reader, f)
 
     def _trm(self, f):
-        """結果を終端ノード化する関数を返す関数。
+        """
+        結果を終端ノード化する関数を返す関数。
 
         :param f: 結果が[flg, Node]のタプルを返す関数のタプル
         :return: 関数
         """
 
         def trm(r, _f):
-            """input の関数を実行する。
+            """
+            input の関数を実行する。
             実行結果、作成ノード を受け取り、input に成功した場合
             ノードを終端化して(True, (作成した終端ノード)) を返す。
             input の実行に失敗した場合、( False, () ) を返す。
@@ -454,7 +589,8 @@ class Parser(object):
         return lambda: trm(self._reader, f)
 
     def _l(self, s, nocase=False):
-        """リテラルを表現する関数を返す関数
+        """
+        リテラルを表現する関数を返す関数
 
         :param s: テキスト文字列
         :param nocase: 大文字小文字を区別するか否か（True=区別しない)
@@ -462,7 +598,8 @@ class Parser(object):
         """
 
         def l(r, _s, _nocase=False):
-            """リテラルを読み込む。
+            """
+            リテラルを読み込む。
             読み込みに成功した場合、終端ノードを生成して、( True, 生成したノード ) を返す。
             失敗した場合、( False, () ) を返す。
 
@@ -487,14 +624,16 @@ class Parser(object):
         return lambda: l(self._reader, s, nocase)
 
     def _r(self, reg):
-        """正規表現を表現する関数を返す関数
+        """
+        正規表現を表現する関数を返す関数
 
         :param reg: 正規表現オブジェクト
         :return: 関数
         """
 
         def _reg(r, __reg):
-            """リテラルを正規表現で読み込む。
+            """
+            リテラルを正規表現で読み込む。
             読み込みに成功した場合、終端ノードを生成して、( True, 生成したノード ) を返す。
             失敗した場合、( False, None ) を返す。
 
@@ -518,7 +657,8 @@ class Parser(object):
         return lambda: _reg(self._reader, reg)
 
     def _p(self, f, typename):
-        """[fの実行結果を子に持つ非終端ノードを返す関数] を返す関数
+        """
+        [fの実行結果を子に持つ非終端ノードを返す関数] を返す関数
 
         :param f: [子ノードを生成する関数] を返す関数。
         :param typename: ノードのタイプ名
@@ -533,7 +673,8 @@ class Parser(object):
 
     @staticmethod
     def _skip(f):
-        """[fを実行し結果をすべて読み飛ばす関数] を返す関数
+        """
+        [fを実行し結果をすべて読み飛ばす関数] を返す関数
 
         :param f: 結果が[flg, Node]のタプルを返す関数
         :return: 関数
@@ -556,7 +697,8 @@ class Parser(object):
         return lambda: __eof(self._reader)
 
     def _create_non_terminal(self, def_function, startpos, typename):
-        """非終端ノードの作成
+        """
+        非終端ノードの作成
 
         :param def_function: 解析規則を定義する関数名 p_xxxx
         :param startpos:
@@ -574,7 +716,11 @@ class Parser(object):
         # 解析規則を表現する関数 funcを取得
         func = def_function()
         # 実行して結果ノードを取得する
-        flg, ret = func()
+        try:
+            flg, ret = func()
+        except RecursionError:
+            self.__logger.fatal("<- {0}".format(typename))
+            raise
 
         if flg:
             endpos = self._reader.get_position()
@@ -591,7 +737,9 @@ class Parser(object):
 
 
 class Node(object):
-    """ノードを示す基底クラス"""
+    """
+    ノードを示す基底クラス
+    """
 
     def __init__(self):
         self.startpos = 0
@@ -627,7 +775,8 @@ class Node(object):
 
 
 class NonTerminalNode(Node):
-    """非終端ノードを表すクラス。
+    """
+    非終端ノードを表すクラス。
     このノードは子ノードを持つ。
     """
 
@@ -642,7 +791,8 @@ class NonTerminalNode(Node):
         self.children = children
 
     def get_str(self, _dict=None):
-        """ノードで取得した文字列を返す
+        """
+        ノードで取得した文字列を返す
 
         :param _dict: ノードの置き換えに利用する辞書。
         :return: そのノードで読み込んだ文字列
@@ -656,7 +806,9 @@ class NonTerminalNode(Node):
         return ret
 
     def print_tree(self, level=0, node_list=None):
-        """ツリー情報を返す"""
+        """
+        ツリー情報を返す
+        """
         if node_list is None:
             ret = " " * 4 * level \
                 + str(self.nodenum) + " : " \
@@ -680,11 +832,14 @@ class NonTerminalNode(Node):
         return ret
 
     def get_childnode(self, nodetype):
-        """指定されたノードタイプ [nodetype] の子ノードをリストにして返す。"""
+        """
+        指定されたノードタイプ [nodetype] の子ノードをリストにして返す。
+        """
         return [x for x in self.children if x.type == nodetype]
 
     def search_node(self, nodetype, deepsearch_flg=False):
-        """自身以下のノードを探索し、[nodetype] に一致するノードのリストを返す。
+        """
+        自身以下のノードを探索し、[nodetype] に一致するノードのリストを返す。
 
         :param nodetype:ノードタイプ
         :param deepsearch_flg:対象のノードが見つかった場合、そのノードの子を探索するか否か
@@ -703,7 +858,9 @@ class NonTerminalNode(Node):
 
 
 class TerminalNode(Node):
-    """終端ノードを示すクラス"""
+    """
+    終端ノードを示すクラス
+    """
 
     def __init__(self, s):
         Node.__init__(self)
@@ -723,7 +880,9 @@ class TerminalNode(Node):
 
 
 class FailureNode(Node):
-    """解析失敗時に作成するノードを示すクラス"""
+    """
+    解析失敗時に作成するノードを示すクラス
+    """
 
     def __init__(self, s):
         Node.__init__(self)
@@ -743,14 +902,16 @@ class FailureNode(Node):
 
 
 class Reader(object):
-    """文字列解析のための読み込みクラス
+    """
+    文字列解析のための読み込みクラス
     contents は、読み込んだ文字列全体
     position は、現在の位置情報
     matchLiteral, matchRegexp で読み進める。
     """
 
     def __init__(self, contents):
-        """初期化
+        """
+        初期化
 
         :param contents: 読み込み内容（文字列）
         """
@@ -763,7 +924,8 @@ class Reader(object):
         self.__endposition = -1
 
     def match_literal(self, literal, flg=False, nocase=False):
-        """contentsの次が指定したリテラルにマッチした場合、読み進める。
+        """
+        contentsの次が指定したリテラルにマッチした場合、読み進める。
 
         :param literal: Unicode文字列
         :param flg: 成功時ファイルを読み進めるか否か
@@ -787,7 +949,8 @@ class Reader(object):
             return False, None
 
     def match_regexp(self, reg, flg=False):
-        """contentsの次が指定した正規表現にマッチした場合、読み進める。
+        """
+        contentsの次が指定した正規表現にマッチした場合、読み進める。
 
         :param reg: 正規表現
         :param flg: 成功時ファイルを読み進めるか否か
@@ -807,7 +970,8 @@ class Reader(object):
             return False, None
 
     def getmaxposition(self):
-        """それまでに読み進めることができた位置の最大値を返す。
+        """
+        それまでに読み進めることができた位置の最大値を返す。
 
         :return: maxposition (position の最大値)
         """
@@ -816,7 +980,8 @@ class Reader(object):
         return self.maxposition
 
     def pos2linecolumn(self, pos):
-        """文字カウント を 行番号、列番号に変換する
+        """
+        文字カウント を 行番号、列番号に変換する
 
         :param pos: 位置情報（文字カウント）
         :return: 位置情報（行数、行のカラム数）
@@ -844,20 +1009,23 @@ class Reader(object):
         raise IndexError("over File length <{0}>, contents length={1}".format(pos, len(self.contents)))
 
     def getmaxlinecolumn(self):
-        """maxposition の文字カウントの行列を返す
+        """
+        maxposition の文字カウントの行列を返す
 
         :return: 位置情報(maxposition の行数、行のカラム数)
         """
         return self.pos2linecolumn(self.maxposition)
 
     def get_position(self):
-        """読み取り位置を返す
+        """
+        読み取り位置を返す
         :return: ファイル位置
         """
         return self.__position
 
     def set_position(self, n):
-        """contents上の読み取り位置を設定する。
+        """
+        contents上の読み取り位置を設定する。
         :param n: 読み取り位置
         :return:
         """
@@ -867,7 +1035,8 @@ class Reader(object):
         self.getmaxposition()
 
     def partial_reposition(self, startpos, endpos):
-        """contents上の開始位置、終了位置、maxlengthを再設定する。
+        """
+        contents上の開始位置、終了位置、maxlengthを再設定する。
 
         :param startpos:
         :param endpos:
@@ -884,7 +1053,8 @@ class Reader(object):
         self.length = len(self.contents)
 
     def is_end(self):
-        """終端に達しているか否かを判断する関数
+        """
+        終端に達しているか否かを判断する関数
 
         :return: 読み込み位置が終端とイコールの場合、True, それ以外の場合、False
         """
@@ -895,17 +1065,25 @@ class Reader(object):
 
 
 class FileReader(Reader):
+    """
+    ファイルの読み込みを実行するクラス
+    """
     def __init__(self, filepath, encoding):
         with open(filepath, "r", encoding=encoding) as f:
             Reader.__init__(self, f.read())
 
 
 class StringReader(Reader):
+    """
+    文字列の読み込みを実行するクラス
+    """
     def __init__(self, string):
         Reader.__init__(self, string)
 
 class TacParserException(Exception):
-    """Base class for exceptions in this module."""
+    """
+    Base class for exceptions in this module.
+    """
     pass
 
 
@@ -933,7 +1111,8 @@ def postorder_travel(root, func, *args):
 
 
 def complete_tree(root):
-    """ツリーの各ノードに親ノードを設定する。
+    """
+    ツリーの各ノードに親ノードを設定する。
 
     :param root: ルートノード
     :return:
