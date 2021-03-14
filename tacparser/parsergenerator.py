@@ -1,4 +1,6 @@
 from logging import config, getLogger, Logger
+from argparse import ArgumentParser
+
 import os
 import sys
 
@@ -49,7 +51,7 @@ class ParserGenerator(object):
             err_msg = "File %s not found" % pegfilepath
             self.__logger.fatal(err_msg)
             raise ParseException(err_msg)
-        self.parser = ExPegParser()
+        self.parser = ExPegParser(logger)
 
     def generate_file(self, parsername:str="", outfilepath:str="") -> str:
         """
@@ -761,7 +763,7 @@ class ParserChecker(object):
 
 
 class SyntaxCheckFailedException(TacParserException):
-    def __init__(self, msgs:list) -> None:
+    def __init__(self, msgs:list[str]) -> None:
         self.messagelist = msgs
 
     def __repr__(self) -> str:
@@ -775,18 +777,14 @@ class SyntaxCheckFailedException(TacParserException):
 
 
 def main() -> None:
-    argc = len(sys.argv)
-    if argc < 2 or argc > 5:
-        msg = "Usage: # tacparser-gen input_peg_file [output_parser] [parsername] [encoding]"
-        print(msg, file=sys.stderr)
-        quit()
+    argparser = ArgumentParser("PEG Parser Generator")
+    argparser.add_argument("input", help="input peg filepath.")
+    argparser.add_argument("-e", "--encoding", default="utf-8", help="input peg file encoding")
+    argparser.add_argument("-o", "--output", help="output perser script filepath (.py).")
+    argparser.add_argument("-n", "--parsername", help="output perser class name (default : [root node ID]  + \"Parser\").")
 
-    _inputpath = sys.argv[1]
-    _outputfile = None if argc == 2 else sys.argv[2]
-    _parsername = None if argc <= 3 else sys.argv[3]
-    _encoding_name = "utf-8" if argc <= 4 else sys.argv[4]
-
-    ParserGenerator(_inputpath, _encoding_name).generate_file(_parsername, _outputfile)
+    args = argparser.parse_args()
+    ParserGenerator(args.input, args.encoding).generate_file(args.parsername, args.output)
 
 
 if __name__ == "__main__":

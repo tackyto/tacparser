@@ -6,6 +6,7 @@ from .baseparser import (
     NonTerminalNode, 
     TerminalNode,
     FailureNode, 
+    ReconstructedNode,
     Reader,
     FileReader,
     StringReader,

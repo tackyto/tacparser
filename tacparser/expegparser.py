@@ -591,12 +591,12 @@ class ExPegParser(Parser):
 
     def p_doublequotesliteral(self):
         # DoubleQuotesLiteral <- '"' DoubleQuotesLiteralContents '"'
-        return self._seq(self._l(u'"'),
+        return self._seq(self._l('"'),
                          self._p(self.p_doublequotesliteralcontents, "DoubleQuotesLiteralContents"),
-                         self._l(u'"')
+                         self._l('"')
                          )
 
-    _reg_p_doublequotesliteralcontents0 = regex.compile(u'(\\\\.|[^"\\\\])*', regex.M)
+    _reg_p_doublequotesliteralcontents0 = regex.compile('(\\\\.|[^"\\\\])*', regex.M)
 
     def p_doublequotesliteralcontents(self):
         # DoubleQuotesLiteralContents <- r'(\\.|[^"\\])*'
@@ -620,118 +620,118 @@ class ExPegParser(Parser):
     def p_endoffile(self):
         # # PEG に追加： 終端を示す記号
         # ENDOFFILE <- '_EOF' Spacing?
-        return self._seq(self._l(u'_EOF'),
+        return self._seq(self._l('_EOF'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_leftarrow(self):
         # LEFTARROW <- '<-' Spacing?
-        return self._seq(self._l(u'<-'),
+        return self._seq(self._l('<-'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_sub_leftarrow(self):
         # # 追加構文：サブ解析を表現する
         # SUB_LEFTARROW <- '<--' Spacing?
-        return self._seq(self._l(u'<--'),
+        return self._seq(self._l('<--'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_slash(self):
         # SLASH <- '/' Spacing?
-        return self._seq(self._l(u'/'),
+        return self._seq(self._l('/'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_ampersand(self):
         # AMPERSAND <- '&' Spacing?
-        return self._seq(self._l(u'&'),
+        return self._seq(self._l('&'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_exclamation(self):
         # EXCLAMATION <- '!' Spacing?
-        return self._seq(self._l(u'!'),
+        return self._seq(self._l('!'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_much_greater_than(self):
         # MUCH_GREATER_THAN <- '>>' Spacing?
-        return self._seq(self._l(u'>>'),
+        return self._seq(self._l('>>'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_question(self):
         # QUESTION <- '?' Spacing?
-        return self._seq(self._l(u'?'),
+        return self._seq(self._l('?'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_star(self):
         # STAR <- '*' Spacing?
-        return self._seq(self._l(u'*'),
+        return self._seq(self._l('*'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_plus(self):
         # PLUS <- '+' Spacing?
-        return self._seq(self._l(u'+'),
+        return self._seq(self._l('+'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_open(self):
         # OPEN <- '(' Spacing?
-        return self._seq(self._l(u'('),
+        return self._seq(self._l('('),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_close(self):
         # CLOSE <- ')' Spacing?
-        return self._seq(self._l(u')'),
+        return self._seq(self._l(')'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_curl_open(self):
         # CURL_OPEN <- '{'  Spacing?
-        return self._seq(self._l(u'{'),
+        return self._seq(self._l('{'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_curl_close(self):
         # CURL_CLOSE <- '}' Spacing?
-        return self._seq(self._l(u'}'),
+        return self._seq(self._l('}'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_colon(self):
         # COLON <- ':' Spacing?
-        return self._seq(self._l(u':'),
+        return self._seq(self._l(':'),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_comma(self):
         # COMMA <- ',' Spacing?
-        return self._seq(self._l(u','),
+        return self._seq(self._l(','),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_commercial_at(self):
         # COMMERCIAL_AT <- '@'
-        return self._l(u'@')
+        return self._l('@')
 
     def p_dollar_sign(self):
         # DOLLAR_SIGN <- '$'
-        return self._l(u'$')
+        return self._l('$')
 
     def p_equal(self):
         # EQUAL <- '=' Spacing?
-        return self._seq(self._l(u'='),
+        return self._seq(self._l('='),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
     def p_regprefix(self):
         # REGPREFIX <- 'r'
-        return self._l(u'r')
+        return self._l('r')
 
     def p_spacing(self):
         # Spacing <- Space+
@@ -741,15 +741,15 @@ class ExPegParser(Parser):
 
     def p_comment(self):
         # Comment <- '#' r"[^\r\n]*" EndOfLine
-        return self._seq(self._l(u'#'),
+        return self._seq(self._l('#'),
                          self._r(self._reg_p_comment0),
                          self._p(self.p_endofline, "EndOfLine")
                          )
 
     def p_space(self):
         # Space <- ' ' / '\t' / EndOfLine
-        return self._sel(self._l(u' '),
-                         self._l(u'\\t'),
+        return self._sel(self._l(' '),
+                         self._l('\\t'),
                          self._p(self.p_endofline, "EndOfLine")
                          )
 

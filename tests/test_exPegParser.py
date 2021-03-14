@@ -89,6 +89,28 @@ class TestExPegParser(unittest.TestCase):
             fout.write(result.print_tree(node_list=node_list))
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+    
+    def test_reconstruct_tree(self):
+        curdir = self.path
+        filepath = os.path.join(curdir, "expeg_test.in")
+
+        parser = ExPegParser()
+        _, result = parser.parse_file(filepath, "utf-8")
+
+        typelist = ["Definition", "DefinitionIdentifier", "DefinitionExpression"]
+        rep_dict = {
+            "Spacing" : " ",
+            "Definition" : "Definition"
+        }
+        n = parser.reconstruct_tree(typelist, rep_dict)
+        pathoutfile = os.path.join(curdir, "expeg_reconstruct_src.out")
+        pathoutfile_dist = os.path.join(curdir, "expeg_reconstruct_dist.out")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(n.print_tree())
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
 
 
 if __name__ == '__main__':
