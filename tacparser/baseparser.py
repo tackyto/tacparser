@@ -1,16 +1,24 @@
+from collections.abc import Callable
 import copy
 import logging
+import re
 
 # 標準の Logger
 default_logger = logging.getLogger(__name__)
 
 
 class Parser(object):
-    """構文解析を実行するクラス"""
+    """
+    構文解析を実行するクラス
+    """
 
-    def __init__(self, logger=default_logger):
+    def __init__(self, logger:logging.Logger=default_logger) -> None:
         """
+        初期化
 
+        Parameters
+        ----------
+        logger : logging.Logger
         """
         # ロガー
         self.__logger = logger
@@ -39,7 +47,7 @@ class Parser(object):
         # サブ構文のタイプ名
         self.def_subtypename = []
 
-    def __initialize(self):
+    def __initialize(self) -> None:
         # ノードの番号
         self._nodenum = 0
         # メモ化に使用する辞書
@@ -50,18 +58,18 @@ class Parser(object):
             for def_key, def_func in self.def_bk_dict.items():
                 setattr(self, def_key, def_func)
 
-    def get_tree(self):
+    def get_tree(self) -> "Node":
         """
         構文解析結果を返す
        
         Returns
         ----------
-        tree : None | Node
+        tree : Node
             構文解析結果のルートノード
         """
         return self._tree
 
-    def parse_file(self, filepath, encoding="utf-8", typename=None):
+    def parse_file(self, filepath:str, encoding:str="utf-8", typename:str="") -> tuple[bool, "Node"]:
         """
         与えられたファイルパスを指定したエンコードで読み込み、タイプtypename を起点に構文解析を行う
 
@@ -129,7 +137,7 @@ class Parser(object):
 
         return self._result, self._tree
 
-    def parse_string(self, string, rootexp, typename=None):
+    def parse_string(self, string:str, rootexp:Callable, typename:str="") -> tuple[bool, "Node"]:
         """
         与えられた文字列を読み込み、関数 fを起点に構文解析を行う
 
@@ -137,7 +145,7 @@ class Parser(object):
         ----------
         string : str
             構文解析対象文字列
-        rootexp : function
+        rootexp : Callable
             構文解析の起点となる式
         typename : str
             起点ノードのタイプ名
@@ -163,7 +171,7 @@ class Parser(object):
 
         return self._result, self._tree
 
-    def sub_parse(self, subdef_name):
+    def sub_parse(self, subdef_name:str) -> tuple[bool, list["Node"]]:
         """
         多重解析を実行する
 
@@ -210,7 +218,7 @@ class Parser(object):
 
         return retflg, result_list
 
-    def reconstruct_tree(self, typelist, skiplist):
+    def reconstruct_tree(self, typelist:list[str], skiplist:list[str]) -> "Node":
         """
         ツリーの再構成を行う。
         ここで、root のノードは変更しない
@@ -228,7 +236,7 @@ class Parser(object):
             再構成したツリー
         """
 
-        def reconstructnode(n, _typelist, _skiplist):
+        def reconstructnode(n:"Node", _typelist:list[str], _skiplist:list[str]) -> tuple["Node"]:
             if isinstance(n, TerminalNode):
                 return n,
             elif isinstance(n, NonTerminalNode) and n.type in _skiplist:
@@ -264,13 +272,13 @@ class Parser(object):
 
         return newroot
 
-    def _parse(self, f, typename, end_pos=None):
+    def _parse(self, f:Callable[[], Callable[[], tuple[bool, tuple["Node"]]]], typename:str, end_pos:int=None) -> tuple[bool, "Node"]:
         """
         構文解析を実行する。
 
         Parameters
         ----------
-        f : function
+        f : Callable
             構文解析の開始点になる関数
         typename : str
             ルートノードのタイプ名
@@ -314,24 +322,24 @@ class Parser(object):
         """
         pass
 
-    def _seq(self, *x):
+    def _seq(self, *x:tuple[Callable[[], tuple[bool, tuple["Node"]]]]) -> Callable[[],tuple[bool, tuple["Node"]]]:
         """
         連続を表現する関数を返す関数。
 
         Parameters
         ----------
-        x : function
+        x : Callable
             結果が[flg, Node]のタプルを返す関数のタプル
 
         Returns
         ----------
-        seq : function
-            関数
+        seq : Callable
+            seq関数
         """
 
-        def seq(r, *_x):
+        def seq(r, *_x:tuple[Callable[[], tuple[bool, tuple["Node"]]]]) -> tuple[bool, tuple["Node"]]:
             """
-            nput の関数を順に実行する。
+            input の関数を順に実行する。
             実行結果、作成ノード を受け取り、すべての input に対して成功した場合、
             ( True, input 関数で作成されたノードの連結 ) を返す。
             いずれかの実行に失敗した場合、( False, () ) を返す。
@@ -340,14 +348,14 @@ class Parser(object):
             ----------
             r : Reader
                 リーダー
-            _x : function
+            _x : Callable
                 結果が[flg, Node]のタプルを返す関数のタプル
 
             Returns
             ----------
             result : bool
                 実行結果
-            node : toupble[Node]
+            node : tuple[Node]
                 ノードのタプル
             """
             ret = ()
@@ -364,21 +372,21 @@ class Parser(object):
 
         return lambda: seq(self._reader, *x)
 
-    def _sel(self, *x):
+    def _sel(self, *x:tuple[Callable[[],tuple[bool, tuple["Node"]]]]) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """
         選択を表現する関数を返す関数。
 
         Parameters
         ----------
-        x : tuple[function]
+        x : tuple[Callable]
             結果が[flg, Node]のタプルを返す関数のタプル
 
         Returns
         ----------
-        func : function
+        func : Callable[[], tuple[bool, tuple["Node"]]]:
         """
 
-        def sel(r, *_x):
+        def sel(r:Reader, *_x:tuple[Callable[[],tuple[bool,tuple["Node"]]]]) -> tuple[bool, tuple["Node"]]:
             """
             input の関数を順に実行する。
             実行結果、作成ノード を受け取り、いずれかの input に対して成功した場合、
@@ -389,14 +397,14 @@ class Parser(object):
             ----------
             r : Reader
                 リーダー
-            _x : function
+            _x : Callable
                 結果が[flg, Node]のタプルを返す関数のタプル
 
             Returns
             ----------
             result : bool
                 実行結果
-            node : toupble[Node]
+            node : tuple[Node]
                 ノードのタプル
             """
             pos = r.get_position()
@@ -411,12 +419,12 @@ class Parser(object):
 
         return lambda: sel(self._reader, *x)
 
-    def _rpt(self, f, min_num, max_num=-1):
+    def _rpt(self, f:Callable[[],tuple[bool,tuple["Node"]]], min_num:int, max_num:int=-1) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """繰り返しを表現する関数を返す関数。
 
         Parameters
         ----------
-        f : function
+        f : Callable
             結果が[flg, Node]のタプルを返す関数
         min_num : int
             繰り返し回数の最小値
@@ -425,11 +433,11 @@ class Parser(object):
        
         Returns
         ----------
-        rpt : function
+        rpt : Callable
             関数
         """
 
-        def rpt(r, _f, _min_num, _max_num=-1):
+        def rpt(r, _f:Callable, _min_num:int, _max_num:int=-1) -> tuple[bool, tuple["Node"]]:
             """
             input の関数群を最大 max_num 回 繰り返し実行する。
             実行結果、作成ノード を受け取り、実行回数が min_num 以上の場合
@@ -440,7 +448,7 @@ class Parser(object):
             ----------
             r : Reader
                 リーダー
-            _f : function
+            _f : Callable
                 実行する関数
             _min_num : int
                 繰り返し回数の最小値
@@ -451,7 +459,7 @@ class Parser(object):
             ----------
             result : bool
                 実行結果
-            node : toupble[Node]
+            node : tuple[Node]
                 ノードのタプル
             """
             pos = r.get_position()
@@ -476,46 +484,78 @@ class Parser(object):
         return lambda: rpt(self._reader, f, min_num, max_num)
 
     @staticmethod
-    def _opt(f):
+    def _opt(f:Callable[[], tuple[bool, tuple["Node"]]]) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """
         オプションを表現する関数を返す関数。
 
-        :param f: 結果が[flg, Node]のタプルを返す関数
-        :return: 関数
+        Parameters
+        ----------
+        f : Callable[[], tuple[bool, tuple["Node"]]]
+            結果が[flg, Node]のタプルを返す関数
+
+        Returns
+        ---------- 
+        opt : Callable[[], tuple[bool, tuple["Node"]]]
+            関数
         """
 
-        def opt(_f):
+        def opt(_f:Callable[[], tuple[bool, tuple["Node"]]]) -> tuple[bool, tuple["Node"]]:
             """
             input の関数を実行する。
             実行結果、作成ノード を受け取り、すべてに成功した場合
             ( True, input 関数で作成されたノードの連結 ) を返す。
             input の実行に失敗した場合、( True, () ) を返す。
 
-            :param _f: 関数
-            :return: 実行結果, ノードのタプル
+            Parameters
+            ----------
+            _f : Callable[[], tuple[bool, tuple["Node"]]]
+                結果が[flg, Node]のタプルを返す関数
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            node : tuple[Node]
+                ノードのタプル
             """
             results = _f()[1]
             return True, results
 
         return lambda: opt(f)
 
-    def _and(self, f):
+    def _and(self, f:Callable[[], tuple[bool, tuple["Node"]]]) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """
         「条件：読み込み成功」を表現する関数を返す関数。
 
-        :param f: 結果が[flg, Node]のタプルを返す関数
-        :return: 関数
+        Parameters
+        ----------
+        f : Callable[[], tuple[bool, tuple["Node"]]]
+            結果が[flg, Node]のタプルを返す関数
+
+        Returns
+        ---------- 
+        __and : Callable[[], tuple[bool, tuple["Node"]]]
+            関数
         """
 
-        def __and(r, _f):
+        def __and(r:Reader, _f:Callable[[], tuple[bool, tuple["Node"]]]) -> tuple[bool, tuple]:
             """
-            nput の関数を実行する。
+            input の関数を実行する。
             実行結果、作成ノード を受け取り、成功した場合
             ( True, None ) を返し、失敗した場合、( False, () ) を返す。
 
-            :param r: リーダー
-            :param _f: 関数リスト
-            :return: 実行結果, None
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+            _f : Callable[[], tuple[bool, tuple["Node"]]]
+                結果が[flg, Node]のタプルを返す関数
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            node : None | ()
             """
             pos = r.get_position()
             flg = _f()[0]
@@ -524,23 +564,40 @@ class Parser(object):
 
         return lambda: __and(self._reader, f)
 
-    def _not(self, f):
+    def _not(self, f:Callable[[], tuple[bool, tuple["Node"]]]) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """
         「条件：読み込み失敗」を表現する関数を返す関数。
 
-        :param f: 結果が[flg, Node]のタプルを返す関数のタプル
-        :return: 関数
+        Parameters
+        ----------
+        f : Callable[[], tuple[bool, tuple["Node"]]]
+            結果が[flg, Node]のタプルを返す関数
+
+        Returns
+        ---------- 
+        __not : Callable[[], tuple[bool, tuple["Node"]]]
+            関数
         """
 
-        def __not(r, _f):
+        def __not(r, _f:Callable[[], tuple[bool, tuple["Node"]]]) -> tuple[bool, tuple["Node"]]:
             """
             input の関数を実行する。
             実行結果、作成ノード を受け取り、成功した場合
             ( False, () ) を返し、失敗した場合、( True, () ) を返す。
 
-            :param r: リーダー
-            :param _f: 関数リスト
-            :return: 実行結果, None
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+            _f : Callable[[], tuple[bool, tuple["Node"]]]
+                結果が[flg, Node]のタプルを返す関数
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            node : ( )
+                空のタプル
             """
 
             pos = r.get_position()
@@ -550,24 +607,41 @@ class Parser(object):
 
         return lambda: __not(self._reader, f)
 
-    def _trm(self, f):
+    def _trm(self, f:Callable[[], tuple[bool, tuple["Node"]]]) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """
         結果を終端ノード化する関数を返す関数。
 
-        :param f: 結果が[flg, Node]のタプルを返す関数のタプル
-        :return: 関数
+        Parameters
+        ----------
+        f : Callable[[], tuple[bool, tuple["Node"]]]
+            結果が[flg, Node]のタプルを返す関数
+
+        Returns
+        ---------- 
+        trm : Callable[[], tuple[bool, tuple["Node"]]]
+            関数
         """
 
-        def trm(r, _f):
+        def trm(r, _f:Callable[[], tuple[bool, tuple["Node"]]]) -> tuple[bool, tuple["Node"]]:
             """
             input の関数を実行する。
             実行結果、作成ノード を受け取り、input に成功した場合
             ノードを終端化して(True, (作成した終端ノード)) を返す。
             input の実行に失敗した場合、( False, () ) を返す。
 
-            :param r: リーダー
-            :param _f: 関数
-            :return: 実行結果, 終端ノード のタプル
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+            _f : Callable[[], tuple[bool, tuple["Node"]]]
+                結果が[flg, Node]のタプルを返す関数
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            node : Node | ()
+                ノード
             """
             func = _f()
             flg, results = func()
@@ -588,27 +662,45 @@ class Parser(object):
 
         return lambda: trm(self._reader, f)
 
-    def _l(self, s, nocase=False):
+    def _l(self, s:str, nocase:bool=False) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """
         リテラルを表現する関数を返す関数
 
-        :param s: テキスト文字列
-        :param nocase: 大文字小文字を区別するか否か（True=区別しない)
-        :return: 関数
+        Parameters
+        ----------
+        s : str
+            テキスト文字列
+        nocase : bool
+            大文字小文字を区別するか否か（True=区別しない)
+        
+        Returns
+        ----------
+        l : Callable
+            実際にリテラルを読み込む関数
         """
 
-        def l(r, _s, _nocase=False):
+        def l(r:Reader, _s:str, _nocase:bool=False) -> tuple[bool, tuple["Node"]]:
             """
             リテラルを読み込む。
             読み込みに成功した場合、終端ノードを生成して、( True, 生成したノード ) を返す。
             失敗した場合、( False, () ) を返す。
 
-            :param r: リーダー
-            :param _s: 文字列リテラル
-            :param _nocase: 大文字小文字を区別するか否か（True=区別しない)
-            :return: 実行結果, 終端ノード
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+            _s : str
+                文字列リテラル
+            _nocase : bool
+                大文字小文字を区別するか否か（True=区別しない)
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            node : tuple
+                ノードのタプル
             """
-            # リテラル文字列から、TerminalNode を生成
             startpos = r.get_position()
             flg, ret = r.match_literal(_s, True, nocase=_nocase)
             if flg:
@@ -623,25 +715,40 @@ class Parser(object):
 
         return lambda: l(self._reader, s, nocase)
 
-    def _r(self, reg):
+    def _r(self, reg:re.Pattern) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """
         正規表現を表現する関数を返す関数
 
-        :param reg: 正規表現オブジェクト
-        :return: 関数
+        Parameters
+        ----------
+        reg : re.Pattern
+            正規表現オブジェクト
+
+        Returns
+        ---------- 
+        __reg : Callable[[], tuple[bool, tuple["Node"]]]
+            リテラルを正規表現で読み込んでターミナルノードを返す関数
         """
 
-        def _reg(r, __reg):
+        def _reg(r:Reader, __reg:re.Pattern) -> tuple[bool, tuple["Node"]]:
             """
             リテラルを正規表現で読み込む。
             読み込みに成功した場合、終端ノードを生成して、( True, 生成したノード ) を返す。
             失敗した場合、( False, None ) を返す。
 
-            :param r: リーダー
-            :param __reg: 正規表現オブジェクト
-            :return: 実行結果, 終端ノード
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+            __reg : re.Pattern
+                正規表現オブジェクト
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            node : TerminalNode | ()
             """
-            # リテラル文字列から、TerminalNode を生成
             startpos = r.get_position()
             flg, ret = r.match_regexp(__reg, True)
             if flg:
@@ -656,39 +763,109 @@ class Parser(object):
 
         return lambda: _reg(self._reader, reg)
 
-    def _p(self, f, typename):
+    def _p(self, f:Callable[[], tuple[bool, tuple["Node"]]], typename:str) -> Callable[[], tuple[bool, tuple["Node"]]]:
         """
         [fの実行結果を子に持つ非終端ノードを返す関数] を返す関数
 
-        :param f: [子ノードを生成する関数] を返す関数。
-        :param typename: ノードのタイプ名
-        :return: 結果が[flg, Node]のタプルを返す関数
+        Parameters
+        ----------
+        f : Callable[[], tuple[bool, tuple["Node"]]]
+            結果が[flg, Node]のタプルを返す関数
+        typename : str
+            ノードのタイプ名
+
+        Returns
+        ---------- 
+        p : Callable[[], tuple[bool, tuple["Node"]]]
+            結果が[flg, Node]のタプルを返す関数
         """
 
-        def p(reader, _f, _typename):
+        def p(reader, _f:Callable[[], tuple[bool, tuple["Node"]]], _typename:str) -> tuple[bool, tuple["Node"]]:
+            """
+            ノンターミナルノードを作成する
+            実行結果、作成ノード を受け取り、成功した場合
+            ( True, NonTerminalNode ) を返し、失敗した場合、( False, () ) を返す。
+
+            Parameters
+            ----------
+            _f : Callable[[], tuple[bool, tuple["Node"]]]
+                結果が[flg, Node]のタプルを返す関数
+            typename : str
+                ノードのタイプ名
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            nodes : NonTerminalNode | ()
+                _create_non_terminal の実行結果
+            """
             startpos = reader.get_position()
             return self._create_non_terminal(_f, startpos, _typename)
 
         return lambda: p(self._reader, f, typename)
 
     @staticmethod
-    def _skip(f):
+    def _skip(f:Callable[[], tuple[bool, tuple["Node"]]]) -> Callable[[], tuple[bool, tuple]]:
         """
         [fを実行し結果をすべて読み飛ばす関数] を返す関数
 
-        :param f: 結果が[flg, Node]のタプルを返す関数
-        :return: 関数
-        """
+        Parameters
+        ----------
+        f : Callable[[], tuple[bool, tuple["Node"]]]
+            結果が[flg, Node]のタプルを返す関数
 
-        def skip(_f):
+        Returns
+        ---------- 
+        skip : Callable[[], tuple[bool, tuple]]
+            関数
+        """
+        def skip(_f:Callable[[], tuple[bool, tuple["Node"]]]) -> tuple:
+            """
+            すべて読み飛ばす関数
+
+            Parameters
+            ----------
+            f : Callable[[], tuple[bool, tuple["Node"]]]
+                結果が[flg, Node]のタプルを返す関数
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            nodes : ()
+                結果なし
+            """ 
             flg = _f()[0]
             return flg, ()
 
         return lambda: skip(f)
 
-    def _eof(self):
+    def _eof(self) -> Callable[[], tuple[bool, tuple]]:
+        """
+        [ファイルの終端を検知する関数] を返す関数
 
-        def __eof(reader):
+        Returns
+        ---------- 
+        __eof : Callable[[], tuple[bool, tuple]]
+            ファイルの終端を検知する関数
+        """
+        def __eof(reader:Reader):
+            """
+            ファイルの終端を検知する関数
+
+            Parameters
+            ----------
+            r : Reader
+                リーダー
+
+            Returns
+            ---------- 
+            result : bool
+                実行結果
+            nodes : ()
+                定数
+            """
             if reader.is_end():
                 return True, ()
             else:
@@ -696,14 +873,27 @@ class Parser(object):
 
         return lambda: __eof(self._reader)
 
-    def _create_non_terminal(self, def_function, startpos, typename):
+    def _create_non_terminal(self, 
+                            def_function:Callable[[], Callable[[], tuple[bool, tuple["Node"]]]], 
+                            startpos:int, 
+                            typename:str) -> tuple:
         """
         非終端ノードの作成
 
-        :param def_function: 解析規則を定義する関数名 p_xxxx
-        :param startpos:
-        :param typename: タイプ名
-        :return:
+        Parameters
+        ----------
+        def_function : Callable[[], Callable[[], tuple[bool, tuple["Node"]]]]
+            解析規則を定義する関数 p_xxxx
+        startpos : int
+            開始位置
+        typename : str
+            タイプ名
+
+        Returns
+        ---------- 
+        result : bool
+            実行結果
+        nodes : tuple(Node)
         """
 
         cache_result = self._cache.get((typename, startpos))
@@ -741,36 +931,36 @@ class Node(object):
     ノードを示す基底クラス
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.startpos = 0
         self.endpos = 0
         self.nodenum = 0
         self.parent = None
         self.children = ()
         self.type = ""
-        self.__linenum = 0
-        self.__column = 0
+        self.linenum = 0
+        self.column = 0
 
-    def set_position(self, startpos, endpos):
+    def set_position(self, startpos:int, endpos:int) -> None:
         self.startpos = startpos
         self.endpos = endpos
 
-    def set_linecolumn(self, linenum, column):
-        self.__linenum = linenum
-        self.__column = column
+    def set_linecolumn(self, linenum:int, column:int) -> None:
+        self.linenum = linenum
+        self.column = column
 
-    def get_linecolumn(self):
-        return self.__linenum, self.__column
+    def get_linecolumn(self) -> tuple[int, int]:
+        return self.linenum, self.column
 
-    def get_str(self, _dict=None): pass
+    def get_str(self, _dict:dict=None) -> str: pass
 
-    def print_tree(self, level=0, node_list=None): pass
+    def print_tree(self, level:int=0, node_list:list[str]=None) -> str: pass
 
-    def get_childnode(self, nodetype): pass
+    def get_childnode(self, nodetype:str) -> list["Node"]: pass
 
-    def search_node(self, nodetype, deepsearch_flg=False): pass
+    def search_node(self, nodetype:str, deepsearch_flg:bool=False) -> list["Node"]: pass
 
-    def is_failure(self):
+    def is_failure(self) -> bool:
         return False
 
 
@@ -780,22 +970,29 @@ class NonTerminalNode(Node):
     このノードは子ノードを持つ。
     """
 
-    def __init__(self, nodetype, startpos, endpos, children):
+    def __init__(self, nodetype:str, startpos:int, endpos:int, children:tuple["Node"]) -> None:
         Node.__init__(self)
         self.type = nodetype
         self.startpos = startpos
         self.endpos = endpos
         self.children = children
 
-    def setchildren(self, children):
+    def setchildren(self, children:tuple["Node"]) -> None:
         self.children = children
 
-    def get_str(self, _dict=None):
+    def get_str(self, _dict:dict=None) -> str:
         """
         ノードで取得した文字列を返す
 
-        :param _dict: ノードの置き換えに利用する辞書。
-        :return: そのノードで読み込んだ文字列
+        Parameters
+        ----------
+        _dict : dict
+            ノードの置き換えに利用する辞書。
+        
+        Returns
+        ----------
+        ret : str
+            そのノードで読み込んだ文字列
         """
         if _dict is not None and self.type in _dict:
             return _dict[self.type]
@@ -805,23 +1002,33 @@ class NonTerminalNode(Node):
             ret += r.get_str(_dict)
         return ret
 
-    def print_tree(self, level=0, node_list=None):
+    def print_tree(self, level:int=0, node_list:list[str]=None) -> str:
         """
         ツリー情報を返す
+
+        Parameters
+        ----------
+        level : int
+            階層の深さ
+        node_list : list[str]
+            出力するノードタイプのリスト
+        
+        Returns
+        ---------- 
+        ret : str
+            階層を表現した文字列
         """
         if node_list is None:
             ret = " " * 4 * level \
                 + str(self.nodenum) + " : " \
-                + self.type + " : (" \
-                + str(self.startpos) \
-                + ", " + str(self.endpos) + ")\n"
+                + self.type + " : (Ln " + str(self.linenum) \
+                + ", Col " + str(self.column) + ")\n"
             level += 1
         elif self.type in node_list:
             ret = " " * 4 * level \
                 + str(self.nodenum) + " : " \
-                + self.type + " : (" \
-                + str(self.startpos) \
-                + ", " + str(self.endpos) + ") : \"" \
+                + self.type + " : (Ln " + str(self.linenum) \
+                + ", Col " + str(self.column) + ") : \"" \
                 + self.get_str() + "\"\n"
             level += 1
         else:
@@ -831,19 +1038,37 @@ class NonTerminalNode(Node):
                 ret += n.print_tree(level, node_list)
         return ret
 
-    def get_childnode(self, nodetype):
+    def get_childnode(self, nodetype:str) -> list["Node"]:
         """
         指定されたノードタイプ [nodetype] の子ノードをリストにして返す。
+
+        Parameters
+        ----------
+        nodetype : str
+            ノードタイプ
+        
+        Returns
+        ---------- 
+        children : list
+            指定されたノードタイプのリスト
         """
         return [x for x in self.children if x.type == nodetype]
 
-    def search_node(self, nodetype, deepsearch_flg=False):
+    def search_node(self, nodetype:str, deepsearch_flg:bool=False) -> list["Node"]:
         """
         自身以下のノードを探索し、[nodetype] に一致するノードのリストを返す。
 
-        :param nodetype:ノードタイプ
-        :param deepsearch_flg:対象のノードが見つかった場合、そのノードの子を探索するか否か
-        :return: ノードのリスト
+        Parameters
+        ----------
+        nodetype : str
+            ノードタイプ
+        deepsearch_flg : bool
+            対象のノードが見つかった場合、そのノードの子を探索するか否か
+
+        Returns
+        ---------- 
+        nl : list[Node]
+            ノードのリスト
         """
         # TODO : [課題] 遅いと思う。ロジック改善
         nl = []
@@ -861,22 +1086,36 @@ class TerminalNode(Node):
     """
     終端ノードを示すクラス
     """
-
-    def __init__(self, s):
+    def __init__(self, s:str) -> None:
         Node.__init__(self)
         self.termstr = s
 
-    def get_str(self, _dict=None):
+    def get_str(self, _dict:dict=None) -> None:
         return self.termstr
 
-    def print_tree(self, level=0, node_list=None):
+    def print_tree(self, level:int=0, node_list:list[str]=None) -> str:
+        """
+        ターミナルノードを表現した文字列を返す。
+        ただし、、node_list が指定された場合、空文字を返す
+
+        Parameters
+        ----------
+        level : int
+            階層の深さ
+        node_list : list[str]
+            表示するノードタイプのリスト
+        
+        Returns
+        ---------- 
+        ret : str
+            ターミナルノードを表現した文字列
+        """
         if node_list is not None:
             return ""
         else:
-            return " " * 4 * level + "@Tarminal : (" \
-                + str(self.startpos) + ", " \
-                + str(self.endpos) + ") \"" \
-                + self.termstr + "\"\n"
+            return " " * 4 * level + "@Tarminal : (Ln " \
+                + str(self.linenum) + ", Col " \
+                + str(self.column) + ") \"" + self.termstr + "\"\n"
 
 
 class FailureNode(Node):
@@ -884,20 +1123,33 @@ class FailureNode(Node):
     解析失敗時に作成するノードを示すクラス
     """
 
-    def __init__(self, s):
+    def __init__(self, s:str) -> None:
         Node.__init__(self)
         self.termstr = s
 
-    def get_str(self, _dict=None):
+    def get_str(self, _dict:dict=None) -> None:
         return self.termstr
 
-    def print_tree(self, level=0, node_list=None):
-        return " " * 4 * level + "@Failure : (" \
-               + str(self.startpos) + ", " \
-               + str(self.endpos) + ") \"" \
-               + self.termstr + "\"\n"
+    def print_tree(self, level:int=0, node_list:list[str]=None) -> str:
+        """
+        エラー情報を表現した文字列を返す。
 
-    def is_failure(self):
+        Parameters
+        ----------
+        level : int
+            階層の深さ
+        
+        Returns
+        ---------- 
+        ret : str
+            エラー情報を表現した文字列を返す
+        """
+        return " " * 4 * level + "@Failure : (Ln " \
+                + str(self.linenum) + ", Col " \
+                + str(self.column) + ") \"" \
+                + self.termstr + "\"\n"
+
+    def is_failure(self) -> bool:
         return True
 
 
@@ -909,11 +1161,14 @@ class Reader(object):
     matchLiteral, matchRegexp で読み進める。
     """
 
-    def __init__(self, contents):
+    def __init__(self, contents:str) -> None:
         """
         初期化
 
-        :param contents: 読み込み内容（文字列）
+        Parameters
+        ----------
+        contents : str
+            読み込み内容（文字列）
         """
         self.contents = contents
         self.__position = 0
@@ -923,14 +1178,25 @@ class Reader(object):
         # 部分的な構文解析時に使用する終了判定位置
         self.__endposition = -1
 
-    def match_literal(self, literal, flg=False, nocase=False):
+    def match_literal(self, literal:str, flg:bool=False, nocase:bool=False):
         """
         contentsの次が指定したリテラルにマッチした場合、読み進める。
 
-        :param literal: Unicode文字列
-        :param flg: 成功時ファイルを読み進めるか否か
-        :param nocase: 大文字小文字を区別するか否か(true=区別しない)
-        :return: 先頭matchの成否, 文字列
+        Parameters
+        ----------
+        literal : str
+            Unicode文字列
+        flg : bool
+            成功時ファイルを読み進めるか否か
+        nocase : bool
+            大文字小文字を区別するか否か(true=区別しない)
+
+        Returns
+        ---------- 
+        result : bool
+            先頭matchの成否
+        literal : str
+            読み込んだ文字列
         """
         nextstr = self.contents[self.__position:self.__position + len(literal)]
         if 0 < self.__endposition < self.__position + len(literal):
@@ -948,13 +1214,23 @@ class Reader(object):
         else:
             return False, None
 
-    def match_regexp(self, reg, flg=False):
+    def match_regexp(self, reg:re.Pattern, flg:bool=False) -> tuple:
         """
         contentsの次が指定した正規表現にマッチした場合、読み進める。
 
-        :param reg: 正規表現
-        :param flg: 成功時ファイルを読み進めるか否か
-        :return: 先頭matchの成否, 文字列
+        Parameters
+        ----------
+        reg : re.Pattern
+            正規表現
+        flg : bool
+            成功時ファイルを読み進めるか否か
+
+        Returns
+        ---------- 
+        result : bool
+            先頭matchの成否
+        literal : str | None
+            読み込んだ文字列
         """
         if self.__endposition < 0:
             m = reg.match(self.contents[self.__position:])
@@ -969,22 +1245,36 @@ class Reader(object):
         else:
             return False, None
 
-    def getmaxposition(self):
+    def getmaxposition(self) -> int:
         """
         それまでに読み進めることができた位置の最大値を返す。
 
-        :return: maxposition (position の最大値)
+        Returns
+        ---------- 
+        maxposition : int
+            position の最大値
         """
         if self.__position > self.maxposition:
             self.maxposition = self.__position
         return self.maxposition
 
-    def pos2linecolumn(self, pos):
+    def pos2linecolumn(self, pos:int) -> tuple[int, int, str]:
         """
         文字カウント を 行番号、列番号に変換する
 
-        :param pos: 位置情報（文字カウント）
-        :return: 位置情報（行数、行のカラム数）
+        Parameters
+        ----------
+        pos : int
+            位置情報（文字カウント）
+
+        Returns
+        ---------- 
+        linenum : int
+            行数
+        colum : int
+            行のカラム数
+        content : str
+            その次の文字
         """
         if len(self.__linepos__) == 0:
             line_pos = 0
@@ -1008,39 +1298,56 @@ class Reader(object):
 
         raise IndexError("over File length <{0}>, contents length={1}".format(pos, len(self.contents)))
 
-    def getmaxlinecolumn(self):
+    def getmaxlinecolumn(self) -> tuple[int, int, str]:
         """
         maxposition の文字カウントの行列を返す
 
-        :return: 位置情報(maxposition の行数、行のカラム数)
+        Returns
+        ---------- 
+        linenum : int
+            行数
+        colum : int
+            行のカラム数
+        content : str
+            その次の文字
         """
         return self.pos2linecolumn(self.maxposition)
 
-    def get_position(self):
+    def get_position(self) -> int:
         """
         読み取り位置を返す
-        :return: ファイル位置
+
+        Returns
+        ---------- 
+        __position : int
+            ファイル位置
         """
         return self.__position
 
-    def set_position(self, n):
+    def set_position(self, n:int) -> None:
         """
         contents上の読み取り位置を設定する。
-        :param n: 読み取り位置
-        :return:
+
+        Parameters
+        ----------
+        n : int
+            読み取り位置
         """
         if n > self.length:
             raise ValueError
         self.__position = n
         self.getmaxposition()
 
-    def partial_reposition(self, startpos, endpos):
+    def partial_reposition(self, startpos:int, endpos:int) -> None:
         """
         contents上の開始位置、終了位置、maxlengthを再設定する。
 
-        :param startpos:
-        :param endpos:
-        :return:
+        Parameters
+        ----------
+        startpos : int
+            設定するcontents上の開始位置
+        endpos : int
+            設定するcontents上の終了位置
         """
         if startpos > self.length:
             raise ValueError
@@ -1052,11 +1359,14 @@ class Reader(object):
         self.maxposition = startpos
         self.length = len(self.contents)
 
-    def is_end(self):
+    def is_end(self) -> bool:
         """
         終端に達しているか否かを判断する関数
 
-        :return: 読み込み位置が終端とイコールの場合、True, それ以外の場合、False
+        Returns
+        ---------- 
+        result : bool
+            読み込み位置が終端とイコールの場合、True, それ以外の場合、False
         """
         if self.__position >= self.length:
             return True
@@ -1068,7 +1378,7 @@ class FileReader(Reader):
     """
     ファイルの読み込みを実行するクラス
     """
-    def __init__(self, filepath, encoding):
+    def __init__(self, filepath:str, encoding:str) -> None:
         with open(filepath, "r", encoding=encoding) as f:
             Reader.__init__(self, f.read())
 
@@ -1077,7 +1387,7 @@ class StringReader(Reader):
     """
     文字列の読み込みを実行するクラス
     """
-    def __init__(self, string):
+    def __init__(self, string:str) -> None:
         Reader.__init__(self, string)
 
 class TacParserException(Exception):
@@ -1088,34 +1398,62 @@ class TacParserException(Exception):
 
 
 class ParseException(TacParserException):
-    def __init__(self, message):
+    def __init__(self, message:str) -> None:
         self.__msg = message
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__msg
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.__repr__()
 
 
-def preorder_travel(root, func, *args):
+def preorder_travel(root:Node, func:Callable, *args) -> None:
+    """
+    プレオーダーでの 指定関数 func を実行
+    それぞれで実行する引数は *args を適用
+
+    Parameters
+    ----------
+    root : Node
+        ルートノード
+    func : Callable
+        各ノードで実行する関数
+    *args : Any
+        func に渡す引数
+    """
     func(root, *args)
     for cn in root.children:
         preorder_travel(cn, func, *args)
 
 
-def postorder_travel(root, func, *args):
+def postorder_travel(root:Node, func:Callable, *args) -> None:
+    """
+    ポストオーダーでの 指定関数 func を実行
+    それぞれで実行する引数は *args を適用
+
+    Parameters
+    ----------
+    root : Node
+        ルートノード
+    func : Callable
+        各ノードで実行する関数
+    *args : Any
+        func に渡す引数
+    """
     for cn in root.children:
         postorder_travel(cn, func, *args)
     func(root, *args)
 
 
-def complete_tree(root):
+def complete_tree(root:Node) -> None:
     """
     ツリーの各ノードに親ノードを設定する。
 
-    :param root: ルートノード
-    :return:
+    Parameters
+    ----------
+    root : Node
+        ルートノード
     """
     for cn in root.children:
         cn.parent = root

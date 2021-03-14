@@ -1,52 +1,52 @@
-0 : Subdef02 : (0, 180)
-    0 : Comment : (0, 14)
-        @Tarminal : (0, 14) "# comment test"
-    0 : Other : (14, 15)
-        0 : Spacing : (14, 15)
-            @Tarminal : (14, 15) "
+0 : Subdef02 : (Ln 0, Col 0)
+    0 : Comment : (Ln 1, Col 0)
+        @Tarminal : (Ln 1, Col 0) "# comment test"
+    0 : Other : (Ln 0, Col 0)
+        0 : Spacing : (Ln 1, Col 14)
+            @Tarminal : (Ln 1, Col 14) "
 "
-    2 : Comment : (15, 24)
-        @Tarminal : (15, 24) "# コメントテスト"
-    0 : Other : (24, 25)
-        1 : Spacing : (24, 25)
-            @Tarminal : (24, 25) "
+    2 : Comment : (Ln 2, Col 0)
+        @Tarminal : (Ln 2, Col 0) "# コメントテスト"
+    0 : Other : (Ln 0, Col 0)
+        1 : Spacing : (Ln 2, Col 9)
+            @Tarminal : (Ln 2, Col 9) "
 "
-    4 : Literal : (25, 31)
-        @Tarminal : (25, 31) ""リテラル""
-    0 : Other : (31, 32)
-        2 : Spacing : (31, 32)
-            @Tarminal : (31, 32) " "
-    6 : Comment : (32, 38)
-        @Tarminal : (32, 38) "# コメント"
-    @Failure : (0, 55) "Parse failed! ( maxposition is line:5 column:15 @[再])"
-    8 : Comment : (61, 99)
-        @Tarminal : (61, 99) "# comment "literal in comment " # hoge"
-    0 : Other : (99, 114)
-        10 : Spacing : (99, 100)
-            @Tarminal : (99, 100) "
+    4 : Literal : (Ln 3, Col 0)
+        @Tarminal : (Ln 3, Col 0) ""リテラル""
+    0 : Other : (Ln 0, Col 0)
+        2 : Spacing : (Ln 3, Col 6)
+            @Tarminal : (Ln 3, Col 6) " "
+    6 : Comment : (Ln 3, Col 7)
+        @Tarminal : (Ln 3, Col 7) "# コメント"
+    @Failure : (Ln 0, Col 0) "Parse failed! ( maxposition is line:5 column:15 @[再])"
+    8 : Comment : (Ln 5, Col 21)
+        @Tarminal : (Ln 5, Col 21) "# comment "literal in comment " # hoge"
+    0 : Other : (Ln 0, Col 0)
+        10 : Spacing : (Ln 5, Col 59)
+            @Tarminal : (Ln 5, Col 59) "
 "
-        11 : Word : (100, 107)
-            @Tarminal : (100, 107) "a.b.c.d"
-        12 : Spacing : (107, 109)
-            @Tarminal : (107, 109) "  "
-        13 : Word : (109, 113)
-            @Tarminal : (109, 113) "hoge"
-        14 : Spacing : (113, 114)
-            @Tarminal : (113, 114) "
+        11 : Word : (Ln 6, Col 0)
+            @Tarminal : (Ln 6, Col 0) "a.b.c.d"
+        12 : Spacing : (Ln 6, Col 7)
+            @Tarminal : (Ln 6, Col 7) "  "
+        13 : Word : (Ln 6, Col 9)
+            @Tarminal : (Ln 6, Col 9) "hoge"
+        14 : Spacing : (Ln 6, Col 13)
+            @Tarminal : (Ln 6, Col 13) "
 "
-    10 : Literal : (114, 136)
-        @Tarminal : (114, 136) ""literal #not comment""
-    0 : Other : (136, 149)
-        15 : Spacing : (136, 137)
-            @Tarminal : (136, 137) " "
-        16 : Word : (137, 140)
-            @Tarminal : (137, 140) "not"
-        17 : Spacing : (140, 141)
-            @Tarminal : (140, 141) " "
-        18 : Word : (141, 148)
-            @Tarminal : (141, 148) "comment"
-        19 : Spacing : (148, 149)
-            @Tarminal : (148, 149) " "
-    12 : Comment : (149, 160)
-        @Tarminal : (149, 160) "#comment """
-    @Failure : (0, 174) "Parse failed! ( maxposition is line:9 column:12 @[再])"
+    10 : Literal : (Ln 7, Col 0)
+        @Tarminal : (Ln 7, Col 0) ""literal #not comment""
+    0 : Other : (Ln 0, Col 0)
+        15 : Spacing : (Ln 7, Col 22)
+            @Tarminal : (Ln 7, Col 22) " "
+        16 : Word : (Ln 7, Col 23)
+            @Tarminal : (Ln 7, Col 23) "not"
+        17 : Spacing : (Ln 7, Col 26)
+            @Tarminal : (Ln 7, Col 26) " "
+        18 : Word : (Ln 7, Col 27)
+            @Tarminal : (Ln 7, Col 27) "comment"
+        19 : Spacing : (Ln 7, Col 34)
+            @Tarminal : (Ln 7, Col 34) " "
+    12 : Comment : (Ln 7, Col 35)
+        @Tarminal : (Ln 7, Col 35) "#comment """
+    @Failure : (Ln 0, Col 0) "Parse failed! ( maxposition is line:9 column:12 @[再])"

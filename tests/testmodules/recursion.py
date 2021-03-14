@@ -4,8 +4,11 @@ import regex
 
 class Recursion(Parser):
 
-    def __init__(self):
-        Parser.__init__(self)
+    def __init__(self, logger=None):
+        if logger is not None:
+            Parser.__init__(self, logger)
+        else:
+            Parser.__init__(self)
         self.top = self.p_recursion
         self.toptypename = "Recursion"
         self.def_dict = {"Recursion": self.p_recursion,

@@ -4,8 +4,11 @@ import regex
 
 class PegParser(Parser):
 
-    def __init__(self):
-        Parser.__init__(self)
+    def __init__(self, logger=None):
+        if logger is not None:
+            Parser.__init__(self, logger)
+        else:
+            Parser.__init__(self)
         self.top = self.p_grammar
         self.toptypename = "Grammar"
         self.def_dict = {"Grammar": self.p_grammar,
@@ -126,11 +129,11 @@ class PegParser(Parser):
 
     _reg_p_literal2 = regex.compile("[']", regex.M)
 
-    _reg_p_literal3 = regex.compile(u'["]', regex.M)
+    _reg_p_literal3 = regex.compile('["]', regex.M)
 
-    _reg_p_literal4 = regex.compile(u'["]', regex.M)
+    _reg_p_literal4 = regex.compile('["]', regex.M)
 
-    _reg_p_literal5 = regex.compile(u'["]', regex.M)
+    _reg_p_literal5 = regex.compile('["]', regex.M)
 
     def p_literal(self):
         # Literal <- r"[']" (!r"[']" Char)* r"[']" Spacing

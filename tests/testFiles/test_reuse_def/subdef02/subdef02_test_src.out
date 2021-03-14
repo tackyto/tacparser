@@ -1,81 +1,81 @@
-0 : Subdef02 : (0, 168)
-    0 : Comment : (0, 14)
-        @Tarminal : (0, 14) "# comment test"
-    0 : Other : (14, 15)
-        0 : Spacing : (14, 15)
-            @Tarminal : (14, 15) "
+0 : Subdef02 : (Ln 0, Col 0)
+    0 : Comment : (Ln 1, Col 0)
+        @Tarminal : (Ln 1, Col 0) "# comment test"
+    0 : Other : (Ln 0, Col 0)
+        0 : Spacing : (Ln 1, Col 14)
+            @Tarminal : (Ln 1, Col 14) "
 "
-    2 : Comment : (15, 24)
-        @Tarminal : (15, 24) "# コメントテスト"
-    0 : Other : (24, 25)
-        1 : Spacing : (24, 25)
-            @Tarminal : (24, 25) "
+    2 : Comment : (Ln 2, Col 0)
+        @Tarminal : (Ln 2, Col 0) "# コメントテスト"
+    0 : Other : (Ln 0, Col 0)
+        1 : Spacing : (Ln 2, Col 9)
+            @Tarminal : (Ln 2, Col 9) "
 "
-    4 : Literal : (25, 31)
-        @Tarminal : (25, 31) ""リテラル""
-    0 : Other : (31, 32)
-        2 : Spacing : (31, 32)
-            @Tarminal : (31, 32) " "
-    6 : Comment : (32, 38)
-        @Tarminal : (32, 38) "# コメント"
-    0 : Other : (38, 55)
-        3 : Spacing : (38, 40)
-            @Tarminal : (38, 40) "
+    4 : Literal : (Ln 3, Col 0)
+        @Tarminal : (Ln 3, Col 0) ""リテラル""
+    0 : Other : (Ln 0, Col 0)
+        2 : Spacing : (Ln 3, Col 6)
+            @Tarminal : (Ln 3, Col 6) " "
+    6 : Comment : (Ln 3, Col 7)
+        @Tarminal : (Ln 3, Col 7) "# コメント"
+    0 : Other : (Ln 0, Col 0)
+        3 : Spacing : (Ln 3, Col 13)
+            @Tarminal : (Ln 3, Col 13) "
 
 "
-        4 : Word : (40, 44)
-            @Tarminal : (40, 44) "hoge"
-        5 : Spacing : (44, 45)
-            @Tarminal : (44, 45) " "
-        6 : Word : (45, 49)
-            @Tarminal : (45, 49) "fuga"
-        7 : Spacing : (49, 50)
-            @Tarminal : (49, 50) " "
-        8 : Word : (50, 54)
-            @Tarminal : (50, 54) "piyo"
-        9 : Spacing : (54, 55)
-            @Tarminal : (54, 55) " "
-    8 : Comment : (55, 93)
-        @Tarminal : (55, 93) "# comment "literal in comment " # hoge"
-    0 : Other : (93, 108)
-        10 : Spacing : (93, 94)
-            @Tarminal : (93, 94) "
+        4 : Word : (Ln 5, Col 0)
+            @Tarminal : (Ln 5, Col 0) "hoge"
+        5 : Spacing : (Ln 5, Col 4)
+            @Tarminal : (Ln 5, Col 4) " "
+        6 : Word : (Ln 5, Col 5)
+            @Tarminal : (Ln 5, Col 5) "fuga"
+        7 : Spacing : (Ln 5, Col 9)
+            @Tarminal : (Ln 5, Col 9) " "
+        8 : Word : (Ln 5, Col 10)
+            @Tarminal : (Ln 5, Col 10) "piyo"
+        9 : Spacing : (Ln 5, Col 14)
+            @Tarminal : (Ln 5, Col 14) " "
+    8 : Comment : (Ln 5, Col 15)
+        @Tarminal : (Ln 5, Col 15) "# comment "literal in comment " # hoge"
+    0 : Other : (Ln 0, Col 0)
+        10 : Spacing : (Ln 5, Col 53)
+            @Tarminal : (Ln 5, Col 53) "
 "
-        11 : Word : (94, 101)
-            @Tarminal : (94, 101) "a.b.c.d"
-        12 : Spacing : (101, 103)
-            @Tarminal : (101, 103) "  "
-        13 : Word : (103, 107)
-            @Tarminal : (103, 107) "hoge"
-        14 : Spacing : (107, 108)
-            @Tarminal : (107, 108) "
+        11 : Word : (Ln 6, Col 0)
+            @Tarminal : (Ln 6, Col 0) "a.b.c.d"
+        12 : Spacing : (Ln 6, Col 7)
+            @Tarminal : (Ln 6, Col 7) "  "
+        13 : Word : (Ln 6, Col 9)
+            @Tarminal : (Ln 6, Col 9) "hoge"
+        14 : Spacing : (Ln 6, Col 13)
+            @Tarminal : (Ln 6, Col 13) "
 "
-    10 : Literal : (108, 130)
-        @Tarminal : (108, 130) ""literal #not comment""
-    0 : Other : (130, 143)
-        15 : Spacing : (130, 131)
-            @Tarminal : (130, 131) " "
-        16 : Word : (131, 134)
-            @Tarminal : (131, 134) "not"
-        17 : Spacing : (134, 135)
-            @Tarminal : (134, 135) " "
-        18 : Word : (135, 142)
-            @Tarminal : (135, 142) "comment"
-        19 : Spacing : (142, 143)
-            @Tarminal : (142, 143) " "
-    12 : Comment : (143, 154)
-        @Tarminal : (143, 154) "#comment """
-    0 : Other : (154, 168)
-        20 : Spacing : (154, 156)
-            @Tarminal : (154, 156) "
+    10 : Literal : (Ln 7, Col 0)
+        @Tarminal : (Ln 7, Col 0) ""literal #not comment""
+    0 : Other : (Ln 0, Col 0)
+        15 : Spacing : (Ln 7, Col 22)
+            @Tarminal : (Ln 7, Col 22) " "
+        16 : Word : (Ln 7, Col 23)
+            @Tarminal : (Ln 7, Col 23) "not"
+        17 : Spacing : (Ln 7, Col 26)
+            @Tarminal : (Ln 7, Col 26) " "
+        18 : Word : (Ln 7, Col 27)
+            @Tarminal : (Ln 7, Col 27) "comment"
+        19 : Spacing : (Ln 7, Col 34)
+            @Tarminal : (Ln 7, Col 34) " "
+    12 : Comment : (Ln 7, Col 35)
+        @Tarminal : (Ln 7, Col 35) "#comment """
+    0 : Other : (Ln 0, Col 0)
+        20 : Spacing : (Ln 7, Col 46)
+            @Tarminal : (Ln 7, Col 46) "
 
 "
-        21 : Word : (156, 159)
-            @Tarminal : (156, 159) "not"
-        22 : Spacing : (159, 160)
-            @Tarminal : (159, 160) " "
-        23 : Word : (160, 167)
-            @Tarminal : (160, 167) "comment"
-        24 : Spacing : (167, 168)
-            @Tarminal : (167, 168) "
+        21 : Word : (Ln 9, Col 0)
+            @Tarminal : (Ln 9, Col 0) "not"
+        22 : Spacing : (Ln 9, Col 3)
+            @Tarminal : (Ln 9, Col 3) " "
+        23 : Word : (Ln 9, Col 4)
+            @Tarminal : (Ln 9, Col 4) "comment"
+        24 : Spacing : (Ln 9, Col 11)
+            @Tarminal : (Ln 9, Col 11) "
 "

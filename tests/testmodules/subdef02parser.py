@@ -4,8 +4,11 @@ import regex
 
 class Subdef02Parser(Parser):
 
-    def __init__(self):
-        Parser.__init__(self)
+    def __init__(self, logger=None):
+        if logger is not None:
+            Parser.__init__(self, logger)
+        else:
+            Parser.__init__(self)
         self.top = self.p_subdef02
         self.toptypename = "Subdef02"
         self.def_dict = {"Subdef02": self.p_subdef02,
@@ -30,7 +33,7 @@ class Subdef02Parser(Parser):
         # Comment <- r"#.+$"
         return self._r(self._reg_p_comment0)
 
-    _reg_p_literal0 = regex.compile(u'"(\\\\.|[^"\\\\])*"', regex.M)
+    _reg_p_literal0 = regex.compile('"(\\\\.|[^"\\\\])*"', regex.M)
 
     def p_literal(self):
         # Literal <- r'"(\\.|[^"\\])*"'
@@ -54,7 +57,7 @@ class Subdef02Parser(Parser):
         # Word <- r"[a-zA-Z0-9_.-:&%$!/|\\]+"
         return self._r(self._reg_p_word0)
 
-    _reg_p_spacing0 = regex.compile(u'[ \\t\\r\\n]+', regex.M)
+    _reg_p_spacing0 = regex.compile('[ \\t\\r\\n]+', regex.M)
 
     def p_spacing(self):
         # Spacing <- r'[ \t\r\n]+'

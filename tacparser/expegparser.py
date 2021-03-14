@@ -4,8 +4,11 @@ import regex
 
 class ExPegParser(Parser):
 
-    def __init__(self):
-        Parser.__init__(self)
+    def __init__(self, logger=None):
+        if logger is not None:
+            Parser.__init__(self, logger)
+        else:
+            Parser.__init__(self)
         self.top = self.p_expeg
         self.toptypename = "ExPeg"
         self.def_dict = {"ExPeg": self.p_expeg,

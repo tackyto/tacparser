@@ -1,5 +1,4 @@
-# -*- coding:utf-8 -*-
-import logging.config
+from logging import config, getLogger, Logger
 import os
 import sys
 
@@ -7,12 +6,30 @@ from .baseparser import TacParserException, ParseException, postorder_travel, Fa
 from .expegparser import ExPegParser
 
 # 標準の Logger
-logging.config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
-default_logger = logging.getLogger(__name__)
+config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
+default_logger = getLogger(__name__)
 
 
 class ParserGenerator(object):
-    def __init__(self, pegfilepath, encoding="utf-8", logger=default_logger):
+    """
+    指定されたpeg形式ファイルからParserスクリプトを生成するクラス。
+    """
+    def __init__(self, 
+                 pegfilepath:str, 
+                 encoding:str="utf-8", 
+                 logger:Logger=default_logger) -> None:
+        """
+        ParserGenerator
+
+        Parameters
+        ----------
+        pegfilepath : str
+            pegファイルのファイルパス
+        encoding : str
+            pegファイルのエンコード指定
+        logger : Logger
+            ロガー
+        """
         self.pegfilepath = pegfilepath
         self.fileEncoding = encoding
         self.rootname = ""
@@ -34,7 +51,23 @@ class ParserGenerator(object):
             raise ParseException(err_msg)
         self.parser = ExPegParser()
 
-    def generate_file(self, parsername=None, outfilepath=None):
+    def generate_file(self, parsername:str="", outfilepath:str="") -> str:
+        """
+        構文解析実行スクリプトを作成する
+
+        Parameters
+        ----------
+        parsername : str
+            クラス名を指定する。指定なしの場合、peg のルートの名称を使用する
+        outfilepath : str
+            出力ファイルパスを指定する。
+            指定なしの場合、peg のルートの名称 + parser を使用する
+
+        Returns
+        ---------- 
+        file : str
+            出力したスクリプトの内容
+        """
         self.__logger.info("Start generating Parser. \"{0}\"".format(self.pegfilepath))
 
         self.parser.parse_file(self.pegfilepath, self.fileEncoding)
@@ -50,15 +83,19 @@ class ParserGenerator(object):
         if not parsername:
             parsername = self.rootname + "Parser"
         if not outfilepath:
-            outfilepath = os.path.join(os.path.dirname(self.pegfilepath), parsername.lower() + ".py")
+            outfilepath = os.path.join(os.path.dirname(self.pegfilepath), 
+                                       parsername.lower() + ".py")
 
         self.__logger.debug("Generate file string start.")
         impstr = "from tacparser import Parser\n" \
                  "import regex\n\n\n"
 
         preparserstr = "class " + parsername + "(Parser):\n\n" \
-                                               "    def __init__(self):\n" \
-                                               "        Parser.__init__(self)\n" \
+                                               "    def __init__(self, logger=None):\n" \
+                                               "        if logger is not None:\n" \
+                                               "            Parser.__init__(self, logger)\n" \
+                                               "        else:\n" \
+                                               "            Parser.__init__(self)\n" \
                                                "        self.top = self.p_{0}\n" \
                                                "        self.toptypename = \"{1}\"\n" \
                                                "".format(self.rootname.lower(), self.rootname)
@@ -83,14 +120,23 @@ class ParserGenerator(object):
             fout.write(impstr + preparserstr + str_def_list + str_subdef_list + strparser)
 
         self.__logger.info("Generating Parser ended successfully.")
-        return impstr + preparserstr + strparser
+        return impstr + preparserstr + str_subdef_list + strparser
 
-    def travel_generate_file(self, tree, level=0):
-        """Node 探索し generator を作成する
+    def travel_generate_file(self, tree:NonTerminalNode, level:int=0) -> str:
+        """
+        Node 探索し generator を作成する
 
-        :param tree: 探索するツリー
-        :param level: インデントレベル
-        :return:
+        Parameters
+        ----------
+        tree : NonTerminalNode
+            探索するツリー
+        level : int
+            インデントレベル
+
+        Returns
+        ---------- 
+        s : str
+            各Nodeに対応する Parser の文字列
         """
         if tree.type == "ExPeg":
             s = ""
@@ -212,10 +258,19 @@ class ParserGenerator(object):
 
         return "".join([self.travel_generate_file(cn, level) for cn in tree.children])
 
-    def get_literal_value(self, tree):
+    def get_literal_value(self, tree:NonTerminalNode) -> str:
         """
-        :param tree:
-        :return: クォーテーションを出力用に置き換えたリテラル文字列
+        リテラル文字列を取得
+
+        Parameters
+        ----------
+        tree : NonTermimnalNode
+            リテラルに対応するノード
+
+        Returns
+        ---------- 
+        s : str
+            クォーテーションを出力用に置き換えたリテラル文字列
         """
         if tree.type == "SingleQuotesLiteral":
             d = {"Spacing": ""}
@@ -233,15 +288,24 @@ class ParserGenerator(object):
                 s += self.get_literal_value(cn)
             return s
 
-    def get_defstring(self, tree, defname, level):
-        """一つの構文解析定義の実装部を取得する
-
-        :param tree: 構文解析木
-        :param defname: 定義名
-        :param level:
-        :return:
+    def get_defstring(self, tree:NonTerminalNode, defname:str, level:int) -> str:
         """
+        一つの構文解析定義の実装部を取得する
 
+        Parameters
+        ----------
+        tree : NonTerminalNode
+            構文解析木
+        defname : str
+            定義名
+        level : int
+            深さ
+
+        Returns
+        ---------- 
+        retstr : str
+            定義に対応する文字列
+        """
         # ツリー全体を取得
         orig = tree.get_str().splitlines()
         # コメント
@@ -270,15 +334,24 @@ class ParserGenerator(object):
                  + " " * (level + 4) + "return " + expstr + "\n"
         return "\n" + regstr + retstr
 
-    def get_reg_value(self, tree):
+    def get_reg_value(self, tree:NonTerminalNode) -> str:
         """
-        :param tree:
-        :return: クォーテーションを出力用に置き換え、正規表現オプションを付加したリテラル文字列
+        クォーテーションを出力用に置き換え、正規表現オプションを付加したリテラル文字列
+
+        Parameters
+        ----------
+        tree : NonTerminalNode
+            構文解析木
+
+        Returns
+        ---------- 
+        cont : str
+            クォーテーションを出力用に置き換え、正規表現オプションを付加したリテラル文字列
         """
         if tree.type == "SingleQuotesLiteral":
             d = {"Spacing": ""}
             cont = tree.search_node("SingleQuotesLiteralContents")
-            return "u'" + cont[0].get_str(d).replace("\\", "\\\\").replace("'", "\\'") + "'"
+            return "'" + cont[0].get_str(d).replace("\\", "\\\\").replace("'", "\\'") + "'"
 
         elif tree.type == "DoubleQuotesLiteral":
             d = {"Spacing": ""}
@@ -306,7 +379,7 @@ class ParserChecker(object):
     ASTを探索し、種々のチェックを行う。
     """
 
-    def __init__(self, tree, logger):
+    def __init__(self, tree:NonTerminalNode, logger:Logger) -> None:
         self.tree = tree
         # チェック対象の定義（未評価の定義）
         self.check_def_dic = {}
@@ -314,12 +387,20 @@ class ParserChecker(object):
         self.defchecked = {}
         self.__logger = logger
 
-    def check_tree(self, tree):
+    def check_tree(self, tree:NonTerminalNode) -> bool:
         """
         １．重複チェック
         ２．左再帰チェック
-        :param tree:
-        :return:
+
+        Parameters
+        ----------
+        tree : NonTerminalNode
+            対象のノード
+
+        Returns
+        ---------- 
+        result : bool
+            チェック結果
         """
 
         if isinstance(tree, FailureNode):
@@ -335,13 +416,21 @@ class ParserChecker(object):
         return True
 
     @staticmethod
-    def check_definition(tree):
-        """構文規則のチェック
+    def check_definition(tree:NonTerminalNode) -> list:
+        """
+        構文規則のチェック
         1. 重複した定義を探索する。
         2. 定義されていない呼び出しを探索する。
 
-        :param tree:
-        :return: errmsgs
+        Parameters
+        ----------
+        tree : NonTerminalNode
+            対象のツリー。ルートノード
+
+        Returns
+        ---------- 
+        result : list[str]
+            チェック結果のエラーリスト
         """
         errmsgs = []
         defset = {"_eof"}
@@ -373,11 +462,19 @@ class ParserChecker(object):
 
         return errmsgs
 
-    def check_left_recursion(self, tree):
-        """左再帰チェック
+    def check_left_recursion(self, tree:NonTerminalNode) -> list:
+        """
+        左再帰チェック
 
-        :param tree:
-        :return:
+        Parameters
+        ----------
+        tree : NonTerminalNode
+            対象のツリー。ルートノード
+
+        Returns
+        ---------- 
+        result : list[str]
+            チェック結果のエラーリスト
         """
         errmsgs = []
 
@@ -442,11 +539,14 @@ class ParserChecker(object):
         return errmsgs
 
     @staticmethod
-    def add_leftrecursive_chk_list(tree):
+    def add_leftrecursive_chk_list(tree:NonTerminalNode) -> None:
         """
         該当の定義から、左再帰チェックのためのIdentifier 計算順リストを導出
 
-        :return:
+        Parameters
+        ----------
+        tree : NonTerminalNode
+            ノード
         """
         if tree.type == "SingleQuotesLiteralContents":
             min_len = 1 if len(tree.get_str()) > 0 else 0
@@ -537,8 +637,15 @@ class ParserChecker(object):
         文字列を取得しない場合は 0
         評価できない場合は式をそのまま返す。
 
-        :param def_exp:
-        :return:
+        Parameters
+        ----------
+        def_exp : list | tuple | str | int
+            構造式
+
+        Returns
+        ----------
+        def_exp : list | tuple | str | int
+            構造式
         """
         if isinstance(def_exp, list):
             for child_exp in def_exp:
@@ -572,8 +679,18 @@ class ParserChecker(object):
             return def_exp
 
     def assignment_checked_value(self, def_exp):
-        """構造式に、評価した値を代入する
-        :return:
+        """
+        構造式に、評価した値を代入する
+
+        Parameters
+        ----------
+        def_exp : list | tuple | str | int
+            構造式
+
+        Returns
+        ----------
+        def_exp : list | tuple | str | int
+            構造式
         """
         if isinstance(def_exp, list):
             return [self.assignment_checked_value(child_exp) for child_exp in def_exp]
@@ -593,7 +710,11 @@ class ParserChecker(object):
     def find_left_recursive_loop_list(self):
         """
         左再帰となる定義をたどった結果を返す
-        :return:
+
+        Returns
+        ---------- 
+        loop_list : list
+            左再帰の定義
         """
         loop_list = []
         # 最初のキーを取得
@@ -617,8 +738,13 @@ class ParserChecker(object):
         return loop_list[loop_list.index(check_def_name):]
 
     def search_unresolve_call(self, unresolve_def):
-        """構造式から、評価した値を代入する
-        :return:
+        """
+        構造式から、評価した値を代入する
+
+        Returns
+        ----------
+        unresolve_def : list | tuple | str | int | None
+            構造式
         """
         if isinstance(unresolve_def, list) or isinstance(unresolve_def, tuple):
             for child_exp in unresolve_def:
@@ -635,20 +761,20 @@ class ParserChecker(object):
 
 
 class SyntaxCheckFailedException(TacParserException):
-    def __init__(self, msgs):
+    def __init__(self, msgs:list) -> None:
         self.messagelist = msgs
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         message = ""
         for s in self.messagelist:
             message += s + "\n"
         return message
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.__repr__()
 
 
-def main():
+def main() -> None:
     argc = len(sys.argv)
     if argc < 2 or argc > 5:
         msg = "Usage: # tacparser-gen input_peg_file [output_parser] [parsername] [encoding]"

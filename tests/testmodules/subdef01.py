@@ -4,8 +4,11 @@ import regex
 
 class SubDef01(Parser):
 
-    def __init__(self):
-        Parser.__init__(self)
+    def __init__(self, logger=None):
+        if logger is not None:
+            Parser.__init__(self, logger)
+        else:
+            Parser.__init__(self)
         self.top = self.p_main
         self.toptypename = "Main"
         self.def_dict = {"Main": self.p_main,
