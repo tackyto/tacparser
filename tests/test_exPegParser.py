@@ -2,6 +2,7 @@ import filecmp
 import os
 import unittest
 
+from tacparser import reconstruct_tree
 from tacparser.expegparser import ExPegParser
 
 
@@ -102,7 +103,7 @@ class TestExPegParser(unittest.TestCase):
             "Spacing" : " ",
             "Definition" : "Definition"
         }
-        n = parser.reconstruct_tree(typelist, rep_dict)
+        n = reconstruct_tree(result, typelist, rep_dict)
         pathoutfile = os.path.join(curdir, "expeg_reconstruct_src.out")
         pathoutfile_dist = os.path.join(curdir, "expeg_reconstruct_dist.out")
 

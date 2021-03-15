@@ -12,6 +12,7 @@ from .baseparser import (
     StringReader,
     TacParserException,
     ParseException,
+    reconstruct_tree,
     preorder_travel,
     postorder_travel,
     complete_tree

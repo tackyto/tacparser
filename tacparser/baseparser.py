@@ -1,5 +1,5 @@
 from collections.abc import Callable
-import copy
+
 import logging
 import re
 
@@ -220,86 +220,6 @@ class Parser(object):
             node.parent.children = tuple(newbros)
 
         return retflg, result_list
-
-    def reconstruct_tree(self, 
-            typelist:list[str], 
-            replace_dict:dict[str, str]=None
-        ) -> "ReconstructedNode":
-        """
-        ツリーの再構成を行う。
-        ここで、root のノードは変更しない
-
-        Parameters
-        ----------
-        typelist : list
-            再構成に用いるノードのリスト
-        replace_dict : dict[str, str]
-            ノードを文字列に置き換えるための辞書
-        
-        Returns
-        ----------
-        tree : ReconstructedNode
-            再構成したツリー
-        """
-
-        def reconstructnode(
-                _n:"Node", 
-                _typelist:list[str], 
-                _replace_dict:dict[str, str] = None
-            ) -> tuple["ReconstructedNode"]:
-
-            if isinstance(_n, TerminalNode):
-                return ()
-
-            _newchildren = ()
-            for _cn in _n.children:
-                _newchild = reconstructnode(_cn, _typelist, _replace_dict)
-                if _newchild is not None:
-                    _newchildren += _newchild
-            
-            if isinstance(_n, NonTerminalNode) and _n.type in _typelist:
-                _retnode = ReconstructedNode(_n)
-                _new_str = _n.get_str(_replace_dict)
-                _retnode.termstr = _new_str
-
-                _retnode.children = _newchildren
-                _children_cnt:int = len(_newchildren)
-                for _retnc in _retnode.children:
-                    _retnc.parent = _retnode
-                for _i in range(_children_cnt):
-                    _children:ReconstructedNode = _newchildren[_i]
-                    if _i > 0 and _i+1 < _children_cnt:
-                        # right_neighbor の存在確認
-                        _children.right_neighbor = _newchildren[_i+1]
-                    if _i > 1:
-                        # left_neighbor の存在確認
-                        _children.left_neighbor = _newchildren[_i-1]
-
-                return _retnode,
-            else:
-                return _newchildren
-
-        nc = reconstructnode(self._tree, typelist, replace_dict)
-        if isinstance(self._tree, NonTerminalNode) and self._tree.type not in typelist:
-            newroot = ReconstructedNode(self._tree)
-            newroot.children = nc
-            newroot.termstr = self._tree.type
-            # 親ノードの再セット
-            for ncn in nc:
-                if ncn is not None:
-                    ncn.parent = newroot
-            children_cnt:int = len(nc)
-            for i in range(children_cnt):
-                children:ReconstructedNode = nc[i]
-                if i > 0 and i+1 < children_cnt:
-                    # right_neighbor の存在確認
-                    children.right_neighbor = nc[i+1]
-                if i > 1:
-                    # left_neighbor の存在確認
-                    children.left_neighbor = nc[i-1]
-            return newroot
-        else:
-            return nc[0]
 
     def _parse(self, 
                 f:Callable[ [], ParseFunction], 
@@ -1532,6 +1452,88 @@ class ParseException(TacParserException):
 
     def __str__(self) -> str:
         return self.__repr__()
+
+
+def reconstruct_tree(
+        rootnode:"Node", typelist:list[str], replace_dict:dict[str, str]=None 
+        ) -> "ReconstructedNode":
+    """
+    ツリーの再構成を行う。
+    ここで、root のノードは変更しない
+
+    Parameters
+    ----------
+    rootnode : Node
+        再構成を行うノード
+    typelist : list
+        再構成に用いるノードのリスト
+    replace_dict : dict[str, str]
+        ノードを文字列に置き換えるための辞書
+    
+    Returns
+    ----------
+    tree : ReconstructedNode
+        再構成したツリー
+    """
+
+    def reconstructnode(
+            _n:"Node", 
+            _typelist:list[str], 
+            _replace_dict:dict[str, str] = None
+        ) -> tuple["ReconstructedNode"]:
+
+        if isinstance(_n, TerminalNode):
+            return ()
+
+        _newchildren = ()
+        for _cn in _n.children:
+            _newchild = reconstructnode(_cn, _typelist, _replace_dict)
+            if _newchild is not None:
+                _newchildren += _newchild
+        
+        if isinstance(_n, NonTerminalNode) and _n.type in _typelist:
+            _retnode = ReconstructedNode(_n)
+            _new_str = _n.get_str(_replace_dict)
+            _retnode.termstr = _new_str
+
+            _retnode.children = _newchildren
+            _children_cnt:int = len(_newchildren)
+            for _retnc in _retnode.children:
+                _retnc.parent = _retnode
+            for _i in range(_children_cnt):
+                _children:ReconstructedNode = _newchildren[_i]
+                if _i > 0 and _i+1 < _children_cnt:
+                    # right_neighbor の存在確認
+                    _children.right_neighbor = _newchildren[_i+1]
+                if _i > 1:
+                    # left_neighbor の存在確認
+                    _children.left_neighbor = _newchildren[_i-1]
+
+            return _retnode,
+        else:
+            return _newchildren
+
+    nc = reconstructnode(rootnode, typelist, replace_dict)
+    if isinstance(rootnode, NonTerminalNode) and rootnode.type not in typelist:
+        newroot = ReconstructedNode(rootnode)
+        newroot.children = nc
+        newroot.termstr = rootnode.type
+        # 親ノードの再セット
+        for ncn in nc:
+            if ncn is not None:
+                ncn.parent = newroot
+        children_cnt:int = len(nc)
+        for i in range(children_cnt):
+            children:ReconstructedNode = nc[i]
+            if i > 0 and i+1 < children_cnt:
+                # right_neighbor の存在確認
+                children.right_neighbor = nc[i+1]
+            if i > 1:
+                # left_neighbor の存在確認
+                children.left_neighbor = nc[i-1]
+        return newroot
+    else:
+        return nc[0]
 
 
 def preorder_travel(root:Node, func:Callable, *args) -> None:
