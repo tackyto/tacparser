@@ -1,9 +1,9 @@
-0 : Main : (Ln 0, Col 0)
+0 : Main : (Ln 1, Col 0)
     1 : Hoge : (Ln 1, Col 0)
         @Tarminal : (Ln 1, Col 0) "hoge"
         0 : Spacing : (Ln 1, Col 4)
             @Tarminal : (Ln 1, Col 4) " "
-    0 : Any : (Ln 0, Col 0)
+    0 : Any : (Ln 1, Col 5)
         1 : FooFoo : (Ln 1, Col 5)
             @Tarminal : (Ln 1, Col 5) "FooFoo"
             0 : Spacing : (Ln 1, Col 11)

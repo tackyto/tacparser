@@ -23,31 +23,31 @@ class Parser(object):
         ----------
         logger : logging.Logger
         """
-        # ロガー
-        self.__logger = logger
 
-        # 文字列読み込み用 Reader クラス
-        self._reader = None
-        # ノードの番号
+        #: ロガークラス
+        self.__logger = logger
+        #: 文字列読み込み用 Reader クラス 
+        self._reader = None 
+        #: ノードの番号
         self._nodenum = 0
-        # メモ化に使用する辞書
+        #: メモ化に使用する辞書
         self._cache = {}
 
-        # ルートの規則名（大抵、言語名）
+        #: ルートの規則名（大抵、言語名）
         self.toptypename = ""
 
-        # 構文解析を実行するパーサー
+        #: 構文解析を実行するパーサー
         self._parser = None
-        # 実行結果、実行に成功した場合、True になる
+        #: 実行結果、実行に成功した場合、True になる
         self._result = False
-        # 構文解析木、実行に成功した場合、ルートノード
+        #: 構文解析木、実行に成功した場合、ルートノード
         self._tree = None
 
-        # 構文の辞書
+        #: 構文の辞書
         self.def_dict = {}
-        # サブ構文の辞書
+        #: サブ構文の辞書
         self.def_bk_dict = {}
-        # サブ構文のタイプ名
+        #: サブ構文のタイプ名
         self.def_subtypename = []
 
     def __initialize(self) -> None:
@@ -256,7 +256,8 @@ class Parser(object):
         flg, ret = func()
         if flg and (end_pos is None or end_pos == self._reader.getmaxposition()):
             endpos = self._reader.get_position()
-            node = NonTerminalNode(typename, startpos, endpos, ret)
+            node = NonTerminalNode(typename, ret)
+            node.set_position(self._reader, startpos, endpos)
             complete_tree(node)
 
             return flg, node
@@ -264,7 +265,7 @@ class Parser(object):
             l, c, p = self._reader.getmaxlinecolumn()
             s = "Parse failed! ( maxposition is line:%s column:%s @[%s])" % (str(l), str(c), p)
             node = FailureNode(s)
-            node.set_position(0, self._reader.getmaxposition())
+            node.set_position(self._reader, 0, self._reader.getmaxposition())
 
             return flg, node
 
@@ -607,9 +608,7 @@ class Parser(object):
                 termstr += s.get_str()
             if len(termstr) > 0:
                 node = TerminalNode(termstr)
-                node.set_position(results[0].startpos, results[-1].endpos)
-                linenum, column, _ = r.pos2linecolumn(results[0].startpos)
-                node.set_linecolumn(linenum, column)
+                node.set_position(r, results[0].startpos, results[-1].endpos)
                 return True, (node,)
             else:
                 return True, ()
@@ -660,9 +659,7 @@ class Parser(object):
             if flg:
                 endpos = r.get_position()
                 node = TerminalNode(ret)
-                node.set_position(startpos, endpos)
-                linenum, column, _ = r.pos2linecolumn(startpos)
-                node.set_linecolumn(linenum, column)
+                node.set_position(r, startpos, endpos)
                 return True, (node,)
 
             return False, ()
@@ -708,9 +705,7 @@ class Parser(object):
             if flg:
                 endpos = r.get_position()
                 node = TerminalNode(ret)
-                node.set_position(startpos, endpos)
-                linenum, column, _ = r.pos2linecolumn(startpos)
-                node.set_linecolumn(linenum, column)
+                node.set_position(r, startpos, endpos)
                 return True, (node,)
 
             return False, ()
@@ -868,10 +863,9 @@ class Parser(object):
 
         if flg:
             endpos = self._reader.get_position()
-            node = NonTerminalNode(typename, startpos, endpos, ret)
+            node = NonTerminalNode(typename, ret)
             node.nodenum = self._nodenum
-            linenum, column, _ = self._reader.pos2linecolumn(startpos)
-            node.set_linecolumn(linenum, column)
+            node.set_position(self._reader, startpos, endpos)
             self._nodenum += 1
             self._cache[(typename, startpos)] = True, (node,)
             return True, (node,)
@@ -886,29 +880,56 @@ class Node(object):
     """
 
     def __init__(self) -> None:
+        #: ノードの開始位置
         self.startpos:int = 0
+        #: ノードの終了位置
         self.endpos:int = 0
+        #: ノード番号
         self.nodenum:int = 0
+        #: 親ノード
         self.parent:Node = None
+        #: 子ノードのタプル
         self.children:tuple[Node] = ()
+        #: ノードの種類
         self.type:str = ""
+        #: 開始位置の行番号
         self.linenum:int = 0
+        #: 開始位置の列番号
         self.column:int = 0
+        #: 終了位置の行番号
+        self.end_linenum:int = 0
+        #: 終了位置の列番号
+        self.end_column:int = 0
 
-    def set_position(self, startpos:int, endpos:int) -> None:
+    def set_position(self, r:"Reader", startpos:int, endpos:int) -> None:
         self.startpos = startpos
         self.endpos = endpos
-
-    def set_linecolumn(self, linenum:int, column:int) -> None:
-        self.linenum = linenum
-        self.column = column
+        sl, sc, _ = r.pos2linecolumn(startpos)
+        el, ec, _ = r.pos2linecolumn(endpos)
+        self.linenum = sl
+        self.column = sc
+        self.end_linenum = el
+        self.end_column = ec
 
     def get_linecolumn(self) -> tuple[int, int]:
         return self.linenum, self.column
 
+    def get_end_linecolumn(self) -> tuple[int, int]:
+        return self.end_linenum, self.end_column
+
+    def get_position_str(self, detail_flg:bool) -> str:
+        if detail_flg:
+            return "(" + str(self.linenum) + ", " + str(self.column) + " - " \
+                    + str(self.end_linenum) + ", " + str(self.end_column) + " : " \
+                    + str(self.startpos) + " - " + str(self.endpos) + ")"
+        else:
+            return "(Ln " + str(self.linenum) + ", Col " + str(self.column) + ")"
+        
+    def get_node_str(self, detail_flg:bool) -> str: pass
+
     def get_str(self, _dict:dict=None) -> str: pass
 
-    def print_tree(self, level:int=0, node_list:list[str]=None) -> str: pass
+    def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str: pass
 
     def get_childnode(self, nodetype:str) -> list["Node"]: pass
 
@@ -927,11 +948,9 @@ class NonTerminalNode(Node):
     このノードは子ノードを持つ。
     """
 
-    def __init__(self, nodetype:str, startpos:int, endpos:int, children:tuple["Node"]) -> None:
+    def __init__(self, nodetype:str, children:tuple["Node"]) -> None:
         Node.__init__(self)
         self.type:str = nodetype
-        self.startpos:int = startpos
-        self.endpos:int = endpos
         self.children:tuple[Node] = children
 
     def get_str(self, _dict:dict[str, str]=None) -> str:
@@ -956,7 +975,15 @@ class NonTerminalNode(Node):
             ret += r.get_str(_dict)
         return ret
 
-    def print_tree(self, level:int=0, node_list:list[str]=None) -> str:
+    def get_node_str(self, detail_flg:bool) -> str:
+        if detail_flg:
+            return self.type + " : " + self.get_position_str(detail_flg) \
+                    + "[" + str(self.nodenum) + "] : \"" + self.get_str() + "\""
+        else:
+            return str(self.nodenum) + " : " + self.type \
+                    + " : " + self.get_position_str(detail_flg)
+
+    def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
         """
         ツリー情報を返す
 
@@ -966,30 +993,22 @@ class NonTerminalNode(Node):
             階層の深さ
         node_list : list[str]
             出力するノードタイプのリスト
+        detail_flg : bool
+            詳細情報をすべて出力するフラグ
         
         Returns
         ---------- 
         ret : str
             階層を表現した文字列
-        """
-        if node_list is None:
-            ret = " " * 4 * level \
-                + str(self.nodenum) + " : " \
-                + self.type + " : (Ln " + str(self.linenum) \
-                + ", Col " + str(self.column) + ")\n"
-            level += 1
-        elif self.type in node_list:
-            ret = " " * 4 * level \
-                + str(self.nodenum) + " : " \
-                + self.type + " : (Ln " + str(self.linenum) \
-                + ", Col " + str(self.column) + ") : \"" \
-                + self.get_str() + "\"\n"
+        """        
+        if node_list is None or self.type in node_list:
+            ret = " " * 4 * level + self.get_node_str(detail_flg) + "\n"
             level += 1
         else:
             ret = ""
         for n in self.children:
             if n:
-                ret += n.print_tree(level, node_list)
+                ret += n.print_tree(level, node_list, detail_flg)
         return ret
 
     def get_childnode(self, nodetype:str) -> list["Node"]:
@@ -1050,7 +1069,11 @@ class TerminalNode(Node):
     def is_terminal(self) -> bool:
         return True
 
-    def print_tree(self, level:int=0, node_list:list[str]=None) -> str:
+    def get_node_str(self, detail_flg:bool) -> str:
+        return "@Tarminal : " + self.get_position_str(detail_flg) \
+                + " \"" + self.termstr + "\""
+
+    def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
         """
         ターミナルノードを表現した文字列を返す。
         ただし、、node_list が指定された場合、空文字を返す
@@ -1070,9 +1093,7 @@ class TerminalNode(Node):
         if node_list is not None:
             return ""
         else:
-            return " " * 4 * level + "@Tarminal : (Ln " \
-                + str(self.linenum) + ", Col " \
-                + str(self.column) + ") \"" + self.termstr + "\"\n"
+            return " " * 4 * level + self.get_node_str(detail_flg) + "\n"
 
 
 class FailureNode(Node):
@@ -1090,7 +1111,11 @@ class FailureNode(Node):
     def is_terminal(self) -> bool:
         return True
 
-    def print_tree(self, level:int=0, node_list:list[str]=None) -> str:
+    def get_node_str(self, detail_flg:bool) -> str:
+        return "@Failure : " + self.get_position_str(detail_flg) \
+                + " \"" + self.termstr + "\""
+
+    def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
         """
         エラー情報を表現した文字列を返す。
 
@@ -1104,10 +1129,7 @@ class FailureNode(Node):
         ret : str
             エラー情報を表現した文字列を返す
         """
-        return " " * 4 * level + "@Failure : (Ln " \
-                + str(self.linenum) + ", Col " \
-                + str(self.column) + ") \"" \
-                + self.termstr + "\"\n"
+        return " " * 4 * level + self.get_node_str(detail_flg) + "\n"
 
     def is_failure(self) -> bool:
         return True
@@ -1130,7 +1152,7 @@ class ReconstructedNode(NonTerminalNode):
         + children が初期化されるので、setchildren を実行すること。
         + left_neighber, right_neighbor を設定すること。
         """
-        super().__init__(node.type, node.startpos, node.endpos, ())
+        super().__init__(node.type, ())
         self.startpos:int = node.startpos
         self.endpos:int = node.endpos
         self.nodenum:int = node.nodenum
@@ -1165,7 +1187,16 @@ class ReconstructedNode(NonTerminalNode):
             raise TacParserException("termstr が未設定です")
         return self.termstr
 
-    def print_tree(self, level:int=0, node_list:list[str]=None) -> str:
+    def get_node_str(self, detail_flg:bool) -> str:
+        if detail_flg:
+            return self.type + " : " + self.get_position_str(detail_flg) \
+                    + "[" + str(self.nodenum) + "] : \"" + self.get_str() + "\""
+        else:
+            return str(self.nodenum) + " : " + self.type \
+                    + " : " + self.get_position_str(detail_flg) \
+                    + " : \"" + self.get_str() + "\""
+
+    def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
         """
         ツリー情報を返す
 
@@ -1182,17 +1213,13 @@ class ReconstructedNode(NonTerminalNode):
             階層を表現した文字列
         """
         if node_list is None or self.type in node_list:
-            ret = " " * 4 * level \
-                + str(self.nodenum) + " : " \
-                + self.type + " : (Ln " + str(self.linenum) \
-                + ", Col " + str(self.column) + ") : \"" \
-                + self.get_str() + "\"\n"
+            ret = " " * 4 * level + self.get_node_str(detail_flg) + "\n"
             level += 1
         else:
             ret = ""
         for n in self.children:
             if n:
-                ret += n.print_tree(level, node_list)
+                ret += n.print_tree(level, node_list, detail_flg)
         return ret
 
     def is_terminal(self) -> bool:
@@ -1224,7 +1251,7 @@ class Reader(object):
         # 部分的な構文解析時に使用する終了判定位置
         self.__endposition = -1
 
-    def match_literal(self, literal:str, flg:bool=False, nocase:bool=False):
+    def match_literal(self, literal:str, flg:bool=False, nocase:bool=False) -> ParseResult:
         """
         contentsの次が指定したリテラルにマッチした場合、読み進める。
 
@@ -1260,7 +1287,7 @@ class Reader(object):
         else:
             return False, None
 
-    def match_regexp(self, reg:re.Pattern, flg:bool=False) -> tuple:
+    def match_regexp(self, reg:re.Pattern, flg:bool=False) -> ParseResult:
         """
         contentsの次が指定した正規表現にマッチした場合、読み進める。
 
