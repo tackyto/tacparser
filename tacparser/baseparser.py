@@ -1153,14 +1153,16 @@ class ReconstructedNode(NonTerminalNode):
         + left_neighber, right_neighbor を設定すること。
         """
         super().__init__(node.type, ())
-        self.startpos:int = node.startpos
-        self.endpos:int = node.endpos
-        self.nodenum:int = node.nodenum
-        self.parent:Node = None
-        self.children:tuple[Node] = ()
-        self.type:str = node.type
-        self.linenum:int = node.linenum
-        self.column:int = node.column
+        self.startpos = node.startpos
+        self.endpos = node.endpos
+        self.nodenum = node.nodenum
+        self.parent = None
+        self.children = ()
+        self.type = node.type
+        self.linenum = node.linenum
+        self.column = node.column
+        self.end_linenum = node.end_linenum
+        self.end_column = node.end_column
 
         self.left_neighbor:ReconstructedNode = None
         self.right_neighbor:ReconstructedNode = None
