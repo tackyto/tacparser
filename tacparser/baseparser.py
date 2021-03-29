@@ -1531,10 +1531,10 @@ def reconstruct_tree(
                 _retnc.parent = _retnode
             for _i in range(_children_cnt):
                 _children:ReconstructedNode = _newchildren[_i]
-                if _i > 0 and _i+1 < _children_cnt:
+                if _i >= 0 and _i+1 < _children_cnt:
                     # right_neighbor の存在確認
                     _children.right_neighbor = _newchildren[_i+1]
-                if _i > 1:
+                if _i >= 1:
                     # left_neighbor の存在確認
                     _children.left_neighbor = _newchildren[_i-1]
 
