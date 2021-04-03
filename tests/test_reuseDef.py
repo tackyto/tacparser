@@ -4,8 +4,7 @@ import importlib
 import unittest
 
 from tacparser import ParserGenerator
-from tests.testmodules import subdef01
-from tests.testmodules import subdef02parser
+from tests.testmodules import subdef01, subdef02, subdef03
 
 
 class TestReuseDefinition(unittest.TestCase):
@@ -28,7 +27,7 @@ class TestReuseDefinition(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
     def test_test_resusedef02(self):
-        parser = subdef02parser.Subdef02Parser()
+        parser = subdef02.SubDef02()
         testfille_dir = os.path.join(self.set_path, "subdef02")
         subdef01_path = os.path.join(testfille_dir, "test02.txt")
         _, node = parser.parse_file(subdef01_path, "utf-8", "Subdef02")
@@ -42,7 +41,7 @@ class TestReuseDefinition(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
     def test_test_resusedef02_02(self):
-        parser = subdef02parser.Subdef02Parser()
+        parser = subdef02.SubDef02()
         testfille_dir = os.path.join(self.set_path, "subdef02")
         subdef01_path = os.path.join(testfille_dir, "test02_02.txt")
         _, node = parser.parse_file(subdef01_path, "utf-8", "Subdef02")
@@ -55,6 +54,21 @@ class TestReuseDefinition(unittest.TestCase):
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
+    def test_test_resusedef03(self):
+        parser = subdef03.SubDef03()
+        testfille_dir = os.path.join(self.set_path, "subdef03")
+        subdef01_path = os.path.join(testfille_dir, "test03_01.txt")
+        _, node = parser.parse_file(subdef01_path, "utf-8", "SubDef03")
+
+        pathoutfile = os.path.join(testfille_dir, "subdef03_01_src.out")
+        pathoutfile_dist = os.path.join(testfille_dir, "subdef03_01_dist.out")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(node.print_tree())
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+
 
 def generate():
     path = os.path.normpath(os.path.join(os.path.dirname(__file__),
@@ -65,11 +79,16 @@ def generate():
     ParserGenerator(filepath, "utf-8").generate_file("SubDef01", outfilepath)
 
     filepath = os.path.join(path, "subdef02.peg")
-    outfilepath = os.path.join(path, "subdef02parser.py")
-    ParserGenerator(filepath).generate_file()
+    outfilepath = os.path.join(path, "subdef02.py")
+    ParserGenerator(filepath).generate_file("SubDef02", outfilepath)
+
+    filepath = os.path.join(path, "subdef03.peg")
+    outfilepath = os.path.join(path, "subdef03.py")
+    ParserGenerator(filepath).generate_file("SubDef03", outfilepath)
 
     importlib.reload(subdef01)
-    importlib.reload(subdef02parser)
+    importlib.reload(subdef02)
+    importlib.reload(subdef03)
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ from tacparser import Parser
 import regex
 
 
-class Subdef02Parser(Parser):
+class SubDef02(Parser):
 
     def __init__(self, logger=None):
         if logger is not None:

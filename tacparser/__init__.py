@@ -1,21 +1,29 @@
 __version__='0.0.1'
 
-from .baseparser import (
-    Parser, 
+from .reader import (
+    Reader,
+    FileReader,
+    StringReader,
+)
+
+from .exception import (
+    TacParserException,
+    ParseException,
+)
+
+from .node import (
     Node, 
     NonTerminalNode, 
     TerminalNode,
     FailureNode, 
     ReconstructedNode,
-    Reader,
-    FileReader,
-    StringReader,
-    TacParserException,
-    ParseException,
+)
+
+from .baseparser import (
+    Parser, 
     reconstruct_tree,
     preorder_travel,
     postorder_travel,
-    complete_tree
 )
 
 from .parsergenerator import (

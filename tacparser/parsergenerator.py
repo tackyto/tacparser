@@ -2,10 +2,11 @@ from logging import config, getLogger, Logger
 from argparse import ArgumentParser
 
 import os
-import sys
 import regex
 
-from .baseparser import TacParserException, ParseException, postorder_travel, FailureNode, NonTerminalNode
+from .node import FailureNode, NonTerminalNode
+from .exception import TacParserException, ParseException
+from .baseparser import postorder_travel
 from .expegparser import ExPegParser
 
 # 標準の Logger

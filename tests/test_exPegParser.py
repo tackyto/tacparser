@@ -2,8 +2,10 @@ import filecmp
 import os
 import unittest
 
-from tacparser import reconstruct_tree
-from tacparser.expegparser import ExPegParser
+from tacparser import (
+    reconstruct_tree,
+    ExPegParser,
+)
 
 
 class TestExPegParser(unittest.TestCase):

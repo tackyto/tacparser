@@ -1,0 +1,7 @@
+Nihongo <- ( HIRAGANA / KATAKANA / KANJI )+ _EOF
+
+HIRAGANA <- r"\p{Hiragana}+"
+
+KATAKANA <- r"\p{Katakana}+"
+
+KANJI <- r"\p{Han}+"
