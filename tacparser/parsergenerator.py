@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 
 import os
 import sys
+import regex
 
 from .baseparser import TacParserException, ParseException, postorder_travel, FailureNode, NonTerminalNode
 from .expegparser import ExPegParser
@@ -72,8 +73,10 @@ class ParserGenerator(object):
         """
         self.__logger.info("Start generating Parser. \"{0}\"".format(self.pegfilepath))
 
-        self.parser.parse_file(self.pegfilepath, self.fileEncoding)
-
+        parse_result, tree = self.parser.parse_file(
+                                self.pegfilepath, self.fileEncoding)
+        if not parse_result:
+            raise SyntaxCheckFailedException(["pegファイルの構文解析に失敗しました"])
         tree = self.parser.get_tree()
 
         self.__logger.debug("Check tree start.")
@@ -336,7 +339,8 @@ class ParserGenerator(object):
                  + " " * (level + 4) + "return " + expstr + "\n"
         return "\n" + regstr + retstr
 
-    def get_reg_value(self, tree:NonTerminalNode) -> str:
+    @staticmethod
+    def get_reg_value(tree:NonTerminalNode) -> str:
         """
         クォーテーションを出力用に置き換え、正規表現オプションを付加したリテラル文字列
 
@@ -372,7 +376,7 @@ class ParserGenerator(object):
         else:
             s = ""
             for cn in tree.children:
-                s += self.get_reg_value(cn)
+                s += ParserGenerator.get_reg_value(cn)
             return s
 
 
@@ -559,8 +563,12 @@ class ParserChecker(object):
             setattr(tree, 'identifierlist', min_len)
 
         elif tree.type == "RegularExp":
-            # TODO : [不具合：軽微] 正規表現の読み取り長さ確認 (空文字が読み込めるかどうかチェック)
-            setattr(tree, 'identifierlist', 1)
+            strreg = ParserGenerator.get_reg_value(tree)
+            reg_pattern = regex.compile(strreg)
+            if reg_pattern.match(""):
+                setattr(tree, 'identifierlist', 1)
+            else:
+                setattr(tree, 'identifierlist', 0)
 
         elif tree.type == "Identifier":
             d = {"Spacing": ""}

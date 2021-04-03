@@ -1,35 +1,53 @@
 import os
 import importlib
 import unittest
+import filecmp
 
 from tacparser import ParserGenerator
-from .testmodules import recursion
+from tests.testmodules import recursion, recursion02
 
 
 class TestRecursion(unittest.TestCase):
+    set_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_recursion"))
     def setUp(self):
-        generate()
-        set_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_recursion"))
-        os.chdir(set_path)
+        generate("recursion")
+        importlib.reload(recursion)
 
     def test_recursion(self):
         parser = recursion.Recursion()
-        curdir = os.getcwd()
-        testfile_path = os.path.join(curdir, "test01.txt")
+        testfile_path = os.path.join(self.set_path, "test01.txt")
+        flg, node = parser.parse_file(testfile_path, "utf-8", "Recursion")
+
+        pathoutfile = os.path.join(self.set_path, "recursion01_src.out")
+        pathoutfile_dist = os.path.join(self.set_path, "recursion01_dist.out")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(node.print_tree())
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+
+class TestRecursionReg(unittest.TestCase):
+    set_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_recursion"))
+    def setUp(self):
+        generate("recursion02")
+        importlib.reload(recursion02)
+
+    def test_recursion(self):
+        parser = recursion02.Recursion()
+        testfile_path = os.path.join(self.set_path, "test01.txt")
         flg, node = parser.parse_file(testfile_path, "utf-8", "Recursion")
         self.assertFalse(flg)
         self.assertIsNone(node)
 
 
-def generate():
+def generate(filename):
     path = os.path.normpath(os.path.join(os.path.dirname(__file__),
                                          "./testmodules"))
 
-    filepath = os.path.join(path, "recursion.peg")
-    outfilepath = os.path.join(path, "recursion.py")
+    filepath = os.path.join(path, filename + ".peg")
+    outfilepath = os.path.join(path, filename + ".py")
     ParserGenerator(filepath, "utf-8").generate_file("Recursion", outfilepath)
-
-    importlib.reload(recursion)
 
 
 if __name__ == '__main__':

@@ -418,12 +418,14 @@ class Parser(object):
                 ノードのタプル
             """
             pos = r.get_position()
+            prev_pos = pos
             ret = ()
 
             i = 0
             while _max_num < 0 or i < _max_num:
                 flg, results = _f()
-                if not flg:
+                if not flg or ( _max_num < 0 and prev_pos == r.get_position() ):
+                    # 取得失敗 or 内容なしノードの無限ループ
                     if i >= _min_num:
                         return True, ret
                     else:
@@ -431,6 +433,7 @@ class Parser(object):
                         return False, ()
                 else:
                     ret += results
+                    prev_pos = r.get_position()
 
                 i += 1
 

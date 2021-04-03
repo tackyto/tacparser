@@ -6,20 +6,17 @@ from tacparser import FileReader
 
 
 class TestFileReaderMethods(unittest.TestCase):
-    def setUp(self):
-        path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_reader"))
-        os.chdir(path)
+    set_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_reader"))
 
     def test_filereader_init01(self):
         # FileReader __init__ 異常値
-        curdir = os.getcwd()
-        file = os.path.join(curdir, "dummy.txt")
+        file = os.path.join(self.set_path, "dummy.txt")
         with self.assertRaises(FileNotFoundError):
             FileReader(file, "utf-8")
 
     def test_pos2linecolumn_01(self):
         # FileReader pos2linecolumn
-        file = os.path.join(os.getcwd(), "test01_01.txt")
+        file = os.path.join(self.set_path, "test01_01.txt")
         r = FileReader(file, "utf-8")
 
         self.assertEqual(r.pos2linecolumn(0), (0, 0, ""))
@@ -28,7 +25,7 @@ class TestFileReaderMethods(unittest.TestCase):
 
     def test_pos2linecolumn_02(self):
         # FileReader pos2linecolumn
-        file = os.path.join(os.getcwd(), "test01_02.txt")
+        file = os.path.join(self.set_path, "test01_02.txt")
         r = FileReader(file, "utf-8")
 
         self.assertEqual(r.pos2linecolumn(0), (1, 0, "\n"))
@@ -39,7 +36,7 @@ class TestFileReaderMethods(unittest.TestCase):
 
     def test_pos2linecolumn_03(self):
         # FileReader pos2linecolumn
-        file = os.path.join(os.getcwd(), "test03.txt")
+        file = os.path.join(self.set_path, "test03.txt")
         r = FileReader(file, "utf-8")
 
         self.assertEqual(r.pos2linecolumn(0), (1, 0, "あ"))
@@ -51,7 +48,7 @@ class TestFileReaderMethods(unittest.TestCase):
 
     def test_filereader_match_regexp01(self):
         # 正規表現での取得
-        file = os.path.join(os.getcwd(), "test01_02.txt")
+        file = os.path.join(self.set_path, "test01_02.txt")
         r = FileReader(file, "utf-8")
         flg, rlt = r.match_regexp(re.compile("\n"))
 
@@ -63,7 +60,7 @@ class TestFileReaderMethods(unittest.TestCase):
         文字列の読み込み
         :return:
         """
-        file = os.path.join(os.getcwd(), "test02.txt")
+        file = os.path.join(self.set_path, "test02.txt")
         r = FileReader(file, "utf-8")
 
         flg, rlt = r.match_regexp(re.compile("abcd"))
@@ -92,7 +89,7 @@ class TestFileReaderMethods(unittest.TestCase):
         全角文字列の読み込み
         :return:
         """
-        file = os.path.join(os.getcwd(), "test03.txt")
+        file = os.path.join(self.set_path, "test03.txt")
         r = FileReader(file, "utf-8")
 
         flg, rlt = r.match_literal("あいうえお", True)
@@ -109,7 +106,7 @@ class TestFileReaderMethods(unittest.TestCase):
         正規表現のエスケープについてのテスト
         :return:
         """
-        file = os.path.join(os.getcwd(), "test04.txt")
+        file = os.path.join(self.set_path, "test04.txt")
         r = FileReader(file, "utf-8")
 
         _reg_p_literal1 = re.compile(u'"(\\\\"|[^"])*"')
@@ -129,7 +126,7 @@ class TestFileReaderMethods(unittest.TestCase):
         文字列の読み込み
         :return:
         """
-        file = os.path.join(os.getcwd(), "test02.txt")
+        file = os.path.join(self.set_path, "test02.txt")
         r = FileReader(file, "utf-8")
 
         flg, rlt = r.match_literal("abcd", nocase=False)

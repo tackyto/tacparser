@@ -1,26 +1,5 @@
 Recursion <- ALoop _EOF
 
-ALoop <- A Rec01
-Rec01 <- Rec02
-Rec02 <- Rec03
-Rec03 <- Rec04
-Rec04 <- Rec05
-Rec05 <- Rec06
-Rec06 <- Rec07
-Rec07 <- Rec08
-Rec08 <- Rec09
-Rec09 <- Rec10
-Rec10 <- Rec11
-Rec11 <- Rec12
-Rec12 <- Rec13
-Rec13 <- Rec14
-Rec14 <- Rec15
-Rec15 <- Rec16
-Rec16 <- Rec17
-Rec17 <- Rec18
-Rec18 <- Rec19
-Rec19 <- Rec20
+ALoop <- A*
 
-Rec20 <- ALoop
-
-A <- 'A'
+A <- r"A*"

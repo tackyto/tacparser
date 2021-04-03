@@ -4,10 +4,10 @@ import importlib
 import unittest
 
 from tacparser import ParserGenerator
-from .testmodules import macro01
+from tests.testmodules import macro01
 
 
-class TestReuseDefinition(unittest.TestCase):
+class TestMacroDefinition(unittest.TestCase):
     def setUp(self):
         generate()
         set_path = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_macro"))
