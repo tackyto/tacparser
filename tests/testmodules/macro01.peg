@@ -1,0 +1,11 @@
+Main <- Hoge Fuga Piyo _EOF
+
+Hoge <- _HOGE Spacing?
+Fuga <- _FUGA Spacing?
+Piyo <- _PIYO Spacing?
+
+_HOGE <- r"(hoge)+":I
+_FUGA <- "FUGA"*
+_PIYO <- ( "PIYO" / "piyo" )*
+
+Spacing <- r"\s+"

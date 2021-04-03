@@ -1,0 +1,18 @@
+SubDef03 <- ( Line >>LineTerminator? )+
+Line <- (Word / Spacing)*
+Line <-- EmptyLine / FirstSpace? (Word Spacing?)+ 
+
+Word <- r"[A-Za-z0-9_]+"
+Word <-- Number / AlphaWord / UnderScore Line
+
+Spacing <- " "+
+
+LineTerminator <- r"\r\n|\r|\n"
+
+# -----------------
+
+EmptyLine <- !r"."
+FirstSpace <- r" +"
+Number <- r"[0-9]+"
+AlphaWord <- r"[A-Za-z]+"
+UnderScore <- "_"

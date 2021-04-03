@@ -1,0 +1,215 @@
+# Hierarchical syntax
+
+# 構文解析のルート
+ExPeg    <- Spacing? ( PegComment? RootDefinition )
+            ( PegComment / Definition / SubDefinition / MacroDefinition )+ _EOF
+
+# PEGファイル内のコメント
+PegComment <- Comment+ Spacing
+
+# RootDefinition : 構文全体の定義、文法は通常の定義と同じ
+RootDefinition <- Definition
+
+# Definition : １つの構文規則
+#   DefinitionComment : 構文規則の直前に書かれたコメント
+#   DefinitionIdentifier : 構文規則名, PEGの規則に加えてパラメータの受け取りを許可
+Definition <- DefinitionComment? DefinitionIdentifier Spacing? LEFTARROW DefinitionExpression
+DefinitionExpression <- Expression
+
+# SubDefinition : 多重解析のための１つの構文規則
+#   （多重解析の例）
+#   A <- B
+#   A <-- C
+#     上記のように同名の規則を記載できる。この時、１度目の解析は A <- B で行い、
+#     一度ASTを作成したのち、Aで取得した文字列を再度 A <-- C で解析してASTを再作成する。
+#     再帰呼び出しがあった場合は、それぞれ１回目、２回目の規則を用いる。
+#     また、多重解析はファイルの上部に書かれた各SubDefinitionから順に適用する。
+SubDefinition <- DefinitionComment? DefinitionIdentifier Spacing? SUB_LEFTARROW DefinitionExpression
+
+# 構文規則のコメント
+DefinitionComment <- Comment+
+
+# DefinitionIdentifier : 構文規則名, PEGの規則に加えてパラメータの受け取りを許可
+#   ParameterList (未実装) : パラメータの受け取り
+#   ※パラメータ受け取りの記載例
+#   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
+#   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
+DefinitionIdentifier <- Identifier ParameterList / Identifier
+ParameterList <- COLON OPEN Parameter ( COMMA Parameter )* CLOSE
+Parameter <- COMMERCIAL_AT ParameterName
+
+# Expression : 構文規則の本体
+Expression <- Selection / Sequence
+Selection <- Sequence (SLASH Sequence)+
+Sequence   <- MultiSequence / SingleSequence
+MultiSequence <- Prefix Prefix+
+SingleSequence <- Prefix
+
+# Prefix : 読み取り方法の表現
+#   Andprefix : 先読み &Xxxxx
+#   NotPrefix : 否定先読み !Xxxxx
+#   Suffix : 通常の読み取り
+#   (追加構文)
+#   SkipPrefix : 読み飛ばし >>Xxxxx
+#                通常の読み取りと同じだが、最後の解析木にノードを登録しない。
+#                （メモ化のため、ノード自体は作成する）
+Prefix    <- AndPrefix / NotPrefix / SkipPrefix / Suffix
+AndPrefix <- AMPERSAND Suffix
+NotPrefix <- EXCLAMATION Suffix
+SkipPrefix <- MUCH_GREATER_THAN Suffix
+
+
+# Suffix:: 読み込み回数に関する表現
+#   QuestionSuffix : 省略可能, :: Xxxxx?
+#   StarSuffix : ゼロ個以上の繰り返し :: Xxxxx*
+#   PlusSuffix : １回以上の繰り返し :: Xxxxx+
+#   Primary : 繰り返しなし
+#   (追加構文)
+#   RepeatSuffix : n回繰り返し :: Xxxxx{n}
+#                  n回以上m回以下の繰り返し :: Xxxxx{n,m}
+Suffix    <- QuestionSuffix / StarSuffix / PlusSuffix / RepeatSuffix / Primary
+QuestionSuffix <- Primary QUESTION
+StarSuffix <- Primary STAR
+PlusSuffix <- Primary PLUS
+RepeatSuffix <- Primary RepeatNum
+
+RepeatNum <- CURL_OPEN MinRepeat COMMA MaxRepeat CURL_CLOSE
+           / CURL_OPEN RepeatCnt CURL_CLOSE
+MinRepeat <- Number
+MaxRepeat <- Number
+RepeatCnt <- Number
+
+# Primary :: 構文解析の１単位を示す表現
+#   Identifier : 非終端記号
+#   Expression : サブ構文
+#   Literal : リテラル
+#   (追加構文)
+#   RegularExp : 正規表現 r"[a-z0-9]|b|c" など
+#   IdentifierCall : パラメータ付の規則呼び出し
+Primary   <- RegularExp
+           / IdentifierCall
+           / Parameter
+           / AssignmentValue
+           / Identifier !LEFTARROW !COLON !SUB_LEFTARROW
+           / MacroIdentifier !LEFTARROW !COLON !SUB_LEFTARROW
+           / OPEN Expression CLOSE
+           / Literal
+
+# IdentifierCall : パラメータ付の規則呼び出し
+#   例)
+#   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
+#   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
+IdentifierCall <- Identifier COLON OPEN Expression ( COMMA Expression )* CLOSE
+
+# AssignmentValue : 代入値呼び出し
+#   例) 下記右側の $x
+#   XmlAnyTag <- "<" Tagname=$x TagAttributes ">" Contents "</" $x Spacing? ">"
+AssignmentValue <- DOLLAR_SIGN ParameterName
+
+# Macro（追加構文） : マクロ
+#   構文解析時にノードを作成せず、呼び出した規則の一部として展開する。
+#   定義には他のマクロおよび規則を利用できないが、連続、選択、suffixおよびprefixは利用できる。
+MacroDefinition <- DefinitionComment? MacroIdentifier Spacing? LEFTARROW MacroExpression
+
+MacroExpression     <- MacroSelection / MacroSequence
+MacroSelection      <- MacroSequence ( SLASH MacroSequence )+
+MacroSequence       <- MacroMultiSequence / MacroSingleSequence
+MacroMultiSequence  <- MacroTerm MacroTerm+
+MacroSingleSequence <- MacroTerm
+MacroTerm           <- MacroPrefix
+
+MacroPrefix         <- MacroAndPrefix / MacroNotPrefix / MacroSuffix
+MacroAndPrefix      <- AMPERSAND MacroSuffix
+MacroNotPrefix      <- EXCLAMATION MacroSuffix
+
+MacroSuffix         <- MacroQuestionSuffix
+                     / MacroStarSuffix
+                     / MacroPlusSuffix
+                     / MacroRepeatSuffix
+                     / MacroPrimary
+MacroQuestionSuffix <- MacroPrimary QUESTION
+MacroStarSuffix     <- MacroPrimary STAR
+MacroPlusSuffix     <- MacroPrimary PLUS
+MacroRepeatSuffix   <- MacroPrimary RepeatNum
+
+MacroPrimary        <- RegularExp
+                     / OPEN MacroExpression CLOSE
+                     / Literal
+
+# Lexical syntax（語彙構文）
+# PEGの特に１文字を表現するための構文は破棄し、正規表現を用いる
+
+# 正規表現, r"[正規表現]" の形式で表す。
+RegularExp <- REGPREFIX ( SingleQuotesLiteral / DoubleQuotesLiteral ) RegularExpOptions Spacing?
+
+# 正規表現のオプション :
+#    デフォルトでは、マルチライン re.M を適用しており、
+#    '^', '$' はそれぞれ行頭と改行直前にマッチする。
+#      m : マルチラインを解除
+#           '^', '$' を行頭、および改行直前にマッチさせない。
+#      X : パターンの論理的なセクションを視覚的に区切り、コメントの入力を可能にする。
+#          Number_A <- r"\d +  # the integral part
+#                        \.    # the decimal point
+#                        \d *  # some fractional digits"
+#          Number_B <- r"\d+\.\d*"
+#      A : \w、\W、\b、\B、\d、\D、\s、および \S において、ASCII 文字のみでマッチングを行う。
+#      I : 英大文字・小文字を区別せずにマッチングを行う。
+#          [A-Z] のような表現は小文字ともマッチします。
+#          これは現在のロケールの影響を受けず、Unicode 文字に対しても動作します。
+#      S : 特殊文字 '.' を、改行を含む任意の文字と、とにかくマッチさせます。
+#          このフラグがなければ、 '.' は、改行 以外の 任意の文字とマッチします。
+RegularExpOptions <- ( COLON r"(m|X|A|I|S)+" )?
+
+Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) Spacing?
+# マクロ定義
+#    マクロ定義は、"_" で開始し、英大文字のみ使用可能とする。
+MacroIdentifier <- r"_[A-Z][A-Z0-9_]*" Spacing?
+ParameterName <- r"[a-zA-Z][a-zA-Z0-9_]*" Spacing?
+
+# リテラル
+# (追加構文)
+#   :I を付加することで、Case-Insensitive にする。
+#   ※「"hoge":I」は hoge, Hoge, hOgE 等にマッチ
+Literal <- ( SingleQuotesLiteral / DoubleQuotesLiteral ) LiteralOption? Spacing?
+SingleQuotesLiteral <- "'" SingleQuotesLiteralContents "'"
+SingleQuotesLiteralContents <- r"(\\.|[^'\\])*"
+DoubleQuotesLiteral <- '"' DoubleQuotesLiteralContents '"'
+DoubleQuotesLiteralContents <- r'(\\.|[^"\\])*'
+LiteralOption <- COLON "I"
+
+# 数字
+Number <- r"[1-9][0-9]*" Spacing?
+
+# PEG に追加： 終端を示す記号
+ENDOFFILE <- '_EOF' Spacing?
+
+LEFTARROW <- '<-' Spacing?
+# 追加構文：サブ解析を表現する
+SUB_LEFTARROW <- '<--' Spacing?
+
+SLASH <- '/' Spacing?
+AMPERSAND <- '&' Spacing?
+EXCLAMATION <- '!' Spacing?
+MUCH_GREATER_THAN <- '>>' Spacing?
+
+QUESTION <- '?' Spacing?
+STAR <- '*' Spacing?
+PLUS <- '+' Spacing?
+OPEN <- '(' Spacing?
+CLOSE <- ')' Spacing?
+CURL_OPEN <- '{'  Spacing?
+CURL_CLOSE <- '}' Spacing?
+COLON <- ':' Spacing?
+COMMA <- ',' Spacing?
+COMMERCIAL_AT <- '@'
+DOLLAR_SIGN <- '$'
+EQUAL <- '=' Spacing?
+REGPREFIX <- 'r'
+
+Spacing <- Space+
+
+Comment <- '#' r"[^\r\n]*" EndOfLine
+Space <- ' ' / '\t' / EndOfLine
+
+EndOfLine <- r"\r\n|\n|\r"
+

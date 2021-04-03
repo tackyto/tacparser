@@ -1,0 +1,481 @@
+Definition : (3, 0 - 6, 0 : 23 - 92)[73] : "# 構文解析のルート
+Grammar    <- Spacing? ( PegComment / Definition )+ _EOF
+
+"
+    Identifier : (4, 0 - 4, 11 : 34 - 45)[14] : "Grammar    "
+    Identifier : (4, 14 - 4, 21 : 48 - 55)[19] : "Spacing"
+    Identifier : (4, 25 - 4, 36 : 59 - 70)[32] : "PegComment "
+    Identifier : (4, 38 - 4, 49 : 72 - 83)[43] : "Definition "
+    Identifier : (4, 52 - 6, 0 : 86 - 92)[65] : "_EOF
+
+"
+Definition : (6, 0 - 9, 0 : 92 - 140)[106] : "# PEGファイル内のコメント
+PegComment <- Comment+ Spacing
+
+"
+    Identifier : (7, 0 - 7, 11 : 108 - 119)[80] : "PegComment "
+    Identifier : (7, 14 - 7, 21 : 122 - 129)[85] : "Comment"
+    Identifier : (7, 23 - 9, 0 : 131 - 140)[98] : "Spacing
+
+"
+Definition : (9, 0 - 13, 0 : 140 - 356)[166] : "# Definition : １つの構文規則
+#   DefinitionComment : 構文規則の直前に書かれたコメント
+#   DefinitionIdentifier : 構文規則名, PEGの規則に加えてパラメータの受け取りを許可
+Definition <- DefinitionComment? DefinitionIdentifier Spacing? LEFTARROW DefinitionExpression
+"
+    Identifier : (12, 0 - 12, 11 : 262 - 273)[116] : "Definition "
+    Identifier : (12, 14 - 12, 31 : 276 - 293)[121] : "DefinitionComment"
+    Identifier : (12, 33 - 12, 54 : 295 - 316)[131] : "DefinitionIdentifier "
+    Identifier : (12, 54 - 12, 61 : 316 - 323)[135] : "Spacing"
+    Identifier : (12, 63 - 12, 73 : 325 - 335)[145] : "LEFTARROW "
+    Identifier : (12, 73 - 13, 0 : 335 - 356)[152] : "DefinitionExpression
+"
+Definition : (13, 0 - 15, 0 : 356 - 392)[181] : "DefinitionExpression <- Expression
+
+"
+    Identifier : (13, 0 - 13, 21 : 356 - 377)[158] : "DefinitionExpression "
+    Identifier : (13, 24 - 15, 0 : 380 - 392)[173] : "Expression
+
+"
+Definition : (15, 0 - 18, 0 : 392 - 435)[207] : "# 構文規則のコメント
+DefinitionComment <- Comment+
+
+"
+    Identifier : (16, 0 - 16, 18 : 404 - 422)[187] : "DefinitionComment "
+    Identifier : (16, 21 - 16, 28 : 425 - 432)[192] : "Comment"
+Definition : (18, 0 - 24, 0 : 435 - 749)[261] : "# DefinitionIdentifier : 構文規則名, PEGの規則に加えてパラメータの受け取りを許可
+#   ParameterList : パラメータの受け取り
+#   ※パラメータ受け取りの記載例
+#   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
+#   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
+DefinitionIdentifier <- Identifier ParameterList / Identifier
+"
+    Identifier : (23, 0 - 23, 21 : 687 - 708)[221] : "DefinitionIdentifier "
+    Identifier : (23, 24 - 23, 35 : 711 - 722)[228] : "Identifier "
+    Identifier : (23, 35 - 23, 49 : 722 - 736)[234] : "ParameterList "
+    Identifier : (23, 51 - 24, 0 : 738 - 749)[246] : "Identifier
+"
+Definition : (24, 0 - 25, 0 : 749 - 814)[324] : "ParameterList <- COLON OPEN Parameter ( COMMA Parameter )* CLOSE
+"
+    Identifier : (24, 0 - 24, 14 : 749 - 763)[252] : "ParameterList "
+    Identifier : (24, 17 - 24, 23 : 766 - 772)[265] : "COLON "
+    Identifier : (24, 23 - 24, 28 : 772 - 777)[271] : "OPEN "
+    Identifier : (24, 28 - 24, 38 : 777 - 787)[277] : "Parameter "
+    Identifier : (24, 40 - 24, 46 : 789 - 795)[286] : "COMMA "
+    Identifier : (24, 46 - 24, 56 : 795 - 805)[292] : "Parameter "
+    Identifier : (24, 59 - 25, 0 : 808 - 814)[310] : "CLOSE
+"
+Definition : (25, 0 - 27, 0 : 814 - 856)[345] : "Parameter <- COMMERCIAL_AT ParameterName
+
+"
+    Identifier : (25, 0 - 25, 10 : 814 - 824)[316] : "Parameter "
+    Identifier : (25, 13 - 25, 27 : 827 - 841)[328] : "COMMERCIAL_AT "
+    Identifier : (25, 27 - 27, 0 : 841 - 856)[337] : "ParameterName
+
+"
+Definition : (27, 0 - 29, 0 : 856 - 914)[385] : "# Expression : 構文規則の本体
+Expression <- Selection / Sequence
+"
+    Identifier : (28, 0 - 28, 11 : 879 - 890)[351] : "Expression "
+    Identifier : (28, 14 - 28, 24 : 893 - 903)[358] : "Selection "
+    Identifier : (28, 26 - 29, 0 : 905 - 914)[370] : "Sequence
+"
+Definition : (29, 0 - 30, 0 : 914 - 954)[428] : "Selection <- Sequence (SLASH Sequence)+
+"
+    Identifier : (29, 0 - 29, 10 : 914 - 924)[376] : "Selection "
+    Identifier : (29, 13 - 29, 22 : 927 - 936)[389] : "Sequence "
+    Identifier : (29, 23 - 29, 29 : 937 - 943)[396] : "SLASH "
+    Identifier : (29, 29 - 29, 37 : 943 - 951)[400] : "Sequence"
+Definition : (30, 0 - 31, 0 : 954 - 999)[459] : "Sequence   <- MultiSequence / SingleSequence
+"
+    Identifier : (30, 0 - 30, 11 : 954 - 965)[420] : "Sequence   "
+    Identifier : (30, 14 - 30, 28 : 968 - 982)[432] : "MultiSequence "
+    Identifier : (30, 30 - 31, 0 : 984 - 999)[444] : "SingleSequence
+"
+Definition : (31, 0 - 32, 0 : 999 - 1027)[486] : "MultiSequence <- Term Term+
+"
+    Identifier : (31, 0 - 31, 14 : 999 - 1013)[450] : "MultiSequence "
+    Identifier : (31, 17 - 31, 22 : 1016 - 1021)[463] : "Term "
+    Identifier : (31, 22 - 31, 26 : 1021 - 1025)[467] : "Term"
+Definition : (32, 0 - 34, 0 : 1027 - 1051)[501] : "SingleSequence <- Term
+
+"
+    Identifier : (32, 0 - 32, 15 : 1027 - 1042)[478] : "SingleSequence "
+    Identifier : (32, 18 - 34, 0 : 1045 - 1051)[493] : "Term
+
+"
+Definition : (34, 0 - 39, 0 : 1051 - 1153)[547] : "# (追加構文)
+# Term : １つの項を表す
+#   Assignment : 代入項 Xxxxx=$a
+#   Prefix : 通常の項
+Term <- Assignment / Prefix
+"
+    Identifier : (38, 0 - 38, 5 : 1125 - 1130)[513] : "Term "
+    Identifier : (38, 8 - 38, 19 : 1133 - 1144)[520] : "Assignment "
+    Identifier : (38, 21 - 39, 0 : 1146 - 1153)[532] : "Prefix
+"
+Definition : (39, 0 - 40, 0 : 1153 - 1199)[578] : "Assignment <- Prefix EQUAL AssignmentVariable
+"
+    Identifier : (39, 0 - 39, 11 : 1153 - 1164)[538] : "Assignment "
+    Identifier : (39, 14 - 39, 21 : 1167 - 1174)[551] : "Prefix "
+    Identifier : (39, 21 - 39, 27 : 1174 - 1180)[557] : "EQUAL "
+    Identifier : (39, 27 - 40, 0 : 1180 - 1199)[564] : "AssignmentVariable
+"
+Definition : (40, 0 - 42, 0 : 1199 - 1248)[599] : "AssignmentVariable <- DOLLAR_SIGN ParameterName
+
+"
+    Identifier : (40, 0 - 40, 19 : 1199 - 1218)[570] : "AssignmentVariable "
+    Identifier : (40, 22 - 40, 34 : 1221 - 1233)[582] : "DOLLAR_SIGN "
+    Identifier : (40, 34 - 42, 0 : 1233 - 1248)[591] : "ParameterName
+
+"
+Definition : (42, 0 - 51, 0 : 1248 - 1530)[678] : "# Prefix : 読み取り方法の表現
+#   Andprefix : 先読み &Xxxxx
+#   NotPrefix : 否定先読み !Xxxxx
+#   Suffix : 通常の読み取り
+#   (追加構文)
+#   SkipPrefix : 読み飛ばし >>Xxxxx
+#                通常の読み取りと同じだが、最後の解析木にノードを登録しない。
+#                （メモ化のため、ノード自体は作成する）
+Prefix    <- AndPrefix / NotPrefix / SkipPrefix / Suffix
+"
+    Identifier : (50, 0 - 50, 10 : 1473 - 1483)[622] : "Prefix    "
+    Identifier : (50, 13 - 50, 23 : 1486 - 1496)[629] : "AndPrefix "
+    Identifier : (50, 25 - 50, 35 : 1498 - 1508)[640] : "NotPrefix "
+    Identifier : (50, 37 - 50, 48 : 1510 - 1521)[651] : "SkipPrefix "
+    Identifier : (50, 50 - 51, 0 : 1523 - 1530)[663] : "Suffix
+"
+Definition : (51, 0 - 52, 0 : 1530 - 1560)[703] : "AndPrefix <- AMPERSAND Suffix
+"
+    Identifier : (51, 0 - 51, 10 : 1530 - 1540)[669] : "AndPrefix "
+    Identifier : (51, 13 - 51, 23 : 1543 - 1553)[682] : "AMPERSAND "
+    Identifier : (51, 23 - 52, 0 : 1553 - 1560)[689] : "Suffix
+"
+Definition : (52, 0 - 53, 0 : 1560 - 1592)[728] : "NotPrefix <- EXCLAMATION Suffix
+"
+    Identifier : (52, 0 - 52, 10 : 1560 - 1570)[695] : "NotPrefix "
+    Identifier : (52, 13 - 52, 25 : 1573 - 1585)[707] : "EXCLAMATION "
+    Identifier : (52, 25 - 53, 0 : 1585 - 1592)[714] : "Suffix
+"
+Definition : (53, 0 - 56, 0 : 1592 - 1633)[751] : "SkipPrefix <- MUCH_GREATER_THAN Suffix
+
+
+"
+    Identifier : (53, 0 - 53, 11 : 1592 - 1603)[720] : "SkipPrefix "
+    Identifier : (53, 14 - 53, 32 : 1606 - 1624)[732] : "MUCH_GREATER_THAN "
+    Identifier : (53, 32 - 56, 0 : 1624 - 1633)[743] : "Suffix
+
+
+"
+Definition : (56, 0 - 65, 0 : 1633 - 1965)[841] : "# Suffix:: 読み込み回数に関する表現
+#   QuestionSuffix : 省略可能, :: Xxxxx?
+#   StarSuffix : ゼロ個以上の繰り返し :: Xxxxx*
+#   PlusSuffix : １回以上の繰り返し :: Xxxxx+
+#   Primary : 繰り返しなし
+#   (追加構文)
+#   RepeatSuffix : n回繰り返し :: Xxxxx{n}
+#                  n回以上m回以下の繰り返し :: Xxxxx{n,m}
+Suffix    <- QuestionSuffix / StarSuffix / PlusSuffix / RepeatSuffix / Primary
+"
+    Identifier : (64, 0 - 64, 10 : 1886 - 1896)[774] : "Suffix    "
+    Identifier : (64, 13 - 64, 28 : 1899 - 1914)[781] : "QuestionSuffix "
+    Identifier : (64, 30 - 64, 41 : 1916 - 1927)[792] : "StarSuffix "
+    Identifier : (64, 43 - 64, 54 : 1929 - 1940)[803] : "PlusSuffix "
+    Identifier : (64, 56 - 64, 69 : 1942 - 1955)[814] : "RepeatSuffix "
+    Identifier : (64, 71 - 65, 0 : 1957 - 1965)[826] : "Primary
+"
+Definition : (65, 0 - 66, 0 : 1965 - 2000)[866] : "QuestionSuffix <- Primary QUESTION
+"
+    Identifier : (65, 0 - 65, 15 : 1965 - 1980)[832] : "QuestionSuffix "
+    Identifier : (65, 18 - 65, 26 : 1983 - 1991)[845] : "Primary "
+    Identifier : (65, 26 - 66, 0 : 1991 - 2000)[852] : "QUESTION
+"
+Definition : (66, 0 - 67, 0 : 2000 - 2027)[891] : "StarSuffix <- Primary STAR
+"
+    Identifier : (66, 0 - 66, 11 : 2000 - 2011)[858] : "StarSuffix "
+    Identifier : (66, 14 - 66, 22 : 2014 - 2022)[870] : "Primary "
+    Identifier : (66, 22 - 67, 0 : 2022 - 2027)[877] : "STAR
+"
+Definition : (67, 0 - 68, 0 : 2027 - 2054)[916] : "PlusSuffix <- Primary PLUS
+"
+    Identifier : (67, 0 - 67, 11 : 2027 - 2038)[883] : "PlusSuffix "
+    Identifier : (67, 14 - 67, 22 : 2041 - 2049)[895] : "Primary "
+    Identifier : (67, 22 - 68, 0 : 2049 - 2054)[902] : "PLUS
+"
+Definition : (68, 0 - 70, 0 : 2054 - 2089)[943] : "RepeatSuffix <- Primary RepeatNum
+
+"
+    Identifier : (68, 0 - 68, 13 : 2054 - 2067)[908] : "RepeatSuffix "
+    Identifier : (68, 16 - 68, 24 : 2070 - 2078)[920] : "Primary "
+    Identifier : (68, 24 - 70, 0 : 2078 - 2089)[929] : "RepeatNum
+
+"
+Definition : (70, 0 - 72, 0 : 2089 - 2193)[1022] : "RepeatNum <- CURL_OPEN MinRepeat COMMA MaxRepeat CURL_CLOSE
+           / CURL_OPEN RepeatCnt CURL_CLOSE
+"
+    Identifier : (70, 0 - 70, 10 : 2089 - 2099)[935] : "RepeatNum "
+    Identifier : (70, 13 - 70, 23 : 2102 - 2112)[947] : "CURL_OPEN "
+    Identifier : (70, 23 - 70, 33 : 2112 - 2122)[953] : "MinRepeat "
+    Identifier : (70, 33 - 70, 39 : 2122 - 2128)[959] : "COMMA "
+    Identifier : (70, 39 - 70, 49 : 2128 - 2138)[965] : "MaxRepeat "
+    Identifier : (70, 49 - 71, 11 : 2138 - 2160)[983] : "CURL_CLOSE
+           "
+    Identifier : (71, 13 - 71, 23 : 2162 - 2172)[994] : "CURL_OPEN "
+    Identifier : (71, 23 - 71, 33 : 2172 - 2182)[1000] : "RepeatCnt "
+    Identifier : (71, 33 - 72, 0 : 2182 - 2193)[1007] : "CURL_CLOSE
+"
+Definition : (72, 0 - 73, 0 : 2193 - 2213)[1041] : "MinRepeat <- Number
+"
+    Identifier : (72, 0 - 72, 10 : 2193 - 2203)[1013] : "MinRepeat "
+    Identifier : (72, 13 - 73, 0 : 2206 - 2213)[1027] : "Number
+"
+Definition : (73, 0 - 74, 0 : 2213 - 2233)[1060] : "MaxRepeat <- Number
+"
+    Identifier : (73, 0 - 73, 10 : 2213 - 2223)[1033] : "MaxRepeat "
+    Identifier : (73, 13 - 74, 0 : 2226 - 2233)[1046] : "Number
+"
+Definition : (74, 0 - 76, 0 : 2233 - 2254)[1075] : "RepeatCnt <- Number
+
+"
+    Identifier : (74, 0 - 74, 10 : 2233 - 2243)[1052] : "RepeatCnt "
+    Identifier : (74, 13 - 76, 0 : 2246 - 2254)[1067] : "Number
+
+"
+Definition : (76, 0 - 91, 0 : 2254 - 2635)[1280] : "# Primary :: 構文解析の１単位を示す表現
+#   Identifier : 非終端記号
+#   Expression : サブ構文
+#   Literal : リテラル
+#   (追加構文)
+#   RegularExp : 正規表現 r"[a-z0-9]|b|c" など
+#   IdentifierCall : パラメータ付の規則呼び出し
+Primary   <- RegularExp
+           / IdentifierCall
+           / Parameter
+           / AssignmentValue
+           / Identifier !LEFTARROW !COLON
+           / OPEN Expression CLOSE
+           / Literal
+
+"
+    Identifier : (83, 0 - 83, 10 : 2432 - 2442)[1095] : "Primary   "
+    Identifier : (83, 13 - 84, 11 : 2445 - 2467)[1114] : "RegularExp
+           "
+    Identifier : (84, 13 - 85, 11 : 2469 - 2495)[1137] : "IdentifierCall
+           "
+    Identifier : (85, 13 - 86, 11 : 2497 - 2518)[1160] : "Parameter
+           "
+    Identifier : (86, 13 - 87, 11 : 2520 - 2547)[1183] : "AssignmentValue
+           "
+    Identifier : (87, 13 - 87, 24 : 2549 - 2560)[1194] : "Identifier "
+    Identifier : (87, 25 - 87, 35 : 2561 - 2571)[1201] : "LEFTARROW "
+    Identifier : (87, 36 - 88, 11 : 2572 - 2589)[1221] : "COLON
+           "
+    Identifier : (88, 13 - 88, 18 : 2591 - 2596)[1233] : "OPEN "
+    Identifier : (88, 18 - 88, 29 : 2596 - 2607)[1239] : "Expression "
+    Identifier : (88, 29 - 89, 11 : 2607 - 2624)[1257] : "CLOSE
+           "
+    Identifier : (89, 13 - 91, 0 : 2626 - 2635)[1271] : "Literal
+
+"
+Definition : (91, 0 - 97, 0 : 2635 - 2901)[1360] : "# IdentifierCall : パラメータ付の規則呼び出し
+#   例)
+#   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
+#   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
+IdentifierCall <- Identifier COLON OPEN Expression ( COMMA Expression )* CLOSE
+
+"
+    Identifier : (95, 0 - 95, 15 : 2821 - 2836)[1292] : "IdentifierCall "
+    Identifier : (95, 18 - 95, 29 : 2839 - 2850)[1299] : "Identifier "
+    Identifier : (95, 29 - 95, 35 : 2850 - 2856)[1305] : "COLON "
+    Identifier : (95, 35 - 95, 40 : 2856 - 2861)[1311] : "OPEN "
+    Identifier : (95, 40 - 95, 51 : 2861 - 2872)[1317] : "Expression "
+    Identifier : (95, 53 - 95, 59 : 2874 - 2880)[1326] : "COMMA "
+    Identifier : (95, 59 - 95, 70 : 2880 - 2891)[1332] : "Expression "
+    Identifier : (95, 73 - 97, 0 : 2894 - 2901)[1352] : "CLOSE
+
+"
+Definition : (97, 0 - 102, 0 : 2901 - 3071)[1394] : "# AssignmentValue : 代入値呼び出し
+#   例) 下記右側の $x
+#   XmlAnyTag <- "<" Tagname=$x TagAttributes ">" Contents "</" $x Spacing? ">"
+AssignmentValue <- DOLLAR_SIGN ParameterName
+
+"
+    Identifier : (100, 0 - 100, 16 : 3025 - 3041)[1370] : "AssignmentValue "
+    Identifier : (100, 19 - 100, 31 : 3044 - 3056)[1377] : "DOLLAR_SIGN "
+    Identifier : (100, 31 - 102, 0 : 3056 - 3071)[1386] : "ParameterName
+
+"
+Definition : (105, 0 - 108, 0 : 3130 - 3254)[1470] : "# 正規表現, r"[正規表現]" の形式で表す。
+RegularExp <- REGPREFIX ( SingleQuotesLiteral / DoubleQuotesLiteral ) RegularExpOptions Spacing?
+
+"
+    Identifier : (106, 0 - 106, 11 : 3156 - 3167)[1408] : "RegularExp "
+    Identifier : (106, 14 - 106, 24 : 3170 - 3180)[1415] : "REGPREFIX "
+    Identifier : (106, 26 - 106, 46 : 3182 - 3202)[1424] : "SingleQuotesLiteral "
+    Identifier : (106, 48 - 106, 68 : 3204 - 3224)[1435] : "DoubleQuotesLiteral "
+    Identifier : (106, 70 - 106, 88 : 3226 - 3244)[1451] : "RegularExpOptions "
+    Identifier : (106, 88 - 106, 95 : 3244 - 3251)[1455] : "Spacing"
+Definition : (108, 0 - 125, 0 : 3254 - 3976)[1552] : "# 正規表現のオプション :
+#    デフォルトでは、マルチライン re.M を適用しており、
+#    '^', '$' はそれぞれ行頭と改行直前にマッチする。
+#      m : マルチラインを解除
+#           '^', '$' を行頭、および改行直前にマッチさせない。
+#      X : パターンの論理的なセクションを視覚的に区切り、コメントの入力を可能にする。
+#          Number_A <- r"\d +  # the integral part
+#                        \.    # the decimal point
+#                        \d *  # some fractional digits"
+#          Number_B <- r"\d+\.\d*"
+#      A : \w、\W、\b、\B、\d、\D、\s、および \S において、ASCII 文字のみでマッチングを行う。
+#      I : 英大文字・小文字を区別せずにマッチングを行う。
+#          [A-Z] のような表現は小文字ともマッチします。
+#          これは現在のロケールの影響を受けず、Unicode 文字に対しても動作します。
+#      S : 特殊文字 '.' を、改行を含む任意の文字と、とにかくマッチさせます。
+#          このフラグがなければ、 '.' は、改行 以外の 任意の文字とマッチします。
+RegularExpOptions <- ( COLON r"(m|X|A|I|S)+" )?
+"
+    Identifier : (124, 0 - 124, 18 : 3928 - 3946)[1506] : "RegularExpOptions "
+    Identifier : (124, 23 - 124, 29 : 3951 - 3957)[1516] : "COLON "
+Definition : (125, 0 - 126, 0 : 3976 - 4040)[1607] : "Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) Spacing?
+"
+    Identifier : (125, 0 - 125, 11 : 3976 - 3987)[1544] : "Identifier "
+    Identifier : (125, 43 - 125, 53 : 4019 - 4029)[1574] : "ENDOFFILE "
+    Identifier : (125, 55 - 125, 62 : 4031 - 4038)[1588] : "Spacing"
+Definition : (126, 0 - 128, 0 : 4040 - 4092)[1634] : "ParameterName <- r"[a-zA-Z][a-zA-Z0-9_]*" Spacing?
+
+"
+    Identifier : (126, 0 - 126, 14 : 4040 - 4054)[1599] : "ParameterName "
+    Identifier : (126, 42 - 126, 49 : 4082 - 4089)[1619] : "Spacing"
+Definition : (128, 0 - 133, 0 : 4092 - 4267)[1708] : "# リテラル
+# (追加構文)
+#   :I を付加することで、Case-Insensitive にする。
+#   ※「"hoge":I」は hoge, Hoge, hOgE 等にマッチ
+Literal <- ( SingleQuotesLiteral / DoubleQuotesLiteral ) LiteralOption? Spacing?
+"
+    Identifier : (132, 0 - 132, 8 : 4186 - 4194)[1646] : "Literal "
+    Identifier : (132, 13 - 132, 33 : 4199 - 4219)[1656] : "SingleQuotesLiteral "
+    Identifier : (132, 35 - 132, 55 : 4221 - 4241)[1667] : "DoubleQuotesLiteral "
+    Identifier : (132, 57 - 132, 70 : 4243 - 4256)[1681] : "LiteralOption"
+    Identifier : (132, 72 - 132, 79 : 4258 - 4265)[1689] : "Spacing"
+Definition : (133, 0 - 134, 0 : 4267 - 4326)[1743] : "SingleQuotesLiteral <- "'" SingleQuotesLiteralContents "'"
+"
+    Identifier : (133, 0 - 133, 20 : 4267 - 4287)[1700] : "SingleQuotesLiteral "
+    Identifier : (133, 27 - 133, 55 : 4294 - 4322)[1720] : "SingleQuotesLiteralContents "
+Definition : (134, 0 - 135, 0 : 4326 - 4374)[1766] : "SingleQuotesLiteralContents <- r"(\\.|[^'\\])*"
+"
+    Identifier : (134, 0 - 134, 28 : 4326 - 4354)[1735] : "SingleQuotesLiteralContents "
+Definition : (135, 0 - 136, 0 : 4374 - 4433)[1801] : "DoubleQuotesLiteral <- '"' DoubleQuotesLiteralContents '"'
+"
+    Identifier : (135, 0 - 135, 20 : 4374 - 4394)[1758] : "DoubleQuotesLiteral "
+    Identifier : (135, 27 - 135, 55 : 4401 - 4429)[1778] : "DoubleQuotesLiteralContents "
+Definition : (136, 0 - 137, 0 : 4433 - 4481)[1824] : "DoubleQuotesLiteralContents <- r'(\\.|[^"\\])*'
+"
+    Identifier : (136, 0 - 136, 28 : 4433 - 4461)[1793] : "DoubleQuotesLiteralContents "
+Definition : (137, 0 - 139, 0 : 4481 - 4509)[1847] : "LiteralOption <- COLON "I"
+
+"
+    Identifier : (137, 0 - 137, 14 : 4481 - 4495)[1816] : "LiteralOption "
+    Identifier : (137, 17 - 137, 23 : 4498 - 4504)[1828] : "COLON "
+Definition : (139, 0 - 142, 0 : 4509 - 4549)[1883] : "# 数字
+Number <- r"[1-9][0-9]*" Spacing?
+
+"
+    Identifier : (140, 0 - 140, 7 : 4514 - 4521)[1853] : "Number "
+    Identifier : (140, 25 - 140, 32 : 4539 - 4546)[1868] : "Spacing"
+Definition : (142, 0 - 145, 0 : 4549 - 4598)[1923] : "# PEG に追加： 終端を示す記号
+ENDOFFILE <- '_EOF' Spacing?
+
+"
+    Identifier : (143, 0 - 143, 10 : 4568 - 4578)[1889] : "ENDOFFILE "
+    Identifier : (143, 20 - 143, 27 : 4588 - 4595)[1902] : "Spacing"
+Definition : (145, 0 - 146, 0 : 4598 - 4625)[1952] : "LEFTARROW <- '<-' Spacing?
+"
+    Identifier : (145, 0 - 145, 10 : 4598 - 4608)[1915] : "LEFTARROW "
+    Identifier : (145, 18 - 145, 25 : 4616 - 4623)[1933] : "Spacing"
+Definition : (146, 0 - 147, 0 : 4625 - 4647)[1981] : "SLASH <- '/' Spacing?
+"
+    Identifier : (146, 0 - 146, 6 : 4625 - 4631)[1944] : "SLASH "
+    Identifier : (146, 13 - 146, 20 : 4638 - 4645)[1962] : "Spacing"
+Definition : (147, 0 - 148, 0 : 4647 - 4673)[2010] : "AMPERSAND <- '&' Spacing?
+"
+    Identifier : (147, 0 - 147, 10 : 4647 - 4657)[1973] : "AMPERSAND "
+    Identifier : (147, 17 - 147, 24 : 4664 - 4671)[1991] : "Spacing"
+Definition : (148, 0 - 149, 0 : 4673 - 4701)[2039] : "EXCLAMATION <- '!' Spacing?
+"
+    Identifier : (148, 0 - 148, 12 : 4673 - 4685)[2002] : "EXCLAMATION "
+    Identifier : (148, 19 - 148, 26 : 4692 - 4699)[2020] : "Spacing"
+Definition : (149, 0 - 151, 0 : 4701 - 4737)[2070] : "MUCH_GREATER_THAN <- '>>' Spacing?
+
+"
+    Identifier : (149, 0 - 149, 18 : 4701 - 4719)[2031] : "MUCH_GREATER_THAN "
+    Identifier : (149, 26 - 149, 33 : 4727 - 4734)[2049] : "Spacing"
+Definition : (151, 0 - 152, 0 : 4737 - 4762)[2099] : "QUESTION <- '?' Spacing?
+"
+    Identifier : (151, 0 - 151, 9 : 4737 - 4746)[2062] : "QUESTION "
+    Identifier : (151, 16 - 151, 23 : 4753 - 4760)[2080] : "Spacing"
+Definition : (152, 0 - 153, 0 : 4762 - 4783)[2128] : "STAR <- '*' Spacing?
+"
+    Identifier : (152, 0 - 152, 5 : 4762 - 4767)[2091] : "STAR "
+    Identifier : (152, 12 - 152, 19 : 4774 - 4781)[2109] : "Spacing"
+Definition : (153, 0 - 154, 0 : 4783 - 4804)[2157] : "PLUS <- '+' Spacing?
+"
+    Identifier : (153, 0 - 153, 5 : 4783 - 4788)[2120] : "PLUS "
+    Identifier : (153, 12 - 153, 19 : 4795 - 4802)[2138] : "Spacing"
+Definition : (154, 0 - 155, 0 : 4804 - 4825)[2186] : "OPEN <- '(' Spacing?
+"
+    Identifier : (154, 0 - 154, 5 : 4804 - 4809)[2149] : "OPEN "
+    Identifier : (154, 12 - 154, 19 : 4816 - 4823)[2167] : "Spacing"
+Definition : (155, 0 - 156, 0 : 4825 - 4847)[2215] : "CLOSE <- ')' Spacing?
+"
+    Identifier : (155, 0 - 155, 6 : 4825 - 4831)[2178] : "CLOSE "
+    Identifier : (155, 13 - 155, 20 : 4838 - 4845)[2196] : "Spacing"
+Definition : (156, 0 - 157, 0 : 4847 - 4874)[2245] : "CURL_OPEN <- '{'  Spacing?
+"
+    Identifier : (156, 0 - 156, 10 : 4847 - 4857)[2207] : "CURL_OPEN "
+    Identifier : (156, 18 - 156, 25 : 4865 - 4872)[2226] : "Spacing"
+Definition : (157, 0 - 158, 0 : 4874 - 4901)[2274] : "CURL_CLOSE <- '}' Spacing?
+"
+    Identifier : (157, 0 - 157, 11 : 4874 - 4885)[2237] : "CURL_CLOSE "
+    Identifier : (157, 18 - 157, 25 : 4892 - 4899)[2255] : "Spacing"
+Definition : (158, 0 - 159, 0 : 4901 - 4923)[2303] : "COLON <- ':' Spacing?
+"
+    Identifier : (158, 0 - 158, 6 : 4901 - 4907)[2266] : "COLON "
+    Identifier : (158, 13 - 158, 20 : 4914 - 4921)[2284] : "Spacing"
+Definition : (159, 0 - 160, 0 : 4923 - 4945)[2332] : "COMMA <- ',' Spacing?
+"
+    Identifier : (159, 0 - 159, 6 : 4923 - 4929)[2295] : "COMMA "
+    Identifier : (159, 13 - 159, 20 : 4936 - 4943)[2313] : "Spacing"
+Definition : (160, 0 - 161, 0 : 4945 - 4966)[2353] : "COMMERCIAL_AT <- '@'
+"
+    Identifier : (160, 0 - 160, 14 : 4945 - 4959)[2324] : "COMMERCIAL_AT "
+Definition : (161, 0 - 162, 0 : 4966 - 4985)[2374] : "DOLLAR_SIGN <- '$'
+"
+    Identifier : (161, 0 - 161, 12 : 4966 - 4978)[2345] : "DOLLAR_SIGN "
+Definition : (162, 0 - 163, 0 : 4985 - 5007)[2403] : "EQUAL <- '=' Spacing?
+"
+    Identifier : (162, 0 - 162, 6 : 4985 - 4991)[2366] : "EQUAL "
+    Identifier : (162, 13 - 162, 20 : 4998 - 5005)[2384] : "Spacing"
+Definition : (163, 0 - 165, 0 : 5007 - 5025)[2426] : "REGPREFIX <- 'r'
+
+"
+    Identifier : (163, 0 - 163, 10 : 5007 - 5017)[2395] : "REGPREFIX "
+Definition : (165, 0 - 167, 0 : 5025 - 5044)[2449] : "Spacing <- Space+
+
+"
+    Identifier : (165, 0 - 165, 8 : 5025 - 5033)[2418] : "Spacing "
+    Identifier : (165, 11 - 165, 16 : 5036 - 5041)[2428] : "Space"
+Definition : (167, 0 - 168, 0 : 5044 - 5081)[2486] : "Comment <- '#' r"[^\r\n]*" EndOfLine
+"
+    Identifier : (167, 0 - 167, 8 : 5044 - 5052)[2441] : "Comment "
+    Identifier : (167, 27 - 168, 0 : 5071 - 5081)[2472] : "EndOfLine
+"
+Definition : (168, 0 - 170, 0 : 5081 - 5114)[2534] : "Space <- ' ' / '\t' / EndOfLine
+
+"
+    Identifier : (168, 0 - 168, 6 : 5081 - 5087)[2478] : "Space "
+    Identifier : (168, 22 - 170, 0 : 5103 - 5114)[2519] : "EndOfLine
+
+"
+Definition : (170, 0 - 171, 1 : 5114 - 5142)[2553] : "EndOfLine <- r"\r\n|\n|\r"
+
+"
+    Identifier : (170, 0 - 170, 10 : 5114 - 5124)[2525] : "EndOfLine "

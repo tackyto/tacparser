@@ -1,0 +1,5 @@
+Recursion <- ALoop _EOF
+
+ALoop <- A*
+
+A <- r"A*"

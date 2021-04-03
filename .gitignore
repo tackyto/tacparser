@@ -1,0 +1,6 @@
+build/
+dist/
+tacparser.egg-info/
+.vscode/
+__pycache__/
+log.log*
