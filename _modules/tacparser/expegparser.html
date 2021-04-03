@@ -1,0 +1,963 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tacparser.expegparser &mdash; tacparser 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> tacparser
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tacparser.html">tacparser package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tacparser</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tacparser.expegparser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tacparser.expegparser</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">tacparser</span> <span class="kn">import</span> <span class="n">Parser</span>
+<span class="kn">import</span> <span class="nn">regex</span>
+
+
+<div class="viewcode-block" id="ExPegParser"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser">[docs]</a><span class="k">class</span> <span class="nc">ExPegParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Parser</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Parser</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_expeg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toptypename</span> <span class="o">=</span> <span class="s2">&quot;ExPeg&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">def_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ExPeg&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_expeg</span><span class="p">,</span>
+                         <span class="s2">&quot;PegComment&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_pegcomment</span><span class="p">,</span>
+                         <span class="s2">&quot;RootDefinition&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_rootdefinition</span><span class="p">,</span>
+                         <span class="s2">&quot;Definition&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_definition</span><span class="p">,</span>
+                         <span class="s2">&quot;DefinitionExpression&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_definitionexpression</span><span class="p">,</span>
+                         <span class="s2">&quot;SubDefinition&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_subdefinition</span><span class="p">,</span>
+                         <span class="s2">&quot;DefinitionComment&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_definitioncomment</span><span class="p">,</span>
+                         <span class="s2">&quot;DefinitionIdentifier&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_definitionidentifier</span><span class="p">,</span>
+                         <span class="s2">&quot;ParameterList&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_parameterlist</span><span class="p">,</span>
+                         <span class="s2">&quot;Parameter&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_parameter</span><span class="p">,</span>
+                         <span class="s2">&quot;Expression&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_expression</span><span class="p">,</span>
+                         <span class="s2">&quot;Selection&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_selection</span><span class="p">,</span>
+                         <span class="s2">&quot;Sequence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_sequence</span><span class="p">,</span>
+                         <span class="s2">&quot;MultiSequence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_multisequence</span><span class="p">,</span>
+                         <span class="s2">&quot;SingleSequence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_singlesequence</span><span class="p">,</span>
+                         <span class="s2">&quot;Prefix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_prefix</span><span class="p">,</span>
+                         <span class="s2">&quot;AndPrefix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_andprefix</span><span class="p">,</span>
+                         <span class="s2">&quot;NotPrefix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_notprefix</span><span class="p">,</span>
+                         <span class="s2">&quot;SkipPrefix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_skipprefix</span><span class="p">,</span>
+                         <span class="s2">&quot;Suffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_suffix</span><span class="p">,</span>
+                         <span class="s2">&quot;QuestionSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_questionsuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;StarSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_starsuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;PlusSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_plussuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;RepeatSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_repeatsuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;RepeatNum&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_repeatnum</span><span class="p">,</span>
+                         <span class="s2">&quot;MinRepeat&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_minrepeat</span><span class="p">,</span>
+                         <span class="s2">&quot;MaxRepeat&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_maxrepeat</span><span class="p">,</span>
+                         <span class="s2">&quot;RepeatCnt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_repeatcnt</span><span class="p">,</span>
+                         <span class="s2">&quot;Primary&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_primary</span><span class="p">,</span>
+                         <span class="s2">&quot;IdentifierCall&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_identifiercall</span><span class="p">,</span>
+                         <span class="s2">&quot;AssignmentValue&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_assignmentvalue</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroDefinition&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macrodefinition</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroExpression&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroexpression</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroSelection&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroselection</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroSequence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macrosequence</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroMultiSequence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macromultisequence</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroSingleSequence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macrosinglesequence</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroTerm&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroterm</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroPrefix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroprefix</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroAndPrefix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroandprefix</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroNotPrefix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macronotprefix</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macrosuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroQuestionSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroquestionsuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroStarSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macrostarsuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroPlusSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroplussuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroRepeatSuffix&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macrorepeatsuffix</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroPrimary&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroprimary</span><span class="p">,</span>
+                         <span class="s2">&quot;RegularExp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_regularexp</span><span class="p">,</span>
+                         <span class="s2">&quot;RegularExpOptions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_regularexpoptions</span><span class="p">,</span>
+                         <span class="s2">&quot;Identifier&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_identifier</span><span class="p">,</span>
+                         <span class="s2">&quot;MacroIdentifier&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_macroidentifier</span><span class="p">,</span>
+                         <span class="s2">&quot;ParameterName&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_parametername</span><span class="p">,</span>
+                         <span class="s2">&quot;Literal&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_literal</span><span class="p">,</span>
+                         <span class="s2">&quot;SingleQuotesLiteral&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_singlequotesliteral</span><span class="p">,</span>
+                         <span class="s2">&quot;SingleQuotesLiteralContents&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_singlequotesliteralcontents</span><span class="p">,</span>
+                         <span class="s2">&quot;DoubleQuotesLiteral&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_doublequotesliteral</span><span class="p">,</span>
+                         <span class="s2">&quot;DoubleQuotesLiteralContents&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_doublequotesliteralcontents</span><span class="p">,</span>
+                         <span class="s2">&quot;LiteralOption&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_literaloption</span><span class="p">,</span>
+                         <span class="s2">&quot;Number&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_number</span><span class="p">,</span>
+                         <span class="s2">&quot;ENDOFFILE&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_endoffile</span><span class="p">,</span>
+                         <span class="s2">&quot;LEFTARROW&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_leftarrow</span><span class="p">,</span>
+                         <span class="s2">&quot;SUB_LEFTARROW&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_sub_leftarrow</span><span class="p">,</span>
+                         <span class="s2">&quot;SLASH&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_slash</span><span class="p">,</span>
+                         <span class="s2">&quot;AMPERSAND&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_ampersand</span><span class="p">,</span>
+                         <span class="s2">&quot;EXCLAMATION&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_exclamation</span><span class="p">,</span>
+                         <span class="s2">&quot;MUCH_GREATER_THAN&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_much_greater_than</span><span class="p">,</span>
+                         <span class="s2">&quot;QUESTION&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_question</span><span class="p">,</span>
+                         <span class="s2">&quot;STAR&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_star</span><span class="p">,</span>
+                         <span class="s2">&quot;PLUS&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_plus</span><span class="p">,</span>
+                         <span class="s2">&quot;OPEN&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_open</span><span class="p">,</span>
+                         <span class="s2">&quot;CLOSE&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_close</span><span class="p">,</span>
+                         <span class="s2">&quot;CURL_OPEN&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_curl_open</span><span class="p">,</span>
+                         <span class="s2">&quot;CURL_CLOSE&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_curl_close</span><span class="p">,</span>
+                         <span class="s2">&quot;COLON&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_colon</span><span class="p">,</span>
+                         <span class="s2">&quot;COMMA&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_comma</span><span class="p">,</span>
+                         <span class="s2">&quot;COMMERCIAL_AT&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_commercial_at</span><span class="p">,</span>
+                         <span class="s2">&quot;DOLLAR_SIGN&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_dollar_sign</span><span class="p">,</span>
+                         <span class="s2">&quot;EQUAL&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_equal</span><span class="p">,</span>
+                         <span class="s2">&quot;REGPREFIX&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_regprefix</span><span class="p">,</span>
+                         <span class="s2">&quot;Spacing&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span>
+                         <span class="s2">&quot;Comment&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_comment</span><span class="p">,</span>
+                         <span class="s2">&quot;Space&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_space</span><span class="p">,</span>
+                         <span class="s2">&quot;EndOfLine&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_endofline</span><span class="p">}</span>
+
+<div class="viewcode-block" id="ExPegParser.p_expeg"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_expeg">[docs]</a>    <span class="k">def</span> <span class="nf">p_expeg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # 構文解析のルート</span>
+        <span class="c1"># ExPeg    &lt;- Spacing? ( PegComment? RootDefinition )</span>
+        <span class="c1">#             ( PegComment / Definition / SubDefinition / MacroDefinition )+ _EOF</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_pegcomment</span><span class="p">,</span> <span class="s2">&quot;PegComment&quot;</span><span class="p">)),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_rootdefinition</span><span class="p">,</span> <span class="s2">&quot;RootDefinition&quot;</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_pegcomment</span><span class="p">,</span> <span class="s2">&quot;PegComment&quot;</span><span class="p">),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definition</span><span class="p">,</span> <span class="s2">&quot;Definition&quot;</span><span class="p">),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_subdefinition</span><span class="p">,</span> <span class="s2">&quot;SubDefinition&quot;</span><span class="p">),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrodefinition</span><span class="p">,</span> <span class="s2">&quot;MacroDefinition&quot;</span><span class="p">)</span>
+                                             <span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eof</span><span class="p">,</span> <span class="s2">&quot;_EOF&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_pegcomment"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_pegcomment">[docs]</a>    <span class="k">def</span> <span class="nf">p_pegcomment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # PEGファイル内のコメント</span>
+        <span class="c1"># PegComment &lt;- Comment+ Spacing</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_comment</span><span class="p">,</span> <span class="s2">&quot;Comment&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_rootdefinition"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_rootdefinition">[docs]</a>    <span class="k">def</span> <span class="nf">p_rootdefinition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # RootDefinition : 構文全体の定義、文法は通常の定義と同じ</span>
+        <span class="c1"># RootDefinition &lt;- Definition</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definition</span><span class="p">,</span> <span class="s2">&quot;Definition&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_definition"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_definition">[docs]</a>    <span class="k">def</span> <span class="nf">p_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # Definition : １つの構文規則</span>
+        <span class="c1"># #   DefinitionComment : 構文規則の直前に書かれたコメント</span>
+        <span class="c1"># #   DefinitionIdentifier : 構文規則名, PEGの規則に加えてパラメータの受け取りを許可</span>
+        <span class="c1"># Definition &lt;- DefinitionComment? DefinitionIdentifier Spacing? LEFTARROW DefinitionExpression</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definitioncomment</span><span class="p">,</span> <span class="s2">&quot;DefinitionComment&quot;</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definitionidentifier</span><span class="p">,</span> <span class="s2">&quot;DefinitionIdentifier&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_leftarrow</span><span class="p">,</span> <span class="s2">&quot;LEFTARROW&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definitionexpression</span><span class="p">,</span> <span class="s2">&quot;DefinitionExpression&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_definitionexpression"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_definitionexpression">[docs]</a>    <span class="k">def</span> <span class="nf">p_definitionexpression</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># DefinitionExpression &lt;- Expression</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_expression</span><span class="p">,</span> <span class="s2">&quot;Expression&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_subdefinition"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_subdefinition">[docs]</a>    <span class="k">def</span> <span class="nf">p_subdefinition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # SubDefinition : 多重解析のための１つの構文規則</span>
+        <span class="c1"># #   （多重解析の例）</span>
+        <span class="c1"># #   A &lt;- B</span>
+        <span class="c1"># #   A &lt;-- C</span>
+        <span class="c1"># #     上記のように同名の規則を記載できる。この時、１度目の解析は A &lt;- B で行い、</span>
+        <span class="c1"># #     一度ASTを作成したのち、Aで取得した文字列を再度 A &lt;-- C で解析してASTを再作成する。</span>
+        <span class="c1"># #     再帰呼び出しがあった場合は、それぞれ１回目、２回目の規則を用いる。</span>
+        <span class="c1"># #     また、多重解析はファイルの上部に書かれた各SubDefinitionから順に適用する。</span>
+        <span class="c1"># SubDefinition &lt;- DefinitionComment? DefinitionIdentifier Spacing? SUB_LEFTARROW DefinitionExpression</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definitioncomment</span><span class="p">,</span> <span class="s2">&quot;DefinitionComment&quot;</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definitionidentifier</span><span class="p">,</span> <span class="s2">&quot;DefinitionIdentifier&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_sub_leftarrow</span><span class="p">,</span> <span class="s2">&quot;SUB_LEFTARROW&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definitionexpression</span><span class="p">,</span> <span class="s2">&quot;DefinitionExpression&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_definitioncomment"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_definitioncomment">[docs]</a>    <span class="k">def</span> <span class="nf">p_definitioncomment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # 構文規則のコメント</span>
+        <span class="c1"># DefinitionComment &lt;- Comment+</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_comment</span><span class="p">,</span> <span class="s2">&quot;Comment&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_definitionidentifier"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_definitionidentifier">[docs]</a>    <span class="k">def</span> <span class="nf">p_definitionidentifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # DefinitionIdentifier : 構文規則名, PEGの規則に加えてパラメータの受け取りを許可</span>
+        <span class="c1"># #   ParameterList (未実装) : パラメータの受け取り</span>
+        <span class="c1"># #   ※パラメータ受け取りの記載例</span>
+        <span class="c1"># #   HtmlStartTag:(@p) &lt;- &quot;&lt;&quot; @p Spacing HtmlTagAttributes &quot;&gt;&quot;</span>
+        <span class="c1"># #   HtmlLinkTag &lt;- HtmlStartTag:( &quot;A&quot; / &quot;a&quot; ) HtmlContents HtmlEndTag:( &quot;A&quot; / &quot;a&quot; )</span>
+        <span class="c1"># DefinitionIdentifier &lt;- Identifier ParameterList / Identifier</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_identifier</span><span class="p">,</span> <span class="s2">&quot;Identifier&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_parameterlist</span><span class="p">,</span> <span class="s2">&quot;ParameterList&quot;</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_identifier</span><span class="p">,</span> <span class="s2">&quot;Identifier&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_parameterlist"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_parameterlist">[docs]</a>    <span class="k">def</span> <span class="nf">p_parameterlist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ParameterList &lt;- COLON OPEN Parameter ( COMMA Parameter )* CLOSE</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_colon</span><span class="p">,</span> <span class="s2">&quot;COLON&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_open</span><span class="p">,</span> <span class="s2">&quot;OPEN&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_parameter</span><span class="p">,</span> <span class="s2">&quot;Parameter&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_comma</span><span class="p">,</span> <span class="s2">&quot;COMMA&quot;</span><span class="p">),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_parameter</span><span class="p">,</span> <span class="s2">&quot;Parameter&quot;</span><span class="p">)</span>
+                                             <span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_close</span><span class="p">,</span> <span class="s2">&quot;CLOSE&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_parameter"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_parameter">[docs]</a>    <span class="k">def</span> <span class="nf">p_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Parameter &lt;- COMMERCIAL_AT ParameterName</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_commercial_at</span><span class="p">,</span> <span class="s2">&quot;COMMERCIAL_AT&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_parametername</span><span class="p">,</span> <span class="s2">&quot;ParameterName&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_expression"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_expression">[docs]</a>    <span class="k">def</span> <span class="nf">p_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # Expression : 構文規則の本体</span>
+        <span class="c1"># Expression &lt;- Selection / Sequence</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_selection</span><span class="p">,</span> <span class="s2">&quot;Selection&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_sequence</span><span class="p">,</span> <span class="s2">&quot;Sequence&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_selection"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_selection">[docs]</a>    <span class="k">def</span> <span class="nf">p_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Selection &lt;- Sequence (SLASH Sequence)+</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_sequence</span><span class="p">,</span> <span class="s2">&quot;Sequence&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_slash</span><span class="p">,</span> <span class="s2">&quot;SLASH&quot;</span><span class="p">),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_sequence</span><span class="p">,</span> <span class="s2">&quot;Sequence&quot;</span><span class="p">)</span>
+                                             <span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_sequence"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">p_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Sequence   &lt;- MultiSequence / SingleSequence</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_multisequence</span><span class="p">,</span> <span class="s2">&quot;MultiSequence&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_singlesequence</span><span class="p">,</span> <span class="s2">&quot;SingleSequence&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_multisequence"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_multisequence">[docs]</a>    <span class="k">def</span> <span class="nf">p_multisequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MultiSequence &lt;- Prefix Prefix+</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_prefix</span><span class="p">,</span> <span class="s2">&quot;Prefix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_prefix</span><span class="p">,</span> <span class="s2">&quot;Prefix&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_singlesequence"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_singlesequence">[docs]</a>    <span class="k">def</span> <span class="nf">p_singlesequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># SingleSequence &lt;- Prefix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_prefix</span><span class="p">,</span> <span class="s2">&quot;Prefix&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_prefix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_prefix">[docs]</a>    <span class="k">def</span> <span class="nf">p_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # Prefix : 読み取り方法の表現</span>
+        <span class="c1"># #   Andprefix : 先読み &amp;Xxxxx</span>
+        <span class="c1"># #   NotPrefix : 否定先読み !Xxxxx</span>
+        <span class="c1"># #   Suffix : 通常の読み取り</span>
+        <span class="c1"># #   (追加構文)</span>
+        <span class="c1"># #   SkipPrefix : 読み飛ばし &gt;&gt;Xxxxx</span>
+        <span class="c1"># #                通常の読み取りと同じだが、最後の解析木にノードを登録しない。</span>
+        <span class="c1"># #                （メモ化のため、ノード自体は作成する）</span>
+        <span class="c1"># Prefix    &lt;- AndPrefix / NotPrefix / SkipPrefix / Suffix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_andprefix</span><span class="p">,</span> <span class="s2">&quot;AndPrefix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_notprefix</span><span class="p">,</span> <span class="s2">&quot;NotPrefix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_skipprefix</span><span class="p">,</span> <span class="s2">&quot;SkipPrefix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_suffix</span><span class="p">,</span> <span class="s2">&quot;Suffix&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_andprefix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_andprefix">[docs]</a>    <span class="k">def</span> <span class="nf">p_andprefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># AndPrefix &lt;- AMPERSAND Suffix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_ampersand</span><span class="p">,</span> <span class="s2">&quot;AMPERSAND&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_suffix</span><span class="p">,</span> <span class="s2">&quot;Suffix&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_notprefix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_notprefix">[docs]</a>    <span class="k">def</span> <span class="nf">p_notprefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># NotPrefix &lt;- EXCLAMATION Suffix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_exclamation</span><span class="p">,</span> <span class="s2">&quot;EXCLAMATION&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_suffix</span><span class="p">,</span> <span class="s2">&quot;Suffix&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_skipprefix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_skipprefix">[docs]</a>    <span class="k">def</span> <span class="nf">p_skipprefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># SkipPrefix &lt;- MUCH_GREATER_THAN Suffix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_much_greater_than</span><span class="p">,</span> <span class="s2">&quot;MUCH_GREATER_THAN&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_suffix</span><span class="p">,</span> <span class="s2">&quot;Suffix&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_suffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_suffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_suffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # Suffix:: 読み込み回数に関する表現</span>
+        <span class="c1"># #   QuestionSuffix : 省略可能, :: Xxxxx?</span>
+        <span class="c1"># #   StarSuffix : ゼロ個以上の繰り返し :: Xxxxx*</span>
+        <span class="c1"># #   PlusSuffix : １回以上の繰り返し :: Xxxxx+</span>
+        <span class="c1"># #   Primary : 繰り返しなし</span>
+        <span class="c1"># #   (追加構文)</span>
+        <span class="c1"># #   RepeatSuffix : n回繰り返し :: Xxxxx{n}</span>
+        <span class="c1"># #                  n回以上m回以下の繰り返し :: Xxxxx{n,m}</span>
+        <span class="c1"># Suffix    &lt;- QuestionSuffix / StarSuffix / PlusSuffix / RepeatSuffix / Primary</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_questionsuffix</span><span class="p">,</span> <span class="s2">&quot;QuestionSuffix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_starsuffix</span><span class="p">,</span> <span class="s2">&quot;StarSuffix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_plussuffix</span><span class="p">,</span> <span class="s2">&quot;PlusSuffix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_repeatsuffix</span><span class="p">,</span> <span class="s2">&quot;RepeatSuffix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_primary</span><span class="p">,</span> <span class="s2">&quot;Primary&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_questionsuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_questionsuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_questionsuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># QuestionSuffix &lt;- Primary QUESTION</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_primary</span><span class="p">,</span> <span class="s2">&quot;Primary&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_question</span><span class="p">,</span> <span class="s2">&quot;QUESTION&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_starsuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_starsuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_starsuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># StarSuffix &lt;- Primary STAR</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_primary</span><span class="p">,</span> <span class="s2">&quot;Primary&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_star</span><span class="p">,</span> <span class="s2">&quot;STAR&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_plussuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_plussuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_plussuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># PlusSuffix &lt;- Primary PLUS</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_primary</span><span class="p">,</span> <span class="s2">&quot;Primary&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_plus</span><span class="p">,</span> <span class="s2">&quot;PLUS&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_repeatsuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_repeatsuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_repeatsuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># RepeatSuffix &lt;- Primary RepeatNum</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_primary</span><span class="p">,</span> <span class="s2">&quot;Primary&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_repeatnum</span><span class="p">,</span> <span class="s2">&quot;RepeatNum&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_repeatnum"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_repeatnum">[docs]</a>    <span class="k">def</span> <span class="nf">p_repeatnum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># RepeatNum &lt;- CURL_OPEN MinRepeat COMMA MaxRepeat CURL_CLOSE</span>
+        <span class="c1">#            / CURL_OPEN RepeatCnt CURL_CLOSE</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_curl_open</span><span class="p">,</span> <span class="s2">&quot;CURL_OPEN&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_minrepeat</span><span class="p">,</span> <span class="s2">&quot;MinRepeat&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_comma</span><span class="p">,</span> <span class="s2">&quot;COMMA&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_maxrepeat</span><span class="p">,</span> <span class="s2">&quot;MaxRepeat&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_curl_close</span><span class="p">,</span> <span class="s2">&quot;CURL_CLOSE&quot;</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_curl_open</span><span class="p">,</span> <span class="s2">&quot;CURL_OPEN&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_repeatcnt</span><span class="p">,</span> <span class="s2">&quot;RepeatCnt&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_curl_close</span><span class="p">,</span> <span class="s2">&quot;CURL_CLOSE&quot;</span><span class="p">)</span>
+                                   <span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_minrepeat"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_minrepeat">[docs]</a>    <span class="k">def</span> <span class="nf">p_minrepeat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MinRepeat &lt;- Number</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_number</span><span class="p">,</span> <span class="s2">&quot;Number&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_maxrepeat"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_maxrepeat">[docs]</a>    <span class="k">def</span> <span class="nf">p_maxrepeat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MaxRepeat &lt;- Number</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_number</span><span class="p">,</span> <span class="s2">&quot;Number&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_repeatcnt"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_repeatcnt">[docs]</a>    <span class="k">def</span> <span class="nf">p_repeatcnt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># RepeatCnt &lt;- Number</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_number</span><span class="p">,</span> <span class="s2">&quot;Number&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_primary"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_primary">[docs]</a>    <span class="k">def</span> <span class="nf">p_primary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # Primary :: 構文解析の１単位を示す表現</span>
+        <span class="c1"># #   Identifier : 非終端記号</span>
+        <span class="c1"># #   Expression : サブ構文</span>
+        <span class="c1"># #   Literal : リテラル</span>
+        <span class="c1"># #   (追加構文)</span>
+        <span class="c1"># #   RegularExp : 正規表現 r&quot;[a-z0-9]|b|c&quot; など</span>
+        <span class="c1"># #   IdentifierCall : パラメータ付の規則呼び出し</span>
+        <span class="c1"># Primary   &lt;- RegularExp</span>
+        <span class="c1">#            / IdentifierCall</span>
+        <span class="c1">#            / Parameter</span>
+        <span class="c1">#            / AssignmentValue</span>
+        <span class="c1">#            / Identifier !LEFTARROW !COLON !SUB_LEFTARROW</span>
+        <span class="c1">#            / MacroIdentifier !LEFTARROW !COLON !SUB_LEFTARROW</span>
+        <span class="c1">#            / OPEN Expression CLOSE</span>
+        <span class="c1">#            / Literal</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_regularexp</span><span class="p">,</span> <span class="s2">&quot;RegularExp&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_identifiercall</span><span class="p">,</span> <span class="s2">&quot;IdentifierCall&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_parameter</span><span class="p">,</span> <span class="s2">&quot;Parameter&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_assignmentvalue</span><span class="p">,</span> <span class="s2">&quot;AssignmentValue&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_identifier</span><span class="p">,</span> <span class="s2">&quot;Identifier&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_leftarrow</span><span class="p">,</span> <span class="s2">&quot;LEFTARROW&quot;</span><span class="p">)),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_colon</span><span class="p">,</span> <span class="s2">&quot;COLON&quot;</span><span class="p">)),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_sub_leftarrow</span><span class="p">,</span> <span class="s2">&quot;SUB_LEFTARROW&quot;</span><span class="p">))</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroidentifier</span><span class="p">,</span> <span class="s2">&quot;MacroIdentifier&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_leftarrow</span><span class="p">,</span> <span class="s2">&quot;LEFTARROW&quot;</span><span class="p">)),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_colon</span><span class="p">,</span> <span class="s2">&quot;COLON&quot;</span><span class="p">)),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_sub_leftarrow</span><span class="p">,</span> <span class="s2">&quot;SUB_LEFTARROW&quot;</span><span class="p">))</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_open</span><span class="p">,</span> <span class="s2">&quot;OPEN&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_expression</span><span class="p">,</span> <span class="s2">&quot;Expression&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_close</span><span class="p">,</span> <span class="s2">&quot;CLOSE&quot;</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_literal</span><span class="p">,</span> <span class="s2">&quot;Literal&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_identifiercall"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_identifiercall">[docs]</a>    <span class="k">def</span> <span class="nf">p_identifiercall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # IdentifierCall : パラメータ付の規則呼び出し</span>
+        <span class="c1"># #   例)</span>
+        <span class="c1"># #   HtmlStartTag:(@p) &lt;- &quot;&lt;&quot; @p Spacing HtmlTagAttributes &quot;&gt;&quot;</span>
+        <span class="c1"># #   HtmlLinkTag &lt;- HtmlStartTag:( &quot;A&quot; / &quot;a&quot; ) HtmlContents HtmlEndTag:( &quot;A&quot; / &quot;a&quot; )</span>
+        <span class="c1"># IdentifierCall &lt;- Identifier COLON OPEN Expression ( COMMA Expression )* CLOSE</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_identifier</span><span class="p">,</span> <span class="s2">&quot;Identifier&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_colon</span><span class="p">,</span> <span class="s2">&quot;COLON&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_open</span><span class="p">,</span> <span class="s2">&quot;OPEN&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_expression</span><span class="p">,</span> <span class="s2">&quot;Expression&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_comma</span><span class="p">,</span> <span class="s2">&quot;COMMA&quot;</span><span class="p">),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_expression</span><span class="p">,</span> <span class="s2">&quot;Expression&quot;</span><span class="p">)</span>
+                                             <span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_close</span><span class="p">,</span> <span class="s2">&quot;CLOSE&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_assignmentvalue"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_assignmentvalue">[docs]</a>    <span class="k">def</span> <span class="nf">p_assignmentvalue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # AssignmentValue : 代入値呼び出し</span>
+        <span class="c1"># #   例) 下記右側の $x</span>
+        <span class="c1"># #   XmlAnyTag &lt;- &quot;&lt;&quot; Tagname=$x TagAttributes &quot;&gt;&quot; Contents &quot;&lt;/&quot; $x Spacing? &quot;&gt;&quot;</span>
+        <span class="c1"># AssignmentValue &lt;- DOLLAR_SIGN ParameterName</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_dollar_sign</span><span class="p">,</span> <span class="s2">&quot;DOLLAR_SIGN&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_parametername</span><span class="p">,</span> <span class="s2">&quot;ParameterName&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macrodefinition"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macrodefinition">[docs]</a>    <span class="k">def</span> <span class="nf">p_macrodefinition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # Macro（追加構文） : マクロ</span>
+        <span class="c1"># #   構文解析時にノードを作成せず、呼び出した規則の一部として展開する。</span>
+        <span class="c1"># #   定義には他のマクロおよび規則を利用できないが、連続、選択、suffixおよびprefixは利用できる。</span>
+        <span class="c1"># MacroDefinition &lt;- DefinitionComment? MacroIdentifier Spacing? LEFTARROW MacroExpression</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_definitioncomment</span><span class="p">,</span> <span class="s2">&quot;DefinitionComment&quot;</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroidentifier</span><span class="p">,</span> <span class="s2">&quot;MacroIdentifier&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_leftarrow</span><span class="p">,</span> <span class="s2">&quot;LEFTARROW&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroexpression</span><span class="p">,</span> <span class="s2">&quot;MacroExpression&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macroexpression"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroexpression">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroexpression</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroExpression     &lt;- MacroSelection / MacroSequence</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroselection</span><span class="p">,</span> <span class="s2">&quot;MacroSelection&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrosequence</span><span class="p">,</span> <span class="s2">&quot;MacroSequence&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macroselection"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroselection">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroselection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroSelection      &lt;- MacroSequence ( SLASH MacroSequence )+</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrosequence</span><span class="p">,</span> <span class="s2">&quot;MacroSequence&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_slash</span><span class="p">,</span> <span class="s2">&quot;SLASH&quot;</span><span class="p">),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrosequence</span><span class="p">,</span> <span class="s2">&quot;MacroSequence&quot;</span><span class="p">)</span>
+                                             <span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macrosequence"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macrosequence">[docs]</a>    <span class="k">def</span> <span class="nf">p_macrosequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroSequence       &lt;- MacroMultiSequence / MacroSingleSequence</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macromultisequence</span><span class="p">,</span> <span class="s2">&quot;MacroMultiSequence&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrosinglesequence</span><span class="p">,</span> <span class="s2">&quot;MacroSingleSequence&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macromultisequence"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macromultisequence">[docs]</a>    <span class="k">def</span> <span class="nf">p_macromultisequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroMultiSequence  &lt;- MacroTerm MacroTerm+</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroterm</span><span class="p">,</span> <span class="s2">&quot;MacroTerm&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroterm</span><span class="p">,</span> <span class="s2">&quot;MacroTerm&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macrosinglesequence"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macrosinglesequence">[docs]</a>    <span class="k">def</span> <span class="nf">p_macrosinglesequence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroSingleSequence &lt;- MacroTerm</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroterm</span><span class="p">,</span> <span class="s2">&quot;MacroTerm&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macroterm"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroterm">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroterm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroTerm           &lt;- MacroPrefix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroprefix</span><span class="p">,</span> <span class="s2">&quot;MacroPrefix&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macroprefix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroprefix">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroprefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroPrefix         &lt;- MacroAndPrefix / MacroNotPrefix / MacroSuffix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroandprefix</span><span class="p">,</span> <span class="s2">&quot;MacroAndPrefix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macronotprefix</span><span class="p">,</span> <span class="s2">&quot;MacroNotPrefix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrosuffix</span><span class="p">,</span> <span class="s2">&quot;MacroSuffix&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macroandprefix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroandprefix">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroandprefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroAndPrefix      &lt;- AMPERSAND MacroSuffix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_ampersand</span><span class="p">,</span> <span class="s2">&quot;AMPERSAND&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrosuffix</span><span class="p">,</span> <span class="s2">&quot;MacroSuffix&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macronotprefix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macronotprefix">[docs]</a>    <span class="k">def</span> <span class="nf">p_macronotprefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroNotPrefix      &lt;- EXCLAMATION MacroSuffix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_exclamation</span><span class="p">,</span> <span class="s2">&quot;EXCLAMATION&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrosuffix</span><span class="p">,</span> <span class="s2">&quot;MacroSuffix&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macrosuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macrosuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_macrosuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroSuffix         &lt;- MacroQuestionSuffix</span>
+        <span class="c1">#                      / MacroStarSuffix</span>
+        <span class="c1">#                      / MacroPlusSuffix</span>
+        <span class="c1">#                      / MacroRepeatSuffix</span>
+        <span class="c1">#                      / MacroPrimary</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroquestionsuffix</span><span class="p">,</span> <span class="s2">&quot;MacroQuestionSuffix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrostarsuffix</span><span class="p">,</span> <span class="s2">&quot;MacroStarSuffix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroplussuffix</span><span class="p">,</span> <span class="s2">&quot;MacroPlusSuffix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macrorepeatsuffix</span><span class="p">,</span> <span class="s2">&quot;MacroRepeatSuffix&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroprimary</span><span class="p">,</span> <span class="s2">&quot;MacroPrimary&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macroquestionsuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroquestionsuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroquestionsuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroQuestionSuffix &lt;- MacroPrimary QUESTION</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroprimary</span><span class="p">,</span> <span class="s2">&quot;MacroPrimary&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_question</span><span class="p">,</span> <span class="s2">&quot;QUESTION&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macrostarsuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macrostarsuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_macrostarsuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroStarSuffix     &lt;- MacroPrimary STAR</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroprimary</span><span class="p">,</span> <span class="s2">&quot;MacroPrimary&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_star</span><span class="p">,</span> <span class="s2">&quot;STAR&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macroplussuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroplussuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroplussuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroPlusSuffix     &lt;- MacroPrimary PLUS</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroprimary</span><span class="p">,</span> <span class="s2">&quot;MacroPrimary&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_plus</span><span class="p">,</span> <span class="s2">&quot;PLUS&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macrorepeatsuffix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macrorepeatsuffix">[docs]</a>    <span class="k">def</span> <span class="nf">p_macrorepeatsuffix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroRepeatSuffix   &lt;- MacroPrimary RepeatNum</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroprimary</span><span class="p">,</span> <span class="s2">&quot;MacroPrimary&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_repeatnum</span><span class="p">,</span> <span class="s2">&quot;RepeatNum&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_macroprimary"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroprimary">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroprimary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MacroPrimary        &lt;- RegularExp</span>
+        <span class="c1">#                      / OPEN MacroExpression CLOSE</span>
+        <span class="c1">#                      / Literal</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_regularexp</span><span class="p">,</span> <span class="s2">&quot;RegularExp&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_open</span><span class="p">,</span> <span class="s2">&quot;OPEN&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_macroexpression</span><span class="p">,</span> <span class="s2">&quot;MacroExpression&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_close</span><span class="p">,</span> <span class="s2">&quot;CLOSE&quot;</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_literal</span><span class="p">,</span> <span class="s2">&quot;Literal&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_regularexp"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_regularexp">[docs]</a>    <span class="k">def</span> <span class="nf">p_regularexp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # 正規表現, r&quot;[正規表現]&quot; の形式で表す。</span>
+        <span class="c1"># RegularExp &lt;- REGPREFIX ( SingleQuotesLiteral / DoubleQuotesLiteral ) RegularExpOptions Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_regprefix</span><span class="p">,</span> <span class="s2">&quot;REGPREFIX&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_singlequotesliteral</span><span class="p">,</span> <span class="s2">&quot;SingleQuotesLiteral&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_doublequotesliteral</span><span class="p">,</span> <span class="s2">&quot;DoubleQuotesLiteral&quot;</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_regularexpoptions</span><span class="p">,</span> <span class="s2">&quot;RegularExpOptions&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+    <span class="n">_reg_p_regularexpoptions0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(m|X|A|I|S)+&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_regularexpoptions"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_regularexpoptions">[docs]</a>    <span class="k">def</span> <span class="nf">p_regularexpoptions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # 正規表現のオプション :</span>
+        <span class="c1"># #    デフォルトでは、マルチライン re.M を適用しており、</span>
+        <span class="c1"># #    &#39;^&#39;, &#39;$&#39; はそれぞれ行頭と改行直前にマッチする。</span>
+        <span class="c1"># #      m : マルチラインを解除</span>
+        <span class="c1"># #           &#39;^&#39;, &#39;$&#39; を行頭、および改行直前にマッチさせない。</span>
+        <span class="c1"># #      X : パターンの論理的なセクションを視覚的に区切り、コメントの入力を可能にする。</span>
+        <span class="c1"># #          Number_A &lt;- r&quot;\d +  # the integral part</span>
+        <span class="c1"># #                        \.    # the decimal point</span>
+        <span class="c1"># #                        \d *  # some fractional digits&quot;</span>
+        <span class="c1"># #          Number_B &lt;- r&quot;\d+\.\d*&quot;</span>
+        <span class="c1"># #      A : \w、\W、\b、\B、\d、\D、\s、および \S において、ASCII 文字のみでマッチングを行う。</span>
+        <span class="c1"># #      I : 英大文字・小文字を区別せずにマッチングを行う。</span>
+        <span class="c1"># #          [A-Z] のような表現は小文字ともマッチします。</span>
+        <span class="c1"># #          これは現在のロケールの影響を受けず、Unicode 文字に対しても動作します。</span>
+        <span class="c1"># #      S : 特殊文字 &#39;.&#39; を、改行を含む任意の文字と、とにかくマッチさせます。</span>
+        <span class="c1"># #          このフラグがなければ、 &#39;.&#39; は、改行 以外の 任意の文字とマッチします。</span>
+        <span class="c1"># RegularExpOptions &lt;- ( COLON r&quot;(m|X|A|I|S)+&quot; )?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_colon</span><span class="p">,</span> <span class="s2">&quot;COLON&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_regularexpoptions0</span><span class="p">)</span>
+                                   <span class="p">))</span></div>
+
+    <span class="n">_reg_p_identifier0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;[a-zA-Z][a-zA-Z0-9_]*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_identifier"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_identifier">[docs]</a>    <span class="k">def</span> <span class="nf">p_identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Identifier &lt;- ( r&quot;[a-zA-Z][a-zA-Z0-9_]*&quot; / ENDOFFILE ) Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_identifier0</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_endoffile</span><span class="p">,</span> <span class="s2">&quot;ENDOFFILE&quot;</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+    <span class="n">_reg_p_macroidentifier0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;_[A-Z][A-Z0-9_]*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_macroidentifier"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_macroidentifier">[docs]</a>    <span class="k">def</span> <span class="nf">p_macroidentifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # マクロ定義</span>
+        <span class="c1"># #    マクロ定義は、&quot;_&quot; で開始し、英大文字のみ使用可能とする。</span>
+        <span class="c1"># MacroIdentifier &lt;- r&quot;_[A-Z][A-Z0-9_]*&quot; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_macroidentifier0</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+    <span class="n">_reg_p_parametername0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;[a-zA-Z][a-zA-Z0-9_]*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_parametername"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_parametername">[docs]</a>    <span class="k">def</span> <span class="nf">p_parametername</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ParameterName &lt;- r&quot;[a-zA-Z][a-zA-Z0-9_]*&quot; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_parametername0</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_literal"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_literal">[docs]</a>    <span class="k">def</span> <span class="nf">p_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # リテラル</span>
+        <span class="c1"># # (追加構文)</span>
+        <span class="c1"># #   :I を付加することで、Case-Insensitive にする。</span>
+        <span class="c1"># #   ※「&quot;hoge&quot;:I」は hoge, Hoge, hOgE 等にマッチ</span>
+        <span class="c1"># Literal &lt;- ( SingleQuotesLiteral / DoubleQuotesLiteral ) LiteralOption? Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_singlequotesliteral</span><span class="p">,</span> <span class="s2">&quot;SingleQuotesLiteral&quot;</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_doublequotesliteral</span><span class="p">,</span> <span class="s2">&quot;DoubleQuotesLiteral&quot;</span><span class="p">)</span>
+                                   <span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_literaloption</span><span class="p">,</span> <span class="s2">&quot;LiteralOption&quot;</span><span class="p">)),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_singlequotesliteral"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_singlequotesliteral">[docs]</a>    <span class="k">def</span> <span class="nf">p_singlequotesliteral</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># SingleQuotesLiteral &lt;- &quot;&#39;&quot; SingleQuotesLiteralContents &quot;&#39;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_singlequotesliteralcontents</span><span class="p">,</span> <span class="s2">&quot;SingleQuotesLiteralContents&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+    <span class="n">_reg_p_singlequotesliteralcontents0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(</span><span class="se">\\\\</span><span class="s2">.|[^&#39;</span><span class="se">\\\\</span><span class="s2">])*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_singlequotesliteralcontents"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_singlequotesliteralcontents">[docs]</a>    <span class="k">def</span> <span class="nf">p_singlequotesliteralcontents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># SingleQuotesLiteralContents &lt;- r&quot;(\\.|[^&#39;\\])*&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_singlequotesliteralcontents0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_doublequotesliteral"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_doublequotesliteral">[docs]</a>    <span class="k">def</span> <span class="nf">p_doublequotesliteral</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># DoubleQuotesLiteral &lt;- &#39;&quot;&#39; DoubleQuotesLiteralContents &#39;&quot;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_doublequotesliteralcontents</span><span class="p">,</span> <span class="s2">&quot;DoubleQuotesLiteralContents&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+    <span class="n">_reg_p_doublequotesliteralcontents0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;(</span><span class="se">\\\\</span><span class="s1">.|[^&quot;</span><span class="se">\\\\</span><span class="s1">])*&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_doublequotesliteralcontents"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_doublequotesliteralcontents">[docs]</a>    <span class="k">def</span> <span class="nf">p_doublequotesliteralcontents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># DoubleQuotesLiteralContents &lt;- r&#39;(\\.|[^&quot;\\])*&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_doublequotesliteralcontents0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_literaloption"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_literaloption">[docs]</a>    <span class="k">def</span> <span class="nf">p_literaloption</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># LiteralOption &lt;- COLON &quot;I&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_colon</span><span class="p">,</span> <span class="s2">&quot;COLON&quot;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+    <span class="n">_reg_p_number0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;[1-9][0-9]*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_number"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_number">[docs]</a>    <span class="k">def</span> <span class="nf">p_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # 数字</span>
+        <span class="c1"># Number &lt;- r&quot;[1-9][0-9]*&quot; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_number0</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_endoffile"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_endoffile">[docs]</a>    <span class="k">def</span> <span class="nf">p_endoffile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # PEG に追加： 終端を示す記号</span>
+        <span class="c1"># ENDOFFILE &lt;- &#39;_EOF&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;_EOF&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_leftarrow"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_leftarrow">[docs]</a>    <span class="k">def</span> <span class="nf">p_leftarrow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># LEFTARROW &lt;- &#39;&lt;-&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;&lt;-&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_sub_leftarrow"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_sub_leftarrow">[docs]</a>    <span class="k">def</span> <span class="nf">p_sub_leftarrow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># # 追加構文：サブ解析を表現する</span>
+        <span class="c1"># SUB_LEFTARROW &lt;- &#39;&lt;--&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;&lt;--&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_slash"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_slash">[docs]</a>    <span class="k">def</span> <span class="nf">p_slash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># SLASH &lt;- &#39;/&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_ampersand"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_ampersand">[docs]</a>    <span class="k">def</span> <span class="nf">p_ampersand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># AMPERSAND &lt;- &#39;&amp;&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_exclamation"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_exclamation">[docs]</a>    <span class="k">def</span> <span class="nf">p_exclamation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># EXCLAMATION &lt;- &#39;!&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_much_greater_than"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_much_greater_than">[docs]</a>    <span class="k">def</span> <span class="nf">p_much_greater_than</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># MUCH_GREATER_THAN &lt;- &#39;&gt;&gt;&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;&gt;&gt;&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_question"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_question">[docs]</a>    <span class="k">def</span> <span class="nf">p_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># QUESTION &lt;- &#39;?&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_star"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_star">[docs]</a>    <span class="k">def</span> <span class="nf">p_star</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># STAR &lt;- &#39;*&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_plus"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_plus">[docs]</a>    <span class="k">def</span> <span class="nf">p_plus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># PLUS &lt;- &#39;+&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_open"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_open">[docs]</a>    <span class="k">def</span> <span class="nf">p_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># OPEN &lt;- &#39;(&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_close"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_close">[docs]</a>    <span class="k">def</span> <span class="nf">p_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># CLOSE &lt;- &#39;)&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_curl_open"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_curl_open">[docs]</a>    <span class="k">def</span> <span class="nf">p_curl_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># CURL_OPEN &lt;- &#39;{&#39;  Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_curl_close"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_curl_close">[docs]</a>    <span class="k">def</span> <span class="nf">p_curl_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># CURL_CLOSE &lt;- &#39;}&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_colon"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_colon">[docs]</a>    <span class="k">def</span> <span class="nf">p_colon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># COLON &lt;- &#39;:&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_comma"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_comma">[docs]</a>    <span class="k">def</span> <span class="nf">p_comma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># COMMA &lt;- &#39;,&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_commercial_at"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_commercial_at">[docs]</a>    <span class="k">def</span> <span class="nf">p_commercial_at</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># COMMERCIAL_AT &lt;- &#39;@&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_dollar_sign"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_dollar_sign">[docs]</a>    <span class="k">def</span> <span class="nf">p_dollar_sign</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># DOLLAR_SIGN &lt;- &#39;$&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_equal"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_equal">[docs]</a>    <span class="k">def</span> <span class="nf">p_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># EQUAL &lt;- &#39;=&#39; Spacing?</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_opt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_spacing</span><span class="p">,</span> <span class="s2">&quot;Spacing&quot;</span><span class="p">))</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_regprefix"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_regprefix">[docs]</a>    <span class="k">def</span> <span class="nf">p_regprefix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># REGPREFIX &lt;- &#39;r&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_spacing"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_spacing">[docs]</a>    <span class="k">def</span> <span class="nf">p_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Spacing &lt;- Space+</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_space</span><span class="p">,</span> <span class="s2">&quot;Space&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span></div>
+
+    <span class="n">_reg_p_comment0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;[^</span><span class="se">\\</span><span class="s2">r</span><span class="se">\\</span><span class="s2">n]*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_comment"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_comment">[docs]</a>    <span class="k">def</span> <span class="nf">p_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Comment &lt;- &#39;#&#39; r&quot;[^\r\n]*&quot; EndOfLine</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_comment0</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_endofline</span><span class="p">,</span> <span class="s2">&quot;EndOfLine&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExPegParser.p_space"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_space">[docs]</a>    <span class="k">def</span> <span class="nf">p_space</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Space &lt;- &#39; &#39; / &#39;\t&#39; / EndOfLine</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_l</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">t&#39;</span><span class="p">),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_endofline</span><span class="p">,</span> <span class="s2">&quot;EndOfLine&quot;</span><span class="p">)</span>
+                         <span class="p">)</span></div>
+
+    <span class="n">_reg_p_endofline0</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">r</span><span class="se">\\</span><span class="s2">n|</span><span class="se">\\</span><span class="s2">n|</span><span class="se">\\</span><span class="s2">r&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExPegParser.p_endofline"><a class="viewcode-back" href="../../tacparser.html#tacparser.expegparser.ExPegParser.p_endofline">[docs]</a>    <span class="k">def</span> <span class="nf">p_endofline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># EndOfLine &lt;- r&quot;\r\n|\n|\r&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reg_p_endofline0</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Author.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

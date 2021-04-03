@@ -1,0 +1,1692 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tacparser package &mdash; tacparser 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to tacparser’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> tacparser
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tacparser package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tacparser.baseparser">tacparser.baseparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tacparser.exception">tacparser.exception module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tacparser.expegparser">tacparser.expegparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tacparser.node">tacparser.node module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tacparser.parsergenerator">tacparser.parsergenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tacparser.reader">tacparser.reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tacparser">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tacparser</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>tacparser package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/tacparser.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tacparser-package">
+<h1>tacparser package<a class="headerlink" href="#tacparser-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-tacparser.baseparser">
+<span id="tacparser-baseparser-module"></span><h2>tacparser.baseparser module<a class="headerlink" href="#module-tacparser.baseparser" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tacparser.baseparser.Parser">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.baseparser.</span></code><code class="sig-name descname"><span class="pre">Parser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">tacparser.baseparser</span> <span class="pre">(DEBUG)&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/baseparser.html#Parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>構文解析を実行するクラス</p>
+<dl class="py attribute">
+<dt id="tacparser.baseparser.Parser.def_bk_dict">
+<code class="sig-name descname"><span class="pre">def_bk_dict</span></code><a class="headerlink" href="#tacparser.baseparser.Parser.def_bk_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>サブ構文の辞書</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.baseparser.Parser.def_dict">
+<code class="sig-name descname"><span class="pre">def_dict</span></code><a class="headerlink" href="#tacparser.baseparser.Parser.def_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>構文の辞書</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.baseparser.Parser.def_subtypename">
+<code class="sig-name descname"><span class="pre">def_subtypename</span></code><a class="headerlink" href="#tacparser.baseparser.Parser.def_subtypename" title="Permalink to this definition">¶</a></dt>
+<dd><p>サブ構文のタイプ名</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.baseparser.Parser.get_tree">
+<code class="sig-name descname"><span class="pre">get_tree</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><span class="pre">tacparser.node.Node</span></a><a class="reference internal" href="_modules/tacparser/baseparser.html#Parser.get_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.Parser.get_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>構文解析結果を返す</p>
+<dl class="simple">
+<dt>tree<span class="classifier">Node</span></dt><dd><p>構文解析結果のルートノード</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.baseparser.Parser.parse_file">
+<code class="sig-name descname"><span class="pre">parse_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/baseparser.html#Parser.parse_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.Parser.parse_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>与えられたファイルパスを指定したエンコードで読み込み、タイプtypename を起点に構文解析を行う</p>
+<dl class="simple">
+<dt>filepath<span class="classifier">str</span></dt><dd><p>ファイルパス</p>
+</dd>
+<dt>encoding<span class="classifier">str</span></dt><dd><p>ファイルのエンコード</p>
+</dd>
+<dt>typename<span class="classifier">str</span></dt><dd><p>起点ノードのタイプ名</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>result<span class="classifier">boolean</span></dt><dd><p>構文解析の成功/失敗</p>
+</dd>
+<dt>tree<span class="classifier">None | Node</span></dt><dd><p>構文解析結果のルートノード</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.baseparser.Parser.parse_string">
+<code class="sig-name descname"><span class="pre">parse_string</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rootexp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/baseparser.html#Parser.parse_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.Parser.parse_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>与えられた文字列を読み込み、関数 fを起点に構文解析を行う</p>
+<dl class="simple">
+<dt>string<span class="classifier">str</span></dt><dd><p>構文解析対象文字列</p>
+</dd>
+<dt>rootexp<span class="classifier">Callable</span></dt><dd><p>構文解析の起点となる式</p>
+</dd>
+<dt>typename<span class="classifier">str</span></dt><dd><p>起点ノードのタイプ名</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>result<span class="classifier">boolean</span></dt><dd><p>構文解析の成功/失敗</p>
+</dd>
+<dt>tree<span class="classifier">None | Node</span></dt><dd><p>構文解析結果のルートノード</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.baseparser.Parser.sub_parse">
+<code class="sig-name descname"><span class="pre">sub_parse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subdef_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/baseparser.html#Parser.sub_parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.Parser.sub_parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>多重解析を実行する</p>
+<dl class="simple">
+<dt>subdef_name<span class="classifier">str</span></dt><dd><p>サブ構文のタイプ</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>flg<span class="classifier">bool</span></dt><dd><p>解析の成否</p>
+</dd>
+<dt>result_list<span class="classifier">list[Node]</span></dt><dd><p>結果ノードのリスト</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.baseparser.Parser.top">
+<code class="sig-name descname"><span class="pre">top</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/baseparser.html#Parser.top"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.Parser.top" title="Permalink to this definition">¶</a></dt>
+<dd><p>構文解析のルートになる関数
+各parserでオーバーライドされる</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.baseparser.Parser.toptypename">
+<code class="sig-name descname"><span class="pre">toptypename</span></code><a class="headerlink" href="#tacparser.baseparser.Parser.toptypename" title="Permalink to this definition">¶</a></dt>
+<dd><p>ルートの規則名（大抵、言語名）</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="tacparser.baseparser.postorder_travel">
+<code class="sig-prename descclassname"><span class="pre">tacparser.baseparser.</span></code><code class="sig-name descname"><span class="pre">postorder_travel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><span class="pre">tacparser.node.Node</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Callable</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/baseparser.html#postorder_travel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.postorder_travel" title="Permalink to this definition">¶</a></dt>
+<dd><p>ポストオーダーでの 指定関数 func を実行
+それぞれで実行する引数は <a href="#id1"><span class="problematic" id="id2">*</span></a>args を適用</p>
+<dl class="simple">
+<dt>root<span class="classifier">Node</span></dt><dd><p>ルートノード</p>
+</dd>
+<dt>func<span class="classifier">Callable</span></dt><dd><p>各ノードで実行する関数</p>
+</dd>
+<dt><a href="#id3"><span class="problematic" id="id4">*</span></a>args<span class="classifier">Any</span></dt><dd><p>func に渡す引数</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tacparser.baseparser.preorder_travel">
+<code class="sig-prename descclassname"><span class="pre">tacparser.baseparser.</span></code><code class="sig-name descname"><span class="pre">preorder_travel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><span class="pre">tacparser.node.Node</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">collections.abc.Callable</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/baseparser.html#preorder_travel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.preorder_travel" title="Permalink to this definition">¶</a></dt>
+<dd><p>プレオーダーでの 指定関数 func を実行
+それぞれで実行する引数は <a href="#id5"><span class="problematic" id="id6">*</span></a>args を適用</p>
+<dl class="simple">
+<dt>root<span class="classifier">Node</span></dt><dd><p>ルートノード</p>
+</dd>
+<dt>func<span class="classifier">Callable</span></dt><dd><p>各ノードで実行する関数</p>
+</dd>
+<dt><a href="#id7"><span class="problematic" id="id8">*</span></a>args<span class="classifier">Any</span></dt><dd><p>func に渡す引数</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tacparser.baseparser.reconstruct_tree">
+<code class="sig-prename descclassname"><span class="pre">tacparser.baseparser.</span></code><code class="sig-name descname"><span class="pre">reconstruct_tree</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rootnode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><span class="pre">tacparser.node.Node</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">typelist</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_dict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#tacparser.node.ReconstructedNode" title="tacparser.node.ReconstructedNode"><span class="pre">tacparser.node.ReconstructedNode</span></a><a class="reference internal" href="_modules/tacparser/baseparser.html#reconstruct_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.baseparser.reconstruct_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>ツリーの再構成を行う。
+ここで、root のノードは変更しない</p>
+<dl class="simple">
+<dt>rootnode<span class="classifier">Node</span></dt><dd><p>再構成を行うノード</p>
+</dd>
+<dt>typelist<span class="classifier">list</span></dt><dd><p>再構成に用いるノードのリスト</p>
+</dd>
+<dt>replace_dict<span class="classifier">dict[str, str]</span></dt><dd><p>ノードを文字列に置き換えるための辞書</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>tree<span class="classifier">ReconstructedNode</span></dt><dd><p>再構成したツリー</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tacparser.exception">
+<span id="tacparser-exception-module"></span><h2>tacparser.exception module<a class="headerlink" href="#module-tacparser.exception" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="tacparser.exception.ParseException">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.exception.</span></code><code class="sig-name descname"><span class="pre">ParseException</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/exception.html#ParseException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.exception.ParseException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.exception.TacParserException" title="tacparser.exception.TacParserException"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.exception.TacParserException</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="tacparser.exception.TacParserException">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.exception.</span></code><code class="sig-name descname"><span class="pre">TacParserException</span></code><a class="reference internal" href="_modules/tacparser/exception.html#TacParserException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.exception.TacParserException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Base class for exceptions in this module.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tacparser.expegparser">
+<span id="tacparser-expegparser-module"></span><h2>tacparser.expegparser module<a class="headerlink" href="#module-tacparser.expegparser" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tacparser.expegparser.ExPegParser">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.expegparser.</span></code><code class="sig-name descname"><span class="pre">ExPegParser</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.baseparser.Parser" title="tacparser.baseparser.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.baseparser.Parser</span></code></a></p>
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_ampersand">
+<code class="sig-name descname"><span class="pre">p_ampersand</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_ampersand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_ampersand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_andprefix">
+<code class="sig-name descname"><span class="pre">p_andprefix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_andprefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_andprefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_assignmentvalue">
+<code class="sig-name descname"><span class="pre">p_assignmentvalue</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_assignmentvalue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_assignmentvalue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_close">
+<code class="sig-name descname"><span class="pre">p_close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_colon">
+<code class="sig-name descname"><span class="pre">p_colon</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_colon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_colon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_comma">
+<code class="sig-name descname"><span class="pre">p_comma</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_comma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_comma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_comment">
+<code class="sig-name descname"><span class="pre">p_comment</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_comment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_comment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_commercial_at">
+<code class="sig-name descname"><span class="pre">p_commercial_at</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_commercial_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_commercial_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_curl_close">
+<code class="sig-name descname"><span class="pre">p_curl_close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_curl_close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_curl_close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_curl_open">
+<code class="sig-name descname"><span class="pre">p_curl_open</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_curl_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_curl_open" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_definition">
+<code class="sig-name descname"><span class="pre">p_definition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_definition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_definitioncomment">
+<code class="sig-name descname"><span class="pre">p_definitioncomment</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_definitioncomment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_definitioncomment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_definitionexpression">
+<code class="sig-name descname"><span class="pre">p_definitionexpression</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_definitionexpression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_definitionexpression" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_definitionidentifier">
+<code class="sig-name descname"><span class="pre">p_definitionidentifier</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_definitionidentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_definitionidentifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_dollar_sign">
+<code class="sig-name descname"><span class="pre">p_dollar_sign</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_dollar_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_dollar_sign" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_doublequotesliteral">
+<code class="sig-name descname"><span class="pre">p_doublequotesliteral</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_doublequotesliteral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_doublequotesliteral" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_doublequotesliteralcontents">
+<code class="sig-name descname"><span class="pre">p_doublequotesliteralcontents</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_doublequotesliteralcontents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_doublequotesliteralcontents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_endoffile">
+<code class="sig-name descname"><span class="pre">p_endoffile</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_endoffile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_endoffile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_endofline">
+<code class="sig-name descname"><span class="pre">p_endofline</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_endofline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_endofline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_equal">
+<code class="sig-name descname"><span class="pre">p_equal</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_equal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_equal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_exclamation">
+<code class="sig-name descname"><span class="pre">p_exclamation</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_exclamation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_exclamation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_expeg">
+<code class="sig-name descname"><span class="pre">p_expeg</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_expeg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_expeg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_expression">
+<code class="sig-name descname"><span class="pre">p_expression</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_expression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_expression" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_identifier">
+<code class="sig-name descname"><span class="pre">p_identifier</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_identifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_identifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_identifiercall">
+<code class="sig-name descname"><span class="pre">p_identifiercall</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_identifiercall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_identifiercall" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_leftarrow">
+<code class="sig-name descname"><span class="pre">p_leftarrow</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_leftarrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_leftarrow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_literal">
+<code class="sig-name descname"><span class="pre">p_literal</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_literal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_literal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_literaloption">
+<code class="sig-name descname"><span class="pre">p_literaloption</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_literaloption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_literaloption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroandprefix">
+<code class="sig-name descname"><span class="pre">p_macroandprefix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroandprefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroandprefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macrodefinition">
+<code class="sig-name descname"><span class="pre">p_macrodefinition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macrodefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macrodefinition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroexpression">
+<code class="sig-name descname"><span class="pre">p_macroexpression</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroexpression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroexpression" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroidentifier">
+<code class="sig-name descname"><span class="pre">p_macroidentifier</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroidentifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroidentifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macromultisequence">
+<code class="sig-name descname"><span class="pre">p_macromultisequence</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macromultisequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macromultisequence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macronotprefix">
+<code class="sig-name descname"><span class="pre">p_macronotprefix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macronotprefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macronotprefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroplussuffix">
+<code class="sig-name descname"><span class="pre">p_macroplussuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroplussuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroplussuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroprefix">
+<code class="sig-name descname"><span class="pre">p_macroprefix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroprefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroprefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroprimary">
+<code class="sig-name descname"><span class="pre">p_macroprimary</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroprimary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroprimary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroquestionsuffix">
+<code class="sig-name descname"><span class="pre">p_macroquestionsuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroquestionsuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroquestionsuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macrorepeatsuffix">
+<code class="sig-name descname"><span class="pre">p_macrorepeatsuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macrorepeatsuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macrorepeatsuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroselection">
+<code class="sig-name descname"><span class="pre">p_macroselection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroselection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroselection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macrosequence">
+<code class="sig-name descname"><span class="pre">p_macrosequence</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macrosequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macrosequence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macrosinglesequence">
+<code class="sig-name descname"><span class="pre">p_macrosinglesequence</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macrosinglesequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macrosinglesequence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macrostarsuffix">
+<code class="sig-name descname"><span class="pre">p_macrostarsuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macrostarsuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macrostarsuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macrosuffix">
+<code class="sig-name descname"><span class="pre">p_macrosuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macrosuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macrosuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_macroterm">
+<code class="sig-name descname"><span class="pre">p_macroterm</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_macroterm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_macroterm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_maxrepeat">
+<code class="sig-name descname"><span class="pre">p_maxrepeat</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_maxrepeat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_maxrepeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_minrepeat">
+<code class="sig-name descname"><span class="pre">p_minrepeat</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_minrepeat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_minrepeat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_much_greater_than">
+<code class="sig-name descname"><span class="pre">p_much_greater_than</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_much_greater_than"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_much_greater_than" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_multisequence">
+<code class="sig-name descname"><span class="pre">p_multisequence</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_multisequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_multisequence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_notprefix">
+<code class="sig-name descname"><span class="pre">p_notprefix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_notprefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_notprefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_number">
+<code class="sig-name descname"><span class="pre">p_number</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_open">
+<code class="sig-name descname"><span class="pre">p_open</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_open" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_parameter">
+<code class="sig-name descname"><span class="pre">p_parameter</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_parameter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_parameterlist">
+<code class="sig-name descname"><span class="pre">p_parameterlist</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_parameterlist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_parameterlist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_parametername">
+<code class="sig-name descname"><span class="pre">p_parametername</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_parametername"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_parametername" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_pegcomment">
+<code class="sig-name descname"><span class="pre">p_pegcomment</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_pegcomment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_pegcomment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_plus">
+<code class="sig-name descname"><span class="pre">p_plus</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_plus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_plus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_plussuffix">
+<code class="sig-name descname"><span class="pre">p_plussuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_plussuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_plussuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_prefix">
+<code class="sig-name descname"><span class="pre">p_prefix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_primary">
+<code class="sig-name descname"><span class="pre">p_primary</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_primary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_primary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_question">
+<code class="sig-name descname"><span class="pre">p_question</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_question"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_question" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_questionsuffix">
+<code class="sig-name descname"><span class="pre">p_questionsuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_questionsuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_questionsuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_regprefix">
+<code class="sig-name descname"><span class="pre">p_regprefix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_regprefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_regprefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_regularexp">
+<code class="sig-name descname"><span class="pre">p_regularexp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_regularexp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_regularexp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_regularexpoptions">
+<code class="sig-name descname"><span class="pre">p_regularexpoptions</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_regularexpoptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_regularexpoptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_repeatcnt">
+<code class="sig-name descname"><span class="pre">p_repeatcnt</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_repeatcnt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_repeatcnt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_repeatnum">
+<code class="sig-name descname"><span class="pre">p_repeatnum</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_repeatnum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_repeatnum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_repeatsuffix">
+<code class="sig-name descname"><span class="pre">p_repeatsuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_repeatsuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_repeatsuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_rootdefinition">
+<code class="sig-name descname"><span class="pre">p_rootdefinition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_rootdefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_rootdefinition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_selection">
+<code class="sig-name descname"><span class="pre">p_selection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_selection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_sequence">
+<code class="sig-name descname"><span class="pre">p_sequence</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_sequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_sequence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_singlequotesliteral">
+<code class="sig-name descname"><span class="pre">p_singlequotesliteral</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_singlequotesliteral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_singlequotesliteral" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_singlequotesliteralcontents">
+<code class="sig-name descname"><span class="pre">p_singlequotesliteralcontents</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_singlequotesliteralcontents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_singlequotesliteralcontents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_singlesequence">
+<code class="sig-name descname"><span class="pre">p_singlesequence</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_singlesequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_singlesequence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_skipprefix">
+<code class="sig-name descname"><span class="pre">p_skipprefix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_skipprefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_skipprefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_slash">
+<code class="sig-name descname"><span class="pre">p_slash</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_slash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_slash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_space">
+<code class="sig-name descname"><span class="pre">p_space</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_space" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_spacing">
+<code class="sig-name descname"><span class="pre">p_spacing</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_spacing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_spacing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_star">
+<code class="sig-name descname"><span class="pre">p_star</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_star"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_star" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_starsuffix">
+<code class="sig-name descname"><span class="pre">p_starsuffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_starsuffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_starsuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_sub_leftarrow">
+<code class="sig-name descname"><span class="pre">p_sub_leftarrow</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_sub_leftarrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_sub_leftarrow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_subdefinition">
+<code class="sig-name descname"><span class="pre">p_subdefinition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_subdefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_subdefinition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.expegparser.ExPegParser.p_suffix">
+<code class="sig-name descname"><span class="pre">p_suffix</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/expegparser.html#ExPegParser.p_suffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.expegparser.ExPegParser.p_suffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tacparser.node">
+<span id="tacparser-node-module"></span><h2>tacparser.node module<a class="headerlink" href="#module-tacparser.node" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tacparser.node.FailureNode">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.node.</span></code><code class="sig-name descname"><span class="pre">FailureNode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/node.html#FailureNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.FailureNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.node.Node</span></code></a></p>
+<p>解析失敗時に作成するノードを示すクラス</p>
+<dl class="py method">
+<dt id="tacparser.node.FailureNode.get_node_str">
+<code class="sig-name descname"><span class="pre">get_node_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#FailureNode.get_node_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.FailureNode.get_node_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.FailureNode.get_str">
+<code class="sig-name descname"><span class="pre">get_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_dict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/node.html#FailureNode.get_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.FailureNode.get_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.FailureNode.is_failure">
+<code class="sig-name descname"><span class="pre">is_failure</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tacparser/node.html#FailureNode.is_failure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.FailureNode.is_failure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.FailureNode.is_terminal">
+<code class="sig-name descname"><span class="pre">is_terminal</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tacparser/node.html#FailureNode.is_terminal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.FailureNode.is_terminal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.FailureNode.print_tree">
+<code class="sig-name descname"><span class="pre">print_tree</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#FailureNode.print_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.FailureNode.print_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>エラー情報を表現した文字列を返す。</p>
+<dl class="simple">
+<dt>level<span class="classifier">int</span></dt><dd><p>階層の深さ</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ret<span class="classifier">str</span></dt><dd><p>エラー情報を表現した文字列を返す</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tacparser.node.Node">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.node.</span></code><code class="sig-name descname"><span class="pre">Node</span></code><a class="reference internal" href="_modules/tacparser/node.html#Node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ノードを示す基底クラス</p>
+<dl class="py attribute">
+<dt id="tacparser.node.Node.children">
+<code class="sig-name descname"><span class="pre">children</span></code><em class="property"><span class="pre">:</span> <span class="pre">tuple</span></em><a class="headerlink" href="#tacparser.node.Node.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>子ノードのタプル</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.column">
+<code class="sig-name descname"><span class="pre">column</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.Node.column" title="Permalink to this definition">¶</a></dt>
+<dd><p>開始位置の列番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.end_column">
+<code class="sig-name descname"><span class="pre">end_column</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.Node.end_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>終了位置の列番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.end_linenum">
+<code class="sig-name descname"><span class="pre">end_linenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.Node.end_linenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>終了位置の行番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.endpos">
+<code class="sig-name descname"><span class="pre">endpos</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.Node.endpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの終了位置</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.get_childnode">
+<code class="sig-name descname"><span class="pre">get_childnode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodetype</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/tacparser/node.html#Node.get_childnode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.get_childnode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.get_end_linecolumn">
+<code class="sig-name descname"><span class="pre">get_end_linecolumn</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/node.html#Node.get_end_linecolumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.get_end_linecolumn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.get_linecolumn">
+<code class="sig-name descname"><span class="pre">get_linecolumn</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/node.html#Node.get_linecolumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.get_linecolumn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.get_node_str">
+<code class="sig-name descname"><span class="pre">get_node_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#Node.get_node_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.get_node_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.get_position_str">
+<code class="sig-name descname"><span class="pre">get_position_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#Node.get_position_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.get_position_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.get_str">
+<code class="sig-name descname"><span class="pre">get_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_dict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#Node.get_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.get_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.is_failure">
+<code class="sig-name descname"><span class="pre">is_failure</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tacparser/node.html#Node.is_failure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.is_failure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.is_terminal">
+<code class="sig-name descname"><span class="pre">is_terminal</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tacparser/node.html#Node.is_terminal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.is_terminal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.linenum">
+<code class="sig-name descname"><span class="pre">linenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.Node.linenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>開始位置の行番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.nodenum">
+<code class="sig-name descname"><span class="pre">nodenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.Node.nodenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノード番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.parent">
+<code class="sig-name descname"><span class="pre">parent</span></code><em class="property"><span class="pre">:</span> <a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><span class="pre">tacparser.node.Node</span></a></em><a class="headerlink" href="#tacparser.node.Node.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>親ノード</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.print_tree">
+<code class="sig-name descname"><span class="pre">print_tree</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#Node.print_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.print_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.search_node">
+<code class="sig-name descname"><span class="pre">search_node</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodetype</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deepsearch_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/tacparser/node.html#Node.search_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.search_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.Node.set_position">
+<code class="sig-name descname"><span class="pre">set_position</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.reader.Reader" title="tacparser.reader.Reader"><span class="pre">tacparser.reader.Reader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">startpos</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpos</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/node.html#Node.set_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.Node.set_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.startpos">
+<code class="sig-name descname"><span class="pre">startpos</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.Node.startpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの開始位置</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.Node.type">
+<code class="sig-name descname"><span class="pre">type</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#tacparser.node.Node.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの種類</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tacparser.node.NonTerminalNode">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.node.</span></code><code class="sig-name descname"><span class="pre">NonTerminalNode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodetype</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">children</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/node.html#NonTerminalNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.NonTerminalNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.node.Node</span></code></a></p>
+<p>非終端ノードを表すクラス。
+このノードは子ノードを持つ。</p>
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.children">
+<code class="sig-name descname"><span class="pre">children</span></code><em class="property"><span class="pre">:</span> <span class="pre">tuple</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>子ノードのタプル</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.column">
+<code class="sig-name descname"><span class="pre">column</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.column" title="Permalink to this definition">¶</a></dt>
+<dd><p>開始位置の列番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.end_column">
+<code class="sig-name descname"><span class="pre">end_column</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.end_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>終了位置の列番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.end_linenum">
+<code class="sig-name descname"><span class="pre">end_linenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.end_linenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>終了位置の行番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.endpos">
+<code class="sig-name descname"><span class="pre">endpos</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.endpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの終了位置</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.NonTerminalNode.get_childnode">
+<code class="sig-name descname"><span class="pre">get_childnode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodetype</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/tacparser/node.html#NonTerminalNode.get_childnode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.NonTerminalNode.get_childnode" title="Permalink to this definition">¶</a></dt>
+<dd><p>指定されたノードタイプ [nodetype] の子ノードをリストにして返す。</p>
+<dl class="simple">
+<dt>nodetype<span class="classifier">str</span></dt><dd><p>ノードタイプ</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>children<span class="classifier">list</span></dt><dd><p>指定されたノードタイプのリスト</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.NonTerminalNode.get_node_str">
+<code class="sig-name descname"><span class="pre">get_node_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#NonTerminalNode.get_node_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.NonTerminalNode.get_node_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.NonTerminalNode.get_str">
+<code class="sig-name descname"><span class="pre">get_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_dict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#NonTerminalNode.get_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.NonTerminalNode.get_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードで取得した文字列を返す</p>
+<dl class="simple">
+<dt>_dict<span class="classifier">dict</span></dt><dd><p>ノードの置き換えに利用する辞書。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ret<span class="classifier">str</span></dt><dd><p>そのノードで読み込んだ文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.linenum">
+<code class="sig-name descname"><span class="pre">linenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.linenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>開始位置の行番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.nodenum">
+<code class="sig-name descname"><span class="pre">nodenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.nodenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノード番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.parent">
+<code class="sig-name descname"><span class="pre">parent</span></code><em class="property"><span class="pre">:</span> <a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><span class="pre">tacparser.node.Node</span></a></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>親ノード</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.NonTerminalNode.print_tree">
+<code class="sig-name descname"><span class="pre">print_tree</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#NonTerminalNode.print_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.NonTerminalNode.print_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>ツリー情報を返す</p>
+<dl class="simple">
+<dt>level<span class="classifier">int</span></dt><dd><p>階層の深さ</p>
+</dd>
+<dt>node_list<span class="classifier">list[str]</span></dt><dd><p>出力するノードタイプのリスト</p>
+</dd>
+<dt>detail_flg<span class="classifier">bool</span></dt><dd><p>詳細情報をすべて出力するフラグ</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ret<span class="classifier">str</span></dt><dd><p>階層を表現した文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.NonTerminalNode.search_node">
+<code class="sig-name descname"><span class="pre">search_node</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodetype</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deepsearch_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/tacparser/node.html#NonTerminalNode.search_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.NonTerminalNode.search_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>自身以下のノードを探索し、[nodetype] に一致するノードのリストを返す。</p>
+<dl class="simple">
+<dt>nodetype<span class="classifier">str</span></dt><dd><p>ノードタイプ</p>
+</dd>
+<dt>deepsearch_flg<span class="classifier">bool</span></dt><dd><p>対象のノードが見つかった場合、そのノードの子を探索するか否か</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>nl<span class="classifier">list[Node]</span></dt><dd><p>ノードのリスト</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.startpos">
+<code class="sig-name descname"><span class="pre">startpos</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.startpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの開始位置</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.NonTerminalNode.type">
+<code class="sig-name descname"><span class="pre">type</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#tacparser.node.NonTerminalNode.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの種類</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tacparser.node.ReconstructedNode">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.node.</span></code><code class="sig-name descname"><span class="pre">ReconstructedNode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/node.html#ReconstructedNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.ReconstructedNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.node.NonTerminalNode</span></code></a></p>
+<p>再構成したノード。</p>
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.children">
+<code class="sig-name descname"><span class="pre">children</span></code><em class="property"><span class="pre">:</span> <span class="pre">tuple</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>子ノードのタプル</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.column">
+<code class="sig-name descname"><span class="pre">column</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.column" title="Permalink to this definition">¶</a></dt>
+<dd><p>開始位置の列番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.end_column">
+<code class="sig-name descname"><span class="pre">end_column</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.end_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>終了位置の列番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.end_linenum">
+<code class="sig-name descname"><span class="pre">end_linenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.end_linenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>終了位置の行番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.endpos">
+<code class="sig-name descname"><span class="pre">endpos</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.endpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの終了位置</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.ReconstructedNode.get_node_str">
+<code class="sig-name descname"><span class="pre">get_node_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#ReconstructedNode.get_node_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.ReconstructedNode.get_node_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.ReconstructedNode.get_str">
+<code class="sig-name descname"><span class="pre">get_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_dict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#ReconstructedNode.get_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.ReconstructedNode.get_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードで取得した文字列を返す</p>
+<dl class="simple">
+<dt>_dict<span class="classifier">dict</span></dt><dd><p>ノードの置き換えに利用する辞書。</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ret<span class="classifier">str</span></dt><dd><p>そのノードで読み込んだ文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.ReconstructedNode.is_terminal">
+<code class="sig-name descname"><span class="pre">is_terminal</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tacparser/node.html#ReconstructedNode.is_terminal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.ReconstructedNode.is_terminal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.linenum">
+<code class="sig-name descname"><span class="pre">linenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.linenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>開始位置の行番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.nodenum">
+<code class="sig-name descname"><span class="pre">nodenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.nodenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノード番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.parent">
+<code class="sig-name descname"><span class="pre">parent</span></code><em class="property"><span class="pre">:</span> <a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><span class="pre">tacparser.node.Node</span></a></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>親ノード</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.ReconstructedNode.print_tree">
+<code class="sig-name descname"><span class="pre">print_tree</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#ReconstructedNode.print_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.ReconstructedNode.print_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>ツリー情報を返す</p>
+<dl class="simple">
+<dt>level<span class="classifier">int</span></dt><dd><p>階層の深さ</p>
+</dd>
+<dt>node_list<span class="classifier">list[str]</span></dt><dd><p>出力するノードタイプのリスト</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ret<span class="classifier">str</span></dt><dd><p>階層を表現した文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.startpos">
+<code class="sig-name descname"><span class="pre">startpos</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.startpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの開始位置</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.ReconstructedNode.type">
+<code class="sig-name descname"><span class="pre">type</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#tacparser.node.ReconstructedNode.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの種類</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tacparser.node.TerminalNode">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.node.</span></code><code class="sig-name descname"><span class="pre">TerminalNode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/node.html#TerminalNode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.TerminalNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.node.Node</span></code></a></p>
+<p>終端ノードを示すクラス</p>
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.children">
+<code class="sig-name descname"><span class="pre">children</span></code><em class="property"><span class="pre">:</span> <span class="pre">tuple</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>子ノードのタプル</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.column">
+<code class="sig-name descname"><span class="pre">column</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.column" title="Permalink to this definition">¶</a></dt>
+<dd><p>開始位置の列番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.end_column">
+<code class="sig-name descname"><span class="pre">end_column</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.end_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>終了位置の列番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.end_linenum">
+<code class="sig-name descname"><span class="pre">end_linenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.end_linenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>終了位置の行番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.endpos">
+<code class="sig-name descname"><span class="pre">endpos</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.endpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの終了位置</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.TerminalNode.get_node_str">
+<code class="sig-name descname"><span class="pre">get_node_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#TerminalNode.get_node_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.TerminalNode.get_node_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.TerminalNode.get_str">
+<code class="sig-name descname"><span class="pre">get_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_dict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/node.html#TerminalNode.get_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.TerminalNode.get_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.TerminalNode.is_terminal">
+<code class="sig-name descname"><span class="pre">is_terminal</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tacparser/node.html#TerminalNode.is_terminal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.TerminalNode.is_terminal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.linenum">
+<code class="sig-name descname"><span class="pre">linenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.linenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>開始位置の行番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.nodenum">
+<code class="sig-name descname"><span class="pre">nodenum</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.nodenum" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノード番号</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.parent">
+<code class="sig-name descname"><span class="pre">parent</span></code><em class="property"><span class="pre">:</span> <a class="reference internal" href="#tacparser.node.Node" title="tacparser.node.Node"><span class="pre">tacparser.node.Node</span></a></em><a class="headerlink" href="#tacparser.node.TerminalNode.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>親ノード</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.node.TerminalNode.print_tree">
+<code class="sig-name descname"><span class="pre">print_tree</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_list</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/node.html#TerminalNode.print_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.node.TerminalNode.print_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>ターミナルノードを表現した文字列を返す。
+ただし、、node_list が指定された場合、空文字を返す</p>
+<dl class="simple">
+<dt>level<span class="classifier">int</span></dt><dd><p>階層の深さ</p>
+</dd>
+<dt>node_list<span class="classifier">list[str]</span></dt><dd><p>表示するノードタイプのリスト</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>ret<span class="classifier">str</span></dt><dd><p>ターミナルノードを表現した文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.startpos">
+<code class="sig-name descname"><span class="pre">startpos</span></code><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.startpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの開始位置</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tacparser.node.TerminalNode.type">
+<code class="sig-name descname"><span class="pre">type</span></code><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#tacparser.node.TerminalNode.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>ノードの種類</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tacparser.parsergenerator">
+<span id="tacparser-parsergenerator-module"></span><h2>tacparser.parsergenerator module<a class="headerlink" href="#module-tacparser.parsergenerator" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tacparser.parsergenerator.ParserChecker">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.parsergenerator.</span></code><code class="sig-name descname"><span class="pre">ParserChecker</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ASTを探索し、種々のチェックを行う。</p>
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserChecker.add_leftrecursive_chk_list">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">add_leftrecursive_chk_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker.add_leftrecursive_chk_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker.add_leftrecursive_chk_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>該当の定義から、左再帰チェックのためのIdentifier 計算順リストを導出</p>
+<dl class="simple">
+<dt>tree<span class="classifier">NonTerminalNode</span></dt><dd><p>ノード</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserChecker.assignment_checked_value">
+<code class="sig-name descname"><span class="pre">assignment_checked_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">def_exp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker.assignment_checked_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker.assignment_checked_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>構造式に、評価した値を代入する</p>
+<dl class="simple">
+<dt>def_exp<span class="classifier">list | tuple | str | int</span></dt><dd><p>構造式</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>def_exp<span class="classifier">list | tuple | str | int</span></dt><dd><p>構造式</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserChecker.check_definition">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">check_definition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker.check_definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker.check_definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>構文規則のチェック
+1. 重複した定義を探索する。
+2. 定義されていない呼び出しを探索する。</p>
+<dl class="simple">
+<dt>tree<span class="classifier">NonTerminalNode</span></dt><dd><p>対象のツリー。ルートノード</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>result<span class="classifier">list[str]</span></dt><dd><p>チェック結果のエラーリスト</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserChecker.check_left_recursion">
+<code class="sig-name descname"><span class="pre">check_left_recursion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker.check_left_recursion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker.check_left_recursion" title="Permalink to this definition">¶</a></dt>
+<dd><p>左再帰チェック</p>
+<dl class="simple">
+<dt>tree<span class="classifier">NonTerminalNode</span></dt><dd><p>対象のツリー。ルートノード</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>result<span class="classifier">list[str]</span></dt><dd><p>チェック結果のエラーリスト</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserChecker.check_tree">
+<code class="sig-name descname"><span class="pre">check_tree</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker.check_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker.check_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>１．重複チェック
+２．左再帰チェック</p>
+<dl class="simple">
+<dt>tree<span class="classifier">NonTerminalNode</span></dt><dd><p>対象のノード</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>result<span class="classifier">bool</span></dt><dd><p>チェック結果</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserChecker.eval_def">
+<code class="sig-name descname"><span class="pre">eval_def</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">def_exp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker.eval_def"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker.eval_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>構造式を構成するリスト、タプル、文字列、数値を評価し、
+文字列を1文字以上取得する場合は 1
+文字列を取得しない場合は 0
+評価できない場合は式をそのまま返す。</p>
+<dl class="simple">
+<dt>def_exp<span class="classifier">list | tuple | str | int</span></dt><dd><p>構造式</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>def_exp<span class="classifier">list | tuple | str | int</span></dt><dd><p>構造式</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserChecker.find_left_recursive_loop_list">
+<code class="sig-name descname"><span class="pre">find_left_recursive_loop_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker.find_left_recursive_loop_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker.find_left_recursive_loop_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>左再帰となる定義をたどった結果を返す</p>
+<dl class="simple">
+<dt>loop_list<span class="classifier">list</span></dt><dd><p>左再帰の定義</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserChecker.search_unresolve_call">
+<code class="sig-name descname"><span class="pre">search_unresolve_call</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unresolve_def</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserChecker.search_unresolve_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserChecker.search_unresolve_call" title="Permalink to this definition">¶</a></dt>
+<dd><p>構造式から、評価した値を代入する</p>
+<dl class="simple">
+<dt>unresolve_def<span class="classifier">list | tuple | str | int | None</span></dt><dd><p>構造式</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tacparser.parsergenerator.ParserGenerator">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.parsergenerator.</span></code><code class="sig-name descname"><span class="pre">ParserGenerator</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pegfilepath:</span> <span class="pre">str</span></em>, <em class="sig-param"><span class="pre">encoding:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'utf-8'</span></em>, <em class="sig-param"><span class="pre">logger:</span> <span class="pre">logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">tacparser.parsergenerator</span> <span class="pre">(DEBUG)&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>指定されたpeg形式ファイルからParserスクリプトを生成するクラス。</p>
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserGenerator.generate_file">
+<code class="sig-name descname"><span class="pre">generate_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parsername</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfilepath</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserGenerator.generate_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserGenerator.generate_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>構文解析実行スクリプトを作成する</p>
+<dl class="simple">
+<dt>parsername<span class="classifier">str</span></dt><dd><p>クラス名を指定する。指定なしの場合、peg のルートの名称を使用する</p>
+</dd>
+<dt>outfilepath<span class="classifier">str</span></dt><dd><p>出力ファイルパスを指定する。
+指定なしの場合、peg のルートの名称 + parser を使用する</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>file<span class="classifier">str</span></dt><dd><p>出力したスクリプトの内容</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserGenerator.get_defstring">
+<code class="sig-name descname"><span class="pre">get_defstring</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">defname</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserGenerator.get_defstring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserGenerator.get_defstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>一つの構文解析定義の実装部を取得する</p>
+<dl class="simple">
+<dt>tree<span class="classifier">NonTerminalNode</span></dt><dd><p>構文解析木</p>
+</dd>
+<dt>defname<span class="classifier">str</span></dt><dd><p>定義名</p>
+</dd>
+<dt>level<span class="classifier">int</span></dt><dd><p>深さ</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>retstr<span class="classifier">str</span></dt><dd><p>定義に対応する文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserGenerator.get_literal_value">
+<code class="sig-name descname"><span class="pre">get_literal_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserGenerator.get_literal_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserGenerator.get_literal_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>リテラル文字列を取得</p>
+<dl class="simple">
+<dt>tree<span class="classifier">NonTermimnalNode</span></dt><dd><p>リテラルに対応するノード</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>s<span class="classifier">str</span></dt><dd><p>クォーテーションを出力用に置き換えたリテラル文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserGenerator.get_reg_value">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">get_reg_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserGenerator.get_reg_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserGenerator.get_reg_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>クォーテーションを出力用に置き換え、正規表現オプションを付加したリテラル文字列</p>
+<dl class="simple">
+<dt>tree<span class="classifier">NonTerminalNode</span></dt><dd><p>構文解析木</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>cont<span class="classifier">str</span></dt><dd><p>クォーテーションを出力用に置き換え、正規表現オプションを付加したリテラル文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.parsergenerator.ParserGenerator.travel_generate_file">
+<code class="sig-name descname"><span class="pre">travel_generate_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#tacparser.node.NonTerminalNode" title="tacparser.node.NonTerminalNode"><span class="pre">tacparser.node.NonTerminalNode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#ParserGenerator.travel_generate_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.ParserGenerator.travel_generate_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Node 探索し generator を作成する</p>
+<dl class="simple">
+<dt>tree<span class="classifier">NonTerminalNode</span></dt><dd><p>探索するツリー</p>
+</dd>
+<dt>level<span class="classifier">int</span></dt><dd><p>インデントレベル</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>s<span class="classifier">str</span></dt><dd><p>各Nodeに対応する Parser の文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="tacparser.parsergenerator.SyntaxCheckFailedException">
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.parsergenerator.</span></code><code class="sig-name descname"><span class="pre">SyntaxCheckFailedException</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msgs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#SyntaxCheckFailedException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.SyntaxCheckFailedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.exception.TacParserException" title="tacparser.exception.TacParserException"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.exception.TacParserException</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tacparser.parsergenerator.main">
+<code class="sig-prename descclassname"><span class="pre">tacparser.parsergenerator.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/parsergenerator.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.parsergenerator.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-tacparser.reader">
+<span id="tacparser-reader-module"></span><h2>tacparser.reader module<a class="headerlink" href="#module-tacparser.reader" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tacparser.reader.FileReader">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.reader.</span></code><code class="sig-name descname"><span class="pre">FileReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/reader.html#FileReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.FileReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.reader.Reader" title="tacparser.reader.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.reader.Reader</span></code></a></p>
+<p>ファイルの読み込みを実行するクラス</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="tacparser.reader.Reader">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.reader.</span></code><code class="sig-name descname"><span class="pre">Reader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contents</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>文字列解析のための読み込みクラス
+contents は、読み込んだ文字列全体
+position は、現在の位置情報
+matchLiteral, matchRegexp で読み進める。</p>
+<dl class="py method">
+<dt id="tacparser.reader.Reader.get_position">
+<code class="sig-name descname"><span class="pre">get_position</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.get_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.get_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>読み取り位置を返す</p>
+<dl class="simple">
+<dt>__position<span class="classifier">int</span></dt><dd><p>ファイル位置</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.reader.Reader.getmaxlinecolumn">
+<code class="sig-name descname"><span class="pre">getmaxlinecolumn</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.getmaxlinecolumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.getmaxlinecolumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>maxposition の文字カウントの行列を返す</p>
+<dl class="simple">
+<dt>linenum<span class="classifier">int</span></dt><dd><p>行数</p>
+</dd>
+<dt>colum<span class="classifier">int</span></dt><dd><p>行のカラム数</p>
+</dd>
+<dt>content<span class="classifier">str</span></dt><dd><p>その次の文字</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.reader.Reader.getmaxposition">
+<code class="sig-name descname"><span class="pre">getmaxposition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.getmaxposition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.getmaxposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>それまでに読み進めることができた位置の最大値を返す。</p>
+<dl class="simple">
+<dt>maxposition<span class="classifier">int</span></dt><dd><p>position の最大値</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.reader.Reader.is_end">
+<code class="sig-name descname"><span class="pre">is_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.is_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.is_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>終端に達しているか否かを判断する関数</p>
+<dl class="simple">
+<dt>result<span class="classifier">bool</span></dt><dd><p>読み込み位置が終端とイコールの場合、True, それ以外の場合、False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.reader.Reader.match_literal">
+<code class="sig-name descname"><span class="pre">match_literal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">literal</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocase</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.match_literal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.match_literal" title="Permalink to this definition">¶</a></dt>
+<dd><p>contentsの次が指定したリテラルにマッチした場合、読み進める。</p>
+<dl class="simple">
+<dt>literal<span class="classifier">str</span></dt><dd><p>Unicode文字列</p>
+</dd>
+<dt>flg<span class="classifier">bool</span></dt><dd><p>成功時ファイルを読み進めるか否か</p>
+</dd>
+<dt>nocase<span class="classifier">bool</span></dt><dd><p>大文字小文字を区別するか否か(true=区別しない)</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>result<span class="classifier">bool</span></dt><dd><p>先頭matchの成否</p>
+</dd>
+<dt>literal<span class="classifier">str</span></dt><dd><p>読み込んだ文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.reader.Reader.match_regexp">
+<code class="sig-name descname"><span class="pre">match_regexp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">re.Pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flg</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.match_regexp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.match_regexp" title="Permalink to this definition">¶</a></dt>
+<dd><p>contentsの次が指定した正規表現にマッチした場合、読み進める。</p>
+<dl class="simple">
+<dt>reg<span class="classifier">re.Pattern</span></dt><dd><p>正規表現</p>
+</dd>
+<dt>flg<span class="classifier">bool</span></dt><dd><p>成功時ファイルを読み進めるか否か</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>result<span class="classifier">bool</span></dt><dd><p>先頭matchの成否</p>
+</dd>
+<dt>literal<span class="classifier">str | None</span></dt><dd><p>読み込んだ文字列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.reader.Reader.partial_reposition">
+<code class="sig-name descname"><span class="pre">partial_reposition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startpos</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpos</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.partial_reposition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.partial_reposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>contents上の開始位置、終了位置、maxlengthを再設定する。</p>
+<dl class="simple">
+<dt>startpos<span class="classifier">int</span></dt><dd><p>設定するcontents上の開始位置</p>
+</dd>
+<dt>endpos<span class="classifier">int</span></dt><dd><p>設定するcontents上の終了位置</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.reader.Reader.pos2linecolumn">
+<code class="sig-name descname"><span class="pre">pos2linecolumn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.pos2linecolumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.pos2linecolumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>文字カウント を 行番号、列番号に変換する</p>
+<dl class="simple">
+<dt>pos<span class="classifier">int</span></dt><dd><p>位置情報（文字カウント）</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>linenum<span class="classifier">int</span></dt><dd><p>行数</p>
+</dd>
+<dt>colum<span class="classifier">int</span></dt><dd><p>行のカラム数</p>
+</dd>
+<dt>content<span class="classifier">str</span></dt><dd><p>その次の文字</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tacparser.reader.Reader.set_position">
+<code class="sig-name descname"><span class="pre">set_position</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/tacparser/reader.html#Reader.set_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.Reader.set_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>contents上の読み取り位置を設定する。</p>
+<dl class="simple">
+<dt>n<span class="classifier">int</span></dt><dd><p>読み取り位置</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tacparser.reader.StringReader">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">tacparser.reader.</span></code><code class="sig-name descname"><span class="pre">StringReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tacparser/reader.html#StringReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tacparser.reader.StringReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tacparser.reader.Reader" title="tacparser.reader.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">tacparser.reader.Reader</span></code></a></p>
+<p>文字列の読み込みを実行するクラス</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tacparser">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tacparser" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to tacparser’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Author.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

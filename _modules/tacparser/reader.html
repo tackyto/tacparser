@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>tacparser.reader &mdash; tacparser 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> tacparser
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tacparser.html">tacparser package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tacparser</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tacparser.reader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tacparser.reader</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="Reader"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader">[docs]</a><span class="k">class</span> <span class="nc">Reader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    文字列解析のための読み込みクラス</span>
+<span class="sd">    contents は、読み込んだ文字列全体</span>
+<span class="sd">    position は、現在の位置情報</span>
+<span class="sd">    matchLiteral, matchRegexp で読み進める。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初期化</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        contents : str</span>
+<span class="sd">            読み込み内容（文字列）</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxposition</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__linepos__</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># 部分的な構文解析時に使用する終了判定位置</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__endposition</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+<div class="viewcode-block" id="Reader.match_literal"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.match_literal">[docs]</a>    <span class="k">def</span> <span class="nf">match_literal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">literal</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">flg</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nocase</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        contentsの次が指定したリテラルにマッチした場合、読み進める。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        literal : str</span>
+<span class="sd">            Unicode文字列</span>
+<span class="sd">        flg : bool</span>
+<span class="sd">            成功時ファイルを読み進めるか否か</span>
+<span class="sd">        nocase : bool</span>
+<span class="sd">            大文字小文字を区別するか否か(true=区別しない)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------- </span>
+<span class="sd">        result : bool</span>
+<span class="sd">            先頭matchの成否</span>
+<span class="sd">        literal : str</span>
+<span class="sd">            読み込んだ文字列</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nextstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__position</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">literal</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__endposition</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">literal</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">nocase</span><span class="p">)</span> <span class="ow">and</span> <span class="n">nextstr</span> <span class="o">==</span> <span class="n">literal</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">flg</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">literal</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">getmaxposition</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">literal</span>
+        <span class="k">elif</span> <span class="n">nocase</span> <span class="ow">and</span> <span class="n">nextstr</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">literal</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">flg</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">literal</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">getmaxposition</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">nextstr</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Reader.match_regexp"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.match_regexp">[docs]</a>    <span class="k">def</span> <span class="nf">match_regexp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reg</span><span class="p">:</span><span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">,</span> <span class="n">flg</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        contentsの次が指定した正規表現にマッチした場合、読み進める。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reg : re.Pattern</span>
+<span class="sd">            正規表現</span>
+<span class="sd">        flg : bool</span>
+<span class="sd">            成功時ファイルを読み進めるか否か</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------- </span>
+<span class="sd">        result : bool</span>
+<span class="sd">            先頭matchの成否</span>
+<span class="sd">        literal : str | None</span>
+<span class="sd">            読み込んだ文字列</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__endposition</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__position</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__position</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">__endposition</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">mg</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">flg</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">getmaxposition</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Reader.getmaxposition"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.getmaxposition">[docs]</a>    <span class="k">def</span> <span class="nf">getmaxposition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        それまでに読み進めることができた位置の最大値を返す。</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------- </span>
+<span class="sd">        maxposition : int</span>
+<span class="sd">            position の最大値</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxposition</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxposition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__position</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxposition</span></div>
+
+<div class="viewcode-block" id="Reader.pos2linecolumn"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.pos2linecolumn">[docs]</a>    <span class="k">def</span> <span class="nf">pos2linecolumn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        文字カウント を 行番号、列番号に変換する</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pos : int</span>
+<span class="sd">            位置情報（文字カウント）</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------- </span>
+<span class="sd">        linenum : int</span>
+<span class="sd">            行数</span>
+<span class="sd">        colum : int</span>
+<span class="sd">            行のカラム数</span>
+<span class="sd">        content : str</span>
+<span class="sd">            その次の文字</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__linepos__</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">line_pos</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+                <span class="n">line_pos</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__linepos__</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line_pos</span><span class="p">)</span>
+
+        <span class="n">linepos_l</span><span class="p">,</span> <span class="n">linenum</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">linepos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__linepos__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">linepos</span> <span class="o">&gt;</span> <span class="n">pos</span> <span class="o">&gt;=</span> <span class="n">linepos_l</span><span class="p">:</span>
+                <span class="n">column</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">linepos_l</span>
+                <span class="k">return</span> <span class="n">linenum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+            <span class="n">linenum</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">linepos_l</span> <span class="o">=</span> <span class="n">linepos</span>
+
+        <span class="k">if</span> <span class="n">pos</span> <span class="o">==</span> <span class="n">linepos_l</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">linenum</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="c1"># 空ファイルまたは1行のみのファイル</span>
+                <span class="k">return</span> <span class="n">linenum</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">linenum</span><span class="p">,</span> <span class="n">pos</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__linepos__</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;over File length &lt;</span><span class="si">{0}</span><span class="s2">&gt;, contents length=</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="Reader.getmaxlinecolumn"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.getmaxlinecolumn">[docs]</a>    <span class="k">def</span> <span class="nf">getmaxlinecolumn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        maxposition の文字カウントの行列を返す</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------- </span>
+<span class="sd">        linenum : int</span>
+<span class="sd">            行数</span>
+<span class="sd">        colum : int</span>
+<span class="sd">            行のカラム数</span>
+<span class="sd">        content : str</span>
+<span class="sd">            その次の文字</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos2linecolumn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxposition</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Reader.get_position"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.get_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        読み取り位置を返す</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------- </span>
+<span class="sd">        __position : int</span>
+<span class="sd">            ファイル位置</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__position</span></div>
+
+<div class="viewcode-block" id="Reader.set_position"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.set_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        contents上の読み取り位置を設定する。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n : int</span>
+<span class="sd">            読み取り位置</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getmaxposition</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Reader.partial_reposition"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.partial_reposition">[docs]</a>    <span class="k">def</span> <span class="nf">partial_reposition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startpos</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">endpos</span><span class="p">:</span><span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        contents上の開始位置、終了位置、maxlengthを再設定する。</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        startpos : int</span>
+<span class="sd">            設定するcontents上の開始位置</span>
+<span class="sd">        endpos : int</span>
+<span class="sd">            設定するcontents上の終了位置</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">startpos</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">=</span> <span class="n">startpos</span>
+
+        <span class="k">if</span> <span class="n">endpos</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__endposition</span> <span class="o">=</span> <span class="n">endpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxposition</span> <span class="o">=</span> <span class="n">startpos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Reader.is_end"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.Reader.is_end">[docs]</a>    <span class="k">def</span> <span class="nf">is_end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        終端に達しているか否かを判断する関数</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ---------- </span>
+<span class="sd">        result : bool</span>
+<span class="sd">            読み込み位置が終端とイコールの場合、True, それ以外の場合、False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__position</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div></div>
+
+
+<div class="viewcode-block" id="FileReader"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.FileReader">[docs]</a><span class="k">class</span> <span class="nc">FileReader</span><span class="p">(</span><span class="n">Reader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ファイルの読み込みを実行するクラス</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">Reader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="StringReader"><a class="viewcode-back" href="../../tacparser.html#tacparser.reader.StringReader">[docs]</a><span class="k">class</span> <span class="nc">StringReader</span><span class="p">(</span><span class="n">Reader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    文字列の読み込みを実行するクラス</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Reader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Author.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
