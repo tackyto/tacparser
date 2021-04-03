@@ -4,3 +4,5 @@ tacparser.egg-info/
 .vscode/
 __pycache__/
 log.log*
+html/
+docs/
