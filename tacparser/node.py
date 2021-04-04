@@ -45,7 +45,7 @@ class Node(object):
     def get_end_linecolumn(self) -> tuple[int, int]:
         return self.end_linenum, self.end_column
 
-    def get_position_str(self, detail_flg:bool) -> str:
+    def _get_position_str(self, detail_flg:bool) -> str:
         if detail_flg:
             return "(" + str(self.linenum) + ", " + str(self.column) + " - " \
                     + str(self.end_linenum) + ", " + str(self.end_column) + " : " \
@@ -53,7 +53,7 @@ class Node(object):
         else:
             return "(Ln " + str(self.linenum) + ", Col " + str(self.column) + ")"
         
-    def get_node_str(self, detail_flg:bool) -> str: pass
+    def _get_node_str(self, detail_flg:bool) -> str: pass
 
     def get_str(self, _dict:dict=None) -> str: pass
 
@@ -103,13 +103,13 @@ class NonTerminalNode(Node):
             ret += r.get_str(_dict)
         return ret
 
-    def get_node_str(self, detail_flg:bool) -> str:
+    def _get_node_str(self, detail_flg:bool) -> str:
         if detail_flg:
-            return self.type + " : " + self.get_position_str(detail_flg) \
+            return self.type + " : " + self._get_position_str(detail_flg) \
                     + "[" + str(self.nodenum) + "] : \"" + self.get_str() + "\""
         else:
             return str(self.nodenum) + " : " + self.type \
-                    + " : " + self.get_position_str(detail_flg)
+                    + " : " + self._get_position_str(detail_flg)
 
     def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
         """
@@ -130,7 +130,7 @@ class NonTerminalNode(Node):
             階層を表現した文字列
         """        
         if node_list is None or self.type in node_list:
-            ret = " " * 4 * level + self.get_node_str(detail_flg) + "\n"
+            ret = " " * 4 * level + self._get_node_str(detail_flg) + "\n"
             level += 1
         else:
             ret = ""
@@ -197,8 +197,8 @@ class TerminalNode(Node):
     def is_terminal(self) -> bool:
         return True
 
-    def get_node_str(self, detail_flg:bool) -> str:
-        return "@Tarminal : " + self.get_position_str(detail_flg) \
+    def _get_node_str(self, detail_flg:bool) -> str:
+        return "@Tarminal : " + self._get_position_str(detail_flg) \
                 + " \"" + self.termstr + "\""
 
     def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
@@ -221,7 +221,7 @@ class TerminalNode(Node):
         if node_list is not None:
             return ""
         else:
-            return " " * 4 * level + self.get_node_str(detail_flg) + "\n"
+            return " " * 4 * level + self._get_node_str(detail_flg) + "\n"
 
 
 class FailureNode(Node):
@@ -239,8 +239,8 @@ class FailureNode(Node):
     def is_terminal(self) -> bool:
         return True
 
-    def get_node_str(self, detail_flg:bool) -> str:
-        return "@Failure : " + self.get_position_str(detail_flg) \
+    def _get_node_str(self, detail_flg:bool) -> str:
+        return "@Failure : " + self._get_position_str(detail_flg) \
                 + " \"" + self.termstr + "\""
 
     def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
@@ -257,7 +257,7 @@ class FailureNode(Node):
         ret : str
             エラー情報を表現した文字列を返す
         """
-        return " " * 4 * level + self.get_node_str(detail_flg) + "\n"
+        return " " * 4 * level + self._get_node_str(detail_flg) + "\n"
 
     def is_failure(self) -> bool:
         return True
@@ -317,13 +317,13 @@ class ReconstructedNode(NonTerminalNode):
             raise ParseException("termstr が未設定です")
         return self.termstr
 
-    def get_node_str(self, detail_flg:bool) -> str:
+    def _get_node_str(self, detail_flg:bool) -> str:
         if detail_flg:
-            return self.type + " : " + self.get_position_str(detail_flg) \
+            return self.type + " : " + self._get_position_str(detail_flg) \
                     + "[" + str(self.nodenum) + "] : \"" + self.get_str() + "\""
         else:
             return str(self.nodenum) + " : " + self.type \
-                    + " : " + self.get_position_str(detail_flg) \
+                    + " : " + self._get_position_str(detail_flg) \
                     + " : \"" + self.get_str() + "\""
 
     def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
@@ -343,7 +343,7 @@ class ReconstructedNode(NonTerminalNode):
             階層を表現した文字列
         """
         if node_list is None or self.type in node_list:
-            ret = " " * 4 * level + self.get_node_str(detail_flg) + "\n"
+            ret = " " * 4 * level + self._get_node_str(detail_flg) + "\n"
             level += 1
         else:
             ret = ""
@@ -351,8 +351,5 @@ class ReconstructedNode(NonTerminalNode):
             if n:
                 ret += n.print_tree(level, node_list, detail_flg)
         return ret
-
-    def is_terminal(self) -> bool:
-        return True
 
 
