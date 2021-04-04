@@ -1,0 +1,4 @@
+[submodule "html"]
+	path = html
+	url = https://github.com/tackyto/tacparser.git
+	branch = gh-pages
