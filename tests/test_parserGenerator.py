@@ -28,31 +28,31 @@ class TestParserGenerator(unittest.TestCase):
         test_string = 'r"[a-zA-Z]*" '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
-        regstr = generator.get_reg_value(node)
+        regstr = generator._get_reg_value(node)
         self.assertEqual('"[a-zA-Z]*", regex.M', regstr)
 
         test_string = 'r"[a-zA-Z]*":mXA '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
-        regstr = generator.get_reg_value(node)
+        regstr = generator._get_reg_value(node)
         self.assertEqual('"[a-zA-Z]*", regex.A | regex.X', regstr)
 
         test_string = 'r"[a-zA-Z]*":XA '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
-        regstr = generator.get_reg_value(node)
+        regstr = generator._get_reg_value(node)
         self.assertEqual('"[a-zA-Z]*", regex.A | regex.M | regex.X', regstr)
 
         test_string = 'r"[a-zA-Z]*":XAIS '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
-        regstr = generator.get_reg_value(node)
+        regstr = generator._get_reg_value(node)
         self.assertEqual('"[a-zA-Z]*", regex.A | regex.I | regex.M | regex.S | regex.X', regstr)
 
         test_string = 'r"[a-zA-Z]*":XAISAIS '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
         self.assertTrue(flg)
-        regstr = generator.get_reg_value(node)
+        regstr = generator._get_reg_value(node)
         self.assertEqual('"[a-zA-Z]*", regex.A | regex.I | regex.M | regex.S | regex.X', regstr)
 
     def test_generate_peg(self):

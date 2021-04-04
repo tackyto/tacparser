@@ -41,7 +41,6 @@ class ExPegParser(Parser):
                          "RepeatCnt": self.p_repeatcnt,
                          "Primary": self.p_primary,
                          "IdentifierCall": self.p_identifiercall,
-                         "AssignmentValue": self.p_assignmentvalue,
                          "MacroDefinition": self.p_macrodefinition,
                          "MacroExpression": self.p_macroexpression,
                          "MacroSelection": self.p_macroselection,
@@ -335,7 +334,6 @@ class ExPegParser(Parser):
         # Primary   <- RegularExp
         #            / IdentifierCall
         #            / Parameter
-        #            / AssignmentValue
         #            / Identifier !LEFTARROW !COLON !SUB_LEFTARROW
         #            / MacroIdentifier !LEFTARROW !COLON !SUB_LEFTARROW
         #            / OPEN Expression CLOSE
@@ -343,7 +341,6 @@ class ExPegParser(Parser):
         return self._sel(self._p(self.p_regularexp, "RegularExp"),
                          self._p(self.p_identifiercall, "IdentifierCall"),
                          self._p(self.p_parameter, "Parameter"),
-                         self._p(self.p_assignmentvalue, "AssignmentValue"),
                          self._seq(self._p(self.p_identifier, "Identifier"),
                                    self._not(self._p(self.p_leftarrow, "LEFTARROW")),
                                    self._not(self._p(self.p_colon, "COLON")),
@@ -375,15 +372,6 @@ class ExPegParser(Parser):
                                              self._p(self.p_expression, "Expression")
                                              ), 0),
                          self._p(self.p_close, "CLOSE")
-                         )
-
-    def p_assignmentvalue(self):
-        # # AssignmentValue : 代入値呼び出し
-        # #   例) 下記右側の $x
-        # #   XmlAnyTag <- "<" Tagname=$x TagAttributes ">" Contents "</" $x Spacing? ">"
-        # AssignmentValue <- DOLLAR_SIGN ParameterName
-        return self._seq(self._p(self.p_dollar_sign, "DOLLAR_SIGN"),
-                         self._p(self.p_parametername, "ParameterName")
                          )
 
     def p_macrodefinition(self):
@@ -746,10 +734,12 @@ class ExPegParser(Parser):
                          self._p(self.p_endofline, "EndOfLine")
                          )
 
+    _reg_p_space0 = regex.compile("\\t", regex.M)
+
     def p_space(self):
-        # Space <- ' ' / '\t' / EndOfLine
+        # Space <- ' ' / r"\t" / EndOfLine
         return self._sel(self._l(' '),
-                         self._l('\\t'),
+                         self._r(self._reg_p_space0),
                          self._p(self.p_endofline, "EndOfLine")
                          )
 

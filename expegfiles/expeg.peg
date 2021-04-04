@@ -89,7 +89,6 @@ RepeatCnt <- Number
 Primary   <- RegularExp
            / IdentifierCall
            / Parameter
-           / AssignmentValue
            / Identifier !LEFTARROW !COLON !SUB_LEFTARROW
            / MacroIdentifier !LEFTARROW !COLON !SUB_LEFTARROW
            / OPEN Expression CLOSE
@@ -100,11 +99,6 @@ Primary   <- RegularExp
 #   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
 #   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
 IdentifierCall <- Identifier COLON OPEN Expression ( COMMA Expression )* CLOSE
-
-# AssignmentValue : 代入値呼び出し
-#   例) 下記右側の $x
-#   XmlAnyTag <- "<" Tagname=$x TagAttributes ">" Contents "</" $x Spacing? ">"
-AssignmentValue <- DOLLAR_SIGN ParameterName
 
 # Macro（追加構文） : マクロ
 #   構文解析時にノードを作成せず、呼び出した規則の一部として展開する。
@@ -209,7 +203,7 @@ REGPREFIX <- 'r'
 Spacing <- Space+
 
 Comment <- '#' r"[^\r\n]*" EndOfLine
-Space <- ' ' / '\t' / EndOfLine
+Space <- ' ' / r"\t" / EndOfLine
 
 EndOfLine <- r"\r\n|\n|\r"
 
