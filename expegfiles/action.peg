@@ -30,24 +30,26 @@ ArbitraryText <- r"[^\r\n]*"
 #        
 #        TypeA , TypeB               Selection    : TypeA または TypeB
 #        TypeA [Condition]           Conditions   : 条件式を満たす TypeA
-#        TypeA TypeB                 Descendants  : TypeA の子孫である TypeB
-#        TypeA > TypeB               Children     : TypeA の子である TypeB
-#
+#        TypeA << TypeB              Ancestor     : TypeA の祖先である TypeB
+#        TypeA <  TypeB              Parent       : TypeA の親である TypeB
+#        TypeA >> TypeB 
+#            or TypeA TypeB       Descendants  : TypeA の子孫である TypeB
+#        TypeA >  TypeB              Children     : TypeA の子である TypeB
 #        TypeA -- TypeB              OnTheLeft    : TypeA の同階層で前方にある TypeB
+#        TypeA -  TypeB              ForwardTo    : TypeA の直前にある TypeB
 #        TypeA ++ TypeB              OnTheRight   : TypeA の同階層で後ろにある TypeB
-#        TypeA - TypeB               ForwardTo    : TypeA の直前にある TypeB
-#        TypeA + TypeB               NextTo       : TypeA の直後にある TypeB
+#        TypeA +  TypeB              NextTo       : TypeA の直後にある TypeB
 # ----------------------------------------
-Selector <- Selection ( COMMA Selection )*
+Selector <- ( OnTheLeft / OnTheRight / ForwardTo / NextTo / Descendants / Ancestor / Children / Parent )+
 
-Selection <- Conditions ( OnTheLeft / OnTheRight / ForwardTo / NextTo / Children / Descendants )*
-
-OnTheRight <- >>PLUSPLUS Conditions
-OnTheLeft <- >>MINUSMINUS Conditions
-ForwardTo <- >>MINUS Conditions
-NextTo <- >>PLUS Conditions
-Children <- >>GREATER_THAN Conditions
-Descendants <- Conditions
+OnTheRight  <- >>PLUSPLUS Conditions
+OnTheLeft   <- >>MINUSMINUS Conditions
+ForwardTo   <- >>MINUS Conditions
+NextTo      <- >>PLUS Conditions
+Descendants <- >>MUCH_GREATER_THAN Conditions / Conditions
+Children    <- >>GREATER_THAN Conditions
+Ancestor    <- >>MUCH_LESS_THAN Conditions
+Parent      <- >>LESS_THAN Conditions
 
 # ----------------------------------------
 # Conditions
@@ -86,13 +88,13 @@ Descendants <- Conditions
 Conditions <- Identifier OrCondition*
 Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) >>S?
 
-OrCondition <- >>BRAKET_OPEN Condition (>>COMMA Condition)* >>BRAKET_CLOSE
+OrCondition <- >>BRAKET_OPEN SingleCondition (>>COMMA SingleCondition)* >>BRAKET_CLOSE
 
-Condition <- Slice / LineColumnLimitation / AttributeLimitation
+SingleCondition <- Slice / LineColumnLimitation / AttributeLimitation
 Slice <- FromTo / Number
-FromTo <- StartNumber COLON EndNumber
-StartNumber <- Number
-EndNumber <- Number
+FromTo <- StartNumber >>COLON EndNumber
+StartNumber <- Number?
+EndNumber <- Number?
 Number <- '-'? r"0|[1-9][0-9]*" >>S?
 
 LineColumnLimitation <- GraterLimitation / LessLimitation / GraterEqualLimitation / LessEqualLimitation
@@ -184,6 +186,8 @@ GREATER_THAN  <- '>'  S?
 GREATER_EQUAL <- '>=' S?
 LESS_THAN     <- '<'  S?
 LESS_EQUAL    <- '<=' S?
+MUCH_GREATER_THAN <- '>>' S?
+MUCH_LESS_THAN    <- '<<' S?
 
 # PEG に追加： 終端を示す記号
 ENDOFFILE <- '_EOF'

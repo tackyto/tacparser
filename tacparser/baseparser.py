@@ -275,15 +275,31 @@ class Parser(object):
 
     def __complete_tree(self, root:Node) -> None:
         """
-        ツリーの各ノードに親ノードを設定する。
+        ツリーの各ノードに親ノード、隣接ノードを設定する。
 
         Parameters
         ----------
         root : Node
             ルートノード
         """
-        for cn in root.children:
+        child_cnt = len(root.children)
+        for i in range(child_cnt):
+            cn = root.children[i]
+            # 隣接ノード設定
+            if i >= 0 and i+1 < child_cnt:
+                # right_neighbor の存在確認
+                cn.right_neighbor = root.children[i+1]
+            else:
+                cn.right_neighbor = None
+            if i >= 1:
+                # left_neighbor の存在確認
+                cn.left_neighbor = root.children[i-1]
+            else:
+                cn.left_neighbor = None
+            
+            # 親ノード設定
             cn.parent = root
+
             if isinstance(cn, NonTerminalNode):
                 self.__complete_tree(cn)
 
@@ -946,9 +962,13 @@ def reconstruct_tree(
                 if _i >= 0 and _i+1 < _children_cnt:
                     # right_neighbor の存在確認
                     _children.right_neighbor = _newchildren[_i+1]
+                else:
+                    _children.right_neighbor = None
                 if _i >= 1:
                     # left_neighbor の存在確認
                     _children.left_neighbor = _newchildren[_i-1]
+                else:
+                    _children.left_neighbor = None
 
             return _retnode,
         else:

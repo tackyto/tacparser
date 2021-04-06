@@ -28,6 +28,10 @@ class Node(object):
         self.end_linenum:int = 0
         #: 終了位置の列番号
         self.end_column:int = 0
+        #: 左側の隣接ノード
+        self.left_neighbor:Node = None
+        #: 右側の隣接ノード。
+        self.right_neighbor:Node = None
 
     def set_position(self, r:"Reader", startpos:int, endpos:int) -> None:
         self.startpos = startpos
@@ -292,8 +296,6 @@ class ReconstructedNode(NonTerminalNode):
         self.end_linenum = node.end_linenum
         self.end_column = node.end_column
 
-        self.left_neighbor:ReconstructedNode = None
-        self.right_neighbor:ReconstructedNode = None
         self.termstr:str = ""
 
     def get_str(self, _dict:dict[str, str]=None) -> str:

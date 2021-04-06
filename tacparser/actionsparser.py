@@ -16,17 +16,18 @@ class ActionsParser(Parser):
                          "Comment": self.p_comment,
                          "ArbitraryText": self.p_arbitrarytext,
                          "Selector": self.p_selector,
-                         "Selection": self.p_selection,
                          "OnTheRight": self.p_ontheright,
                          "OnTheLeft": self.p_ontheleft,
                          "ForwardTo": self.p_forwardto,
                          "NextTo": self.p_nextto,
-                         "Children": self.p_children,
                          "Descendants": self.p_descendants,
+                         "Children": self.p_children,
+                         "Ancestor": self.p_ancestor,
+                         "Parent": self.p_parent,
                          "Conditions": self.p_conditions,
                          "Identifier": self.p_identifier,
                          "OrCondition": self.p_orcondition,
-                         "Condition": self.p_condition,
+                         "SingleCondition": self.p_singlecondition,
                          "Slice": self.p_slice,
                          "FromTo": self.p_fromto,
                          "StartNumber": self.p_startnumber,
@@ -90,6 +91,8 @@ class ActionsParser(Parser):
                          "GREATER_EQUAL": self.p_greater_equal,
                          "LESS_THAN": self.p_less_than,
                          "LESS_EQUAL": self.p_less_equal,
+                         "MUCH_GREATER_THAN": self.p_much_greater_than,
+                         "MUCH_LESS_THAN": self.p_much_less_than,
                          "ENDOFFILE": self.p_endoffile}
 
     def p_actions(self):
@@ -163,66 +166,76 @@ class ActionsParser(Parser):
         # #        
         # #        TypeA , TypeB               Selection    : TypeA または TypeB
         # #        TypeA [Condition]           Conditions   : 条件式を満たす TypeA
-        # #        TypeA TypeB                 Descendants  : TypeA の子孫である TypeB
-        # #        TypeA > TypeB               Children     : TypeA の子である TypeB
-        # #
+        # #        TypeA << TypeB              Ancestor     : TypeA の祖先である TypeB
+        # #        TypeA <  TypeB              Parent       : TypeA の親である TypeB
+        # #        TypeA >> TypeB 
+        # #            or or TypeA TypeB       Descendants  : TypeA の子孫である TypeB
+        # #        TypeA >  TypeB              Children     : TypeA の子である TypeB
         # #        TypeA -- TypeB              OnTheLeft    : TypeA の同階層で前方にある TypeB
+        # #        TypeA -  TypeB              ForwardTo    : TypeA の直前にある TypeB
         # #        TypeA ++ TypeB              OnTheRight   : TypeA の同階層で後ろにある TypeB
-        # #        TypeA - TypeB               ForwardTo    : TypeA の直前にある TypeB
-        # #        TypeA + TypeB               NextTo       : TypeA の直後にある TypeB
+        # #        TypeA +  TypeB              NextTo       : TypeA の直後にある TypeB
         # # ----------------------------------------
-        # Selector <- Selection ( COMMA Selection )*
-        return self._seq(self._p(self.p_selection, "Selection"),
-                         self._rpt(self._seq(self._p(self.p_comma, "COMMA"),
-                                             self._p(self.p_selection, "Selection")
-                                             ), 0)
-                         )
-
-    def p_selection(self):
-        # Selection <- Conditions ( OnTheLeft / OnTheRight / ForwardTo / NextTo / Children / Descendants )*
-        return self._seq(self._p(self.p_conditions, "Conditions"),
-                         self._rpt(self._sel(self._p(self.p_ontheleft, "OnTheLeft"),
-                                             self._p(self.p_ontheright, "OnTheRight"),
-                                             self._p(self.p_forwardto, "ForwardTo"),
-                                             self._p(self.p_nextto, "NextTo"),
-                                             self._p(self.p_children, "Children"),
-                                             self._p(self.p_descendants, "Descendants")
-                                             ), 0)
-                         )
+        # Selector <- ( OnTheLeft / OnTheRight / ForwardTo / NextTo / Descendants / Ancestor / Children / Parent )+
+        return self._rpt(self._sel(self._p(self.p_ontheleft, "OnTheLeft"),
+                                   self._p(self.p_ontheright, "OnTheRight"),
+                                   self._p(self.p_forwardto, "ForwardTo"),
+                                   self._p(self.p_nextto, "NextTo"),
+                                   self._p(self.p_descendants, "Descendants"),
+                                   self._p(self.p_ancestor, "Ancestor"),
+                                   self._p(self.p_children, "Children"),
+                                   self._p(self.p_parent, "Parent")
+                                   ), 1)
 
     def p_ontheright(self):
-        # OnTheRight <- >>PLUSPLUS Conditions
+        # OnTheRight  <- >>PLUSPLUS Conditions
         return self._seq(self._skip(self._p(self.p_plusplus, "PLUSPLUS")),
                          self._p(self.p_conditions, "Conditions")
                          )
 
     def p_ontheleft(self):
-        # OnTheLeft <- >>MINUSMINUS Conditions
+        # OnTheLeft   <- >>MINUSMINUS Conditions
         return self._seq(self._skip(self._p(self.p_minusminus, "MINUSMINUS")),
                          self._p(self.p_conditions, "Conditions")
                          )
 
     def p_forwardto(self):
-        # ForwardTo <- >>MINUS Conditions
+        # ForwardTo   <- >>MINUS Conditions
         return self._seq(self._skip(self._p(self.p_minus, "MINUS")),
                          self._p(self.p_conditions, "Conditions")
                          )
 
     def p_nextto(self):
-        # NextTo <- >>PLUS Conditions
+        # NextTo      <- >>PLUS Conditions
         return self._seq(self._skip(self._p(self.p_plus, "PLUS")),
                          self._p(self.p_conditions, "Conditions")
                          )
 
+    def p_descendants(self):
+        # Descendants <- >>MUCH_GREATER_THAN Conditions / Conditions
+        return self._sel(self._seq(self._skip(self._p(self.p_much_greater_than, "MUCH_GREATER_THAN")),
+                                   self._p(self.p_conditions, "Conditions")
+                                   ),
+                         self._p(self.p_conditions, "Conditions")
+                         )
+
     def p_children(self):
-        # Children <- >>GREATER_THAN Conditions
+        # Children    <- >>GREATER_THAN Conditions
         return self._seq(self._skip(self._p(self.p_greater_than, "GREATER_THAN")),
                          self._p(self.p_conditions, "Conditions")
                          )
 
-    def p_descendants(self):
-        # Descendants <- Conditions
-        return self._p(self.p_conditions, "Conditions")
+    def p_ancestor(self):
+        # Ancestor    <- >>MUCH_LESS_THAN Conditions
+        return self._seq(self._skip(self._p(self.p_much_less_than, "MUCH_LESS_THAN")),
+                         self._p(self.p_conditions, "Conditions")
+                         )
+
+    def p_parent(self):
+        # Parent      <- >>LESS_THAN Conditions
+        return self._seq(self._skip(self._p(self.p_less_than, "LESS_THAN")),
+                         self._p(self.p_conditions, "Conditions")
+                         )
 
     def p_conditions(self):
         # Conditions <- Identifier OrCondition*
@@ -241,17 +254,17 @@ class ActionsParser(Parser):
                          )
 
     def p_orcondition(self):
-        # OrCondition <- >>BRAKET_OPEN Condition (>>COMMA Condition)* >>BRAKET_CLOSE
+        # OrCondition <- >>BRAKET_OPEN SingleCondition (>>COMMA SingleCondition)* >>BRAKET_CLOSE
         return self._seq(self._skip(self._p(self.p_braket_open, "BRAKET_OPEN")),
-                         self._p(self.p_condition, "Condition"),
+                         self._p(self.p_singlecondition, "SingleCondition"),
                          self._rpt(self._seq(self._skip(self._p(self.p_comma, "COMMA")),
-                                             self._p(self.p_condition, "Condition")
+                                             self._p(self.p_singlecondition, "SingleCondition")
                                              ), 0),
                          self._skip(self._p(self.p_braket_close, "BRAKET_CLOSE"))
                          )
 
-    def p_condition(self):
-        # Condition <- Slice / LineColumnLimitation / AttributeLimitation
+    def p_singlecondition(self):
+        # SingleCondition <- Slice / LineColumnLimitation / AttributeLimitation
         return self._sel(self._p(self.p_slice, "Slice"),
                          self._p(self.p_linecolumnlimitation, "LineColumnLimitation"),
                          self._p(self.p_attributelimitation, "AttributeLimitation")
@@ -664,6 +677,18 @@ class ActionsParser(Parser):
     def p_less_equal(self):
         # LESS_EQUAL    <- '<=' S?
         return self._seq(self._l('<='),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_much_greater_than(self):
+        # MUCH_GREATER_THAN <- '>>' S?
+        return self._seq(self._l('>>'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_much_less_than(self):
+        # MUCH_LESS_THAN    <- '<<' S?
+        return self._seq(self._l('<<'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 
