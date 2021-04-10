@@ -1,4 +1,4 @@
-from tacparser import Parser
+from .baseparser import Parser
 import regex
 
 

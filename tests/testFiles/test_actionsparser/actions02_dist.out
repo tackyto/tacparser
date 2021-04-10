@@ -1,0 +1,29 @@
+Actions : (Ln 1, Col 0)
+    ActionDefinition : (Ln 1, Col 0)
+        Selector : (Ln 1, Col 0)
+            Descendants : (Ln 1, Col 0)
+                Conditions : (Ln 1, Col 0)
+                    Identifier : (Ln 1, Col 0)
+                        @Tarminal : (Ln 1, Col 0) "NodeName"
+                    OrCondition : (Ln 1, Col 8)
+                        SingleCondition : (Ln 1, Col 9)
+                            AttributeLimitation : (Ln 1, Col 9)
+                                AttributeSimple : (Ln 1, Col 9)
+                                    AttributeName : (Ln 1, Col 9)
+                                        @Tarminal : (Ln 1, Col 9) "foo"
+                        SingleCondition : (Ln 1, Col 15)
+                            AttributeLimitation : (Ln 1, Col 15)
+                                AttributeSimple : (Ln 1, Col 15)
+                                    AttributeName : (Ln 1, Col 15)
+                                        @Tarminal : (Ln 1, Col 15) "bar"
+        Action : (Ln 2, Col 1)
+            Substitution : (Ln 2, Col 1)
+                Variable : (Ln 2, Col 1)
+                    ThisValue : (Ln 2, Col 1)
+                        ParameterName : (Ln 2, Col 6)
+                            @Tarminal : (Ln 2, Col 6) "variable"
+                Value : (Ln 2, Col 17)
+                    Literal : (Ln 2, Col 17)
+                        DoubleQuotesLiteral : (Ln 2, Col 17)
+                            @Tarminal : (Ln 2, Col 18) "value"
+    _EOF : (Ln 2, Col 26)

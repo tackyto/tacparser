@@ -12,7 +12,7 @@ Actions <- ( ActionDefinition / >>Comment / >>S )* _EOF
 # astから要素を選択する記法
 #     css like な記載方法
 # 
-#     <Selector> : { parameter_name = this.parameter; }
+#     <Selector> { parameter_name = this.parameter; }
 # ----------------------------------------
 ActionDefinition <- Selector ( >>COMMA Selector)*
                     >>CURL_OPEN Action >>SEMICOLON ( Action >>SEMICOLON )* >>CURL_CLOSE
@@ -66,10 +66,14 @@ Parent      <- >>LESS_THAN Conditions
 #            TypeA[@EL > 10]               終了行番号が 10 より大きいTypeA
 #            TypeA[@EC > 10]               終了列番号が 10 より大きいTypeA
 #            TypeA[foo]                    foo属性を持つ TypeA
-#            TypeA[foo = "bar"]            foo属性が "bar" である TypeA
+#            TypeA[foo == "bar"]            foo属性が "bar" である TypeA
 #            TypeA[foo ^= "bar"]           foo属性が "bar" で始まる TypeA
 #            TypeA[foo $= "bar"]           foo属性が "bar" で終わる TypeA
 #            TypeA[foo *= "bar"]           foo属性が "bar" を含む TypeA
+#            TypeA[foo != "bar"]           foo属性が "bar" でない TypeA
+#            TypeA[foo !^ "bar"]           foo属性が "bar" で始まらない TypeA
+#            TypeA[foo !$ "bar"]           foo属性が "bar" で終わらない TypeA
+#            TypeA[foo !* "bar"]           foo属性が "bar" を含まない TypeA
 #            TypeA[foo = "bar" | piyo="hoge"]  foo属性が "bar" ,または piyo属性が "hoge" である TypeA
 #            TypeA[foo][0][piyo="hoge"]    foo属性を持つ TypeA で、最初に見つかったもので、かつpiyo属性が"hoge"であるもの
 #
@@ -88,7 +92,7 @@ Parent      <- >>LESS_THAN Conditions
 Conditions <- Identifier OrCondition*
 Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) >>S?
 
-OrCondition <- >>BRAKET_OPEN SingleCondition (>>COMMA SingleCondition)* >>BRAKET_CLOSE
+OrCondition <- >>BRAKET_OPEN SingleCondition (>>VERTICAL_BAR SingleCondition)* >>BRAKET_CLOSE
 
 SingleCondition <- Slice / LineColumnLimitation / AttributeLimitation
 Slice <- FromTo / Number
@@ -97,11 +101,16 @@ StartNumber <- Number?
 EndNumber <- Number?
 Number <- '-'? r"0|[1-9][0-9]*" >>S?
 
-LineColumnLimitation <- GraterLimitation / LessLimitation / GraterEqualLimitation / LessEqualLimitation
+LineColumnLimitation <- GraterLimitation 
+                      / LessLimitation 
+                      / GraterEqualLimitation 
+                      / LessEqualLimitation 
+                      / EqualLimitation
 GraterLimitation        <- LineOrColumn >>GREATER_THAN PositiveNumber
 LessLimitation          <- LineOrColumn >>LESS_THAN PositiveNumber
 GraterEqualLimitation   <- LineOrColumn >>GREATER_EQUAL PositiveNumber
 LessEqualLimitation     <- LineOrColumn >>LESS_EQUAL PositiveNumber
+EqualLimitation         <- LineOrColumn >>EQUAL_EQUAL PositiveNumber
 
 LineOrColumn <- StartLine / StartColumn / EndLine / EndColumn
 StartLine       <- >>START_LINE
@@ -115,11 +124,50 @@ START_COLUMN    <- '@C':I S?
 END_LINE        <- '@EL':I S?
 END_COLUMN      <- '@EC':I S?
 
-AttributeLimitation <- EqualAttribute / SimpleAttribute
-EqualAttribute <- AttributeName >>EQUAL Value
-SimpleAttribute <- AttributeName >>S?
+# TypeA[foo]                    foo属性を持つ TypeA
+# TypeA[foo == "bar"]           foo属性が "bar" である TypeA
+# TypeA[foo ^= "bar"]           foo属性が "bar" で始まる TypeA
+# TypeA[foo $= "bar"]           foo属性が "bar" で終わる TypeA
+# TypeA[foo *= "bar"]           foo属性が "bar" を含む TypeA
+# TypeA[foo != "bar"]           foo属性が "bar" でない TypeA
+# TypeA[foo !^ "bar"]           foo属性が "bar" で始まらない TypeA
+# TypeA[foo !$ "bar"]           foo属性が "bar" で終わらない TypeA
+# TypeA[foo !* "bar"]           foo属性が "bar" を含まない TypeA
+# TODO : int 型、list 型等の比較 ">", "<", etc...
+# TODO : Line, Column の制約と統一したい
+
+AttributeLimitation <- AttributeEqual 
+                     / AttributeStartsWith 
+                     / AttibuteEndsWith 
+                     / AttributeContains
+                     / AttributeNotEaual
+                     / AttributeNotStartsWith
+                     / AttributeNotEndsWith
+                     / AttributeNotContains
+                     / AttributeSimple
+
+AttributeEqual         <- AttributeName >>EQUAL_EQUAL AttributeValue
+AttributeStartsWith    <- AttributeName >>STARTS_WITH AttributeValue
+AttibuteEndsWith       <- AttributeName >>ENDS_WITH AttributeValue
+AttributeContains      <- AttributeName >>CONTAINS AttributeValue
+AttributeNotEaual      <- AttributeName >>NOT_EQUAL AttributeValue
+AttributeNotStartsWith <- AttributeName >>NOT_STARTS_WITH AttributeValue
+AttributeNotEndsWith   <- AttributeName >>NOT_ENDS_WITH AttributeValue
+AttributeNotContains   <- AttributeName >>NOT_CONTAINS AttributeValue
+AttributeSimple        <- AttributeName >>S?
 
 AttributeName <- r"[a-z_]+" 
+
+STARTS_WITH     <- '^=' S?
+ENDS_WITH       <- '$=' S?
+CONTAINS        <- '*=' S?
+NOT_EQUAL       <- '!=' S?
+NOT_STARTS_WITH <- '!^' S?
+NOT_ENDS_WITH   <- '!$' S?
+NOT_CONTAINS    <- '!*' S?
+
+# TODO : 数値やリスト、辞書などの操作
+AttributeValue <- Literal
 
 # ----------------------------------------
 # Action
@@ -134,12 +182,17 @@ AttributeName <- r"[a-z_]+"
 # this は最初の条件式に一致するノードのパラメータ
 # x += y , x.append(y) などの構文も追加したい
 # ----------------------------------------
-Action <- Substitution / AppendList
+Action <- Substitution 
+#        / AppendList
 Substitution <- Variable >>EQUAL Value
 Variable <- ThisValue / TargetValue
-Value <- Number / Literal / EmptyList / ThisValue / TargetValue
 
-AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
+# TODO : int , list の操作
+# Value <- Number / Literal / EmptyList / ThisValue / TargetValue
+Value <- Literal / ThisValue / TargetValue
+
+# TODO : 未実装
+# AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
 
 Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
 SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'"
@@ -172,20 +225,23 @@ DOT <- '.' S?
 SEMICOLON <- ';' S?
 DOLLAR <- '$' S?
 EQUAL <- '=' S?
+VERTICAL_BAR <- '|' S?
 
 LINE_COMMENT_START <- '//'
 COMMENT_START <- '/*'
 COMMENT_END   <- '*/' S?
 
-PLUS       <- '+' S?
-MINUS      <- '-' S?
-PLUSPLUS   <- '++' S?
-MINUSMINUS <- '--' S?
+PLUS        <- '+' S?
+MINUS       <- '-' S?
+PLUSPLUS    <- '++' S?
+MINUSMINUS  <- '--' S?
 
 GREATER_THAN  <- '>'  S?
 GREATER_EQUAL <- '>=' S?
 LESS_THAN     <- '<'  S?
 LESS_EQUAL    <- '<=' S?
+EQUAL_EQUAL   <- '==' S?
+
 MUCH_GREATER_THAN <- '>>' S?
 MUCH_LESS_THAN    <- '<<' S?
 

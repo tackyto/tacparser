@@ -3,8 +3,9 @@ import os
 import importlib
 import unittest
 
-from tacparser import ParserGenerator
 from tests.testmodules import loop
+
+from tacparser.parsergenerator import ParserGenerator
 
 
 class TestLoopDefinition(unittest.TestCase):

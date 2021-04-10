@@ -3,8 +3,9 @@ import os
 import importlib
 import unittest
 
-from tacparser import ParserGenerator
 from tests.testmodules import macro01
+
+from tacparser.parsergenerator import ParserGenerator
 
 
 class TestMacroDefinition(unittest.TestCase):

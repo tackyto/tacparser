@@ -1,0 +1,28 @@
+Actions : (Ln 1, Col 0)
+    ActionDefinition : (Ln 1, Col 0)
+        Selector : (Ln 1, Col 0)
+            Descendants : (Ln 1, Col 0)
+                Conditions : (Ln 1, Col 0)
+                    Identifier : (Ln 1, Col 0)
+                        @Tarminal : (Ln 1, Col 0) "NodeName"
+        Action : (Ln 2, Col 1)
+            Substitution : (Ln 2, Col 1)
+                Variable : (Ln 2, Col 1)
+                    ThisValue : (Ln 2, Col 1)
+                        ParameterName : (Ln 2, Col 6)
+                            @Tarminal : (Ln 2, Col 6) "variable"
+                Value : (Ln 2, Col 17)
+                    Literal : (Ln 2, Col 17)
+                        DoubleQuotesLiteral : (Ln 2, Col 17)
+                            @Tarminal : (Ln 2, Col 18) "value"
+        Action : (Ln 3, Col 1)
+            Substitution : (Ln 3, Col 1)
+                Variable : (Ln 3, Col 1)
+                    TargetValue : (Ln 3, Col 1)
+                        ParameterName : (Ln 3, Col 3)
+                            @Tarminal : (Ln 3, Col 3) "variable"
+                Value : (Ln 3, Col 12)
+                    ThisValue : (Ln 3, Col 12)
+                        ParameterName : (Ln 3, Col 17)
+                            @Tarminal : (Ln 3, Col 17) "value"
+    _EOF : (Ln 4, Col 1)

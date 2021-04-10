@@ -1,4 +1,4 @@
-from tacparser import Parser
+from .baseparser import Parser
 import regex
 
 
@@ -38,6 +38,7 @@ class ActionsParser(Parser):
                          "LessLimitation": self.p_lesslimitation,
                          "GraterEqualLimitation": self.p_graterequallimitation,
                          "LessEqualLimitation": self.p_lessequallimitation,
+                         "EqualLimitation": self.p_equallimitation,
                          "LineOrColumn": self.p_lineorcolumn,
                          "StartLine": self.p_startline,
                          "StartColumn": self.p_startcolumn,
@@ -49,14 +50,28 @@ class ActionsParser(Parser):
                          "END_LINE": self.p_end_line,
                          "END_COLUMN": self.p_end_column,
                          "AttributeLimitation": self.p_attributelimitation,
-                         "EqualAttribute": self.p_equalattribute,
-                         "SimpleAttribute": self.p_simpleattribute,
+                         "AttributeEqual": self.p_attributeequal,
+                         "AttributeStartsWith": self.p_attributestartswith,
+                         "AttibuteEndsWith": self.p_attibuteendswith,
+                         "AttributeContains": self.p_attributecontains,
+                         "AttributeNotEaual": self.p_attributenoteaual,
+                         "AttributeNotStartsWith": self.p_attributenotstartswith,
+                         "AttributeNotEndsWith": self.p_attributenotendswith,
+                         "AttributeNotContains": self.p_attributenotcontains,
+                         "AttributeSimple": self.p_attributesimple,
                          "AttributeName": self.p_attributename,
+                         "STARTS_WITH": self.p_starts_with,
+                         "ENDS_WITH": self.p_ends_with,
+                         "CONTAINS": self.p_contains,
+                         "NOT_EQUAL": self.p_not_equal,
+                         "NOT_STARTS_WITH": self.p_not_starts_with,
+                         "NOT_ENDS_WITH": self.p_not_ends_with,
+                         "NOT_CONTAINS": self.p_not_contains,
+                         "AttributeValue": self.p_attributevalue,
                          "Action": self.p_action,
                          "Substitution": self.p_substitution,
                          "Variable": self.p_variable,
                          "Value": self.p_value,
-                         "AppendList": self.p_appendlist,
                          "Literal": self.p_literal,
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
                          "DoubleQuotesLiteral": self.p_doublequotesliteral,
@@ -80,6 +95,7 @@ class ActionsParser(Parser):
                          "SEMICOLON": self.p_semicolon,
                          "DOLLAR": self.p_dollar,
                          "EQUAL": self.p_equal,
+                         "VERTICAL_BAR": self.p_vertical_bar,
                          "LINE_COMMENT_START": self.p_line_comment_start,
                          "COMMENT_START": self.p_comment_start,
                          "COMMENT_END": self.p_comment_end,
@@ -91,6 +107,7 @@ class ActionsParser(Parser):
                          "GREATER_EQUAL": self.p_greater_equal,
                          "LESS_THAN": self.p_less_than,
                          "LESS_EQUAL": self.p_less_equal,
+                         "EQUAL_EQUAL": self.p_equal_equal,
                          "MUCH_GREATER_THAN": self.p_much_greater_than,
                          "MUCH_LESS_THAN": self.p_much_less_than,
                          "ENDOFFILE": self.p_endoffile}
@@ -116,7 +133,7 @@ class ActionsParser(Parser):
         # # astから要素を選択する記法
         # #     css like な記載方法
         # # 
-        # #     <Selector> : { parameter_name = this.parameter; }
+        # #     <Selector> { parameter_name = this.parameter; }
         # # ----------------------------------------
         # ActionDefinition <- Selector ( >>COMMA Selector)*
         #                     >>CURL_OPEN Action >>SEMICOLON ( Action >>SEMICOLON )* >>CURL_CLOSE
@@ -169,7 +186,7 @@ class ActionsParser(Parser):
         # #        TypeA << TypeB              Ancestor     : TypeA の祖先である TypeB
         # #        TypeA <  TypeB              Parent       : TypeA の親である TypeB
         # #        TypeA >> TypeB 
-        # #            or or TypeA TypeB       Descendants  : TypeA の子孫である TypeB
+        # #            or TypeA TypeB       Descendants  : TypeA の子孫である TypeB
         # #        TypeA >  TypeB              Children     : TypeA の子である TypeB
         # #        TypeA -- TypeB              OnTheLeft    : TypeA の同階層で前方にある TypeB
         # #        TypeA -  TypeB              ForwardTo    : TypeA の直前にある TypeB
@@ -254,10 +271,10 @@ class ActionsParser(Parser):
                          )
 
     def p_orcondition(self):
-        # OrCondition <- >>BRAKET_OPEN SingleCondition (>>COMMA SingleCondition)* >>BRAKET_CLOSE
+        # OrCondition <- >>BRAKET_OPEN SingleCondition (>>VERTICAL_BAR SingleCondition)* >>BRAKET_CLOSE
         return self._seq(self._skip(self._p(self.p_braket_open, "BRAKET_OPEN")),
                          self._p(self.p_singlecondition, "SingleCondition"),
-                         self._rpt(self._seq(self._skip(self._p(self.p_comma, "COMMA")),
+                         self._rpt(self._seq(self._skip(self._p(self.p_vertical_bar, "VERTICAL_BAR")),
                                              self._p(self.p_singlecondition, "SingleCondition")
                                              ), 0),
                          self._skip(self._p(self.p_braket_close, "BRAKET_CLOSE"))
@@ -277,19 +294,19 @@ class ActionsParser(Parser):
                          )
 
     def p_fromto(self):
-        # FromTo <- StartNumber COLON EndNumber
+        # FromTo <- StartNumber >>COLON EndNumber
         return self._seq(self._p(self.p_startnumber, "StartNumber"),
-                         self._p(self.p_colon, "COLON"),
+                         self._skip(self._p(self.p_colon, "COLON")),
                          self._p(self.p_endnumber, "EndNumber")
                          )
 
     def p_startnumber(self):
-        # StartNumber <- Number
-        return self._p(self.p_number, "Number")
+        # StartNumber <- Number?
+        return self._opt(self._p(self.p_number, "Number"))
 
     def p_endnumber(self):
-        # EndNumber <- Number
-        return self._p(self.p_number, "Number")
+        # EndNumber <- Number?
+        return self._opt(self._p(self.p_number, "Number"))
 
     _reg_p_number0 = regex.compile("0|[1-9][0-9]*", regex.M)
 
@@ -301,11 +318,16 @@ class ActionsParser(Parser):
                          )
 
     def p_linecolumnlimitation(self):
-        # LineColumnLimitation <- GraterLimitation / LessLimitation / GraterEqualLimitation / LessEqualLimitation
+        # LineColumnLimitation <- GraterLimitation 
+        #                       / LessLimitation 
+        #                       / GraterEqualLimitation 
+        #                       / LessEqualLimitation 
+        #                       / EqualLimitation
         return self._sel(self._p(self.p_graterlimitation, "GraterLimitation"),
                          self._p(self.p_lesslimitation, "LessLimitation"),
                          self._p(self.p_graterequallimitation, "GraterEqualLimitation"),
-                         self._p(self.p_lessequallimitation, "LessEqualLimitation")
+                         self._p(self.p_lessequallimitation, "LessEqualLimitation"),
+                         self._p(self.p_equallimitation, "EqualLimitation")
                          )
 
     def p_graterlimitation(self):
@@ -333,6 +355,13 @@ class ActionsParser(Parser):
         # LessEqualLimitation     <- LineOrColumn >>LESS_EQUAL PositiveNumber
         return self._seq(self._p(self.p_lineorcolumn, "LineOrColumn"),
                          self._skip(self._p(self.p_less_equal, "LESS_EQUAL")),
+                         self._p(self.p_positivenumber, "PositiveNumber")
+                         )
+
+    def p_equallimitation(self):
+        # EqualLimitation         <- LineOrColumn >>EQUAL_EQUAL PositiveNumber
+        return self._seq(self._p(self.p_lineorcolumn, "LineOrColumn"),
+                         self._skip(self._p(self.p_equal_equal, "EQUAL_EQUAL")),
                          self._p(self.p_positivenumber, "PositiveNumber")
                          )
 
@@ -393,20 +422,84 @@ class ActionsParser(Parser):
                          )
 
     def p_attributelimitation(self):
-        # AttributeLimitation <- EqualAttribute / SimpleAttribute
-        return self._sel(self._p(self.p_equalattribute, "EqualAttribute"),
-                         self._p(self.p_simpleattribute, "SimpleAttribute")
+        # AttributeLimitation <- AttributeEqual 
+        #                      / AttributeStartsWith 
+        #                      / AttibuteEndsWith 
+        #                      / AttributeContains
+        #                      / AttributeNotEaual
+        #                      / AttributeNotStartsWith
+        #                      / AttributeNotEndsWith
+        #                      / AttributeNotContains
+        #                      / AttributeSimple
+        return self._sel(self._p(self.p_attributeequal, "AttributeEqual"),
+                         self._p(self.p_attributestartswith, "AttributeStartsWith"),
+                         self._p(self.p_attibuteendswith, "AttibuteEndsWith"),
+                         self._p(self.p_attributecontains, "AttributeContains"),
+                         self._p(self.p_attributenoteaual, "AttributeNotEaual"),
+                         self._p(self.p_attributenotstartswith, "AttributeNotStartsWith"),
+                         self._p(self.p_attributenotendswith, "AttributeNotEndsWith"),
+                         self._p(self.p_attributenotcontains, "AttributeNotContains"),
+                         self._p(self.p_attributesimple, "AttributeSimple")
                          )
 
-    def p_equalattribute(self):
-        # EqualAttribute <- AttributeName >>EQUAL Value
+    def p_attributeequal(self):
+        # AttributeEqual         <- AttributeName >>EQUAL_EQUAL AttributeValue
         return self._seq(self._p(self.p_attributename, "AttributeName"),
-                         self._skip(self._p(self.p_equal, "EQUAL")),
-                         self._p(self.p_value, "Value")
+                         self._skip(self._p(self.p_equal_equal, "EQUAL_EQUAL")),
+                         self._p(self.p_attributevalue, "AttributeValue")
                          )
 
-    def p_simpleattribute(self):
-        # SimpleAttribute <- AttributeName >>S?
+    def p_attributestartswith(self):
+        # AttributeStartsWith    <- AttributeName >>STARTS_WITH AttributeValue
+        return self._seq(self._p(self.p_attributename, "AttributeName"),
+                         self._skip(self._p(self.p_starts_with, "STARTS_WITH")),
+                         self._p(self.p_attributevalue, "AttributeValue")
+                         )
+
+    def p_attibuteendswith(self):
+        # AttibuteEndsWith       <- AttributeName >>ENDS_WITH AttributeValue
+        return self._seq(self._p(self.p_attributename, "AttributeName"),
+                         self._skip(self._p(self.p_ends_with, "ENDS_WITH")),
+                         self._p(self.p_attributevalue, "AttributeValue")
+                         )
+
+    def p_attributecontains(self):
+        # AttributeContains      <- AttributeName >>CONTAINS AttributeValue
+        return self._seq(self._p(self.p_attributename, "AttributeName"),
+                         self._skip(self._p(self.p_contains, "CONTAINS")),
+                         self._p(self.p_attributevalue, "AttributeValue")
+                         )
+
+    def p_attributenoteaual(self):
+        # AttributeNotEaual      <- AttributeName >>NOT_EQUAL AttributeValue
+        return self._seq(self._p(self.p_attributename, "AttributeName"),
+                         self._skip(self._p(self.p_not_equal, "NOT_EQUAL")),
+                         self._p(self.p_attributevalue, "AttributeValue")
+                         )
+
+    def p_attributenotstartswith(self):
+        # AttributeNotStartsWith <- AttributeName >>NOT_STARTS_WITH AttributeValue
+        return self._seq(self._p(self.p_attributename, "AttributeName"),
+                         self._skip(self._p(self.p_not_starts_with, "NOT_STARTS_WITH")),
+                         self._p(self.p_attributevalue, "AttributeValue")
+                         )
+
+    def p_attributenotendswith(self):
+        # AttributeNotEndsWith   <- AttributeName >>NOT_ENDS_WITH AttributeValue
+        return self._seq(self._p(self.p_attributename, "AttributeName"),
+                         self._skip(self._p(self.p_not_ends_with, "NOT_ENDS_WITH")),
+                         self._p(self.p_attributevalue, "AttributeValue")
+                         )
+
+    def p_attributenotcontains(self):
+        # AttributeNotContains   <- AttributeName >>NOT_CONTAINS AttributeValue
+        return self._seq(self._p(self.p_attributename, "AttributeName"),
+                         self._skip(self._p(self.p_not_contains, "NOT_CONTAINS")),
+                         self._p(self.p_attributevalue, "AttributeValue")
+                         )
+
+    def p_attributesimple(self):
+        # AttributeSimple        <- AttributeName >>S?
         return self._seq(self._p(self.p_attributename, "AttributeName"),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
@@ -416,6 +509,53 @@ class ActionsParser(Parser):
     def p_attributename(self):
         # AttributeName <- r"[a-z_]+" 
         return self._r(self._reg_p_attributename0)
+
+    def p_starts_with(self):
+        # STARTS_WITH     <- '^=' S?
+        return self._seq(self._l('^='),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_ends_with(self):
+        # ENDS_WITH       <- '$=' S?
+        return self._seq(self._l('$='),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_contains(self):
+        # CONTAINS        <- '*=' S?
+        return self._seq(self._l('*='),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_not_equal(self):
+        # NOT_EQUAL       <- '!=' S?
+        return self._seq(self._l('!='),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_not_starts_with(self):
+        # NOT_STARTS_WITH <- '!^' S?
+        return self._seq(self._l('!^'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_not_ends_with(self):
+        # NOT_ENDS_WITH   <- '!$' S?
+        return self._seq(self._l('!$'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_not_contains(self):
+        # NOT_CONTAINS    <- '!*' S?
+        return self._seq(self._l('!*'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_attributevalue(self):
+        # # TODO : 数値やリスト、辞書などの操作
+        # AttributeValue <- Literal
+        return self._p(self.p_literal, "Literal")
 
     def p_action(self):
         # # ----------------------------------------
@@ -431,12 +571,11 @@ class ActionsParser(Parser):
         # # this は最初の条件式に一致するノードのパラメータ
         # # x += y , x.append(y) などの構文も追加したい
         # # ----------------------------------------
-        # Action <- Substitution / AppendList
-        return self._sel(self._p(self.p_substitution, "Substitution"),
-                         self._p(self.p_appendlist, "AppendList")
-                         )
+        # Action <- Substitution 
+        return self._p(self.p_substitution, "Substitution")
 
     def p_substitution(self):
+        # #        / AppendList
         # Substitution <- Variable >>EQUAL Value
         return self._seq(self._p(self.p_variable, "Variable"),
                          self._skip(self._p(self.p_equal, "EQUAL")),
@@ -450,22 +589,12 @@ class ActionsParser(Parser):
                          )
 
     def p_value(self):
-        # Value <- Number / Literal / EmptyList / ThisValue / TargetValue
-        return self._sel(self._p(self.p_number, "Number"),
-                         self._p(self.p_literal, "Literal"),
-                         self._p(self.p_emptylist, "EmptyList"),
+        # # TODO : int , list の操作
+        # # Value <- Number / Literal / EmptyList / ThisValue / TargetValue
+        # Value <- Literal / ThisValue / TargetValue
+        return self._sel(self._p(self.p_literal, "Literal"),
                          self._p(self.p_thisvalue, "ThisValue"),
                          self._p(self.p_targetvalue, "TargetValue")
-                         )
-
-    def p_appendlist(self):
-        # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
-        return self._seq(self._p(self.p_variable, "Variable"),
-                         self._skip(self._p(self.p_dot, "DOT")),
-                         self._skip(self._p(self.p_append, "APPEND")),
-                         self._skip(self._p(self.p_open, "OPEN")),
-                         self._p(self.p_value, "Value"),
-                         self._skip(self._p(self.p_close, "CLOSE"))
                          )
 
     def p_literal(self):
@@ -618,6 +747,12 @@ class ActionsParser(Parser):
                          self._opt(self._p(self.p_s, "S"))
                          )
 
+    def p_vertical_bar(self):
+        # VERTICAL_BAR <- '|' S?
+        return self._seq(self._l('|'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
     def p_line_comment_start(self):
         # LINE_COMMENT_START <- '//'
         return self._l('//')
@@ -633,25 +768,25 @@ class ActionsParser(Parser):
                          )
 
     def p_plus(self):
-        # PLUS       <- '+' S?
+        # PLUS        <- '+' S?
         return self._seq(self._l('+'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 
     def p_minus(self):
-        # MINUS      <- '-' S?
+        # MINUS       <- '-' S?
         return self._seq(self._l('-'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 
     def p_plusplus(self):
-        # PLUSPLUS   <- '++' S?
+        # PLUSPLUS    <- '++' S?
         return self._seq(self._l('++'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 
     def p_minusminus(self):
-        # MINUSMINUS <- '--' S?
+        # MINUSMINUS  <- '--' S?
         return self._seq(self._l('--'),
                          self._opt(self._p(self.p_s, "S"))
                          )
@@ -677,6 +812,12 @@ class ActionsParser(Parser):
     def p_less_equal(self):
         # LESS_EQUAL    <- '<=' S?
         return self._seq(self._l('<='),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_equal_equal(self):
+        # EQUAL_EQUAL   <- '==' S?
+        return self._seq(self._l('=='),
                          self._opt(self._p(self.p_s, "S"))
                          )
 

@@ -2,10 +2,8 @@ import filecmp
 import os
 import unittest
 
-from tacparser import (
-    reconstruct_tree,
-    ExPegParser,
-)
+from tacparser.expegparser import ExPegParser
+from tacparser.baseparser import reconstruct_tree
 
 
 class TestExPegParser(unittest.TestCase):
@@ -57,6 +55,9 @@ class TestExPegParser(unittest.TestCase):
 
         parser = ExPegParser()
         _, result = parser.parse_file(filepath, "utf-8")
+        end_line, end_column = result.get_end_linecolumn()
+        self.assertEqual(end_line, 171)
+        self.assertEqual(end_column, 1)
 
         pathoutfile = os.path.join(curdir, "expeg_test_src.out")
         pathoutfile_dist = os.path.join(curdir, "expeg_test_dist.out")

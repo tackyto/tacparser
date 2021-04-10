@@ -571,7 +571,7 @@ class Parser(object):
             関数
         """
 
-        def __not(r, _f:ParseFunction) -> ParseResult:
+        def __not(r:Reader, _f:ParseFunction) -> ParseResult:
             """
             input の関数を実行する。
             実行結果、作成ノード を受け取り、成功した場合
@@ -614,7 +614,7 @@ class Parser(object):
             関数
         """
 
-        def trm(r, _f:ParseFunction) -> ParseResult:
+        def trm(r:Reader, _f:ParseFunction) -> ParseResult:
             """
             input の関数を実行する。
             実行結果、作成ノード を受け取り、input に成功した場合
@@ -766,7 +766,7 @@ class Parser(object):
             結果が[flg, Node]のタプルを返す関数
         """
 
-        def p(reader, _f:ParseFunction, _typename:str) -> ParseResult:
+        def p(reader:Reader, _f:ParseFunction, _typename:str) -> ParseResult:
             """
             ノンターミナルノードを作成する
             実行結果、作成ノード を受け取り、成功した場合

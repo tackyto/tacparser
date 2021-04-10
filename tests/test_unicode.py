@@ -4,7 +4,7 @@ import importlib
 from tacparser.node import FailureNode
 import unittest
 
-from tacparser import ParserGenerator
+from tacparser.parsergenerator import ParserGenerator
 from tests.testmodules import unicode
 
 

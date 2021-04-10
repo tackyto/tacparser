@@ -3,8 +3,9 @@ import importlib
 import unittest
 import filecmp
 
-from tacparser import ParserGenerator
 from tests.testmodules import recursion, recursion02
+
+from tacparser.parsergenerator import ParserGenerator
 
 
 class TestRecursion(unittest.TestCase):

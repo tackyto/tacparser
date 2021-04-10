@@ -32,6 +32,8 @@ class Node(object):
         self.left_neighbor:Node = None
         #: 右側の隣接ノード。
         self.right_neighbor:Node = None
+        # 付加情報辞書
+        self.__attribute:dict[str,str] = {}
 
     def set_position(self, r:"Reader", startpos:int, endpos:int) -> None:
         self.startpos = startpos
@@ -49,6 +51,21 @@ class Node(object):
     def get_end_linecolumn(self) -> tuple[int, int]:
         return self.end_linenum, self.end_column
 
+    def get_attr(self, attrname:str):
+        """
+        付加情報辞書から情報を取得
+        """
+        if attrname in self.__attribute:
+            return self.__attribute[attrname]
+        else:
+            return None
+            
+    def set_attr(self, attrname:str, attrvalue):
+        """
+        付加情報辞書に情報を登録
+        """
+        self.__attribute[attrname] = attrvalue
+            
     def _get_position_str(self, detail_flg:bool) -> str:
         if detail_flg:
             return "(" + str(self.linenum) + ", " + str(self.column) + " - " \
@@ -110,10 +127,9 @@ class NonTerminalNode(Node):
     def _get_node_str(self, detail_flg:bool) -> str:
         if detail_flg:
             return self.type + " : " + self._get_position_str(detail_flg) \
-                    + "[" + str(self.nodenum) + "] : \"" + self.get_str() + "\""
+                    + " : \"" + self.get_str() + "\""
         else:
-            return str(self.nodenum) + " : " + self.type \
-                    + " : " + self._get_position_str(detail_flg)
+            return self.type + " : " + self._get_position_str(detail_flg)
 
     def print_tree(self, level:int=0, node_list:list[str]=None, detail_flg:bool=False) -> str:
         """

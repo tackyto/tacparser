@@ -3,8 +3,9 @@ import os
 import importlib
 import unittest
 
-from tacparser import ParserGenerator
 from tests.testmodules import subdef01, subdef02, subdef03
+
+from tacparser.parsergenerator import ParserGenerator
 
 
 class TestReuseDefinition(unittest.TestCase):

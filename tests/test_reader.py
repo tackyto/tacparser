@@ -2,7 +2,7 @@ import os
 import re
 import unittest
 
-from tacparser import FileReader
+from tacparser.reader import FileReader
 
 
 class TestFileReaderMethods(unittest.TestCase):
@@ -33,6 +33,58 @@ class TestFileReaderMethods(unittest.TestCase):
 
         with self.assertRaises(IndexError):
             r.pos2linecolumn(2)
+
+
+    def test_positions(self):
+        # FileReader 
+        # partial_reposition
+        # is_end - False
+        file = os.path.join(self.set_path, "test01_03.txt")
+        r = FileReader(file, "utf-8")
+        flg, rlt = r.match_literal("abcde", False)
+        self.assertTrue(flg)
+        self.assertEqual(rlt, "abcde")
+        self.assertEqual(0, r.get_position())
+        self.assertFalse(r.is_end())
+
+        flg, rlt = r.match_literal("abcde", True)
+        self.assertTrue(flg)
+        self.assertEqual(rlt, "abcde")
+        self.assertEqual(5, r.get_position())
+        self.assertTrue(r.is_end())
+
+        r.set_position(4)
+        flg, rlt = r.match_literal("e", True)
+        self.assertTrue(flg)
+        self.assertEqual(rlt, "e")
+
+        r.set_position(0)
+        with self.assertRaises(ValueError):
+            r.set_position(6)
+
+        flg, rlt = r.match_literal("abcde", True)
+        self.assertTrue(flg)
+        self.assertEqual(rlt, "abcde")
+        self.assertEqual(5, r.get_position())
+        self.assertTrue(r.is_end())
+
+        r.partial_reposition(2,4)
+        flg, rlt = r.match_literal("cd", False)
+        self.assertTrue(flg)
+        self.assertEqual(rlt, "cd")
+        self.assertEqual(2, r.get_position())
+
+        flg, rlt = r.match_literal("cde", False)
+        self.assertFalse(flg)
+        self.assertIsNone(rlt)
+        self.assertEqual(2, r.get_position())
+
+        with self.assertRaises(ValueError):
+            r.partial_reposition(6, 7)
+
+        with self.assertRaises(ValueError):
+            r.partial_reposition(0, 10)
+
 
     def test_pos2linecolumn_03(self):
         # FileReader pos2linecolumn

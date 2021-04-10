@@ -1,14 +1,19 @@
 import filecmp
+import sys
 import os
 import unittest
 
-from tacparser import (
-    ParseException, 
-    ParserGenerator, 
-    ExPegParser,
-    ParserGenerator, 
-    SyntaxCheckFailedException
-)
+from unittest.mock import patch
+from logging import config, getLogger
+
+import tacparser
+from tacparser.exception import ParseException
+from tacparser.parsergenerator import ParserGenerator
+from tacparser.parsergenerator import SyntaxCheckFailedException
+from tacparser.expegparser import ExPegParser
+
+config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
+test_logger = getLogger(__name__)
 
 
 class TestParserGenerator(unittest.TestCase):
@@ -22,8 +27,8 @@ class TestParserGenerator(unittest.TestCase):
         正規表現オプション
         :return:
         """
-        parser = ExPegParser()
-        generator = ParserGenerator("dummy.txt", "utf-8")
+        parser = ExPegParser(test_logger)
+        generator = ParserGenerator("dummy.txt", "utf-8", test_logger)
 
         test_string = 'r"[a-zA-Z]*" '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
@@ -61,7 +66,7 @@ class TestParserGenerator(unittest.TestCase):
         outfilepath = os.path.join(curdir, "pegparser_src.py")
         cmp_dist_filepath = os.path.join(curdir, "pegparser_dist.py")
 
-        generator = ParserGenerator(filepath, "utf-8")
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
         generator.generate_file("PegParser", outfilepath)
 
         self.assertTrue(filecmp.cmp(outfilepath, cmp_dist_filepath))
@@ -70,7 +75,7 @@ class TestParserGenerator(unittest.TestCase):
         curdir = os.path.join(os.getcwd(), "check")
         filepath = os.path.join(curdir, "duplicate01.peg")
 
-        generator = ParserGenerator(filepath, "utf-8")
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
 
         with self.assertRaises(SyntaxCheckFailedException) as err:
             generator.generate_file("Duplicate01", "dummy.txt")
@@ -86,7 +91,7 @@ class TestParserGenerator(unittest.TestCase):
         curdir = os.path.join(os.getcwd(), "check")
         filepath = os.path.join(curdir, "undefined01.peg")
 
-        generator = ParserGenerator(filepath, "utf-8")
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
 
         with self.assertRaises(SyntaxCheckFailedException) as err:
             generator.generate_file("Undefined01", "dummy.py")
@@ -102,7 +107,7 @@ class TestParserGenerator(unittest.TestCase):
         curdir = os.path.join(os.getcwd(), "check")
         filepath = os.path.join(curdir, "leftrecursive01.peg")
 
-        generator = ParserGenerator(filepath, "utf-8")
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
 
         with self.assertRaises(SyntaxCheckFailedException) as err:
             generator.generate_file("Undefined01", "dummy.txt")
@@ -116,7 +121,7 @@ class TestParserGenerator(unittest.TestCase):
         curdir = os.path.join(os.getcwd(), "check")
         filepath = os.path.join(curdir, "leftrecursive02.peg")
 
-        generator = ParserGenerator(filepath, "utf-8")
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
 
         with self.assertRaises(SyntaxCheckFailedException) as err:
             generator.generate_file("Undefined01", "dummy.txt")
@@ -130,7 +135,7 @@ class TestParserGenerator(unittest.TestCase):
         curdir = os.path.join(os.getcwd(), "check")
         filepath = os.path.join(curdir, "leftrecursive03.peg")
 
-        generator = ParserGenerator(filepath, "utf-8")
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
 
         with self.assertRaises(SyntaxCheckFailedException) as err:
             generator.generate_file("Undefined01", "dummy.txt")
@@ -150,11 +155,26 @@ class TestParserGenerator(unittest.TestCase):
         filepath = os.path.join(curdir, "notfound.peg")
 
         with self.assertRaises(ParseException) as err:
-            ParserGenerator(filepath, "utf-8")
+            ParserGenerator(filepath, "utf-8", test_logger)
 
         msg = err.exception.args[0]
         expstr = "File {0} not found".format(filepath)
         self.assertEqual(msg, expstr)
+
+    def test_script_main(self):
+        script_path = os.path.normpath(os.path.join(os.path.dirname(__file__),
+                                             "../tacparser/parsergenerator.py"))
+
+        curdir = os.path.join(os.getcwd(), "peg")
+        filepath = os.path.join(curdir, "peg.peg")
+        outfilepath = os.path.join(curdir, "pegparser_main_src.py")
+        cmp_dist_filepath = os.path.join(curdir, "pegparser_dist.py")
+
+        testargs = ["parsergenerator.py", filepath, "-e", "utf-8", "-o", outfilepath, "-n", "PegParser"]
+        with patch.object(sys, 'argv', testargs):
+            tacparser.parsergenerator.main()
+
+        self.assertTrue(filecmp.cmp(outfilepath, cmp_dist_filepath))
 
 
 if __name__ == '__main__':
