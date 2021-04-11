@@ -27,10 +27,27 @@ class AstActions(object):
     """
     Action定義文字列の読み込みと、アクションを適用するクラス
     """
-    def __init__(self, actions_str:str, logger=default_logger) -> None:
+    def __init__(self, logger=default_logger) -> None:
         self.logger:Logger = logger
         self.parser:ActionsParser = ActionsParser(self.logger)
-        self.actions:list[_ActionDefinition] = self.read_action(actions_str)
+        self.actions:list[_ActionDefinition] = []
+
+    def read_file(self, filepath:str, encoding="utf-8") -> list["_ActionDefinition"]:
+        """
+        ファイルからAction定義文字列を読み込む
+
+        Parameters
+        ----------
+        filepath : str
+            アクション定義ファイル
+        """
+        try:
+            with open(filepath, "r", encoding=encoding) as f:
+                self.read_action(f.read())
+        except (FileNotFoundError, IOError):
+            self.logger.critical("Wrong file or file path. \"{0}\"".format(filepath))
+            raise
+        pass
 
     def read_action(self, actions_str:str) -> list["_ActionDefinition"]:
         """
@@ -51,19 +68,16 @@ class AstActions(object):
             actiondef = _ActionDefinition()
             selectors_node = actiondef_node.get_childnode("Selector")
             for selector in selectors_node:
-                selector_flg, selector_func = self._get_selector_func(selector)
-                if not selector_flg:
-                    raise ActionException("アクション文字列を読み込めませんでした")
-
-                actiondef.selectors.append(selector_func)
+                actiondef.selectors.append(self._get_selector_func(selector))
 
             actions_node = actiondef_node.get_childnode("Action")
             for action in actions_node:
-                action_func = self.get_action_func(action)
+                action_func = self._get_action_func(action)
                 actiondef.actions.append(action_func)
 
             ret.append(actiondef)
         
+        self.actions = ret
         return ret
 
     def apply(self, node:Node) -> Node:
@@ -108,6 +122,9 @@ class AstActions(object):
 
         def selector_func(_n:NonTerminalNode, 
                 selector_funcs:list[SelectorFuncType]):
+            """
+
+            """
             first_selector = selector_funcs[0]
             start_nodes:list[NonTerminalNode] = first_selector(_n)
 
@@ -115,12 +132,16 @@ class AstActions(object):
             result_list:SelectResultType = []
             for start_node in start_nodes:
                 param_list = [start_node]
+                next_list = [start_node]
                 for selector_func in rem_selector_funcs:
                     next_list = []
                     for n in param_list:
-                        next_list.append(selector_func(n))
+                        next_nodes = selector_func(n)
+                        if next_nodes:
+                            next_list.extend(next_nodes)
                     param_list = next_list
-                result_list.append(start_node, next_list)
+                result_list.append((start_node, next_list))
+            return result_list
                 
         return lambda n: selector_func(n, selector_funcs)
 
@@ -221,7 +242,7 @@ class AstActions(object):
             _result = []
             for _child in _n.children:
                 if _child.type == type_name:
-                    _result.append[_child]
+                    _result.append(_child)
             return self._apply_condition(_result, _conditions)
         
         return lambda n: cld(n, conditions)
@@ -253,7 +274,7 @@ class AstActions(object):
 
             def slice_num(_num:int, 
                     _node_list:list[NonTerminalNode]) -> list[NonTerminalNode]:
-                if _num < len(_node_list):
+                if (_num >= 0 and _num < len(_node_list)) or (_num < 0 and -_num <= len(_node_list)):
                     _node = _node_list[_num]
                     return [_node]
                 else:
@@ -286,7 +307,7 @@ class AstActions(object):
             
             # GraterLimitation / LessLimitation / GraterEqualLimitation / LessEqualLimitation / EqualLimitation
             li_lim_node = lclim_node.children[0]
-            lineorcolumn_node = li_lim_node.children[0]
+            lineorcolumn_node = li_lim_node.children[0].children[0]
             # PositiveNumber
             number_node = li_lim_node.children[1].get_str()
 
@@ -390,7 +411,7 @@ class AstActions(object):
         return type_name, orcondition_funcs
     
     @staticmethod
-    def get_action_func(node:NonTerminalNode) -> ActionFuncType:
+    def _get_action_func(node:NonTerminalNode) -> ActionFuncType:
         # 代入式を実行する関数を返す
         # Action <- Substitution 
 
@@ -404,12 +425,16 @@ class AstActions(object):
             val_n = node.get_childnode("Value")[0]
             val_target = val_n.children[0]
             get_val_f:Callable[[NonTerminalNode, NonTerminalNode], str] = None
-            if val_target.type =="ThisValue":
+            if val_target.type =="ThisString":
+                get_val_f = lambda p, n: p.get_str()
+            elif val_target.type =="TargetString":
+                get_val_f = lambda p, n: n.get_str()
+            elif val_target.type =="ThisValue":
                 val_param = val_target.get_childnode("ParameterName")[0].get_str()
-                get_val_f = lambda p, n: p.get_attr[val_param]
+                get_val_f = lambda p, n: p.get_attr(val_param)
             elif val_target.type =="TargetValue":
                 val_param = val_target.get_childnode("ParameterName")[0].get_str()
-                get_val_f = lambda p, n: n.get_attr[val_param]
+                get_val_f = lambda p, n: n.get_attr(val_param)
             elif val_target.type =="Literal":
                 val = val_target.get_str()
                 get_val_f = lambda p, n: val

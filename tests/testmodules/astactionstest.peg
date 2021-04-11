@@ -1,0 +1,27 @@
+ASTActionsTest <- Society* _EOF
+
+Society <- SocietyName >>OPEN Family+ >>CLOSE
+SocietyName <- Literal
+
+Family <- FamilyName >>OPEN (>>OPEN Person >>CLOSE)+ >>CLOSE
+FamilyName <- Literal
+
+Person <- Name Age? Sex? Phone?
+Name <-  >>'name'  >>S? >>EQUAL Literal >>COMMA?
+Age <-   >>'age'   >>S? >>EQUAL Number >>COMMA?
+Sex <-   >>'sex'   >>S? >>EQUAL MorF >>COMMA?
+Phone <- >>'phone' >>S? >>EQUAL NumberHyphen >>COMMA?
+MorF <- Male / Female
+Male <- >>( 'Man' / 'Male' / 'M' ) >>S?
+Female <- >>( 'Woman' / 'Female' / 'F' ) >>S?
+
+Literal <- ( >>"'" r"(\\.|[^'\\])*" >>"'" / >>'"' r'(\\.|[^"\\])*' >>'"' ) >>S?
+Number <- r"0|[1-9][0-9]*" >>S?
+NumberHyphen <- r"[0-9]+-"{0,4} r"[0-9]+" >>S?
+
+OPEN <- '{' >>S?
+CLOSE <- '}' >>S?
+EQUAL <- '=' >>S?
+COMMA <- ',' >>S?
+
+S <- r"[\s\t\r\n]+"

@@ -17,10 +17,10 @@ test_logger = getLogger(__name__)
 
 
 class TestParserGenerator(unittest.TestCase):
+    test_path = os.path.normpath(os.path.join(os.path.dirname(__file__),
+                                            "./testFiles/test_parsergenerator"))
     def setUp(self):
-        path = os.path.normpath(os.path.join(os.path.dirname(__file__),
-                                             "./testFiles/test_parsergenerator"))
-        os.chdir(path)
+        pass
 
     def test_get_reg_value(self):
         """
@@ -28,7 +28,8 @@ class TestParserGenerator(unittest.TestCase):
         :return:
         """
         parser = ExPegParser(test_logger)
-        generator = ParserGenerator("dummy.txt", "utf-8", test_logger)
+        filepath = os.path.join(self.test_path, "dummy.txt")
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
 
         test_string = 'r"[a-zA-Z]*" '
         flg, node = parser.parse_string(test_string, parser.p_regularexp, "RegularExp")
@@ -61,10 +62,12 @@ class TestParserGenerator(unittest.TestCase):
         self.assertEqual('"[a-zA-Z]*", regex.A | regex.I | regex.M | regex.S | regex.X', regstr)
 
     def test_generate_peg(self):
-        curdir = os.path.join(os.getcwd(), "peg")
+        curdir = os.path.join(self.test_path, "peg")
         filepath = os.path.join(curdir, "peg.peg")
         outfilepath = os.path.join(curdir, "pegparser_src.py")
         cmp_dist_filepath = os.path.join(curdir, "pegparser_dist.py")
+        if os.path.exists(outfilepath):
+            os.remove(outfilepath)
 
         generator = ParserGenerator(filepath, "utf-8", test_logger)
         generator.generate_file("PegParser", outfilepath)
@@ -72,7 +75,7 @@ class TestParserGenerator(unittest.TestCase):
         self.assertTrue(filecmp.cmp(outfilepath, cmp_dist_filepath))
 
     def test_check_tree_duplicate(self):
-        curdir = os.path.join(os.getcwd(), "check")
+        curdir = os.path.join(self.test_path, "check")
         filepath = os.path.join(curdir, "duplicate01.peg")
 
         generator = ParserGenerator(filepath, "utf-8", test_logger)
@@ -88,7 +91,7 @@ class TestParserGenerator(unittest.TestCase):
         self.assertEqual(msg[1], expstr)
 
     def test_check_tree_undefined(self):
-        curdir = os.path.join(os.getcwd(), "check")
+        curdir = os.path.join(self.test_path, "check")
         filepath = os.path.join(curdir, "undefined01.peg")
 
         generator = ParserGenerator(filepath, "utf-8", test_logger)
@@ -104,7 +107,7 @@ class TestParserGenerator(unittest.TestCase):
         self.assertEqual(msg[1], expstr)
 
     def test_check_left_recursive01(self):
-        curdir = os.path.join(os.getcwd(), "check")
+        curdir = os.path.join(self.test_path, "check")
         filepath = os.path.join(curdir, "leftrecursive01.peg")
 
         generator = ParserGenerator(filepath, "utf-8", test_logger)
@@ -118,7 +121,7 @@ class TestParserGenerator(unittest.TestCase):
         self.assertEqual(msg[0], expstr)
 
     def test_check_left_recursive02(self):
-        curdir = os.path.join(os.getcwd(), "check")
+        curdir = os.path.join(self.test_path, "check")
         filepath = os.path.join(curdir, "leftrecursive02.peg")
 
         generator = ParserGenerator(filepath, "utf-8", test_logger)
@@ -132,7 +135,7 @@ class TestParserGenerator(unittest.TestCase):
         self.assertEqual(msg[0], expstr)
 
     def test_check_left_recursive03(self):
-        curdir = os.path.join(os.getcwd(), "check")
+        curdir = os.path.join(self.test_path, "check")
         filepath = os.path.join(curdir, "leftrecursive03.peg")
 
         generator = ParserGenerator(filepath, "utf-8", test_logger)
@@ -151,7 +154,7 @@ class TestParserGenerator(unittest.TestCase):
         self.assertEqual(msg[2], expstr)
 
     def test_check_filenotfound(self):
-        curdir = os.path.join(os.getcwd(), "check")
+        curdir = os.path.join(self.test_path, "check")
         filepath = os.path.join(curdir, "notfound.peg")
 
         with self.assertRaises(ParseException) as err:
@@ -161,14 +164,43 @@ class TestParserGenerator(unittest.TestCase):
         expstr = "File {0} not found".format(filepath)
         self.assertEqual(msg, expstr)
 
+
+    def test_parser_error(self):
+        curdir = os.path.join(self.test_path, "check")
+        filepath = os.path.join(curdir, "error.peg")
+
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
+
+        with self.assertRaises(SyntaxCheckFailedException) as err:
+            generator.generate_file("Undefined01", "dummy.txt")
+
+        msg = err.exception.args[0]
+        expstr = ["pegファイルの構文解析に失敗しました"]
+        self.assertEqual(msg, expstr)
+
+    def test_noparam(self):
+        curdir = os.path.join(self.test_path, "noparam")
+        filepath = os.path.join(curdir, "noparam.peg")
+        cmp_dist_filepath = os.path.join(curdir, "noparamparser_dist.py")
+        outfilepath = os.path.join(curdir, "noparamparser.py")
+        if os.path.exists(outfilepath):
+            os.remove(outfilepath)
+
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
+        generator.generate_file()
+
+        self.assertTrue(filecmp.cmp(outfilepath, cmp_dist_filepath))
+
+
     def test_script_main(self):
         script_path = os.path.normpath(os.path.join(os.path.dirname(__file__),
                                              "../tacparser/parsergenerator.py"))
-
-        curdir = os.path.join(os.getcwd(), "peg")
+        curdir = os.path.join(self.test_path, "peg")
         filepath = os.path.join(curdir, "peg.peg")
         outfilepath = os.path.join(curdir, "pegparser_main_src.py")
         cmp_dist_filepath = os.path.join(curdir, "pegparser_dist.py")
+        if os.path.exists(outfilepath):
+            os.remove(outfilepath)
 
         testargs = ["parsergenerator.py", filepath, "-e", "utf-8", "-o", outfilepath, "-n", "PegParser"]
         with patch.object(sys, 'argv', testargs):

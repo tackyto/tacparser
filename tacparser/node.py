@@ -33,7 +33,7 @@ class Node(object):
         #: 右側の隣接ノード。
         self.right_neighbor:Node = None
         # 付加情報辞書
-        self.__attribute:dict[str,str] = {}
+        self._attribute:dict[str,str] = {}
 
     def set_position(self, r:"Reader", startpos:int, endpos:int) -> None:
         self.startpos = startpos
@@ -55,8 +55,8 @@ class Node(object):
         """
         付加情報辞書から情報を取得
         """
-        if attrname in self.__attribute:
-            return self.__attribute[attrname]
+        if attrname in self._attribute:
+            return self._attribute[attrname]
         else:
             return None
             
@@ -64,7 +64,7 @@ class Node(object):
         """
         付加情報辞書に情報を登録
         """
-        self.__attribute[attrname] = attrvalue
+        self._attribute[attrname] = attrvalue
             
     def _get_position_str(self, detail_flg:bool) -> str:
         if detail_flg:
@@ -126,8 +126,11 @@ class NonTerminalNode(Node):
 
     def _get_node_str(self, detail_flg:bool) -> str:
         if detail_flg:
+            attr_sort = sorted(self._attribute.items(), key=lambda x:x[0])
+            attr_str = ", ".join(["{}: {}".format(str(k), str(v)) for k, v in attr_sort])
             return self.type + " : " + self._get_position_str(detail_flg) \
-                    + " : \"" + self.get_str() + "\""
+                    + " : {" + attr_str + "}"
+
         else:
             return self.type + " : " + self._get_position_str(detail_flg)
 
@@ -337,8 +340,10 @@ class ReconstructedNode(NonTerminalNode):
 
     def _get_node_str(self, detail_flg:bool) -> str:
         if detail_flg:
+            attr_sort = sorted(self._attribute.items(), key=lambda x:x[0])
+            attr_str = ", ".join(["{}: {}".format(str(k), str(v)) for k, v in attr_sort])
             return self.type + " : " + self._get_position_str(detail_flg) \
-                    + "[" + str(self.nodenum) + "] : \"" + self.get_str() + "\""
+                    + " : \"" + self.get_str() + "\" - {" + attr_str + "}"
         else:
             return str(self.nodenum) + " : " + self.type \
                     + " : " + self._get_position_str(detail_flg) \

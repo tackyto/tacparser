@@ -76,6 +76,8 @@ class ActionsParser(Parser):
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
                          "DoubleQuotesLiteral": self.p_doublequotesliteral,
                          "EmptyList": self.p_emptylist,
+                         "ThisString": self.p_thisstring,
+                         "TargetString": self.p_targetstring,
                          "ThisValue": self.p_thisvalue,
                          "TargetValue": self.p_targetvalue,
                          "ParameterName": self.p_parametername,
@@ -109,8 +111,7 @@ class ActionsParser(Parser):
                          "LESS_EQUAL": self.p_less_equal,
                          "EQUAL_EQUAL": self.p_equal_equal,
                          "MUCH_GREATER_THAN": self.p_much_greater_than,
-                         "MUCH_LESS_THAN": self.p_much_less_than,
-                         "ENDOFFILE": self.p_endoffile}
+                         "MUCH_LESS_THAN": self.p_much_less_than}
 
     def p_actions(self):
         # # ----------------------------------------
@@ -263,10 +264,8 @@ class ActionsParser(Parser):
     _reg_p_identifier0 = regex.compile("[a-zA-Z][a-zA-Z0-9_]*", regex.M)
 
     def p_identifier(self):
-        # Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) >>S?
-        return self._seq(self._sel(self._r(self._reg_p_identifier0),
-                                   self._p(self.p_endoffile, "ENDOFFILE")
-                                   ),
+        # Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" ) >>S?
+        return self._seq(self._r(self._reg_p_identifier0),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
@@ -591,8 +590,10 @@ class ActionsParser(Parser):
     def p_value(self):
         # # TODO : int , list の操作
         # # Value <- Number / Literal / EmptyList / ThisValue / TargetValue
-        # Value <- Literal / ThisValue / TargetValue
+        # Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
         return self._sel(self._p(self.p_literal, "Literal"),
+                         self._p(self.p_thisstring, "ThisString"),
+                         self._p(self.p_targetstring, "TargetString"),
                          self._p(self.p_thisvalue, "ThisValue"),
                          self._p(self.p_targetvalue, "TargetValue")
                          )
@@ -624,6 +625,22 @@ class ActionsParser(Parser):
     def p_emptylist(self):
         # EmptyList <- '[]'
         return self._l('[]')
+
+    def p_thisstring(self):
+        # ThisString <- >>THIS >>DOT >>'get_str()' >>S?
+        return self._seq(self._skip(self._p(self.p_this, "THIS")),
+                         self._skip(self._p(self.p_dot, "DOT")),
+                         self._skip(self._l('get_str()')),
+                         self._skip(self._opt(self._p(self.p_s, "S")))
+                         )
+
+    def p_targetstring(self):
+        # TargetString <- >>DOLLAR >>DOT >>'get_str()' >>S?
+        return self._seq(self._skip(self._p(self.p_dollar, "DOLLAR")),
+                         self._skip(self._p(self.p_dot, "DOT")),
+                         self._skip(self._l('get_str()')),
+                         self._skip(self._opt(self._p(self.p_s, "S")))
+                         )
 
     def p_thisvalue(self):
         # ThisValue <- >>THIS >>DOT ParameterName
@@ -832,8 +849,3 @@ class ActionsParser(Parser):
         return self._seq(self._l('<<'),
                          self._opt(self._p(self.p_s, "S"))
                          )
-
-    def p_endoffile(self):
-        # # PEG に追加： 終端を示す記号
-        # ENDOFFILE <- '_EOF'
-        return self._l('_EOF')

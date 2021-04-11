@@ -172,7 +172,7 @@ DoubleQuotesLiteralContents <- r'(\\.|[^"\\])*'
 LiteralOption <- COLON "I"
 
 # 数字
-Number <- r"[1-9][0-9]*" Spacing?
+Number <- r"0|[1-9][0-9]*" Spacing?
 
 # PEG に追加： 終端を示す記号
 ENDOFFILE <- '_EOF' Spacing?

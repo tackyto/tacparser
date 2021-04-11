@@ -51,7 +51,7 @@ class ParserGenerator(object):
 
         if not os.path.isfile(pegfilepath):
             err_msg = "File %s not found" % pegfilepath
-            self.__logger.fatal(err_msg)
+            self.__logger.critical(err_msg)
             raise ParseException(err_msg)
         self.parser = ExPegParser(logger)
 

@@ -21,5 +21,7 @@ def main():
               "To   : \"from .baseparser import Parser\"\n\n" + \
               "import tacparser だと循環参照が発生してテストの自動実行ができなくなるため。"
 
+    print(message)
+
 if __name__ == "__main__":
     main()

@@ -1,0 +1,5 @@
+Noparam <- Test _EOF
+
+Test <- 'NoParam' S
+
+S <- r"[\s]+"

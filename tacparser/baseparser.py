@@ -103,7 +103,7 @@ class Parser(object):
         try:
             self._reader = FileReader(filepath, encoding)
         except (FileNotFoundError, IOError):
-            self.__logger.fatal("Wrong file or file path. \"{0}\"".format(filepath))
+            self.__logger.error("Wrong file or file path. \"{0}\"".format(filepath))
             raise
 
         if not typename:
@@ -112,7 +112,7 @@ class Parser(object):
         try:
             rootexp = self.def_dict[typename]
         except KeyError:
-            self.__logger.fatal("TypeName \"{0}\" was not found".format(typename))
+            self.__logger.critical("TypeName \"{0}\" was not found".format(typename))
             raise
 
         self.__logger.info("Parsing file  \"{0}\" started. rule:{1}".format(filepath, typename))
@@ -121,7 +121,7 @@ class Parser(object):
         try:
             self._result, self._tree = self._parse(rootexp, typename)
         except RecursionError:
-            self.__logger.fatal("RecursionError!")
+            self.__logger.critical("RecursionError!")
             return False, None
 
         if not self._result:
@@ -895,7 +895,7 @@ class Parser(object):
         try:
             flg, ret = func()
         except RecursionError:
-            self.__logger.fatal("<- {0}".format(typename))
+            self.__logger.critical("<- {0}".format(typename))
             raise
 
         if flg:

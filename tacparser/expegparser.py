@@ -596,11 +596,11 @@ class ExPegParser(Parser):
                          self._l("I")
                          )
 
-    _reg_p_number0 = regex.compile("[1-9][0-9]*", regex.M)
+    _reg_p_number0 = regex.compile("0|[1-9][0-9]*", regex.M)
 
     def p_number(self):
         # # 数字
-        # Number <- r"[1-9][0-9]*" Spacing?
+        # Number <- r"0|[1-9][0-9]*" Spacing?
         return self._seq(self._r(self._reg_p_number0),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )

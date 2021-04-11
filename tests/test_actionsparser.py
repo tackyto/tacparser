@@ -51,3 +51,21 @@ class TestActionsParser(unittest.TestCase):
             fout.write(node.print_tree())
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+    def test_actions03(self):
+        action_str = 'Family > FamilyName {$.familyname = this.get_str();}\n' + \
+                     'Person > Name {$.name = this.get_str();}\n' + \
+                     'Person > Age {$.age = this.get_str();}\n' + \
+                     'Person > Sex >> Male {$.sex = "M";}\n' + \
+                     'Person > Sex >> Female {$.sex = "F";}'
+
+        flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
+        self.assertTrue(flg)
+
+        pathoutfile = os.path.join(self.test_dir, "actions03_src.out")
+        pathoutfile_dist = os.path.join(self.test_dir, "actions03_dist.out")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(node.print_tree())
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))

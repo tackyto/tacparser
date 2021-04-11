@@ -90,7 +90,7 @@ Parent      <- >>LESS_THAN Conditions
 # ----------------------------------------
 
 Conditions <- Identifier OrCondition*
-Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) >>S?
+Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" ) >>S?
 
 OrCondition <- >>BRAKET_OPEN SingleCondition (>>VERTICAL_BAR SingleCondition)* >>BRAKET_CLOSE
 
@@ -189,7 +189,7 @@ Variable <- ThisValue / TargetValue
 
 # TODO : int , list の操作
 # Value <- Number / Literal / EmptyList / ThisValue / TargetValue
-Value <- Literal / ThisValue / TargetValue
+Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
 
 # TODO : 未実装
 # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
@@ -200,6 +200,8 @@ DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"'
 
 EmptyList <- '[]'
 
+ThisString <- >>THIS >>DOT >>'get_str()' >>S?
+TargetString <- >>DOLLAR >>DOT >>'get_str()' >>S?
 ThisValue <- >>THIS >>DOT ParameterName
 TargetValue <- >>DOLLAR >>DOT ParameterName
 ParameterName <- r"[a-z][a-z_]*" >>S?
@@ -244,6 +246,3 @@ EQUAL_EQUAL   <- '==' S?
 
 MUCH_GREATER_THAN <- '>>' S?
 MUCH_LESS_THAN    <- '<<' S?
-
-# PEG に追加： 終端を示す記号
-ENDOFFILE <- '_EOF'
