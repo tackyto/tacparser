@@ -8,7 +8,7 @@ from logging import config, getLogger
 
 import tacparser
 from tacparser.exception import ParseException
-from tacparser.parsergenerator import ParserGenerator
+from tacparser.parsergenerator import ParserGenerator, ParserChecker
 from tacparser.parsergenerator import SyntaxCheckFailedException
 from tacparser.expegparser import ExPegParser
 
@@ -133,6 +133,8 @@ class TestParserGenerator(unittest.TestCase):
         self.assertEqual(len(msg), 1)
         expstr = "!Left Recursive Found! : Baz->Quux->Baz"
         self.assertEqual(msg[0], expstr)
+        self.assertEqual(str(err.exception), expstr + "\n")
+        self.assertEqual(repr(err.exception), expstr + "\n")
 
     def test_check_left_recursive03(self):
         curdir = os.path.join(self.test_path, "check")
@@ -178,11 +180,63 @@ class TestParserGenerator(unittest.TestCase):
         expstr = ["pegファイルの構文解析に失敗しました"]
         self.assertEqual(msg, expstr)
 
+
+    def test_parser_error02(self):
+        curdir = os.path.join(self.test_path, "check")
+        filepath = os.path.join(curdir, "error02.peg")
+
+        parser = ExPegParser(test_logger)
+        flg, node = parser.parse_file(filepath)
+
+        self.assertFalse(flg)
+        checker = ParserChecker(node, test_logger)
+        with self.assertRaises(ParseException) as err:
+            checker.check_tree(node)
+
+        msg = err.exception.args[0]
+        expstr = "Parse failed! ( maxposition is line:1 column:5 @[-])"
+        self.assertEqual(msg, expstr)
+        self.assertEqual(msg, str(err.exception))
+        self.assertEqual(msg, repr(err.exception))
+
+
+    def test_parser_error03(self):
+        curdir = os.path.join(self.test_path, "check")
+        filepath = os.path.join(curdir, "error03.peg")
+
+        from tests.testmodules.pegparser import PegParser
+        parser = PegParser(test_logger)
+        flg, node = parser.parse_file(filepath)
+
+        self.assertTrue(flg)
+        checker = ParserChecker(node, test_logger)
+        with self.assertRaises(SyntaxCheckFailedException) as err:
+            checker.check_tree(node)
+
+        msg = err.exception.args[0]
+        expstr = ["!Unexpected Error! Root Node is not a \"ExPeg\" Type."]
+        self.assertEqual(msg, expstr)
+
+
     def test_noparam(self):
         curdir = os.path.join(self.test_path, "noparam")
         filepath = os.path.join(curdir, "noparam.peg")
         cmp_dist_filepath = os.path.join(curdir, "noparamparser_dist.py")
         outfilepath = os.path.join(curdir, "noparamparser.py")
+        if os.path.exists(outfilepath):
+            os.remove(outfilepath)
+
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
+        generator.generate_file()
+
+        self.assertTrue(filecmp.cmp(outfilepath, cmp_dist_filepath))
+
+
+    def test_doc(self):
+        curdir = os.path.join(self.test_path, "peg")
+        filepath = os.path.join(curdir, "doc.peg")
+        cmp_dist_filepath = os.path.join(curdir, "docparser_dist.py")
+        outfilepath = os.path.join(curdir, "docparser.py")
         if os.path.exists(outfilepath):
             os.remove(outfilepath)
 

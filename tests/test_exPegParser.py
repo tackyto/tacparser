@@ -31,13 +31,23 @@ class TestExPegParser(unittest.TestCase):
         # 失敗ケース
         string = u"r'aaaa:I "
         flg, node = self.parser.parse_string(string, self.parser.p_regularexp, "RegularExp")
+        self.assertFalse(flg)
+        self.assertTrue(node.is_failure())
+        self.assertTrue(node.is_terminal())
         self.assertEqual((flg, node.get_str()),
                          (False, "Parse failed! ( maxposition is line:1 column:9 @[])"))
 
     def test_p_literal(self):
         string = u'"aaa" '
-        flg, _ = self.parser.parse_string(string, self.parser.p_literal, "Literal")
+        flg, node = self.parser.parse_string(string, self.parser.p_literal, "Literal")
         self.assertTrue(flg)
+        self.assertFalse(node.is_failure())
+        self.assertFalse(node.is_terminal())
+        self.assertIsNone(node.get_attr("nothing"))
+
+        terminal = node.children[0].children[0]
+        self.assertTrue(terminal.is_terminal())
+
 
         string = u"'bbb' "
         flg, _ = self.parser.parse_string(string, self.parser.p_literal, "Literal")
@@ -130,6 +140,14 @@ class TestExPegParser(unittest.TestCase):
             fout.write(n.print_tree())
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+        pathoutfile_detail = os.path.join(curdir, "expeg_reconstruct_src_dtl.out")
+        pathoutfile_dist_detail = os.path.join(curdir, "expeg_reconstruct_dist_dtl.out")
+
+        with open(pathoutfile_detail, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(n.print_tree(detail_flg=True))
+
+        self.assertTrue(filecmp.cmp(pathoutfile_detail, pathoutfile_dist_detail))
 
 
 

@@ -69,6 +69,20 @@ class TestASTActions(unittest.TestCase):
         self.apply_astactionstest_string(file_name, action_string)
 
 
+    def test_actions04file(self):
+        datafilename = "test_astactions05data.txt"
+        actionfilename = "test_astactions05action.txt"
+        self.apply_astactionstest_file(datafilename, actionfilename)
+
+
+    def test_actions_notfound(self):
+        actionfilename = "test_astactions_notfound.txt"
+        actionfilepath = os.path.join(self.test_dir, actionfilename)
+        ast_actions = AstActions(logger=test_logger)
+        with self.assertRaises(FileNotFoundError):
+            ast_actions.read_file(actionfilepath)
+
+
     def apply_astactionstest_string(self, filename, action_string):
         filepath = os.path.join(self.test_dir, filename)
         parser = astactionstest.ASTActionsTest(test_logger)
@@ -81,6 +95,26 @@ class TestASTActions(unittest.TestCase):
 
         pathoutfile = os.path.join(self.test_dir, filename + ".out")
         pathoutfile_dist = os.path.join(self.test_dir, filename + ".dist")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(test_node.print_tree(detail_flg=True))
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+
+    def apply_astactionstest_file(self, sourcefilename, actionfilename):
+        filepath = os.path.join(self.test_dir, sourcefilename)
+        actionfilepath = os.path.join(self.test_dir, actionfilename)
+        parser = astactionstest.ASTActionsTest(test_logger)
+        result, test_node = parser.parse_file(filepath)
+        self.assertTrue(result)
+
+        ast_actions = AstActions(logger=test_logger)
+        ast_actions.read_file(actionfilepath)
+        ast_actions.apply(test_node)
+
+        pathoutfile = os.path.join(self.test_dir, sourcefilename + ".out")
+        pathoutfile_dist = os.path.join(self.test_dir, sourcefilename + ".dist")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(test_node.print_tree(detail_flg=True))
