@@ -1,199 +1,198 @@
-ExPeg : (1, 0 - 171, 1 : 0 - 5142) : "ExPeg" - {}
-    Definition : (3, 0 - 6, 0 : 23 - 92) : "Definition" - {}
-        DefinitionIdentifier : (4, 0 - 4, 11 : 34 - 45) : "Grammar " - {}
-        DefinitionExpression : (4, 14 - 6, 0 : 48 - 92) : "Spacing? ( PegComment / Definition )+ _EOF " - {}
-    Definition : (6, 0 - 9, 0 : 92 - 140) : "Definition" - {}
-        DefinitionIdentifier : (7, 0 - 7, 11 : 108 - 119) : "PegComment " - {}
-        DefinitionExpression : (7, 14 - 9, 0 : 122 - 140) : "Comment+ Spacing " - {}
-    Definition : (9, 0 - 13, 0 : 140 - 356) : "Definition" - {}
-        DefinitionIdentifier : (12, 0 - 12, 11 : 262 - 273) : "Definition " - {}
-        DefinitionExpression : (12, 14 - 13, 0 : 276 - 356) : "DefinitionComment? DefinitionIdentifier Spacing? LEFTARROW DefinitionExpression " - {}
-    Definition : (13, 0 - 15, 0 : 356 - 392) : "Definition" - {}
-        DefinitionIdentifier : (13, 0 - 13, 21 : 356 - 377) : "DefinitionExpression " - {}
-        DefinitionExpression : (13, 24 - 15, 0 : 380 - 392) : "Expression " - {}
-    Definition : (15, 0 - 18, 0 : 392 - 435) : "Definition" - {}
-        DefinitionIdentifier : (16, 0 - 16, 18 : 404 - 422) : "DefinitionComment " - {}
-        DefinitionExpression : (16, 21 - 18, 0 : 425 - 435) : "Comment+ " - {}
-    Definition : (18, 0 - 24, 0 : 435 - 749) : "Definition" - {}
-        DefinitionIdentifier : (23, 0 - 23, 21 : 687 - 708) : "DefinitionIdentifier " - {}
-        DefinitionExpression : (23, 24 - 24, 0 : 711 - 749) : "Identifier ParameterList / Identifier " - {}
-    Definition : (24, 0 - 25, 0 : 749 - 814) : "Definition" - {}
-        DefinitionIdentifier : (24, 0 - 24, 14 : 749 - 763) : "ParameterList " - {}
-        DefinitionExpression : (24, 17 - 25, 0 : 766 - 814) : "COLON OPEN Parameter ( COMMA Parameter )* CLOSE " - {}
-    Definition : (25, 0 - 27, 0 : 814 - 856) : "Definition" - {}
-        DefinitionIdentifier : (25, 0 - 25, 10 : 814 - 824) : "Parameter " - {}
-        DefinitionExpression : (25, 13 - 27, 0 : 827 - 856) : "COMMERCIAL_AT ParameterName " - {}
-    Definition : (27, 0 - 29, 0 : 856 - 914) : "Definition" - {}
-        DefinitionIdentifier : (28, 0 - 28, 11 : 879 - 890) : "Expression " - {}
-        DefinitionExpression : (28, 14 - 29, 0 : 893 - 914) : "Selection / Sequence " - {}
-    Definition : (29, 0 - 30, 0 : 914 - 954) : "Definition" - {}
-        DefinitionIdentifier : (29, 0 - 29, 10 : 914 - 924) : "Selection " - {}
-        DefinitionExpression : (29, 13 - 30, 0 : 927 - 954) : "Sequence (SLASH Sequence)+ " - {}
-    Definition : (30, 0 - 31, 0 : 954 - 999) : "Definition" - {}
-        DefinitionIdentifier : (30, 0 - 30, 11 : 954 - 965) : "Sequence " - {}
-        DefinitionExpression : (30, 14 - 31, 0 : 968 - 999) : "MultiSequence / SingleSequence " - {}
-    Definition : (31, 0 - 32, 0 : 999 - 1027) : "Definition" - {}
-        DefinitionIdentifier : (31, 0 - 31, 14 : 999 - 1013) : "MultiSequence " - {}
-        DefinitionExpression : (31, 17 - 32, 0 : 1016 - 1027) : "Term Term+ " - {}
-    Definition : (32, 0 - 34, 0 : 1027 - 1051) : "Definition" - {}
-        DefinitionIdentifier : (32, 0 - 32, 15 : 1027 - 1042) : "SingleSequence " - {}
-        DefinitionExpression : (32, 18 - 34, 0 : 1045 - 1051) : "Term " - {}
-    Definition : (34, 0 - 39, 0 : 1051 - 1153) : "Definition" - {}
-        DefinitionIdentifier : (38, 0 - 38, 5 : 1125 - 1130) : "Term " - {}
-        DefinitionExpression : (38, 8 - 39, 0 : 1133 - 1153) : "Assignment / Prefix " - {}
-    Definition : (39, 0 - 40, 0 : 1153 - 1199) : "Definition" - {}
-        DefinitionIdentifier : (39, 0 - 39, 11 : 1153 - 1164) : "Assignment " - {}
-        DefinitionExpression : (39, 14 - 40, 0 : 1167 - 1199) : "Prefix EQUAL AssignmentVariable " - {}
-    Definition : (40, 0 - 42, 0 : 1199 - 1248) : "Definition" - {}
-        DefinitionIdentifier : (40, 0 - 40, 19 : 1199 - 1218) : "AssignmentVariable " - {}
-        DefinitionExpression : (40, 22 - 42, 0 : 1221 - 1248) : "DOLLAR_SIGN ParameterName " - {}
-    Definition : (42, 0 - 51, 0 : 1248 - 1530) : "Definition" - {}
-        DefinitionIdentifier : (50, 0 - 50, 10 : 1473 - 1483) : "Prefix " - {}
-        DefinitionExpression : (50, 13 - 51, 0 : 1486 - 1530) : "AndPrefix / NotPrefix / SkipPrefix / Suffix " - {}
-    Definition : (51, 0 - 52, 0 : 1530 - 1560) : "Definition" - {}
-        DefinitionIdentifier : (51, 0 - 51, 10 : 1530 - 1540) : "AndPrefix " - {}
-        DefinitionExpression : (51, 13 - 52, 0 : 1543 - 1560) : "AMPERSAND Suffix " - {}
-    Definition : (52, 0 - 53, 0 : 1560 - 1592) : "Definition" - {}
-        DefinitionIdentifier : (52, 0 - 52, 10 : 1560 - 1570) : "NotPrefix " - {}
-        DefinitionExpression : (52, 13 - 53, 0 : 1573 - 1592) : "EXCLAMATION Suffix " - {}
-    Definition : (53, 0 - 56, 0 : 1592 - 1633) : "Definition" - {}
-        DefinitionIdentifier : (53, 0 - 53, 11 : 1592 - 1603) : "SkipPrefix " - {}
-        DefinitionExpression : (53, 14 - 56, 0 : 1606 - 1633) : "MUCH_GREATER_THAN Suffix " - {}
-    Definition : (56, 0 - 65, 0 : 1633 - 1965) : "Definition" - {}
-        DefinitionIdentifier : (64, 0 - 64, 10 : 1886 - 1896) : "Suffix " - {}
-        DefinitionExpression : (64, 13 - 65, 0 : 1899 - 1965) : "QuestionSuffix / StarSuffix / PlusSuffix / RepeatSuffix / Primary " - {}
-    Definition : (65, 0 - 66, 0 : 1965 - 2000) : "Definition" - {}
-        DefinitionIdentifier : (65, 0 - 65, 15 : 1965 - 1980) : "QuestionSuffix " - {}
-        DefinitionExpression : (65, 18 - 66, 0 : 1983 - 2000) : "Primary QUESTION " - {}
-    Definition : (66, 0 - 67, 0 : 2000 - 2027) : "Definition" - {}
-        DefinitionIdentifier : (66, 0 - 66, 11 : 2000 - 2011) : "StarSuffix " - {}
-        DefinitionExpression : (66, 14 - 67, 0 : 2014 - 2027) : "Primary STAR " - {}
-    Definition : (67, 0 - 68, 0 : 2027 - 2054) : "Definition" - {}
-        DefinitionIdentifier : (67, 0 - 67, 11 : 2027 - 2038) : "PlusSuffix " - {}
-        DefinitionExpression : (67, 14 - 68, 0 : 2041 - 2054) : "Primary PLUS " - {}
-    Definition : (68, 0 - 70, 0 : 2054 - 2089) : "Definition" - {}
-        DefinitionIdentifier : (68, 0 - 68, 13 : 2054 - 2067) : "RepeatSuffix " - {}
-        DefinitionExpression : (68, 16 - 70, 0 : 2070 - 2089) : "Primary RepeatNum " - {}
-    Definition : (70, 0 - 72, 0 : 2089 - 2193) : "Definition" - {}
-        DefinitionIdentifier : (70, 0 - 70, 10 : 2089 - 2099) : "RepeatNum " - {}
-        DefinitionExpression : (70, 13 - 72, 0 : 2102 - 2193) : "CURL_OPEN MinRepeat COMMA MaxRepeat CURL_CLOSE / CURL_OPEN RepeatCnt CURL_CLOSE " - {}
-    Definition : (72, 0 - 73, 0 : 2193 - 2213) : "Definition" - {}
-        DefinitionIdentifier : (72, 0 - 72, 10 : 2193 - 2203) : "MinRepeat " - {}
-        DefinitionExpression : (72, 13 - 73, 0 : 2206 - 2213) : "Number " - {}
-    Definition : (73, 0 - 74, 0 : 2213 - 2233) : "Definition" - {}
-        DefinitionIdentifier : (73, 0 - 73, 10 : 2213 - 2223) : "MaxRepeat " - {}
-        DefinitionExpression : (73, 13 - 74, 0 : 2226 - 2233) : "Number " - {}
-    Definition : (74, 0 - 76, 0 : 2233 - 2254) : "Definition" - {}
-        DefinitionIdentifier : (74, 0 - 74, 10 : 2233 - 2243) : "RepeatCnt " - {}
-        DefinitionExpression : (74, 13 - 76, 0 : 2246 - 2254) : "Number " - {}
-    Definition : (76, 0 - 91, 0 : 2254 - 2635) : "Definition" - {}
-        DefinitionIdentifier : (83, 0 - 83, 10 : 2432 - 2442) : "Primary " - {}
-        DefinitionExpression : (83, 13 - 91, 0 : 2445 - 2635) : "RegularExp / IdentifierCall / Parameter / AssignmentValue / Identifier !LEFTARROW !COLON / OPEN Expression CLOSE / Literal " - {}
-    Definition : (91, 0 - 97, 0 : 2635 - 2901) : "Definition" - {}
-        DefinitionIdentifier : (95, 0 - 95, 15 : 2821 - 2836) : "IdentifierCall " - {}
-        DefinitionExpression : (95, 18 - 97, 0 : 2839 - 2901) : "Identifier COLON OPEN Expression ( COMMA Expression )* CLOSE " - {}
-    Definition : (97, 0 - 102, 0 : 2901 - 3071) : "Definition" - {}
-        DefinitionIdentifier : (100, 0 - 100, 16 : 3025 - 3041) : "AssignmentValue " - {}
-        DefinitionExpression : (100, 19 - 102, 0 : 3044 - 3071) : "DOLLAR_SIGN ParameterName " - {}
-    Definition : (105, 0 - 108, 0 : 3130 - 3254) : "Definition" - {}
-        DefinitionIdentifier : (106, 0 - 106, 11 : 3156 - 3167) : "RegularExp " - {}
-        DefinitionExpression : (106, 14 - 108, 0 : 3170 - 3254) : "REGPREFIX ( SingleQuotesLiteral / DoubleQuotesLiteral ) RegularExpOptions Spacing? " - {}
-    Definition : (108, 0 - 125, 0 : 3254 - 3976) : "Definition" - {}
-        DefinitionIdentifier : (124, 0 - 124, 18 : 3928 - 3946) : "RegularExpOptions " - {}
-        DefinitionExpression : (124, 21 - 125, 0 : 3949 - 3976) : "( COLON r"(m|X|A|I|S)+" )? " - {}
-    Definition : (125, 0 - 126, 0 : 3976 - 4040) : "Definition" - {}
-        DefinitionIdentifier : (125, 0 - 125, 11 : 3976 - 3987) : "Identifier " - {}
-        DefinitionExpression : (125, 14 - 126, 0 : 3990 - 4040) : "( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) Spacing? " - {}
-    Definition : (126, 0 - 128, 0 : 4040 - 4092) : "Definition" - {}
-        DefinitionIdentifier : (126, 0 - 126, 14 : 4040 - 4054) : "ParameterName " - {}
-        DefinitionExpression : (126, 17 - 128, 0 : 4057 - 4092) : "r"[a-zA-Z][a-zA-Z0-9_]*" Spacing? " - {}
-    Definition : (128, 0 - 133, 0 : 4092 - 4267) : "Definition" - {}
-        DefinitionIdentifier : (132, 0 - 132, 8 : 4186 - 4194) : "Literal " - {}
-        DefinitionExpression : (132, 11 - 133, 0 : 4197 - 4267) : "( SingleQuotesLiteral / DoubleQuotesLiteral ) LiteralOption? Spacing? " - {}
-    Definition : (133, 0 - 134, 0 : 4267 - 4326) : "Definition" - {}
-        DefinitionIdentifier : (133, 0 - 133, 20 : 4267 - 4287) : "SingleQuotesLiteral " - {}
-        DefinitionExpression : (133, 23 - 134, 0 : 4290 - 4326) : ""'" SingleQuotesLiteralContents "'" " - {}
-    Definition : (134, 0 - 135, 0 : 4326 - 4374) : "Definition" - {}
-        DefinitionIdentifier : (134, 0 - 134, 28 : 4326 - 4354) : "SingleQuotesLiteralContents " - {}
-        DefinitionExpression : (134, 31 - 135, 0 : 4357 - 4374) : "r"(\\.|[^'\\])*" " - {}
-    Definition : (135, 0 - 136, 0 : 4374 - 4433) : "Definition" - {}
-        DefinitionIdentifier : (135, 0 - 135, 20 : 4374 - 4394) : "DoubleQuotesLiteral " - {}
-        DefinitionExpression : (135, 23 - 136, 0 : 4397 - 4433) : "'"' DoubleQuotesLiteralContents '"' " - {}
-    Definition : (136, 0 - 137, 0 : 4433 - 4481) : "Definition" - {}
-        DefinitionIdentifier : (136, 0 - 136, 28 : 4433 - 4461) : "DoubleQuotesLiteralContents " - {}
-        DefinitionExpression : (136, 31 - 137, 0 : 4464 - 4481) : "r'(\\.|[^"\\])*' " - {}
-    Definition : (137, 0 - 139, 0 : 4481 - 4509) : "Definition" - {}
-        DefinitionIdentifier : (137, 0 - 137, 14 : 4481 - 4495) : "LiteralOption " - {}
-        DefinitionExpression : (137, 17 - 139, 0 : 4498 - 4509) : "COLON "I" " - {}
-    Definition : (139, 0 - 142, 0 : 4509 - 4549) : "Definition" - {}
-        DefinitionIdentifier : (140, 0 - 140, 7 : 4514 - 4521) : "Number " - {}
-        DefinitionExpression : (140, 10 - 142, 0 : 4524 - 4549) : "r"[1-9][0-9]*" Spacing? " - {}
-    Definition : (142, 0 - 145, 0 : 4549 - 4598) : "Definition" - {}
-        DefinitionIdentifier : (143, 0 - 143, 10 : 4568 - 4578) : "ENDOFFILE " - {}
-        DefinitionExpression : (143, 13 - 145, 0 : 4581 - 4598) : "'_EOF' Spacing? " - {}
-    Definition : (145, 0 - 146, 0 : 4598 - 4625) : "Definition" - {}
-        DefinitionIdentifier : (145, 0 - 145, 10 : 4598 - 4608) : "LEFTARROW " - {}
-        DefinitionExpression : (145, 13 - 146, 0 : 4611 - 4625) : "'<-' Spacing? " - {}
-    Definition : (146, 0 - 147, 0 : 4625 - 4647) : "Definition" - {}
-        DefinitionIdentifier : (146, 0 - 146, 6 : 4625 - 4631) : "SLASH " - {}
-        DefinitionExpression : (146, 9 - 147, 0 : 4634 - 4647) : "'/' Spacing? " - {}
-    Definition : (147, 0 - 148, 0 : 4647 - 4673) : "Definition" - {}
-        DefinitionIdentifier : (147, 0 - 147, 10 : 4647 - 4657) : "AMPERSAND " - {}
-        DefinitionExpression : (147, 13 - 148, 0 : 4660 - 4673) : "'&' Spacing? " - {}
-    Definition : (148, 0 - 149, 0 : 4673 - 4701) : "Definition" - {}
-        DefinitionIdentifier : (148, 0 - 148, 12 : 4673 - 4685) : "EXCLAMATION " - {}
-        DefinitionExpression : (148, 15 - 149, 0 : 4688 - 4701) : "'!' Spacing? " - {}
-    Definition : (149, 0 - 151, 0 : 4701 - 4737) : "Definition" - {}
-        DefinitionIdentifier : (149, 0 - 149, 18 : 4701 - 4719) : "MUCH_GREATER_THAN " - {}
-        DefinitionExpression : (149, 21 - 151, 0 : 4722 - 4737) : "'>>' Spacing? " - {}
-    Definition : (151, 0 - 152, 0 : 4737 - 4762) : "Definition" - {}
-        DefinitionIdentifier : (151, 0 - 151, 9 : 4737 - 4746) : "QUESTION " - {}
-        DefinitionExpression : (151, 12 - 152, 0 : 4749 - 4762) : "'?' Spacing? " - {}
-    Definition : (152, 0 - 153, 0 : 4762 - 4783) : "Definition" - {}
-        DefinitionIdentifier : (152, 0 - 152, 5 : 4762 - 4767) : "STAR " - {}
-        DefinitionExpression : (152, 8 - 153, 0 : 4770 - 4783) : "'*' Spacing? " - {}
-    Definition : (153, 0 - 154, 0 : 4783 - 4804) : "Definition" - {}
-        DefinitionIdentifier : (153, 0 - 153, 5 : 4783 - 4788) : "PLUS " - {}
-        DefinitionExpression : (153, 8 - 154, 0 : 4791 - 4804) : "'+' Spacing? " - {}
-    Definition : (154, 0 - 155, 0 : 4804 - 4825) : "Definition" - {}
-        DefinitionIdentifier : (154, 0 - 154, 5 : 4804 - 4809) : "OPEN " - {}
-        DefinitionExpression : (154, 8 - 155, 0 : 4812 - 4825) : "'(' Spacing? " - {}
-    Definition : (155, 0 - 156, 0 : 4825 - 4847) : "Definition" - {}
-        DefinitionIdentifier : (155, 0 - 155, 6 : 4825 - 4831) : "CLOSE " - {}
-        DefinitionExpression : (155, 9 - 156, 0 : 4834 - 4847) : "')' Spacing? " - {}
-    Definition : (156, 0 - 157, 0 : 4847 - 4874) : "Definition" - {}
-        DefinitionIdentifier : (156, 0 - 156, 10 : 4847 - 4857) : "CURL_OPEN " - {}
-        DefinitionExpression : (156, 13 - 157, 0 : 4860 - 4874) : "'{' Spacing? " - {}
-    Definition : (157, 0 - 158, 0 : 4874 - 4901) : "Definition" - {}
-        DefinitionIdentifier : (157, 0 - 157, 11 : 4874 - 4885) : "CURL_CLOSE " - {}
-        DefinitionExpression : (157, 14 - 158, 0 : 4888 - 4901) : "'}' Spacing? " - {}
-    Definition : (158, 0 - 159, 0 : 4901 - 4923) : "Definition" - {}
-        DefinitionIdentifier : (158, 0 - 158, 6 : 4901 - 4907) : "COLON " - {}
-        DefinitionExpression : (158, 9 - 159, 0 : 4910 - 4923) : "':' Spacing? " - {}
-    Definition : (159, 0 - 160, 0 : 4923 - 4945) : "Definition" - {}
-        DefinitionIdentifier : (159, 0 - 159, 6 : 4923 - 4929) : "COMMA " - {}
-        DefinitionExpression : (159, 9 - 160, 0 : 4932 - 4945) : "',' Spacing? " - {}
-    Definition : (160, 0 - 161, 0 : 4945 - 4966) : "Definition" - {}
-        DefinitionIdentifier : (160, 0 - 160, 14 : 4945 - 4959) : "COMMERCIAL_AT " - {}
-        DefinitionExpression : (160, 17 - 161, 0 : 4962 - 4966) : "'@' " - {}
-    Definition : (161, 0 - 162, 0 : 4966 - 4985) : "Definition" - {}
-        DefinitionIdentifier : (161, 0 - 161, 12 : 4966 - 4978) : "DOLLAR_SIGN " - {}
-        DefinitionExpression : (161, 15 - 162, 0 : 4981 - 4985) : "'$' " - {}
-    Definition : (162, 0 - 163, 0 : 4985 - 5007) : "Definition" - {}
-        DefinitionIdentifier : (162, 0 - 162, 6 : 4985 - 4991) : "EQUAL " - {}
-        DefinitionExpression : (162, 9 - 163, 0 : 4994 - 5007) : "'=' Spacing? " - {}
-    Definition : (163, 0 - 165, 0 : 5007 - 5025) : "Definition" - {}
-        DefinitionIdentifier : (163, 0 - 163, 10 : 5007 - 5017) : "REGPREFIX " - {}
-        DefinitionExpression : (163, 13 - 165, 0 : 5020 - 5025) : "'r' " - {}
-    Definition : (165, 0 - 167, 0 : 5025 - 5044) : "Definition" - {}
-        DefinitionIdentifier : (165, 0 - 165, 8 : 5025 - 5033) : "Spacing " - {}
-        DefinitionExpression : (165, 11 - 167, 0 : 5036 - 5044) : "Space+ " - {}
-    Definition : (167, 0 - 168, 0 : 5044 - 5081) : "Definition" - {}
-        DefinitionIdentifier : (167, 0 - 167, 8 : 5044 - 5052) : "Comment " - {}
-        DefinitionExpression : (167, 11 - 168, 0 : 5055 - 5081) : "'#' r"[^\r\n]*" EndOfLine " - {}
-    Definition : (168, 0 - 170, 0 : 5081 - 5114) : "Definition" - {}
-        DefinitionIdentifier : (168, 0 - 168, 6 : 5081 - 5087) : "Space " - {}
-        DefinitionExpression : (168, 9 - 170, 0 : 5090 - 5114) : "' ' / '\t' / EndOfLine " - {}
-    Definition : (170, 0 - 171, 1 : 5114 - 5142) : "Definition" - {}
-        DefinitionIdentifier : (170, 0 - 170, 10 : 5114 - 5124) : "EndOfLine " - {}
-        DefinitionExpression : (170, 13 - 171, 1 : 5127 - 5142) : "r"\r\n|\n|\r" " - {}
+Definition : (3, 0 - 6, 0 : 23 - 92) : "Definition" - {}
+    DefinitionIdentifier : (4, 0 - 4, 11 : 34 - 45) : "Grammar " - {}
+    DefinitionExpression : (4, 14 - 6, 0 : 48 - 92) : "Spacing? ( PegComment / Definition )+ _EOF " - {}
+Definition : (6, 0 - 9, 0 : 92 - 140) : "Definition" - {}
+    DefinitionIdentifier : (7, 0 - 7, 11 : 108 - 119) : "PegComment " - {}
+    DefinitionExpression : (7, 14 - 9, 0 : 122 - 140) : "Comment+ Spacing " - {}
+Definition : (9, 0 - 13, 0 : 140 - 356) : "Definition" - {}
+    DefinitionIdentifier : (12, 0 - 12, 11 : 262 - 273) : "Definition " - {}
+    DefinitionExpression : (12, 14 - 13, 0 : 276 - 356) : "DefinitionComment? DefinitionIdentifier Spacing? LEFTARROW DefinitionExpression " - {}
+Definition : (13, 0 - 15, 0 : 356 - 392) : "Definition" - {}
+    DefinitionIdentifier : (13, 0 - 13, 21 : 356 - 377) : "DefinitionExpression " - {}
+    DefinitionExpression : (13, 24 - 15, 0 : 380 - 392) : "Expression " - {}
+Definition : (15, 0 - 18, 0 : 392 - 435) : "Definition" - {}
+    DefinitionIdentifier : (16, 0 - 16, 18 : 404 - 422) : "DefinitionComment " - {}
+    DefinitionExpression : (16, 21 - 18, 0 : 425 - 435) : "Comment+ " - {}
+Definition : (18, 0 - 24, 0 : 435 - 749) : "Definition" - {}
+    DefinitionIdentifier : (23, 0 - 23, 21 : 687 - 708) : "DefinitionIdentifier " - {}
+    DefinitionExpression : (23, 24 - 24, 0 : 711 - 749) : "Identifier ParameterList / Identifier " - {}
+Definition : (24, 0 - 25, 0 : 749 - 814) : "Definition" - {}
+    DefinitionIdentifier : (24, 0 - 24, 14 : 749 - 763) : "ParameterList " - {}
+    DefinitionExpression : (24, 17 - 25, 0 : 766 - 814) : "COLON OPEN Parameter ( COMMA Parameter )* CLOSE " - {}
+Definition : (25, 0 - 27, 0 : 814 - 856) : "Definition" - {}
+    DefinitionIdentifier : (25, 0 - 25, 10 : 814 - 824) : "Parameter " - {}
+    DefinitionExpression : (25, 13 - 27, 0 : 827 - 856) : "COMMERCIAL_AT ParameterName " - {}
+Definition : (27, 0 - 29, 0 : 856 - 914) : "Definition" - {}
+    DefinitionIdentifier : (28, 0 - 28, 11 : 879 - 890) : "Expression " - {}
+    DefinitionExpression : (28, 14 - 29, 0 : 893 - 914) : "Selection / Sequence " - {}
+Definition : (29, 0 - 30, 0 : 914 - 954) : "Definition" - {}
+    DefinitionIdentifier : (29, 0 - 29, 10 : 914 - 924) : "Selection " - {}
+    DefinitionExpression : (29, 13 - 30, 0 : 927 - 954) : "Sequence (SLASH Sequence)+ " - {}
+Definition : (30, 0 - 31, 0 : 954 - 999) : "Definition" - {}
+    DefinitionIdentifier : (30, 0 - 30, 11 : 954 - 965) : "Sequence " - {}
+    DefinitionExpression : (30, 14 - 31, 0 : 968 - 999) : "MultiSequence / SingleSequence " - {}
+Definition : (31, 0 - 32, 0 : 999 - 1027) : "Definition" - {}
+    DefinitionIdentifier : (31, 0 - 31, 14 : 999 - 1013) : "MultiSequence " - {}
+    DefinitionExpression : (31, 17 - 32, 0 : 1016 - 1027) : "Term Term+ " - {}
+Definition : (32, 0 - 34, 0 : 1027 - 1051) : "Definition" - {}
+    DefinitionIdentifier : (32, 0 - 32, 15 : 1027 - 1042) : "SingleSequence " - {}
+    DefinitionExpression : (32, 18 - 34, 0 : 1045 - 1051) : "Term " - {}
+Definition : (34, 0 - 39, 0 : 1051 - 1153) : "Definition" - {}
+    DefinitionIdentifier : (38, 0 - 38, 5 : 1125 - 1130) : "Term " - {}
+    DefinitionExpression : (38, 8 - 39, 0 : 1133 - 1153) : "Assignment / Prefix " - {}
+Definition : (39, 0 - 40, 0 : 1153 - 1199) : "Definition" - {}
+    DefinitionIdentifier : (39, 0 - 39, 11 : 1153 - 1164) : "Assignment " - {}
+    DefinitionExpression : (39, 14 - 40, 0 : 1167 - 1199) : "Prefix EQUAL AssignmentVariable " - {}
+Definition : (40, 0 - 42, 0 : 1199 - 1248) : "Definition" - {}
+    DefinitionIdentifier : (40, 0 - 40, 19 : 1199 - 1218) : "AssignmentVariable " - {}
+    DefinitionExpression : (40, 22 - 42, 0 : 1221 - 1248) : "DOLLAR_SIGN ParameterName " - {}
+Definition : (42, 0 - 51, 0 : 1248 - 1530) : "Definition" - {}
+    DefinitionIdentifier : (50, 0 - 50, 10 : 1473 - 1483) : "Prefix " - {}
+    DefinitionExpression : (50, 13 - 51, 0 : 1486 - 1530) : "AndPrefix / NotPrefix / SkipPrefix / Suffix " - {}
+Definition : (51, 0 - 52, 0 : 1530 - 1560) : "Definition" - {}
+    DefinitionIdentifier : (51, 0 - 51, 10 : 1530 - 1540) : "AndPrefix " - {}
+    DefinitionExpression : (51, 13 - 52, 0 : 1543 - 1560) : "AMPERSAND Suffix " - {}
+Definition : (52, 0 - 53, 0 : 1560 - 1592) : "Definition" - {}
+    DefinitionIdentifier : (52, 0 - 52, 10 : 1560 - 1570) : "NotPrefix " - {}
+    DefinitionExpression : (52, 13 - 53, 0 : 1573 - 1592) : "EXCLAMATION Suffix " - {}
+Definition : (53, 0 - 56, 0 : 1592 - 1633) : "Definition" - {}
+    DefinitionIdentifier : (53, 0 - 53, 11 : 1592 - 1603) : "SkipPrefix " - {}
+    DefinitionExpression : (53, 14 - 56, 0 : 1606 - 1633) : "MUCH_GREATER_THAN Suffix " - {}
+Definition : (56, 0 - 65, 0 : 1633 - 1965) : "Definition" - {}
+    DefinitionIdentifier : (64, 0 - 64, 10 : 1886 - 1896) : "Suffix " - {}
+    DefinitionExpression : (64, 13 - 65, 0 : 1899 - 1965) : "QuestionSuffix / StarSuffix / PlusSuffix / RepeatSuffix / Primary " - {}
+Definition : (65, 0 - 66, 0 : 1965 - 2000) : "Definition" - {}
+    DefinitionIdentifier : (65, 0 - 65, 15 : 1965 - 1980) : "QuestionSuffix " - {}
+    DefinitionExpression : (65, 18 - 66, 0 : 1983 - 2000) : "Primary QUESTION " - {}
+Definition : (66, 0 - 67, 0 : 2000 - 2027) : "Definition" - {}
+    DefinitionIdentifier : (66, 0 - 66, 11 : 2000 - 2011) : "StarSuffix " - {}
+    DefinitionExpression : (66, 14 - 67, 0 : 2014 - 2027) : "Primary STAR " - {}
+Definition : (67, 0 - 68, 0 : 2027 - 2054) : "Definition" - {}
+    DefinitionIdentifier : (67, 0 - 67, 11 : 2027 - 2038) : "PlusSuffix " - {}
+    DefinitionExpression : (67, 14 - 68, 0 : 2041 - 2054) : "Primary PLUS " - {}
+Definition : (68, 0 - 70, 0 : 2054 - 2089) : "Definition" - {}
+    DefinitionIdentifier : (68, 0 - 68, 13 : 2054 - 2067) : "RepeatSuffix " - {}
+    DefinitionExpression : (68, 16 - 70, 0 : 2070 - 2089) : "Primary RepeatNum " - {}
+Definition : (70, 0 - 72, 0 : 2089 - 2193) : "Definition" - {}
+    DefinitionIdentifier : (70, 0 - 70, 10 : 2089 - 2099) : "RepeatNum " - {}
+    DefinitionExpression : (70, 13 - 72, 0 : 2102 - 2193) : "CURL_OPEN MinRepeat COMMA MaxRepeat CURL_CLOSE / CURL_OPEN RepeatCnt CURL_CLOSE " - {}
+Definition : (72, 0 - 73, 0 : 2193 - 2213) : "Definition" - {}
+    DefinitionIdentifier : (72, 0 - 72, 10 : 2193 - 2203) : "MinRepeat " - {}
+    DefinitionExpression : (72, 13 - 73, 0 : 2206 - 2213) : "Number " - {}
+Definition : (73, 0 - 74, 0 : 2213 - 2233) : "Definition" - {}
+    DefinitionIdentifier : (73, 0 - 73, 10 : 2213 - 2223) : "MaxRepeat " - {}
+    DefinitionExpression : (73, 13 - 74, 0 : 2226 - 2233) : "Number " - {}
+Definition : (74, 0 - 76, 0 : 2233 - 2254) : "Definition" - {}
+    DefinitionIdentifier : (74, 0 - 74, 10 : 2233 - 2243) : "RepeatCnt " - {}
+    DefinitionExpression : (74, 13 - 76, 0 : 2246 - 2254) : "Number " - {}
+Definition : (76, 0 - 91, 0 : 2254 - 2635) : "Definition" - {}
+    DefinitionIdentifier : (83, 0 - 83, 10 : 2432 - 2442) : "Primary " - {}
+    DefinitionExpression : (83, 13 - 91, 0 : 2445 - 2635) : "RegularExp / IdentifierCall / Parameter / AssignmentValue / Identifier !LEFTARROW !COLON / OPEN Expression CLOSE / Literal " - {}
+Definition : (91, 0 - 97, 0 : 2635 - 2901) : "Definition" - {}
+    DefinitionIdentifier : (95, 0 - 95, 15 : 2821 - 2836) : "IdentifierCall " - {}
+    DefinitionExpression : (95, 18 - 97, 0 : 2839 - 2901) : "Identifier COLON OPEN Expression ( COMMA Expression )* CLOSE " - {}
+Definition : (97, 0 - 102, 0 : 2901 - 3071) : "Definition" - {}
+    DefinitionIdentifier : (100, 0 - 100, 16 : 3025 - 3041) : "AssignmentValue " - {}
+    DefinitionExpression : (100, 19 - 102, 0 : 3044 - 3071) : "DOLLAR_SIGN ParameterName " - {}
+Definition : (105, 0 - 108, 0 : 3130 - 3254) : "Definition" - {}
+    DefinitionIdentifier : (106, 0 - 106, 11 : 3156 - 3167) : "RegularExp " - {}
+    DefinitionExpression : (106, 14 - 108, 0 : 3170 - 3254) : "REGPREFIX ( SingleQuotesLiteral / DoubleQuotesLiteral ) RegularExpOptions Spacing? " - {}
+Definition : (108, 0 - 125, 0 : 3254 - 3976) : "Definition" - {}
+    DefinitionIdentifier : (124, 0 - 124, 18 : 3928 - 3946) : "RegularExpOptions " - {}
+    DefinitionExpression : (124, 21 - 125, 0 : 3949 - 3976) : "( COLON r"(m|X|A|I|S)+" )? " - {}
+Definition : (125, 0 - 126, 0 : 3976 - 4040) : "Definition" - {}
+    DefinitionIdentifier : (125, 0 - 125, 11 : 3976 - 3987) : "Identifier " - {}
+    DefinitionExpression : (125, 14 - 126, 0 : 3990 - 4040) : "( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) Spacing? " - {}
+Definition : (126, 0 - 128, 0 : 4040 - 4092) : "Definition" - {}
+    DefinitionIdentifier : (126, 0 - 126, 14 : 4040 - 4054) : "ParameterName " - {}
+    DefinitionExpression : (126, 17 - 128, 0 : 4057 - 4092) : "r"[a-zA-Z][a-zA-Z0-9_]*" Spacing? " - {}
+Definition : (128, 0 - 133, 0 : 4092 - 4267) : "Definition" - {}
+    DefinitionIdentifier : (132, 0 - 132, 8 : 4186 - 4194) : "Literal " - {}
+    DefinitionExpression : (132, 11 - 133, 0 : 4197 - 4267) : "( SingleQuotesLiteral / DoubleQuotesLiteral ) LiteralOption? Spacing? " - {}
+Definition : (133, 0 - 134, 0 : 4267 - 4326) : "Definition" - {}
+    DefinitionIdentifier : (133, 0 - 133, 20 : 4267 - 4287) : "SingleQuotesLiteral " - {}
+    DefinitionExpression : (133, 23 - 134, 0 : 4290 - 4326) : ""'" SingleQuotesLiteralContents "'" " - {}
+Definition : (134, 0 - 135, 0 : 4326 - 4374) : "Definition" - {}
+    DefinitionIdentifier : (134, 0 - 134, 28 : 4326 - 4354) : "SingleQuotesLiteralContents " - {}
+    DefinitionExpression : (134, 31 - 135, 0 : 4357 - 4374) : "r"(\\.|[^'\\])*" " - {}
+Definition : (135, 0 - 136, 0 : 4374 - 4433) : "Definition" - {}
+    DefinitionIdentifier : (135, 0 - 135, 20 : 4374 - 4394) : "DoubleQuotesLiteral " - {}
+    DefinitionExpression : (135, 23 - 136, 0 : 4397 - 4433) : "'"' DoubleQuotesLiteralContents '"' " - {}
+Definition : (136, 0 - 137, 0 : 4433 - 4481) : "Definition" - {}
+    DefinitionIdentifier : (136, 0 - 136, 28 : 4433 - 4461) : "DoubleQuotesLiteralContents " - {}
+    DefinitionExpression : (136, 31 - 137, 0 : 4464 - 4481) : "r'(\\.|[^"\\])*' " - {}
+Definition : (137, 0 - 139, 0 : 4481 - 4509) : "Definition" - {}
+    DefinitionIdentifier : (137, 0 - 137, 14 : 4481 - 4495) : "LiteralOption " - {}
+    DefinitionExpression : (137, 17 - 139, 0 : 4498 - 4509) : "COLON "I" " - {}
+Definition : (139, 0 - 142, 0 : 4509 - 4549) : "Definition" - {}
+    DefinitionIdentifier : (140, 0 - 140, 7 : 4514 - 4521) : "Number " - {}
+    DefinitionExpression : (140, 10 - 142, 0 : 4524 - 4549) : "r"[1-9][0-9]*" Spacing? " - {}
+Definition : (142, 0 - 145, 0 : 4549 - 4598) : "Definition" - {}
+    DefinitionIdentifier : (143, 0 - 143, 10 : 4568 - 4578) : "ENDOFFILE " - {}
+    DefinitionExpression : (143, 13 - 145, 0 : 4581 - 4598) : "'_EOF' Spacing? " - {}
+Definition : (145, 0 - 146, 0 : 4598 - 4625) : "Definition" - {}
+    DefinitionIdentifier : (145, 0 - 145, 10 : 4598 - 4608) : "LEFTARROW " - {}
+    DefinitionExpression : (145, 13 - 146, 0 : 4611 - 4625) : "'<-' Spacing? " - {}
+Definition : (146, 0 - 147, 0 : 4625 - 4647) : "Definition" - {}
+    DefinitionIdentifier : (146, 0 - 146, 6 : 4625 - 4631) : "SLASH " - {}
+    DefinitionExpression : (146, 9 - 147, 0 : 4634 - 4647) : "'/' Spacing? " - {}
+Definition : (147, 0 - 148, 0 : 4647 - 4673) : "Definition" - {}
+    DefinitionIdentifier : (147, 0 - 147, 10 : 4647 - 4657) : "AMPERSAND " - {}
+    DefinitionExpression : (147, 13 - 148, 0 : 4660 - 4673) : "'&' Spacing? " - {}
+Definition : (148, 0 - 149, 0 : 4673 - 4701) : "Definition" - {}
+    DefinitionIdentifier : (148, 0 - 148, 12 : 4673 - 4685) : "EXCLAMATION " - {}
+    DefinitionExpression : (148, 15 - 149, 0 : 4688 - 4701) : "'!' Spacing? " - {}
+Definition : (149, 0 - 151, 0 : 4701 - 4737) : "Definition" - {}
+    DefinitionIdentifier : (149, 0 - 149, 18 : 4701 - 4719) : "MUCH_GREATER_THAN " - {}
+    DefinitionExpression : (149, 21 - 151, 0 : 4722 - 4737) : "'>>' Spacing? " - {}
+Definition : (151, 0 - 152, 0 : 4737 - 4762) : "Definition" - {}
+    DefinitionIdentifier : (151, 0 - 151, 9 : 4737 - 4746) : "QUESTION " - {}
+    DefinitionExpression : (151, 12 - 152, 0 : 4749 - 4762) : "'?' Spacing? " - {}
+Definition : (152, 0 - 153, 0 : 4762 - 4783) : "Definition" - {}
+    DefinitionIdentifier : (152, 0 - 152, 5 : 4762 - 4767) : "STAR " - {}
+    DefinitionExpression : (152, 8 - 153, 0 : 4770 - 4783) : "'*' Spacing? " - {}
+Definition : (153, 0 - 154, 0 : 4783 - 4804) : "Definition" - {}
+    DefinitionIdentifier : (153, 0 - 153, 5 : 4783 - 4788) : "PLUS " - {}
+    DefinitionExpression : (153, 8 - 154, 0 : 4791 - 4804) : "'+' Spacing? " - {}
+Definition : (154, 0 - 155, 0 : 4804 - 4825) : "Definition" - {}
+    DefinitionIdentifier : (154, 0 - 154, 5 : 4804 - 4809) : "OPEN " - {}
+    DefinitionExpression : (154, 8 - 155, 0 : 4812 - 4825) : "'(' Spacing? " - {}
+Definition : (155, 0 - 156, 0 : 4825 - 4847) : "Definition" - {}
+    DefinitionIdentifier : (155, 0 - 155, 6 : 4825 - 4831) : "CLOSE " - {}
+    DefinitionExpression : (155, 9 - 156, 0 : 4834 - 4847) : "')' Spacing? " - {}
+Definition : (156, 0 - 157, 0 : 4847 - 4874) : "Definition" - {}
+    DefinitionIdentifier : (156, 0 - 156, 10 : 4847 - 4857) : "CURL_OPEN " - {}
+    DefinitionExpression : (156, 13 - 157, 0 : 4860 - 4874) : "'{' Spacing? " - {}
+Definition : (157, 0 - 158, 0 : 4874 - 4901) : "Definition" - {}
+    DefinitionIdentifier : (157, 0 - 157, 11 : 4874 - 4885) : "CURL_CLOSE " - {}
+    DefinitionExpression : (157, 14 - 158, 0 : 4888 - 4901) : "'}' Spacing? " - {}
+Definition : (158, 0 - 159, 0 : 4901 - 4923) : "Definition" - {}
+    DefinitionIdentifier : (158, 0 - 158, 6 : 4901 - 4907) : "COLON " - {}
+    DefinitionExpression : (158, 9 - 159, 0 : 4910 - 4923) : "':' Spacing? " - {}
+Definition : (159, 0 - 160, 0 : 4923 - 4945) : "Definition" - {}
+    DefinitionIdentifier : (159, 0 - 159, 6 : 4923 - 4929) : "COMMA " - {}
+    DefinitionExpression : (159, 9 - 160, 0 : 4932 - 4945) : "',' Spacing? " - {}
+Definition : (160, 0 - 161, 0 : 4945 - 4966) : "Definition" - {}
+    DefinitionIdentifier : (160, 0 - 160, 14 : 4945 - 4959) : "COMMERCIAL_AT " - {}
+    DefinitionExpression : (160, 17 - 161, 0 : 4962 - 4966) : "'@' " - {}
+Definition : (161, 0 - 162, 0 : 4966 - 4985) : "Definition" - {}
+    DefinitionIdentifier : (161, 0 - 161, 12 : 4966 - 4978) : "DOLLAR_SIGN " - {}
+    DefinitionExpression : (161, 15 - 162, 0 : 4981 - 4985) : "'$' " - {}
+Definition : (162, 0 - 163, 0 : 4985 - 5007) : "Definition" - {}
+    DefinitionIdentifier : (162, 0 - 162, 6 : 4985 - 4991) : "EQUAL " - {}
+    DefinitionExpression : (162, 9 - 163, 0 : 4994 - 5007) : "'=' Spacing? " - {}
+Definition : (163, 0 - 165, 0 : 5007 - 5025) : "Definition" - {}
+    DefinitionIdentifier : (163, 0 - 163, 10 : 5007 - 5017) : "REGPREFIX " - {}
+    DefinitionExpression : (163, 13 - 165, 0 : 5020 - 5025) : "'r' " - {}
+Definition : (165, 0 - 167, 0 : 5025 - 5044) : "Definition" - {}
+    DefinitionIdentifier : (165, 0 - 165, 8 : 5025 - 5033) : "Spacing " - {}
+    DefinitionExpression : (165, 11 - 167, 0 : 5036 - 5044) : "Space+ " - {}
+Definition : (167, 0 - 168, 0 : 5044 - 5081) : "Definition" - {}
+    DefinitionIdentifier : (167, 0 - 167, 8 : 5044 - 5052) : "Comment " - {}
+    DefinitionExpression : (167, 11 - 168, 0 : 5055 - 5081) : "'#' r"[^\r\n]*" EndOfLine " - {}
+Definition : (168, 0 - 170, 0 : 5081 - 5114) : "Definition" - {}
+    DefinitionIdentifier : (168, 0 - 168, 6 : 5081 - 5087) : "Space " - {}
+    DefinitionExpression : (168, 9 - 170, 0 : 5090 - 5114) : "' ' / '\t' / EndOfLine " - {}
+Definition : (170, 0 - 171, 1 : 5114 - 5142) : "Definition" - {}
+    DefinitionIdentifier : (170, 0 - 170, 10 : 5114 - 5124) : "EndOfLine " - {}
+    DefinitionExpression : (170, 13 - 171, 1 : 5127 - 5142) : "r"\r\n|\n|\r" " - {}

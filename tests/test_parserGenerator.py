@@ -132,9 +132,10 @@ class TestParserGenerator(unittest.TestCase):
         msg = err.exception.args[0]
         self.assertEqual(len(msg), 1)
         expstr = "!Left Recursive Found! : Baz->Quux->Baz"
+        repr_str = "SyntaxCheckFailedException(['!Left Recursive Found! : Baz->Quux->Baz'])"
         self.assertEqual(msg[0], expstr)
-        self.assertEqual(str(err.exception), expstr + "\n")
-        self.assertEqual(repr(err.exception), expstr + "\n")
+        self.assertEqual(str(err.exception), repr_str)
+        self.assertEqual(repr(err.exception), repr_str)
 
     def test_check_left_recursive03(self):
         curdir = os.path.join(self.test_path, "check")
@@ -195,9 +196,10 @@ class TestParserGenerator(unittest.TestCase):
 
         msg = err.exception.args[0]
         expstr = "Parse failed! ( maxposition is line:1 column:5 @[-])"
+        repr_str = "ParseException('Parse failed! ( maxposition is line:1 column:5 @[-])')"
         self.assertEqual(msg, expstr)
-        self.assertEqual(msg, str(err.exception))
-        self.assertEqual(msg, repr(err.exception))
+        self.assertEqual(repr_str, str(err.exception))
+        self.assertEqual(repr_str, repr(err.exception))
 
 
     def test_parser_error03(self):

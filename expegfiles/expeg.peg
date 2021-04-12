@@ -34,9 +34,11 @@ DefinitionComment <- Comment+
 #   ※パラメータ受け取りの記載例
 #   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
 #   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
-DefinitionIdentifier <- Identifier ParameterList / Identifier
-ParameterList <- COLON OPEN Parameter ( COMMA Parameter )* CLOSE
-Parameter <- COMMERCIAL_AT ParameterName
+
+# DefinitionIdentifier <- Identifier ParameterList / Identifier
+# ParameterList <- COLON OPEN Parameter ( COMMA Parameter )* CLOSE
+# Parameter <- COMMERCIAL_AT ParameterName
+DefinitionIdentifier <- Identifier
 
 # Expression : 構文規則の本体
 Expression <- Selection / Sequence
@@ -88,7 +90,6 @@ RepeatCnt <- Number
 #   IdentifierCall : パラメータ付の規則呼び出し
 Primary   <- RegularExp
            / IdentifierCall
-           / Parameter
            / Identifier !LEFTARROW !COLON !SUB_LEFTARROW
            / MacroIdentifier !LEFTARROW !COLON !SUB_LEFTARROW
            / OPEN Expression CLOSE
@@ -158,7 +159,7 @@ Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) Spacing?
 # マクロ定義
 #    マクロ定義は、"_" で開始し、英大文字のみ使用可能とする。
 MacroIdentifier <- r"_[A-Z][A-Z0-9_]*" Spacing?
-ParameterName <- r"[a-zA-Z][a-zA-Z0-9_]*" Spacing?
+# ParameterName <- r"[a-zA-Z][a-zA-Z0-9_]*" Spacing?
 
 # リテラル
 # (追加構文)
@@ -195,9 +196,9 @@ CURL_OPEN <- '{'  Spacing?
 CURL_CLOSE <- '}' Spacing?
 COLON <- ':' Spacing?
 COMMA <- ',' Spacing?
-COMMERCIAL_AT <- '@'
-DOLLAR_SIGN <- '$'
-EQUAL <- '=' Spacing?
+# COMMERCIAL_AT <- '@'
+# DOLLAR_SIGN <- '$'
+# EQUAL <- '=' Spacing?
 REGPREFIX <- 'r'
 
 Spacing <- Space+

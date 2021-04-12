@@ -779,7 +779,7 @@ class SyntaxCheckFailedException(TacParserException):
         message = ""
         for s in self.messagelist:
             message += s + "\n"
-        return message
+        return "SyntaxCheckFailedException({})".format(repr(self.messagelist))
 
     def __str__(self) -> str:
         return self.__repr__()
