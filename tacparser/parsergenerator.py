@@ -231,7 +231,8 @@ class ParserGenerator(object):
             elif len(rmin) == 1 and len(rmax) == 1:
                 repstr = rmin[0].get_str(d) + "," + rmax[0].get_str(d)
             else:
-                raise Exception
+                errmsg = "RepeatCnt の値が正常に取得できませんでした。line : {} - column : {}".format(tree.linenum, tree.column)
+                raise SyntaxCheckFailedException([errmsg])
 
             s = "".join([self._travel_generate_file(cn, level + 10) for cn in tree.children])
             return "self._rpt(" + s + ", " + repstr + ")"
@@ -565,11 +566,11 @@ class ParserChecker(object):
 
         elif tree.type == "RegularExp":
             strreg = ParserGenerator._get_reg_value(tree)
-            reg_pattern = regex.compile(strreg)
+            reg_pattern = eval("regex.compile(" + strreg + ")")
             if reg_pattern.match(""):
-                setattr(tree, 'identifierlist', 1)
-            else:
                 setattr(tree, 'identifierlist', 0)
+            else:
+                setattr(tree, 'identifierlist', 1)
 
         elif tree.type == "Identifier":
             d = {"Spacing": ""}
@@ -588,7 +589,7 @@ class ParserChecker(object):
                               if hasattr(child_node, "identifierlist")]
             setattr(tree, 'identifierlist', identifierlist)
 
-        elif tree.type == "Andprefix":
+        elif tree.type == "AndPrefix":
             identifierlist = [child_node.identifierlist for child_node in tree.children
                               if hasattr(child_node, "identifierlist")]
             if len(identifierlist) == 1:

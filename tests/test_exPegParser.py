@@ -5,7 +5,7 @@ import unittest
 from unittest.case import expectedFailure
 
 from tacparser.expegparser import ExPegParser
-from tacparser.baseparser import reconstruct_tree
+from tacparser.baseparser import reconstruct_tree, preorder_travel
 from tacparser.exception import ParseException
 
 class TestExPegParser(unittest.TestCase):
@@ -62,17 +62,15 @@ class TestExPegParser(unittest.TestCase):
 
     def test_expegparser(self):
         # ExPegParser
-        curdir = self.path
-        filepath = os.path.join(curdir, "expeg_test.in")
+        filepath = os.path.join(self.path, "expeg_test.in")
 
-        parser = ExPegParser()
-        _, result = parser.parse_file(filepath, "utf-8")
+        _, result = self.parser.parse_file(filepath, "utf-8")
         end_line, end_column = result.get_end_linecolumn()
         self.assertEqual(end_line, 171)
         self.assertEqual(end_column, 1)
 
-        pathoutfile = os.path.join(curdir, "expeg_test_src.out")
-        pathoutfile_dist = os.path.join(curdir, "expeg_test_dist.out")
+        pathoutfile = os.path.join(self.path, "expeg_test_src.out")
+        pathoutfile_dist = os.path.join(self.path, "expeg_test_dist.out")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(result.print_tree())
@@ -80,12 +78,10 @@ class TestExPegParser(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
     def test_check_filenotfound(self):
-        curdir = self.path
-        filepath = os.path.join(curdir, "expeg_test_notfound.in")
+        filepath = os.path.join(self.path, "expeg_test_notfound.in")
 
-        parser = ExPegParser()
         with self.assertRaises(FileNotFoundError) as err:
-            parser.parse_file(filepath, "utf-8")
+            self.parser.parse_file(filepath, "utf-8")
 
         expstr = "No such file or directory"
         self.assertEqual(err.exception.args, (2,expstr))
@@ -107,20 +103,36 @@ class TestExPegParser(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
     
     def test_print_tree_pos(self):
-        curdir = self.path
-        filepath = os.path.join(curdir, "expeg_test.in")
+        filepath = os.path.join(self.path, "expeg_test.in")
+        _, result = self.parser.parse_file(filepath, "utf-8")
 
-        parser = ExPegParser()
-        _, result = parser.parse_file(filepath, "utf-8")
-
-        pathoutfile = os.path.join(curdir, "expeg_print_pos_src.out")
-        pathoutfile_dist = os.path.join(curdir, "expeg_print_pos_dist.out")
+        pathoutfile = os.path.join(self.path, "expeg_print_pos_src.out")
+        pathoutfile_dist = os.path.join(self.path, "expeg_print_pos_dist.out")
 
         node_list = ["Definition", "SubDefinition" "MacroDefinition", "Identifier"]
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(result.print_tree(node_list=node_list, detail_flg=True))
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+    
+    def test_preorder_travel(self):
+        filepath = os.path.join(self.path, "expeg_test.in")
+        _, result = self.parser.parse_file(filepath, "utf-8")
+        first_def = result.search_node("Definition")[0]
+
+        def preorder_test(_node, _list):
+            if _node.type == "Identifier":
+                _list.append(_node.get_str({"Spacing":""}))
+            elif _node.type == "QuestionSuffix":
+                _list.append("?")
+            elif _node.type == "PlusSuffix":
+                _list.append("+")
+        
+        ret_list = []
+        preorder_travel(first_def, preorder_test ,ret_list)
+
+        expected_str = "['Grammar', '?', 'Spacing', '+', 'PegComment', 'Definition', '_EOF']"
+        self.assertEqual(expected_str, repr(ret_list))
 
 
 class TestExPegParserReconstruct(unittest.TestCase):
@@ -176,6 +188,37 @@ class TestExPegParserReconstruct(unittest.TestCase):
         msg = err.exception.args[0]
         expect_msg = "termstr が未設定です"
         self.assertEqual(msg, expect_msg)
+
+
+class TestExPegParserReconstruct02(unittest.TestCase):
+
+    def setUp(self):
+        self.encoding = "utf-8"
+        self.parser = ExPegParser()
+        self.regdict = {}
+        self.path = os.path.normpath(os.path.join(os.path.dirname(__file__),
+                                             "./testFiles/test_expegparser"))
+
+        self.filepath = os.path.join(self.path, "expeg_test.in")
+        _, result = self.parser.parse_file(self.filepath, "utf-8")
+        self.typelist = ["ExPeg", "Definition", "DefinitionIdentifier", "DefinitionExpression"]
+        self.rep_dict = {
+            "Spacing" : " ",
+            "Definition" : "D"
+        }
+        self.rec_node = reconstruct_tree(result, self.typelist, self.rep_dict)
+
+
+    def test_reconstruct_tree01(self):
+
+        pathoutfile = os.path.join(self.path, "expeg_reconstruct02_src.out")
+        pathoutfile_dist = os.path.join(self.path, "expeg_reconstruct02_dist.out")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(self.rec_node.print_tree())
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
 
 
 if __name__ == '__main__':

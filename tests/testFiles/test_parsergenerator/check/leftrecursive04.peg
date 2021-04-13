@@ -1,0 +1,18 @@
+Foo <- Bar Baz Qux
+
+Bar <- Bar 'a'
+
+Baz <- Quux '0'
+
+Qux <-  Grault 'b'
+
+Quux <- Corge Baz
+Corge <- ''
+
+Grault <- Garply Waldo / Waldo
+Garply <- Waldo Fred / Fred
+Waldo <- Fred Plugh / Plugh
+Fred <- Plugh / Xyzzy
+Plugh <- Xyzzy / Thud
+Xyzzy <- Thud / Qux
+Thud <- Qux

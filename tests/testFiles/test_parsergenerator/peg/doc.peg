@@ -1,4 +1,5 @@
-Doc <- A+ A_B B+ B_C C_C C{3} r"\n" Reg _EOF
+Doc <- Root
+Root <- A+ A_B B+ B_C C_C C{3} r"\n" Reg EndOfFile &_EOF
 
 A   <- 'A':I &A
 A_B <- 'A':I &B
@@ -8,3 +9,6 @@ C_C <- &C &C C
 C   <- 'C':I
 
 Reg <- r"^Reg$":m + 
+Reg2 <- r"[a-z]*"
+AndPrefix <- &Root
+EndOfFile <- Reg2 

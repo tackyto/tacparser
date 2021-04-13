@@ -3,7 +3,7 @@ import sys
 import os
 import unittest
 
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from logging import config, getLogger
 
 import tacparser
@@ -73,6 +73,72 @@ class TestParserGenerator(unittest.TestCase):
         generator.generate_file("PegParser", outfilepath)
 
         self.assertTrue(filecmp.cmp(outfilepath, cmp_dist_filepath))
+
+
+    def test__travel_generate_file_err(self):
+        parser = ExPegParser(test_logger)
+        curdir = os.path.join(self.test_path, "peg")
+        filepath = os.path.join(curdir, "doc.peg")
+
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
+        flg, node = generator.parser.parse_file(filepath)
+        self.assertTrue(flg)
+
+        repeat_node = node.search_node("RepeatSuffix")[0]
+        # 子を強制削除
+        repeat_node.children = ()
+        with self.assertRaises(SyntaxCheckFailedException) as err:
+            generator._travel_generate_file(node)
+
+        msg = err.exception.args[0]
+        self.assertEqual(len(msg), 1)
+        expstr = "RepeatCnt の値が正常に取得できませんでした。line : 2 - column : 26"
+        self.assertEqual(msg[0], expstr)
+
+
+    def test_checker_check_left_recursion_err(self):
+        # ParserChecker :_check_left_recursion の左再帰検出エラー
+        parser = ExPegParser(test_logger)
+        curdir = os.path.join(self.test_path, "peg")
+        filepath = os.path.join(curdir, "doc.peg")
+
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
+        flg, node = generator.parser.parse_file(filepath)
+        self.assertTrue(flg)
+
+        checker = ParserChecker(node, test_logger)
+        checker._find_left_recursive_loop_list = MagicMock(return_value=["A"])
+        checker._eval_def = MagicMock(return_value=["A"])
+        with self.assertRaises(SyntaxCheckFailedException) as err:
+            checker.check_tree(node)
+
+        msg = err.exception.args[0]
+        self.assertEqual(len(msg), 2)
+        experr1 = '!Left Recursive Found! : A'
+        experr2 = "!Error : Can't found Left Recurcive! :"
+        self.assertEqual(msg[0], experr1)
+        self.assertTrue(msg[1].startswith(experr2))
+
+    def test_checker_find_left_recursive_loop_list_err(self):
+        # ParserChecker :_find_left_recursive_loop_list の検出エラー
+        parser = ExPegParser(test_logger)
+        curdir = os.path.join(self.test_path, "check")
+        filepath = os.path.join(curdir, "leftrecursive02.peg")
+
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
+        flg, node = generator.parser.parse_file(filepath)
+        self.assertTrue(flg)
+
+        checker = ParserChecker(node, test_logger)
+        # _search_unresolve_call() の不具合発生時
+        checker._search_unresolve_call = MagicMock(return_value=1)
+        with self.assertRaises(SyntaxCheckFailedException) as err:
+            checker.check_tree(node)
+
+        msg = err.exception.args[0]
+        self.assertEqual(len(msg), 1)
+        experr = "!Unexpected Error! @search_unresolve_call Baz: ['Quux', 1] -> 1"
+        self.assertEqual(msg[0], experr)
 
     def test_check_tree_duplicate(self):
         curdir = os.path.join(self.test_path, "check")
@@ -155,6 +221,32 @@ class TestParserGenerator(unittest.TestCase):
         expstr = "!Left Recursive Found! : " \
                  "Fred->Plugh->Xyzzy->Thud->Qux->Grault->Garply->Waldo->Fred"
         self.assertEqual(msg[2], expstr)
+
+    def test_check_left_recursive04(self):
+        curdir = os.path.join(self.test_path, "check")
+        filepath = os.path.join(curdir, "leftrecursive04.peg")
+
+        generator = ParserGenerator(filepath, "utf-8", test_logger)
+
+        with self.assertRaises(SyntaxCheckFailedException) as err:
+            generator.generate_file("Undefined01", "dummy.txt")
+
+        msg = err.exception.args[0]
+        self.assertEqual(len(msg), 5)
+        expstr = "!Left Recursive Found! : Bar->Bar"
+        self.assertEqual(msg[0], expstr)
+        expstr = "!Left Recursive Found! : Baz->Quux->Baz"
+        self.assertEqual(msg[1], expstr)
+        expstr = "!Left Recursive Found! : " \
+                 "Fred->Plugh->Xyzzy->Thud->Qux->Grault->Garply->Waldo->Fred"
+        self.assertEqual(msg[2], expstr)
+        expstr = "!Left Recursive Found! : " \
+                 "Garply->Waldo->Plugh->Xyzzy->Thud->Qux->Grault->Garply"
+        self.assertEqual(msg[3], expstr)
+        expstr = "!Left Recursive Found! : " \
+                 "Grault->Waldo->Plugh->Xyzzy->Thud->Qux->Grault"
+        self.assertEqual(msg[4], expstr)
+
 
     def test_check_filenotfound(self):
         curdir = os.path.join(self.test_path, "check")
