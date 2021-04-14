@@ -271,7 +271,7 @@ class Parser(object):
             node = FailureNode(s)
             node.set_position(self._reader, 0, self._reader.getmaxposition())
 
-            return flg, node
+            return False, node
 
     def __complete_tree(self, root:Node) -> None:
         """

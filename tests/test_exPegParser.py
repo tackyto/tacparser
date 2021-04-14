@@ -8,6 +8,36 @@ from tacparser.expegparser import ExPegParser
 from tacparser.baseparser import reconstruct_tree, preorder_travel
 from tacparser.exception import ParseException
 
+
+class TestExPegParserInit(unittest.TestCase):
+    def setUp(self):
+        self.encoding = "utf-8"
+        self.parser = ExPegParser()
+        self.regdict = {}
+        self.path = os.path.normpath(os.path.join(os.path.dirname(__file__),
+                                             "./testFiles/test_expegparser"))
+
+    def test_check_filenotfound(self):
+        filepath = os.path.join(self.path, "expeg_test_notfound.in")
+
+        with self.assertRaises(FileNotFoundError) as err:
+            self.parser.parse_file(filepath, "utf-8")
+
+        expstr = "No such file or directory"
+        self.assertEqual(err.exception.args, (2,expstr))
+
+
+    def test_parse_file_init(self):
+        filepath = os.path.join(self.path, "expeg_test.in")
+        with self.assertRaises(KeyError) as err:
+            self.parser.parse_file(filepath, "utf-8", "NotFound")
+
+        self.assertEqual(err.exception.args[0], "NotFound")
+        
+        
+
+        pass
+
 class TestExPegParser(unittest.TestCase):
     def setUp(self):
         self.encoding = "utf-8"
@@ -76,15 +106,6 @@ class TestExPegParser(unittest.TestCase):
             fout.write(result.print_tree())
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
-
-    def test_check_filenotfound(self):
-        filepath = os.path.join(self.path, "expeg_test_notfound.in")
-
-        with self.assertRaises(FileNotFoundError) as err:
-            self.parser.parse_file(filepath, "utf-8")
-
-        expstr = "No such file or directory"
-        self.assertEqual(err.exception.args, (2,expstr))
 
     def test_print_tree(self):
         curdir = self.path

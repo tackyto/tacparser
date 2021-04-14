@@ -314,6 +314,7 @@ class ReconstructedNode(NonTerminalNode):
         self.column = node.column
         self.end_linenum = node.end_linenum
         self.end_column = node.end_column
+        self._attribute = node._attribute
 
         self.termstr:str = ""
 
