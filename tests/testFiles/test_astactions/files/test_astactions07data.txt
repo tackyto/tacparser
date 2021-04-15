@@ -1,0 +1,43 @@
+"Test01" {
+    "FamilyName01" {
+        {name = "Aaaa Aaaa", age = 41, sex = Man, phone = 0123-4567-8901 }
+         {name = "Aaaa Bbbb", age = 42, sex = Female, phone = 012-34-8902 }
+    }
+
+
+
+
+
+    "FamilyName02" {
+          {name = "Bbbb Aaaa", age = 45, sex = Man, phone = 0123-4567-8901 }
+           {name = "Bbbb Bbbb", age = 44, sex = Female }
+    }
+ 
+ 
+
+
+
+
+    "FamilyName03" {
+            {name = "Cccc Aaaa", age = 45, sex = Man, phone = 0123-4567-8903}
+             {name = "Cccc Bbbb", age = 44, sex = Female }
+    }
+ 
+ 
+ 
+ 
+ 
+ 
+    "FamilyName04" {
+              {name = "Aaaa Aaaa", age = 81, sex = M, phone = 0123-4567-8904 }
+    }
+ 
+ 
+ 
+ 
+ 
+ 
+    "FamilyName05" {
+               {name = "Dddd Aaaa", age = 43, sex = Man, phone = 0123-4567-8905-1111 }
+    }
+}

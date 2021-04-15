@@ -74,8 +74,8 @@ Parent      <- >>LESS_THAN Conditions
 #            TypeA[foo !^ "bar"]           foo属性が "bar" で始まらない TypeA
 #            TypeA[foo !$ "bar"]           foo属性が "bar" で終わらない TypeA
 #            TypeA[foo !* "bar"]           foo属性が "bar" を含まない TypeA
-#            TypeA[foo = "bar" | piyo="hoge"]  foo属性が "bar" ,または piyo属性が "hoge" である TypeA
-#            TypeA[foo][0][piyo="hoge"]    foo属性を持つ TypeA で、最初に見つかったもので、かつpiyo属性が"hoge"であるもの
+#            TypeA[foo == "bar" | piyo=="hoge"]  foo属性が "bar" ,または piyo属性が "hoge" である TypeA
+#            TypeA[foo][0][piyo=="hoge"]    foo属性を持つ TypeA で、最初に見つかったもので、かつpiyo属性が"hoge"であるもの
 #
 #            処理：
 #                左結合で順に処理する
@@ -156,7 +156,7 @@ AttributeNotEndsWith   <- AttributeName >>NOT_ENDS_WITH AttributeValue
 AttributeNotContains   <- AttributeName >>NOT_CONTAINS AttributeValue
 AttributeSimple        <- AttributeName >>S?
 
-AttributeName <- r"[a-z_]+" 
+AttributeName <- r"[a-z_][a-z0-9_]*" >>S?
 
 STARTS_WITH     <- '^=' S?
 ENDS_WITH       <- '$=' S?
@@ -195,8 +195,8 @@ Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
 # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
 
 Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
-SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'"
-DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"'
+SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'" >>S?
+DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"' >>S?
 
 EmptyList <- '[]'
 

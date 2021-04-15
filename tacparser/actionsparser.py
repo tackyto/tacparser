@@ -503,11 +503,13 @@ class ActionsParser(Parser):
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
-    _reg_p_attributename0 = regex.compile("[a-z_]+", regex.M)
+    _reg_p_attributename0 = regex.compile("[a-z_][a-z0-9_]*", regex.M)
 
     def p_attributename(self):
-        # AttributeName <- r"[a-z_]+" 
-        return self._r(self._reg_p_attributename0)
+        # AttributeName <- r"[a-z_][a-z0-9_]*" >>S?
+        return self._seq(self._r(self._reg_p_attributename0),
+                         self._skip(self._opt(self._p(self.p_s, "S")))
+                         )
 
     def p_starts_with(self):
         # STARTS_WITH     <- '^=' S?
@@ -607,19 +609,21 @@ class ActionsParser(Parser):
     _reg_p_singlequotesliteral0 = regex.compile("(\\\\.|[^'\\\\])*", regex.M)
 
     def p_singlequotesliteral(self):
-        # SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'"
+        # SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'" >>S?
         return self._seq(self._skip(self._l("'")),
                          self._r(self._reg_p_singlequotesliteral0),
-                         self._skip(self._l("'"))
+                         self._skip(self._l("'")),
+                         self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
     _reg_p_doublequotesliteral0 = regex.compile('(\\\\.|[^"\\\\])*', regex.M)
 
     def p_doublequotesliteral(self):
-        # DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"'
+        # DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"' >>S?
         return self._seq(self._skip(self._l('"')),
                          self._r(self._reg_p_doublequotesliteral0),
-                         self._skip(self._l('"'))
+                         self._skip(self._l('"')),
+                         self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
     def p_emptylist(self):

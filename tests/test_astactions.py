@@ -14,7 +14,7 @@ from tests.testmodules import astactionstest
 config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
 test_logger = getLogger(__name__)
 
-class TestASTActions(unittest.TestCase):
+class TestASTActionsString(unittest.TestCase):
     test_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_astactions"))
 
     def setUp(self):
@@ -69,11 +69,25 @@ class TestASTActions(unittest.TestCase):
         self.apply_astactionstest_string(file_name, action_string)
 
 
-    def test_actions04file(self):
+    def test_actions05file(self):
         datafilename = "test_astactions05data.txt"
         actionfilename = "test_astactions05action.txt"
         self.apply_astactionstest_file(datafilename, actionfilename)
 
+    def test_actions06file(self):
+        datafilename = "test_astactions06data.txt"
+        actionfilename = "test_astactions06action.txt"
+        self.apply_astactionstest_file(datafilename, actionfilename)
+
+    def test_actions07file(self):
+        datafilename = "test_astactions07data.txt"
+        actionfilename = "test_astactions07action.txt"
+        self.apply_astactionstest_file(datafilename, actionfilename)
+
+    def test_actions08file(self):
+        datafilename = "test_astactions08data.txt"
+        actionfilename = "test_astactions08action.txt"
+        self.apply_astactionstest_file(datafilename, actionfilename)
 
     def test_actions_notfound(self):
         actionfilename = "test_astactions_notfound.txt"
@@ -84,7 +98,7 @@ class TestASTActions(unittest.TestCase):
 
 
     def apply_astactionstest_string(self, filename, action_string):
-        filepath = os.path.join(self.test_dir, filename)
+        filepath = os.path.join(self.test_dir, "strings", filename)
         parser = astactionstest.ASTActionsTest(test_logger)
         result, test_node = parser.parse_file(filepath)
         self.assertTrue(result)
@@ -93,8 +107,8 @@ class TestASTActions(unittest.TestCase):
         ast_actions.read_action(action_string)
         ast_actions.apply(test_node)
 
-        pathoutfile = os.path.join(self.test_dir, filename + ".out")
-        pathoutfile_dist = os.path.join(self.test_dir, filename + ".dist")
+        pathoutfile = os.path.join(self.test_dir, "strings", filename + ".out")
+        pathoutfile_dist = os.path.join(self.test_dir, "strings", filename + ".dist")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(test_node.print_tree(detail_flg=True))
@@ -103,8 +117,8 @@ class TestASTActions(unittest.TestCase):
 
 
     def apply_astactionstest_file(self, sourcefilename, actionfilename):
-        filepath = os.path.join(self.test_dir, sourcefilename)
-        actionfilepath = os.path.join(self.test_dir, actionfilename)
+        filepath = os.path.join(self.test_dir, "files", sourcefilename)
+        actionfilepath = os.path.join(self.test_dir, "files", actionfilename)
         parser = astactionstest.ASTActionsTest(test_logger)
         result, test_node = parser.parse_file(filepath)
         self.assertTrue(result)
@@ -113,13 +127,15 @@ class TestASTActions(unittest.TestCase):
         ast_actions.read_file(actionfilepath)
         ast_actions.apply(test_node)
 
-        pathoutfile = os.path.join(self.test_dir, sourcefilename + ".out")
-        pathoutfile_dist = os.path.join(self.test_dir, sourcefilename + ".dist")
+        pathoutfile = os.path.join(self.test_dir, "files", sourcefilename + ".out")
+        pathoutfile_dist = os.path.join(self.test_dir, "files", sourcefilename + ".dist")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(test_node.print_tree(detail_flg=True))
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+
 
 def generate():
     path = os.path.normpath(os.path.join(os.path.dirname(__file__),

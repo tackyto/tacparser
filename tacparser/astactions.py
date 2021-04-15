@@ -356,7 +356,7 @@ class AstActions(object):
             match_type_node = attrlim_node.children[0]
             attrname = match_type_node.get_childnode("AttributeName")[0].get_str()
             attrval = ""
-            if match_type_node != "AttributeSimple":
+            if match_type_node.type != "AttributeSimple":
                 attrval = match_type_node.get_childnode("AttributeValue")[0].get_str()
 
             match:Callable[[NonTerminalNode], bool] = None
