@@ -75,18 +75,14 @@ class ActionsParser(Parser):
                          "Literal": self.p_literal,
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
                          "DoubleQuotesLiteral": self.p_doublequotesliteral,
-                         "EmptyList": self.p_emptylist,
                          "ThisString": self.p_thisstring,
                          "TargetString": self.p_targetstring,
                          "ThisValue": self.p_thisvalue,
                          "TargetValue": self.p_targetvalue,
                          "ParameterName": self.p_parametername,
                          "THIS": self.p_this,
-                         "APPEND": self.p_append,
                          "S": self.p_s,
                          "EndOfLine": self.p_endofline,
-                         "OPEN": self.p_open,
-                         "CLOSE": self.p_close,
                          "CURL_OPEN": self.p_curl_open,
                          "CURL_CLOSE": self.p_curl_close,
                          "BRAKET_OPEN": self.p_braket_open,
@@ -626,10 +622,6 @@ class ActionsParser(Parser):
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
-    def p_emptylist(self):
-        # EmptyList <- '[]'
-        return self._l('[]')
-
     def p_thisstring(self):
         # ThisString <- >>THIS >>DOT >>'get_str()' >>S?
         return self._seq(self._skip(self._p(self.p_this, "THIS")),
@@ -674,10 +666,6 @@ class ActionsParser(Parser):
                          self._opt(self._p(self.p_s, "S"))
                          )
 
-    def p_append(self):
-        # APPEND <- 'append'
-        return self._l('append')
-
     _reg_p_s0 = regex.compile("\\t", regex.M)
 
     def p_s(self):
@@ -696,19 +684,9 @@ class ActionsParser(Parser):
         # EndOfLine <- r"\r\n|\n|\r"
         return self._r(self._reg_p_endofline0)
 
-    def p_open(self):
-        # OPEN <- '(' S?
-        return self._seq(self._l('('),
-                         self._opt(self._p(self.p_s, "S"))
-                         )
-
-    def p_close(self):
-        # CLOSE <- ')' S?
-        return self._seq(self._l(')'),
-                         self._opt(self._p(self.p_s, "S"))
-                         )
-
     def p_curl_open(self):
+        # # OPEN <- '(' S?
+        # # CLOSE <- ')' S?
         # CURL_OPEN  <- '{'  S?
         return self._seq(self._l('{'),
                          self._opt(self._p(self.p_s, "S"))

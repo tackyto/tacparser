@@ -198,7 +198,7 @@ Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
 SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'" >>S?
 DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"' >>S?
 
-EmptyList <- '[]'
+# EmptyList <- '[]'
 
 ThisString <- >>THIS >>DOT >>'get_str()' >>S?
 TargetString <- >>DOLLAR >>DOT >>'get_str()' >>S?
@@ -207,7 +207,7 @@ TargetValue <- >>DOLLAR >>DOT ParameterName
 ParameterName <- r"[a-z][a-z_]*" >>S?
 
 THIS <- 'this' S?
-APPEND <- 'append'
+# APPEND <- 'append'
 
 # ----------------------------------------
 # Terminal
@@ -215,8 +215,8 @@ APPEND <- 'append'
 S <- ( ' ' / r"\t" / EndOfLine )+
 EndOfLine <- r"\r\n|\n|\r"
 
-OPEN <- '(' S?
-CLOSE <- ')' S?
+# OPEN <- '(' S?
+# CLOSE <- ')' S?
 CURL_OPEN  <- '{'  S?
 CURL_CLOSE <- '}' S?
 BRAKET_OPEN  <-  '[' S?

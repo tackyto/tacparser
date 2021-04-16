@@ -2,17 +2,231 @@ import filecmp
 import os
 import importlib
 import unittest
+from unittest.mock import Mock
 
 from logging import config, getLogger
 
 from tacparser.actionsparser import ActionsParser
 from tacparser.astactions import AstActions, ActionException
+from tacparser.node import NonTerminalNode, TerminalNode
 from tacparser.parsergenerator import ParserGenerator
 
 from tests.testmodules import astactionstest
 
 config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
 test_logger = getLogger(__name__)
+
+
+class TestASTActionsNode(unittest.TestCase):
+    def setUp(self):
+        self.actions= AstActions(test_logger)
+
+    def test_get_selector_func(self):
+        child_nodes = (NonTerminalNode("Unknown", ()),)
+        node = NonTerminalNode("Selector", child_nodes)
+
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_selector_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "Selector の子ノードに想定していないノード\"Unknown\"が存在します。"
+        self.assertEqual(msg, expstr)
+
+    
+    def test_get_LineColumnLimitation_err01(self):
+        child_nodes =   (   NonTerminalNode("Identifier", (
+                                TerminalNode("attrname"), 
+                            )), 
+                            NonTerminalNode("OrCondition", (
+                                NonTerminalNode("SingleCondition", (
+                                    NonTerminalNode("LineColumnLimitation", (
+                                        NonTerminalNode("GraterLimitation", (
+                                            NonTerminalNode("LineOrColumn", 
+                                                ( NonTerminalNode("Unknown", () ), )
+                                            ), 
+                                            NonTerminalNode("PositiveNumber", 
+                                                ( TerminalNode("12"), )
+                                            )
+                                        )),
+                                    )),
+                                )), 
+                            ))
+                        )
+        node = NonTerminalNode("Conditions", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_Conditions(node)
+
+        msg = err.exception.args[0]
+        expstr = "LineColumnLimitation の孫ノードに想定していないノード\"Unknown\"が存在します。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_LineColumnLimitation_err02(self):
+        child_nodes =   (   NonTerminalNode("Identifier", (
+                                TerminalNode("attrname"), 
+                            )), 
+                            NonTerminalNode("OrCondition", (
+                                NonTerminalNode("SingleCondition", (
+                                    NonTerminalNode("LineColumnLimitation", (
+                                        NonTerminalNode("Unknown", (
+                                            NonTerminalNode("LineOrColumn", 
+                                                ( NonTerminalNode("StartLine", () ), )
+                                            ), 
+                                            NonTerminalNode("PositiveNumber", 
+                                                ( TerminalNode("12"), )
+                                            )
+                                        )),
+                                    )),
+                                )), 
+                            ))
+                        )
+        node = NonTerminalNode("Conditions", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_Conditions(node)
+
+        msg = err.exception.args[0]
+        expstr = "LineColumnLimitation の子ノードに想定していないノード\"Unknown\"が存在します。"
+        self.assertEqual(msg, expstr)
+
+
+    def test_get_AttributeLimitation_err01(self):
+        child_nodes =   (   NonTerminalNode("Identifier", (
+                                TerminalNode("attrname"), 
+                            )), 
+                            NonTerminalNode("OrCondition", (
+                                NonTerminalNode("SingleCondition", (
+                                    NonTerminalNode("AttributeLimitation", (
+                                        NonTerminalNode("AttributeStartsWith", (
+                                            NonTerminalNode("AttributeName", 
+                                                (TerminalNode("name"), )
+                                            ),
+                                            NonTerminalNode("Unknown", 
+                                                (TerminalNode("12"), )
+                                            )
+                                        )),
+                                    )),
+                                )), 
+                            ))
+                        )
+        node = NonTerminalNode("Conditions", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_Conditions(node)
+
+        msg = err.exception.args[0]
+        expstr = "AttributeValue が指定されていません。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_AttributeLimitation_err02(self):
+        child_nodes =   (   NonTerminalNode("Identifier", (
+                                TerminalNode("attrname"), 
+                            )), 
+                            NonTerminalNode("OrCondition", (
+                                NonTerminalNode("SingleCondition", (
+                                    NonTerminalNode("AttributeLimitation", (
+                                        NonTerminalNode("Unknown", (
+                                            NonTerminalNode("AttributeName", 
+                                                (TerminalNode("name"), )
+                                            ),
+                                            NonTerminalNode("AttributeValue", 
+                                                (TerminalNode("12"), )
+                                            )
+                                        )),
+                                    )),
+                                )), 
+                            ))
+                        )
+        node = NonTerminalNode("Conditions", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_Conditions(node)
+
+        msg = err.exception.args[0]
+        expstr = "AttributeLimitation の子ノード に想定していないノード\"Unknown\"が存在します。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_Conditions_err01(self):
+        child_nodes =   (   NonTerminalNode("Identifier", (
+                                TerminalNode("attrname"), 
+                            )), 
+                            NonTerminalNode("OrCondition", (
+                                NonTerminalNode("SingleCondition", (
+                                    NonTerminalNode("Unknown", ()),
+                                )),
+                            ))
+                        )
+        node = NonTerminalNode("Conditions", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_Conditions(node)
+
+        msg = err.exception.args[0]
+        expstr = "SingleCondition の子ノードに想定していないノード\"Unknown\"が存在します。"
+        self.assertEqual(msg, expstr)
+
+
+    def test_get_Conditions_err02(self):
+        child_nodes =   (   NonTerminalNode("Identifier", (
+                                TerminalNode("attrname"), 
+                            )), 
+                            NonTerminalNode("OrCondition", (
+                                NonTerminalNode("SingleCondition", (
+                                    NonTerminalNode("Slice", (
+                                        NonTerminalNode("Unknown", ( )),
+                                    )),
+                                )), 
+                            ))
+                        )
+        node = NonTerminalNode("Conditions", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_Conditions(node)
+
+        msg = err.exception.args[0]
+        expstr = "SingleCondition がConditionメソッドを作成できませんでした。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_action_func_err1(self):
+        child_nodes = ( NonTerminalNode("Unknown", ()) ,)
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "想定しない Action が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_action_func_err2(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Value", (
+                                    NonTerminalNode("Unknown", (
+                                    )),
+                                )),
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "Valueの子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_action_func_err3(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Value", (
+                                    NonTerminalNode("ThisString", (
+                                    )),
+                                )),
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("Unknown", (
+                                    )),
+                                ))
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "Variableの子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
 
 class TestASTActionsString(unittest.TestCase):
     test_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_astactions"))
@@ -87,6 +301,11 @@ class TestASTActionsString(unittest.TestCase):
     def test_actions08file(self):
         datafilename = "test_astactions08data.txt"
         actionfilename = "test_astactions08action.txt"
+        self.apply_astactionstest_file(datafilename, actionfilename)
+
+    def test_actions09file(self):
+        datafilename = "test_astactions09data.txt"
+        actionfilename = "test_astactions09action.txt"
         self.apply_astactionstest_file(datafilename, actionfilename)
 
     def test_actions_notfound(self):

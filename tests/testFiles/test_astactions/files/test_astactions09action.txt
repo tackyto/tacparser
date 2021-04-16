@@ -1,0 +1,1 @@
+Name < Person {$.name = this.get_str();} // name 属性を設定

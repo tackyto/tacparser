@@ -117,8 +117,9 @@ class AstActions(object):
             if f:
                 selector_funcs.append(f)
             else:
-                # TODO メッセージを分かりやすく
-                raise ActionException("Selector が間違っています。")
+                raise ActionException(
+                        "Selector の子ノードに想定していないノード\"{}\"が存在します。"
+                        .format(func_node.type))
 
         def selector_func(_n:NonTerminalNode, 
                 selector_funcs:list[SelectorFuncType]):
@@ -324,8 +325,9 @@ class AstActions(object):
             elif lineorcolumn_node.type == "EndColumn":
                 lmd_lc = lambda n: n.end_column
             else:
-                raise ActionException("Condition が間違っています。")
-
+                raise ActionException(
+                        "LineColumnLimitation の孫ノードに想定していないノード\"{}\"が存在します。"
+                        .format(lineorcolumn_node.type))
 
             li_lim_num:Callable[[NonTerminalNode],bool] = None
             if li_lim_node.type == "GraterLimitation":
@@ -339,7 +341,9 @@ class AstActions(object):
             elif li_lim_node.type == "EqualLimitation":
                 li_lim_num = lambda n: lmd_lc(n) == lc_num
             else:
-                raise ActionException("Condition が間違っています。")
+                raise ActionException(
+                        "LineColumnLimitation の子ノードに想定していないノード\"{}\"が存在します。"
+                        .format(li_lim_node.type))
             
             return lambda node_list: list(filter(li_lim_num, node_list))
 
@@ -357,7 +361,11 @@ class AstActions(object):
             attrname = match_type_node.get_childnode("AttributeName")[0].get_str()
             attrval = ""
             if match_type_node.type != "AttributeSimple":
-                attrval = match_type_node.get_childnode("AttributeValue")[0].get_str()
+                attrval_nodes = match_type_node.get_childnode("AttributeValue")
+                if len(attrval_nodes) > 0:
+                    attrval = attrval_nodes[0].get_str()
+                else:
+                    raise ActionException("AttributeValue が指定されていません。")
 
             match:Callable[[NonTerminalNode], bool] = None
             if   match_type_node.type == "AttributeEqual":
@@ -378,8 +386,8 @@ class AstActions(object):
                 match = lambda n: attrval not in n.get_attr(attrname)
             elif match_type_node.type == "AttributeSimple":
                 match = lambda n: n.get_attr(attrname) is not None
-            else: raise ActionException("Condition が間違っています。")
-
+            else: raise ActionException("AttributeLimitation の子ノード に想定していないノード\"{}\"が存在します。"
+                            .format(match_type_node.type))
             return lambda node_list: list(filter(match, node_list))
 
         type_name = conditions_node.get_childnode("Identifier")[0].get_str()
@@ -389,6 +397,7 @@ class AstActions(object):
             condition_funcs = []
             for singlecondition in orcondition.get_childnode("SingleCondition"):
                 condition = singlecondition.children[0]
+                f = None
                 if condition.type == "Slice":
                     f = _get_Slice_Condition(condition)
 
@@ -399,13 +408,15 @@ class AstActions(object):
                     f = _get_AttributeLimitation(condition)
 
                 else:
-                    raise ActionException("想定していない型が指定されました。")
+                    raise ActionException(
+                            "SingleCondition の子ノードに想定していないノード\"{}\"が存在します。"
+                            .format(condition.type))
 
                 if f:
                     condition_funcs.append(f)
                 else:
                     # TODO メッセージを分かりやすく
-                    raise ActionException("Condition が間違っています。")
+                    raise ActionException("SingleCondition がConditionメソッドを作成できませんでした。")
             orcondition_funcs.append(condition_funcs)
 
         return type_name, orcondition_funcs
@@ -415,14 +426,14 @@ class AstActions(object):
         # 代入式を実行する関数を返す
         # Action <- Substitution 
 
-        def get_action_substitution(node:NonTerminalNode) -> ActionFuncType:
+        def get_action_substitution(_node:NonTerminalNode) -> ActionFuncType:
             # Substitution <- Variable >>EQUAL Value
             # Variable <- ThisValue / TargetValue
-            # Value <- Literal / ThisValue / TargetValue
+            # Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
             # ThisValue <- >>THIS >>DOT ParameterName
             # TargetValue <- >>DOLLAR >>DOT ParameterName
 
-            val_n = node.get_childnode("Value")[0]
+            val_n = _node.get_childnode("Value")[0]
             val_target = val_n.children[0]
             get_val_f:Callable[[NonTerminalNode, NonTerminalNode], str] = None
             if val_target.type =="ThisString":
@@ -439,9 +450,11 @@ class AstActions(object):
                 val = val_target.get_str()
                 get_val_f = lambda p, n: val
             else:
-                raise ActionException("想定しない Variable が指定されました。")
+                raise ActionException(
+                    "Valuenの子に想定しないノード\"{}\"が指定されました。"
+                    .format(val_target.type))
 
-            var_n = node.get_childnode("Variable")[0]
+            var_n = _node.get_childnode("Variable")[0]
             var_target = var_n.children[0]
             get_subst_f:Callable[[NonTerminalNode, NonTerminalNode], None] = None
             if var_target.type =="ThisValue":
@@ -451,7 +464,9 @@ class AstActions(object):
                 var_param = var_target.get_childnode("ParameterName")[0].get_str()
                 get_subst_f = lambda p, n: n.set_attr(var_param, get_val_f(p,n))
             else:
-                raise ActionException("想定しない Variable が指定されました。")
+                raise ActionException(
+                    "Variableの子に想定しないノード\"{}\"が指定されました。"
+                    .format(val_target.type))
             
             return lambda p, n: get_subst_f(p,n)
 
