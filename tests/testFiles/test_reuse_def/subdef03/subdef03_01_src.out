@@ -1,75 +1,13 @@
 SubDef03 : (Ln 1, Col 0)
-    Line : (Ln 1, Col 0)
-        Word : (Ln 1, Col 0)
-            AlphaWord : (Ln 1, Col 0)
+    OddLine : (Ln 1, Col 0)
+        Second : (Ln 1, Col 0)
+        Content : (Ln 1, Col 0)
+            Second : (Ln 1, Col 0)
+            AnyWord : (Ln 1, Col 0)
                 @Tarminal : (Ln 1, Col 0) "Word"
-        Spacing : (Ln 1, Col 4)
-            @Tarminal : (Ln 1, Col 4) " "
-        Word : (Ln 1, Col 5)
-            AlphaWord : (Ln 1, Col 5)
-                @Tarminal : (Ln 1, Col 5) "Word"
-        Spacing : (Ln 1, Col 9)
-            @Tarminal : (Ln 1, Col 9) " "
-        Word : (Ln 1, Col 10)
-            AlphaWord : (Ln 1, Col 10)
-                @Tarminal : (Ln 1, Col 10) "Word"
-        Spacing : (Ln 1, Col 14)
-            @Tarminal : (Ln 1, Col 14) " "
-        Word : (Ln 1, Col 15)
-            Number : (Ln 1, Col 15)
-                @Tarminal : (Ln 1, Col 15) "12345"
-        Spacing : (Ln 1, Col 20)
-            @Tarminal : (Ln 1, Col 20) " "
-        Word : (Ln 1, Col 21)
-            Number : (Ln 1, Col 21)
-                @Tarminal : (Ln 1, Col 21) "98765"
-    Line : (Ln 2, Col 0)
-        FirstSpace : (Ln 2, Col 0)
-            @Tarminal : (Ln 2, Col 0) "     "
-        Word : (Ln 2, Col 5)
-            AlphaWord : (Ln 2, Col 5)
-                @Tarminal : (Ln 2, Col 5) "Head"
-        Spacing : (Ln 2, Col 9)
-            @Tarminal : (Ln 2, Col 9) " "
-        Word : (Ln 2, Col 10)
-            AlphaWord : (Ln 2, Col 10)
-                @Tarminal : (Ln 2, Col 10) "Spacing"
-        Spacing : (Ln 2, Col 17)
-            @Tarminal : (Ln 2, Col 17) " "
-            @Tarminal : (Ln 2, Col 18) " "
-            @Tarminal : (Ln 2, Col 19) " "
-            @Tarminal : (Ln 2, Col 20) " "
-            @Tarminal : (Ln 2, Col 21) " "
-            @Tarminal : (Ln 2, Col 22) " "
-    Line : (Ln 3, Col 0)
-        EmptyLine : (Ln 3, Col 0)
-    Line : (Ln 4, Col 0)
-        EmptyLine : (Ln 4, Col 0)
-    Line : (Ln 5, Col 0)
-        Word : (Ln 5, Col 0)
-            Number : (Ln 5, Col 0)
-                @Tarminal : (Ln 5, Col 0) "12345"
-    Line : (Ln 6, Col 0)
-        EmptyLine : (Ln 6, Col 0)
-    Line : (Ln 7, Col 0)
-        Word : (Ln 7, Col 0)
-            AlphaWord : (Ln 7, Col 0)
-                @Tarminal : (Ln 7, Col 0) "Word"
-        Spacing : (Ln 7, Col 4)
-            @Tarminal : (Ln 7, Col 4) " "
-        Word : (Ln 7, Col 5)
-            UnderScore : (Ln 7, Col 5)
-                @Tarminal : (Ln 7, Col 5) "_"
-            Line : (Ln 7, Col 6)
-        Spacing : (Ln 7, Col 6)
-            @Tarminal : (Ln 7, Col 6) " "
-            @Tarminal : (Ln 7, Col 7) " "
-            @Tarminal : (Ln 7, Col 8) " "
-        Word : (Ln 7, Col 9)
-            Number : (Ln 7, Col 9)
-                @Tarminal : (Ln 7, Col 9) "12345"
-        Spacing : (Ln 7, Col 14)
-            @Tarminal : (Ln 7, Col 14) " "
-        Word : (Ln 7, Col 15)
-            AlphaWord : (Ln 7, Col 15)
-                @Tarminal : (Ln 7, Col 15) "test"
+            OddLine : (Ln 1, Col 5)
+                First : (Ln 1, Col 5)
+                Content : (Ln 1, Col 5)
+                    First : (Ln 1, Col 5)
+                    Any : (Ln 1, Col 5)
+                        @Tarminal : (Ln 1, Col 5) "Word Word Word"
