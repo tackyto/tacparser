@@ -27,43 +27,34 @@ class Parser(object):
         ----------
         logger : logging.Logger
         """
+        self.__logger = logger  #: ロガークラス
+        self._reader = None     #: 文字列読み込み用 Reader クラス 
+        
+        self._nodenum = 0       #: ノードの番号
+        self._cache = {}        #: メモ化に使用する辞書
+        self.toptypename = ""   #: ルートの規則名（大抵、言語名）
 
-        #: ロガークラス
-        self.__logger = logger
-        #: 文字列読み込み用 Reader クラス 
-        self._reader = None 
-        #: ノードの番号
-        self._nodenum = 0
-        #: メモ化に使用する辞書
-        self._cache = {}
+        self._parser = None     #: 構文解析を実行するパーサー
+        self._result = False    #: 実行結果、解析成功時True になる
+        self._tree = None       #: 構文解析木、解析成功時はルートノード
 
-        #: ルートの規則名（大抵、言語名）
-        self.toptypename = ""
+        self.def_dict = {}          #: 構文の辞書
+        self.def_bk_dict = {}       #: サブ構文の辞書
+        self.def_subtypename = []   #: サブ構文のタイプ名
 
-        #: 構文解析を実行するパーサー
-        self._parser = None
-        #: 実行結果、実行に成功した場合、True になる
-        self._result = False
-        #: 構文解析木、実行に成功した場合、ルートノード
-        self._tree = None
+        self.type_stack = []        # debug用 type stack
 
-        #: 構文の辞書
-        self.def_dict = {}
-        #: サブ構文の辞書
-        self.def_bk_dict = {}
-        #: サブ構文のタイプ名
-        self.def_subtypename = []
 
     def __initialize(self) -> None:
-        # ノードの番号
-        self._nodenum = 0
-        # メモ化に使用する辞書
-        self._cache = {}
+        self._nodenum = 0       # ノードの番号
+        self._cache = {}        # メモ化に使用する辞書
+        self.type_stack = []    # debug用 type stack
 
         # サブ構文を持つ関数の辞書から、関数を初期化
         if hasattr(self, "def_bk_dict"):
             for def_key, def_func in self.def_bk_dict.items():
                 setattr(self, def_key, def_func)
+
 
     def get_tree(self) -> "Node":
         """
@@ -96,8 +87,6 @@ class Parser(object):
         tree : None | Node
             構文解析結果のルートノード
         """
-        self.__initialize()
-
         self.__logger.debug("parse_file() called. filepath=\"{0}\",encoding={1},typename={2}, class={3}"
                             .format(filepath, encoding, typename, self.__class__))
         try:
@@ -141,8 +130,8 @@ class Parser(object):
                         self.__logger.error("Subparsing failed. rule:{0}, msg:{1}".format(subdef_name, msg))
 
         self.__logger.info("Parsing ended. \"{0}\"".format(filepath))
-
         return self._result, self._tree
+
 
     def parse_string(self, string:str, rootexp:Callable, typename:str="") -> tuple[bool, "Node"]:
         """
@@ -164,8 +153,6 @@ class Parser(object):
         tree : None | Node
             構文解析結果のルートノード
         """
-        self.__initialize()
-
         self._reader = StringReader(string)
 
         if not typename:
@@ -194,7 +181,6 @@ class Parser(object):
         result_list : list[Node]
             結果ノードのリスト
         """
-        self.__initialize()
         nodelist = self._tree.search_node(subdef_name)
 
         func = getattr(self, "s_" + subdef_name.lower())
@@ -249,15 +235,15 @@ class Parser(object):
         tree : None | Node
             構文解析結果のルートノード
         """
+        self.__initialize()
+        func = f()      # 起点の関数を取得
+        startpos = self._reader.get_position()  # 開始位置
 
-        # 起点の関数を取得
-        func = f()
+        stacktype = typename if end_pos is None else "Sub:" + typename
+        self.type_stack.append(stacktype)
 
-        # 開始位置
-        startpos = self._reader.get_position()
-
-        # 構文解析の実行
-        flg, ret = func()
+        flg, ret = func()       # 構文解析の実行
+        self.type_stack.pop()
         if flg and (end_pos is None or end_pos == self._reader.getmaxposition()):
             endpos = self._reader.get_position()
             node = NonTerminalNode(typename, ret)
@@ -889,11 +875,11 @@ class Parser(object):
                 self._reader.set_position(rr[0].endpos)
             return cache_result
 
-        # 解析規則を表現する関数 funcを取得
-        func = def_function()
-        # 実行して結果ノードを取得する
+        func = def_function()   # 解析規則を表現する関数 funcを取得
+        
+        self.type_stack.append(typename)
         try:
-            flg, ret = func()
+            flg, ret = func()   # 実行して結果ノードを取得する
         except RecursionError:
             self.__logger.critical("<- {0}".format(typename))
             raise
@@ -905,8 +891,10 @@ class Parser(object):
             node.set_position(self._reader, startpos, endpos)
             self._nodenum += 1
             self._cache[(typename, startpos)] = True, (node,)
+            self.type_stack.pop()
             return True, (node,)
 
+        self.type_stack.pop()
         self._cache[(typename, startpos)] = False, ()
         return False, ()
 

@@ -26,8 +26,33 @@ ConditionFuncType = Callable [ [list[NonTerminalNode]],
 class AstActions(object): 
     """
     Action定義文字列の読み込みと、アクションを適用するクラス
+
+    Attributes
+    ----------
+    parser : ActionsParser
+        ASTActions 文字列のパーサ
+    actions : list[_ActionsDefinition]
+        action定義のリスト
+
+    Examples
+    ----------
+    >>> parser = SomeParser(logger)
+    >>> actions = AstActions(logger)
+    >>> flg, node = parser.parse_file(filepath) # 構文解析の実行
+    >>> actions.read_file(actionsfilepath, "utf-8") # ファイルからアクションの読み込み
+    >>> # actions.read_action(actions_str)      # 文字列から読み込む場合
+    >>> actions.apply(node)                     # node に対してアクションを実行
+
     """
     def __init__(self, logger=default_logger) -> None:
+        """
+        AstActions の初期化
+
+        Parameters
+        ----------
+        logger : Logger
+            ロガー
+        """
         self.logger:Logger = logger
         self.parser:ActionsParser = ActionsParser(self.logger)
         self.actions:list[_ActionDefinition] = []
@@ -81,6 +106,14 @@ class AstActions(object):
         return ret
 
     def apply(self, node:Node) -> Node:
+        """
+        Action定義文字列を読み込む
+
+        Parameters
+        ----------
+        node : Node
+            読み込んだアクションを node に適用します。
+        """
         for actiondef in self.actions:
             actiondef.apply_actions(node)
         return node
@@ -451,7 +484,7 @@ class AstActions(object):
                 get_val_f = lambda p, n: val
             else:
                 raise ActionException(
-                    "Valuenの子に想定しないノード\"{}\"が指定されました。"
+                    "Valueの子に想定しないノード\"{}\"が指定されました。"
                     .format(val_target.type))
 
             var_n = _node.get_childnode("Variable")[0]
@@ -466,7 +499,7 @@ class AstActions(object):
             else:
                 raise ActionException(
                     "Variableの子に想定しないノード\"{}\"が指定されました。"
-                    .format(val_target.type))
+                    .format(var_target.type))
             
             return lambda p, n: get_subst_f(p,n)
 

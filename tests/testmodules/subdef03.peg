@@ -1,18 +1,22 @@
-SubDef03 <- ( Line >>LineTerminator? )+
-Line <- (Word / Spacing)*
-Line <-- EmptyLine / FirstSpace? (Word Spacing?)+ 
+# 最初の10行は Line を作成しない。11行目以降はLineを作成する
+# SubDef03 <- ( OddLine EvenLine? )*
+SubDef03 <- OddLine*
 
-Word <- r"[A-Za-z0-9_]+"
-Word <-- Number / AlphaWord / UnderScore Line
+OddLine <-  First Content >>LineTerminator?
+OddLine <-- Second Content >>LineTerminator?
+
+# EvenLine <- First Content >>LineTerminator
+
+First  <- &r"."
+Second <- &r"."
+
+Content <-  First Any
+Content <-- Second AnyWord OddLine?
+
+Any <- r"[a-zA-Z0-9_ ]+"
+AnyWord <- r"[a-zA-Z0-9_]*" >>Spacing?
 
 Spacing <- " "+
-
 LineTerminator <- r"\r\n|\r|\n"
 
-# -----------------
 
-EmptyLine <- !r"."
-FirstSpace <- r" +"
-Number <- r"[0-9]+"
-AlphaWord <- r"[A-Za-z]+"
-UnderScore <- "_"
