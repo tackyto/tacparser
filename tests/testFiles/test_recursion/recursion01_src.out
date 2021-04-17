@@ -1,5 +1,5 @@
-0 : Recursion : (Ln 1, Col 0)
-    2 : ALoop : (Ln 1, Col 0)
-        0 : A : (Ln 1, Col 0)
+Recursion : (Ln 1, Col 0)
+    ALoop : (Ln 1, Col 0)
+        A : (Ln 1, Col 0)
             @Tarminal : (Ln 1, Col 0) "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    3 : _EOF : (Ln 1, Col 71)
+    _EOF : (Ln 1, Col 71)

@@ -51,7 +51,7 @@ class ParserGenerator(object):
 
         if not os.path.isfile(pegfilepath):
             err_msg = "File %s not found" % pegfilepath
-            self.__logger.fatal(err_msg)
+            self.__logger.critical(err_msg)
             raise ParseException(err_msg)
         self.parser = ExPegParser(logger)
 
@@ -84,7 +84,7 @@ class ParserGenerator(object):
         checker = ParserChecker(tree, self.__logger)
         checker.check_tree(tree)
 
-        strparser = self.travel_generate_file(tree)
+        strparser = self._travel_generate_file(tree)
 
         if not parsername:
             parsername = self.rootname + "Parser"
@@ -128,7 +128,7 @@ class ParserGenerator(object):
         self.__logger.info("Generating Parser ended successfully.")
         return impstr + preparserstr + str_subdef_list + strparser
 
-    def travel_generate_file(self, tree:NonTerminalNode, level:int=0) -> str:
+    def _travel_generate_file(self, tree:NonTerminalNode, level:int=0) -> str:
         """
         Node 探索し generator を作成する
 
@@ -147,7 +147,7 @@ class ParserGenerator(object):
         if tree.type == "ExPeg":
             s = ""
             for cn in tree.children:
-                s += self.travel_generate_file(cn, 4)
+                s += self._travel_generate_file(cn, 4)
             return s
 
         elif tree.type == "RootDefinition":
@@ -158,30 +158,30 @@ class ParserGenerator(object):
             defname = tree.get_childnode("DefinitionIdentifier")[0].get_str({'Spacing': ""})
             def_funcname = "p_" + defname.lower()
             self.__definition.append(defname)
-            return self.get_defstring(tree, def_funcname, level)
+            return self._get_defstring(tree, def_funcname, level)
 
         elif tree.type == "MacroDefinition":
             defname = tree.get_childnode("MacroIdentifier")[0].get_str({'Spacing': ""})
             def_funcname = "t_" + defname.lower()
-            return self.get_defstring(tree, def_funcname, level)
+            return self._get_defstring(tree, def_funcname, level)
 
         elif tree.type == "SubDefinition":
             basename = tree.get_childnode("DefinitionIdentifier")[0].get_str({'Spacing': ""})
             def_funcname = "s_" + basename.lower()
-            defstring = self.get_defstring(tree, def_funcname, level)
+            defstring = self._get_defstring(tree, def_funcname, level)
 
             self.__sub_definition.append(basename)
             return defstring
 
         elif tree.type in {"Expression", "MacroExpression"}:
-            return "".join([self.travel_generate_file(cn, level) for cn in tree.children])
+            return "".join([self._travel_generate_file(cn, level) for cn in tree.children])
 
         elif tree.type in {"Selection", "MacroSelection"}:
             start = "self._sel("
             end = " " * (level + 10) + ")"
 
             joinstr = ",\n" + " " * (level + 10)
-            s = joinstr.join([self.travel_generate_file(cn, level + 10)
+            s = joinstr.join([self._travel_generate_file(cn, level + 10)
                               for cn in tree.children if cn.type in {"Sequence", "MacroSequence"}])
             s += "\n"
             return start + s + end
@@ -191,33 +191,33 @@ class ParserGenerator(object):
             end = " " * (level + 10) + ")"
 
             joinstr = ",\n" + " " * (level + 10)
-            s = joinstr.join([self.travel_generate_file(cn, level + 10) for cn in tree.children])
+            s = joinstr.join([self._travel_generate_file(cn, level + 10) for cn in tree.children])
             s += "\n"
             return start + s + end
 
         elif tree.type in {"AndPrefix", "MacroAndPrefix"}:
             return "self._and(" + \
-                   "".join([self.travel_generate_file(cn, level + 10) for cn in tree.children]) + ")"
+                   "".join([self._travel_generate_file(cn, level + 10) for cn in tree.children]) + ")"
 
         elif tree.type in {"NotPrefix", "MacroNotPrefix"}:
             return "self._not(" + \
-                   "".join([self.travel_generate_file(cn, level + 10) for cn in tree.children]) + ")"
+                   "".join([self._travel_generate_file(cn, level + 10) for cn in tree.children]) + ")"
 
         elif tree.type == "SkipPrefix":
             return "self._skip(" + \
-                   "".join([self.travel_generate_file(cn, level + 10) for cn in tree.children]) + ")"
+                   "".join([self._travel_generate_file(cn, level + 10) for cn in tree.children]) + ")"
 
         elif tree.type in {"QuestionSuffix", "MacroQuestionSuffix"}:
             return "self._opt(" + \
-                   "".join([self.travel_generate_file(cn, level + 10) for cn in tree.children]) + ")"
+                   "".join([self._travel_generate_file(cn, level + 10) for cn in tree.children]) + ")"
 
         elif tree.type in {"StarSuffix", "MacroStarSuffix"}:
             return "self._rpt(" + \
-                   "".join([self.travel_generate_file(cn, level + 10) for cn in tree.children]) + ", 0)"
+                   "".join([self._travel_generate_file(cn, level + 10) for cn in tree.children]) + ", 0)"
 
         elif tree.type in {"PlusSuffix", "MacroPlusSuffix"}:
             return "self._rpt(" + \
-                   "".join([self.travel_generate_file(cn, level + 10) for cn in tree.children]) + ", 1)"
+                   "".join([self._travel_generate_file(cn, level + 10) for cn in tree.children]) + ", 1)"
 
         elif tree.type in {"RepeatSuffix", "MacroRepeatSuffix"}:
             d = {"Spacing": ""}
@@ -231,13 +231,14 @@ class ParserGenerator(object):
             elif len(rmin) == 1 and len(rmax) == 1:
                 repstr = rmin[0].get_str(d) + "," + rmax[0].get_str(d)
             else:
-                raise Exception
+                errmsg = "RepeatCnt の値が正常に取得できませんでした。line : {} - column : {}".format(tree.linenum, tree.column)
+                raise SyntaxCheckFailedException([errmsg])
 
-            s = "".join([self.travel_generate_file(cn, level + 10) for cn in tree.children])
+            s = "".join([self._travel_generate_file(cn, level + 10) for cn in tree.children])
             return "self._rpt(" + s + ", " + repstr + ")"
 
         elif tree.type == "RegularExp":
-            regkey = self.get_reg_value(tree)
+            regkey = self._get_reg_value(tree)
             return "self._r(self." + self.__regdict[regkey] + ")"
 
         elif tree.type == "Identifier":
@@ -255,16 +256,16 @@ class ParserGenerator(object):
             return "self._trm(self." + funcname + ")"
 
         elif tree.type == "Literal":
-            str_literal = self.get_literal_value(tree)
+            str_literal = self._get_literal_value(tree)
             option = tree.search_node("LiteralOption")
             if len(option) == 0:
                 return "self._l(" + str_literal + ")"
             else:
                 return "self._l(" + str_literal + ", nocase=True)"
 
-        return "".join([self.travel_generate_file(cn, level) for cn in tree.children])
+        return "".join([self._travel_generate_file(cn, level) for cn in tree.children])
 
-    def get_literal_value(self, tree:NonTerminalNode) -> str:
+    def _get_literal_value(self, tree:NonTerminalNode) -> str:
         """
         リテラル文字列を取得
 
@@ -291,10 +292,10 @@ class ParserGenerator(object):
         else:
             s = ""
             for cn in tree.children:
-                s += self.get_literal_value(cn)
+                s += self._get_literal_value(cn)
             return s
 
-    def get_defstring(self, tree:NonTerminalNode, defname:str, level:int) -> str:
+    def _get_defstring(self, tree:NonTerminalNode, defname:str, level:int) -> str:
         """
         一つの構文解析定義の実装部を取得する
 
@@ -323,7 +324,7 @@ class ParserGenerator(object):
         reglist = tree.search_node("RegularExp")
         regstr = ""
         for i in range(0, len(reglist)):
-            strreg = self.get_reg_value(reglist[i])
+            strreg = self._get_reg_value(reglist[i])
             regtitle = "_reg_" + defname + str(i)
             self.__regdict[strreg] = regtitle
             regstr += " " * level \
@@ -334,14 +335,14 @@ class ParserGenerator(object):
         if len(defnode) == 0:
             defnode = tree.get_childnode("MacroExpression")
 
-        expstr = self.travel_generate_file(defnode[0], level + 11)
+        expstr = self._travel_generate_file(defnode[0], level + 11)
         retstr = " " * level + "def " + defname + "(self):\n" \
                  + cmtline \
                  + " " * (level + 4) + "return " + expstr + "\n"
         return "\n" + regstr + retstr
 
     @staticmethod
-    def get_reg_value(tree:NonTerminalNode) -> str:
+    def _get_reg_value(tree:NonTerminalNode) -> str:
         """
         クォーテーションを出力用に置き換え、正規表現オプションを付加したリテラル文字列
 
@@ -377,7 +378,7 @@ class ParserGenerator(object):
         else:
             s = ""
             for cn in tree.children:
-                s += ParserGenerator.get_reg_value(cn)
+                s += ParserGenerator._get_reg_value(cn)
             return s
 
 
@@ -414,16 +415,16 @@ class ParserChecker(object):
             raise ParseException(tree.get_str())
 
         errmsgs = []
-        errmsgs.extend(self.check_definition(tree))
+        errmsgs.extend(self._check_definition(tree))
         if len(errmsgs) == 0:
-            errmsgs.extend(self.check_left_recursion(tree))
+            errmsgs.extend(self._check_left_recursion(tree))
 
         if len(errmsgs) > 0:
             raise SyntaxCheckFailedException(errmsgs)
         return True
 
     @staticmethod
-    def check_definition(tree:NonTerminalNode) -> list:
+    def _check_definition(tree:NonTerminalNode) -> list:
         """
         構文規則のチェック
         1. 重複した定義を探索する。
@@ -469,7 +470,7 @@ class ParserChecker(object):
 
         return errmsgs
 
-    def check_left_recursion(self, tree:NonTerminalNode) -> list:
+    def _check_left_recursion(self, tree:NonTerminalNode) -> list:
         """
         左再帰チェック
 
@@ -490,7 +491,7 @@ class ParserChecker(object):
             definitionlist = tree.get_childnode("Definition")
             for definition in definitionlist:
                 def_expression = definition.get_childnode("DefinitionExpression")[0]
-                postorder_travel(def_expression, self.add_leftrecursive_chk_list)
+                postorder_travel(def_expression, self._add_leftrecursive_chk_list)
                 chk_list = def_expression.identifierlist
                 def_identifier = definition.get_childnode("DefinitionIdentifier")[0]
                 defstr = def_identifier.get_str({'Spacing': ""})
@@ -503,7 +504,7 @@ class ParserChecker(object):
                 chg_chk = False
                 # check_def_dic に登録した構造式から値を評価する。
                 for def_name, def_exp in self.check_def_dic.items():
-                    value = self.eval_def(def_exp)
+                    value = self._eval_def(def_exp)
                     if isinstance(value, int):
                         self.defchecked[def_name] = value
                         chg_chk = True
@@ -515,7 +516,7 @@ class ParserChecker(object):
 
                 # 評価済定義を未評価定義に適用
                 for def_name, def_exp in self.check_def_dic.items():
-                    value = self.assignment_checked_value(def_exp)
+                    value = self._assignment_checked_value(def_exp)
                     self.check_def_dic[def_name] = value
 
                 self.__logger.debug("----- Left Recursion Check Loop -----")
@@ -532,7 +533,7 @@ class ParserChecker(object):
                 break
             # ループ終了後、未評価定義が残っていた場合、ループあり
             if len(self.check_def_dic) > 0:
-                loop_list = self.find_left_recursive_loop_list()
+                loop_list = self._find_left_recursive_loop_list()
                 self.check_def_dic[loop_list[0]] = 1
 
                 err_msg = "!Left Recursive Found! : {0}".format("->".join(loop_list))
@@ -546,7 +547,7 @@ class ParserChecker(object):
         return errmsgs
 
     @staticmethod
-    def add_leftrecursive_chk_list(tree:NonTerminalNode) -> None:
+    def _add_leftrecursive_chk_list(tree:NonTerminalNode) -> None:
         """
         該当の定義から、左再帰チェックのためのIdentifier 計算順リストを導出
 
@@ -564,12 +565,12 @@ class ParserChecker(object):
             setattr(tree, 'identifierlist', min_len)
 
         elif tree.type == "RegularExp":
-            strreg = ParserGenerator.get_reg_value(tree)
-            reg_pattern = regex.compile(strreg)
+            strreg = ParserGenerator._get_reg_value(tree)
+            reg_pattern = eval("regex.compile(" + strreg + ")")
             if reg_pattern.match(""):
-                setattr(tree, 'identifierlist', 1)
-            else:
                 setattr(tree, 'identifierlist', 0)
+            else:
+                setattr(tree, 'identifierlist', 1)
 
         elif tree.type == "Identifier":
             d = {"Spacing": ""}
@@ -588,7 +589,7 @@ class ParserChecker(object):
                               if hasattr(child_node, "identifierlist")]
             setattr(tree, 'identifierlist', identifierlist)
 
-        elif tree.type == "Andprefix":
+        elif tree.type == "AndPrefix":
             identifierlist = [child_node.identifierlist for child_node in tree.children
                               if hasattr(child_node, "identifierlist")]
             if len(identifierlist) == 1:
@@ -641,7 +642,7 @@ class ParserChecker(object):
                     identifierlist = identifierlist[0]
                 setattr(tree, 'identifierlist', identifierlist)
 
-    def eval_def(self, def_exp):
+    def _eval_def(self, def_exp):
         """
         構造式を構成するリスト、タプル、文字列、数値を評価し、
         文字列を1文字以上取得する場合は 1
@@ -660,7 +661,7 @@ class ParserChecker(object):
         """
         if isinstance(def_exp, list):
             for child_exp in def_exp:
-                count_child = self.eval_def(child_exp)
+                count_child = self._eval_def(child_exp)
                 if isinstance(count_child, int):
                     if count_child > 0:
                         return 1
@@ -673,7 +674,7 @@ class ParserChecker(object):
         elif isinstance(def_exp, tuple):
             min_value = 1
             for child_exp in def_exp:
-                count_child = self.eval_def(child_exp)
+                count_child = self._eval_def(child_exp)
                 if isinstance(count_child, int):
                     if count_child > 0:
                         continue
@@ -689,7 +690,7 @@ class ParserChecker(object):
         elif isinstance(def_exp, int):
             return def_exp
 
-    def assignment_checked_value(self, def_exp):
+    def _assignment_checked_value(self, def_exp):
         """
         構造式に、評価した値を代入する
 
@@ -704,10 +705,10 @@ class ParserChecker(object):
             構造式
         """
         if isinstance(def_exp, list):
-            return [self.assignment_checked_value(child_exp) for child_exp in def_exp]
+            return [self._assignment_checked_value(child_exp) for child_exp in def_exp]
 
         elif isinstance(def_exp, tuple):
-            return tuple([self.assignment_checked_value(child_exp) for child_exp in def_exp])
+            return tuple([self._assignment_checked_value(child_exp) for child_exp in def_exp])
 
         elif isinstance(def_exp, str):
             if def_exp in self.defchecked:
@@ -718,7 +719,7 @@ class ParserChecker(object):
         elif isinstance(def_exp, int):
             return def_exp
 
-    def find_left_recursive_loop_list(self):
+    def _find_left_recursive_loop_list(self):
         """
         左再帰となる定義をたどった結果を返す
 
@@ -734,7 +735,7 @@ class ParserChecker(object):
         while check_def_name not in loop_list:
             loop_list.append(check_def_name)
             unresolve_def_exp = self.check_def_dic[check_def_name]
-            next_def_name = self.search_unresolve_call(unresolve_def_exp)
+            next_def_name = self._search_unresolve_call(unresolve_def_exp)
 
             if not isinstance(next_def_name, str):
                 err_msg = "!Unexpected Error! @search_unresolve_call {0}: {1} -> {2}" \
@@ -748,7 +749,7 @@ class ParserChecker(object):
         # 配列を返す
         return loop_list[loop_list.index(check_def_name):]
 
-    def search_unresolve_call(self, unresolve_def):
+    def _search_unresolve_call(self, unresolve_def):
         """
         構造式から、評価した値を代入する
 
@@ -759,7 +760,7 @@ class ParserChecker(object):
         """
         if isinstance(unresolve_def, list) or isinstance(unresolve_def, tuple):
             for child_exp in unresolve_def:
-                child_result = self.search_unresolve_call(child_exp)
+                child_result = self._search_unresolve_call(child_exp)
                 if isinstance(child_result, str):
                     return child_result
             return None
@@ -779,7 +780,7 @@ class SyntaxCheckFailedException(TacParserException):
         message = ""
         for s in self.messagelist:
             message += s + "\n"
-        return message
+        return "SyntaxCheckFailedException({})".format(repr(self.messagelist))
 
     def __str__(self) -> str:
         return self.__repr__()

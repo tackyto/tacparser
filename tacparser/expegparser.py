@@ -1,4 +1,4 @@
-from tacparser import Parser
+from .baseparser import Parser
 import regex
 
 
@@ -19,8 +19,6 @@ class ExPegParser(Parser):
                          "SubDefinition": self.p_subdefinition,
                          "DefinitionComment": self.p_definitioncomment,
                          "DefinitionIdentifier": self.p_definitionidentifier,
-                         "ParameterList": self.p_parameterlist,
-                         "Parameter": self.p_parameter,
                          "Expression": self.p_expression,
                          "Selection": self.p_selection,
                          "Sequence": self.p_sequence,
@@ -41,7 +39,6 @@ class ExPegParser(Parser):
                          "RepeatCnt": self.p_repeatcnt,
                          "Primary": self.p_primary,
                          "IdentifierCall": self.p_identifiercall,
-                         "AssignmentValue": self.p_assignmentvalue,
                          "MacroDefinition": self.p_macrodefinition,
                          "MacroExpression": self.p_macroexpression,
                          "MacroSelection": self.p_macroselection,
@@ -62,7 +59,6 @@ class ExPegParser(Parser):
                          "RegularExpOptions": self.p_regularexpoptions,
                          "Identifier": self.p_identifier,
                          "MacroIdentifier": self.p_macroidentifier,
-                         "ParameterName": self.p_parametername,
                          "Literal": self.p_literal,
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
                          "SingleQuotesLiteralContents": self.p_singlequotesliteralcontents,
@@ -86,9 +82,6 @@ class ExPegParser(Parser):
                          "CURL_CLOSE": self.p_curl_close,
                          "COLON": self.p_colon,
                          "COMMA": self.p_comma,
-                         "COMMERCIAL_AT": self.p_commercial_at,
-                         "DOLLAR_SIGN": self.p_dollar_sign,
-                         "EQUAL": self.p_equal,
                          "REGPREFIX": self.p_regprefix,
                          "Spacing": self.p_spacing,
                          "Comment": self.p_comment,
@@ -162,34 +155,11 @@ class ExPegParser(Parser):
         return self._rpt(self._p(self.p_comment, "Comment"), 1)
 
     def p_definitionidentifier(self):
-        # # DefinitionIdentifier : 構文規則名, PEGの規則に加えてパラメータの受け取りを許可
-        # #   ParameterList (未実装) : パラメータの受け取り
-        # #   ※パラメータ受け取りの記載例
-        # #   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
-        # #   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
-        # DefinitionIdentifier <- Identifier ParameterList / Identifier
-        return self._sel(self._seq(self._p(self.p_identifier, "Identifier"),
-                                   self._p(self.p_parameterlist, "ParameterList")
-                                   ),
-                         self._p(self.p_identifier, "Identifier")
-                         )
-
-    def p_parameterlist(self):
-        # ParameterList <- COLON OPEN Parameter ( COMMA Parameter )* CLOSE
-        return self._seq(self._p(self.p_colon, "COLON"),
-                         self._p(self.p_open, "OPEN"),
-                         self._p(self.p_parameter, "Parameter"),
-                         self._rpt(self._seq(self._p(self.p_comma, "COMMA"),
-                                             self._p(self.p_parameter, "Parameter")
-                                             ), 0),
-                         self._p(self.p_close, "CLOSE")
-                         )
-
-    def p_parameter(self):
-        # Parameter <- COMMERCIAL_AT ParameterName
-        return self._seq(self._p(self.p_commercial_at, "COMMERCIAL_AT"),
-                         self._p(self.p_parametername, "ParameterName")
-                         )
+        # # DefinitionIdentifier <- Identifier ParameterList / Identifier
+        # # ParameterList <- COLON OPEN Parameter ( COMMA Parameter )* CLOSE
+        # # Parameter <- COMMERCIAL_AT ParameterName
+        # DefinitionIdentifier <- Identifier
+        return self._p(self.p_identifier, "Identifier")
 
     def p_expression(self):
         # # Expression : 構文規則の本体
@@ -334,16 +304,12 @@ class ExPegParser(Parser):
         # #   IdentifierCall : パラメータ付の規則呼び出し
         # Primary   <- RegularExp
         #            / IdentifierCall
-        #            / Parameter
-        #            / AssignmentValue
         #            / Identifier !LEFTARROW !COLON !SUB_LEFTARROW
         #            / MacroIdentifier !LEFTARROW !COLON !SUB_LEFTARROW
         #            / OPEN Expression CLOSE
         #            / Literal
         return self._sel(self._p(self.p_regularexp, "RegularExp"),
                          self._p(self.p_identifiercall, "IdentifierCall"),
-                         self._p(self.p_parameter, "Parameter"),
-                         self._p(self.p_assignmentvalue, "AssignmentValue"),
                          self._seq(self._p(self.p_identifier, "Identifier"),
                                    self._not(self._p(self.p_leftarrow, "LEFTARROW")),
                                    self._not(self._p(self.p_colon, "COLON")),
@@ -375,15 +341,6 @@ class ExPegParser(Parser):
                                              self._p(self.p_expression, "Expression")
                                              ), 0),
                          self._p(self.p_close, "CLOSE")
-                         )
-
-    def p_assignmentvalue(self):
-        # # AssignmentValue : 代入値呼び出し
-        # #   例) 下記右側の $x
-        # #   XmlAnyTag <- "<" Tagname=$x TagAttributes ">" Contents "</" $x Spacing? ">"
-        # AssignmentValue <- DOLLAR_SIGN ParameterName
-        return self._seq(self._p(self.p_dollar_sign, "DOLLAR_SIGN"),
-                         self._p(self.p_parametername, "ParameterName")
                          )
 
     def p_macrodefinition(self):
@@ -555,14 +512,6 @@ class ExPegParser(Parser):
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
-    _reg_p_parametername0 = regex.compile("[a-zA-Z][a-zA-Z0-9_]*", regex.M)
-
-    def p_parametername(self):
-        # ParameterName <- r"[a-zA-Z][a-zA-Z0-9_]*" Spacing?
-        return self._seq(self._r(self._reg_p_parametername0),
-                         self._opt(self._p(self.p_spacing, "Spacing"))
-                         )
-
     def p_literal(self):
         # # リテラル
         # # (追加構文)
@@ -608,11 +557,11 @@ class ExPegParser(Parser):
                          self._l("I")
                          )
 
-    _reg_p_number0 = regex.compile("[1-9][0-9]*", regex.M)
+    _reg_p_number0 = regex.compile("0|[1-9][0-9]*", regex.M)
 
     def p_number(self):
         # # 数字
-        # Number <- r"[1-9][0-9]*" Spacing?
+        # Number <- r"0|[1-9][0-9]*" Spacing?
         return self._seq(self._r(self._reg_p_number0),
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
@@ -715,21 +664,10 @@ class ExPegParser(Parser):
                          self._opt(self._p(self.p_spacing, "Spacing"))
                          )
 
-    def p_commercial_at(self):
-        # COMMERCIAL_AT <- '@'
-        return self._l('@')
-
-    def p_dollar_sign(self):
-        # DOLLAR_SIGN <- '$'
-        return self._l('$')
-
-    def p_equal(self):
-        # EQUAL <- '=' Spacing?
-        return self._seq(self._l('='),
-                         self._opt(self._p(self.p_spacing, "Spacing"))
-                         )
-
     def p_regprefix(self):
+        # # COMMERCIAL_AT <- '@'
+        # # DOLLAR_SIGN <- '$'
+        # # EQUAL <- '=' Spacing?
         # REGPREFIX <- 'r'
         return self._l('r')
 
@@ -746,10 +684,12 @@ class ExPegParser(Parser):
                          self._p(self.p_endofline, "EndOfLine")
                          )
 
+    _reg_p_space0 = regex.compile("\\t", regex.M)
+
     def p_space(self):
-        # Space <- ' ' / '\t' / EndOfLine
+        # Space <- ' ' / r"\t" / EndOfLine
         return self._sel(self._l(' '),
-                         self._l('\\t'),
+                         self._r(self._reg_p_space0),
                          self._p(self.p_endofline, "EndOfLine")
                          )
 

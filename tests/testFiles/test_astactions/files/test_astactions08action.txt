@@ -1,0 +1,12 @@
+Person > Name {this.name = $.get_str();} // name 属性を設定
+Person > Sex >> Male   {this.sex = "M";} // 性別を設定
+Person > Sex >> Female {this.sex = "F";} // 性別を設定
+Person[name == "Aaaa Aaaa"] {this.name_is_all_a = "1";} // Equal
+Person[name ^= "Bbbb" ] {this.startswith = "Bbbb";} // Starts With
+Person[name $= "Cccc" ] {this.endswith = "Cccc";} // Ends With
+Person[name *= "a C" ] {this.contains = "a C";} // Contains 
+Person[sex != "M" ] {this.notequal = "not man";} // Not Equal
+Person[name !^ "A" ] {this.notstartswith = "A";} // Not Starts With
+Person[name !$ "b" ][name !$ "d" ] {this.notendswith = "b&d";} // Not Ends With
+Person[name !* "aa" ][name !* "dd"] {this.not_contains = "aa & dd";} // Not Contains 
+Person[name_is_all_a] {this.only_name_is_all_a = "1";} // Has Attribute

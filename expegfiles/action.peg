@@ -1,0 +1,248 @@
+# ----------------------------------------
+# Actions
+# ----------------------------------------
+# AST をこの順に探索して記載した処理を行う
+# ----------------------------------------
+Actions <- ( ActionDefinition / >>Comment / >>S )* _EOF
+
+
+# ----------------------------------------
+# ActionDefinition
+# ----------------------------------------
+# astから要素を選択する記法
+#     css like な記載方法
+# 
+#     <Selector> { parameter_name = this.parameter; }
+# ----------------------------------------
+ActionDefinition <- Selector ( >>COMMA Selector)*
+                    >>CURL_OPEN Action >>SEMICOLON ( Action >>SEMICOLON )* >>CURL_CLOSE
+
+# C likeな行コメントと範囲コメントを使う
+Comment <- LINE_COMMENT_START ArbitraryText EndOfLine
+         / COMMENT_START (!COMMENT_END r".")* COMMENT_END
+ArbitraryText <- r"[^\r\n]*"
+
+# ----------------------------------------
+# Selector
+# ----------------------------------------
+#    セレクタ：
+#        ルール：左結合
+#        
+#        TypeA , TypeB               Selection    : TypeA または TypeB
+#        TypeA [Condition]           Conditions   : 条件式を満たす TypeA
+#        TypeA << TypeB              Ancestor     : TypeA の祖先である TypeB
+#        TypeA <  TypeB              Parent       : TypeA の親である TypeB
+#        TypeA >> TypeB 
+#            or TypeA TypeB       Descendants  : TypeA の子孫である TypeB
+#        TypeA >  TypeB              Children     : TypeA の子である TypeB
+#        TypeA -- TypeB              OnTheLeft    : TypeA の同階層で前方にある TypeB
+#        TypeA -  TypeB              ForwardTo    : TypeA の直前にある TypeB
+#        TypeA ++ TypeB              OnTheRight   : TypeA の同階層で後ろにある TypeB
+#        TypeA +  TypeB              NextTo       : TypeA の直後にある TypeB
+# ----------------------------------------
+Selector <- ( OnTheLeft / OnTheRight / ForwardTo / NextTo / Descendants / Ancestor / Children / Parent )+
+
+OnTheRight  <- >>PLUSPLUS Conditions
+OnTheLeft   <- >>MINUSMINUS Conditions
+ForwardTo   <- >>MINUS Conditions
+NextTo      <- >>PLUS Conditions
+Descendants <- >>MUCH_GREATER_THAN Conditions / Conditions
+Children    <- >>GREATER_THAN Conditions
+Ancestor    <- >>MUCH_LESS_THAN Conditions
+Parent      <- >>LESS_THAN Conditions
+
+# ----------------------------------------
+# Conditions
+# ----------------------------------------
+#        条件式：
+#           ルール：左結合
+#
+#            TypeA[0]                      preorderで最初に見つかった TypeA
+#            TypeA[3]                      preorderで３番目に見つかった TypeA
+#            TypeA[-1]                     preorderで最後に見つかった TypeA
+#            TypeA[3:5]                    preorderで３番目から５番目に見つかった TypeA
+#            TypeA[@L > 10]                開始行番号が 10 より大きいTypeA ( >, <, >=, <=, == )
+#            TypeA[@C > 10]                開始列番号が 10 より大きいTypeA
+#            TypeA[@EL > 10]               終了行番号が 10 より大きいTypeA
+#            TypeA[@EC > 10]               終了列番号が 10 より大きいTypeA
+#            TypeA[foo]                    foo属性を持つ TypeA
+#            TypeA[foo == "bar"]            foo属性が "bar" である TypeA
+#            TypeA[foo ^= "bar"]           foo属性が "bar" で始まる TypeA
+#            TypeA[foo $= "bar"]           foo属性が "bar" で終わる TypeA
+#            TypeA[foo *= "bar"]           foo属性が "bar" を含む TypeA
+#            TypeA[foo != "bar"]           foo属性が "bar" でない TypeA
+#            TypeA[foo !^ "bar"]           foo属性が "bar" で始まらない TypeA
+#            TypeA[foo !$ "bar"]           foo属性が "bar" で終わらない TypeA
+#            TypeA[foo !* "bar"]           foo属性が "bar" を含まない TypeA
+#            TypeA[foo == "bar" | piyo=="hoge"]  foo属性が "bar" ,または piyo属性が "hoge" である TypeA
+#            TypeA[foo][0][piyo=="hoge"]    foo属性を持つ TypeA で、最初に見つかったもので、かつpiyo属性が"hoge"であるもの
+#
+#            処理：
+#                左結合で順に処理する
+#                TypeA[foo][0][piyo="hoge"] の場合、
+#                
+#                 1. TypeAをすべて探索
+#                 2. 属性 foo を持つものを抽出
+#                 3. 最初の要素を選択
+#                 4. 属性 piyo が "hoge" であるものを抽出
+# 
+#                 の順で処理する。このため、条件の順番によって結果が異なる。
+# ----------------------------------------
+
+Conditions <- Identifier OrCondition*
+Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" ) >>S?
+
+OrCondition <- >>BRAKET_OPEN SingleCondition (>>VERTICAL_BAR SingleCondition)* >>BRAKET_CLOSE
+
+SingleCondition <- Slice / LineColumnLimitation / AttributeLimitation
+Slice <- FromTo / Number
+FromTo <- StartNumber >>COLON EndNumber
+StartNumber <- Number?
+EndNumber <- Number?
+Number <- '-'? r"0|[1-9][0-9]*" >>S?
+
+LineColumnLimitation <- GraterLimitation 
+                      / LessLimitation 
+                      / GraterEqualLimitation 
+                      / LessEqualLimitation 
+                      / EqualLimitation
+GraterLimitation        <- LineOrColumn >>GREATER_THAN PositiveNumber
+LessLimitation          <- LineOrColumn >>LESS_THAN PositiveNumber
+GraterEqualLimitation   <- LineOrColumn >>GREATER_EQUAL PositiveNumber
+LessEqualLimitation     <- LineOrColumn >>LESS_EQUAL PositiveNumber
+EqualLimitation         <- LineOrColumn >>EQUAL_EQUAL PositiveNumber
+
+LineOrColumn <- StartLine / StartColumn / EndLine / EndColumn
+StartLine       <- >>START_LINE
+StartColumn     <- >>START_COLUMN
+EndLine         <- >>END_LINE
+EndColumn       <- >>END_COLUMN
+PositiveNumber <- r"0|[1-9][0-9]*" >>S?
+
+START_LINE      <- '@L':I S?
+START_COLUMN    <- '@C':I S?
+END_LINE        <- '@EL':I S?
+END_COLUMN      <- '@EC':I S?
+
+# TypeA[foo]                    foo属性を持つ TypeA
+# TypeA[foo == "bar"]           foo属性が "bar" である TypeA
+# TypeA[foo ^= "bar"]           foo属性が "bar" で始まる TypeA
+# TypeA[foo $= "bar"]           foo属性が "bar" で終わる TypeA
+# TypeA[foo *= "bar"]           foo属性が "bar" を含む TypeA
+# TypeA[foo != "bar"]           foo属性が "bar" でない TypeA
+# TypeA[foo !^ "bar"]           foo属性が "bar" で始まらない TypeA
+# TypeA[foo !$ "bar"]           foo属性が "bar" で終わらない TypeA
+# TypeA[foo !* "bar"]           foo属性が "bar" を含まない TypeA
+# TODO : int 型、list 型等の比較 ">", "<", etc...
+# TODO : Line, Column の制約と統一したい
+
+AttributeLimitation <- AttributeEqual 
+                     / AttributeStartsWith 
+                     / AttibuteEndsWith 
+                     / AttributeContains
+                     / AttributeNotEaual
+                     / AttributeNotStartsWith
+                     / AttributeNotEndsWith
+                     / AttributeNotContains
+                     / AttributeSimple
+
+AttributeEqual         <- AttributeName >>EQUAL_EQUAL AttributeValue
+AttributeStartsWith    <- AttributeName >>STARTS_WITH AttributeValue
+AttibuteEndsWith       <- AttributeName >>ENDS_WITH AttributeValue
+AttributeContains      <- AttributeName >>CONTAINS AttributeValue
+AttributeNotEaual      <- AttributeName >>NOT_EQUAL AttributeValue
+AttributeNotStartsWith <- AttributeName >>NOT_STARTS_WITH AttributeValue
+AttributeNotEndsWith   <- AttributeName >>NOT_ENDS_WITH AttributeValue
+AttributeNotContains   <- AttributeName >>NOT_CONTAINS AttributeValue
+AttributeSimple        <- AttributeName >>S?
+
+AttributeName <- r"[a-z_][a-z0-9_]*" >>S?
+
+STARTS_WITH     <- '^=' S?
+ENDS_WITH       <- '$=' S?
+CONTAINS        <- '*=' S?
+NOT_EQUAL       <- '!=' S?
+NOT_STARTS_WITH <- '!^' S?
+NOT_ENDS_WITH   <- '!$' S?
+NOT_CONTAINS    <- '!*' S?
+
+# TODO : 数値やリスト、辞書などの操作
+AttributeValue <- Literal
+
+# ----------------------------------------
+# Action
+# ----------------------------------------
+# 例：
+# { 
+#    this.parameter_name = $.get_str(); 
+#    $.parameter = this.parameter2;
+# }
+# 
+# $ は一致したノードのパラメータ
+# this は最初の条件式に一致するノードのパラメータ
+# x += y , x.append(y) などの構文も追加したい
+# ----------------------------------------
+Action <- Substitution 
+#        / AppendList
+Substitution <- Variable >>EQUAL Value
+Variable <- ThisValue / TargetValue
+
+# TODO : int , list の操作
+# Value <- Number / Literal / EmptyList / ThisValue / TargetValue
+Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
+
+# TODO : 未実装
+# AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
+
+Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
+SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'" >>S?
+DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"' >>S?
+
+# EmptyList <- '[]'
+
+ThisString <- >>THIS >>DOT >>'get_str()' >>S?
+TargetString <- >>DOLLAR >>DOT >>'get_str()' >>S?
+ThisValue <- >>THIS >>DOT ParameterName
+TargetValue <- >>DOLLAR >>DOT ParameterName
+ParameterName <- r"[a-z][a-z_]*" >>S?
+
+THIS <- 'this' S?
+# APPEND <- 'append'
+
+# ----------------------------------------
+# Terminal
+# ----------------------------------------
+S <- ( ' ' / r"\t" / EndOfLine )+
+EndOfLine <- r"\r\n|\n|\r"
+
+# OPEN <- '(' S?
+# CLOSE <- ')' S?
+CURL_OPEN  <- '{'  S?
+CURL_CLOSE <- '}' S?
+BRAKET_OPEN  <-  '[' S?
+BRAKET_CLOSE <-  ']' S?
+COLON <- ':' S?
+COMMA <- ',' S?
+DOT <- '.' S?
+SEMICOLON <- ';' S?
+DOLLAR <- '$' S?
+EQUAL <- '=' S?
+VERTICAL_BAR <- '|' S?
+
+LINE_COMMENT_START <- '//'
+COMMENT_START <- '/*'
+COMMENT_END   <- '*/' S?
+
+PLUS        <- '+' S?
+MINUS       <- '-' S?
+PLUSPLUS    <- '++' S?
+MINUSMINUS  <- '--' S?
+
+GREATER_THAN  <- '>'  S?
+GREATER_EQUAL <- '>=' S?
+LESS_THAN     <- '<'  S?
+LESS_EQUAL    <- '<=' S?
+EQUAL_EQUAL   <- '==' S?
+
+MUCH_GREATER_THAN <- '>>' S?
+MUCH_LESS_THAN    <- '<<' S?

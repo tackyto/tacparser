@@ -3,8 +3,9 @@ import os
 import importlib
 import unittest
 
-from tacparser import ParserGenerator
 from tests.testmodules import subdef01, subdef02, subdef03
+
+from tacparser.parsergenerator import ParserGenerator
 
 
 class TestReuseDefinition(unittest.TestCase):
@@ -25,6 +26,24 @@ class TestReuseDefinition(unittest.TestCase):
             fout.write(node.print_tree())
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+    def test_resusedef01string(self):
+        parser = subdef01.SubDef01()
+        testfille_dir = os.path.join(self.set_path, "subdef01")
+        subdef01_path = os.path.join(testfille_dir, "test01.txt")
+        contents = ""
+        with open(subdef01_path, 'r', encoding="utf-8") as fin:
+            contents = fin.read()
+        _, node = parser.parse_string(contents, parser.p_main, "Main")
+
+        pathoutfile = os.path.join(testfille_dir, "subdef01_test_str_src.out")
+        pathoutfile_dist = os.path.join(testfille_dir, "subdef01_test_dist.out")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(node.print_tree())
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
 
     def test_test_resusedef02(self):
         parser = subdef02.SubDef02()

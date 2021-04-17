@@ -1,0 +1,27 @@
+Main : (Ln 1, Col 0)
+    Hoge : (Ln 1, Col 0)
+        @Tarminal : (Ln 1, Col 0) "HogeHOGEhogehogeHoGe"
+        Spacing : (Ln 1, Col 20)
+            @Tarminal : (Ln 1, Col 20) "
+"
+    HogeFuga : (Ln 2, Col 0)
+        @Tarminal : (Ln 2, Col 0) "HogeHoge"
+        Spacing : (Ln 2, Col 8)
+            @Tarminal : (Ln 2, Col 8) "
+"
+    Fuga : (Ln 3, Col 0)
+        @Tarminal : (Ln 3, Col 0) "FUGAFUGA"
+        Spacing : (Ln 3, Col 8)
+            @Tarminal : (Ln 3, Col 8) "
+"
+    FugaPiyo : (Ln 4, Col 0)
+        @Tarminal : (Ln 4, Col 0) "FUGAFUGAFUGAFUGA"
+        Spacing : (Ln 4, Col 16)
+            @Tarminal : (Ln 4, Col 16) "
+"
+    Piyo : (Ln 5, Col 0)
+        @Tarminal : (Ln 5, Col 0) "PIYOpiyoPIYO"
+        Spacing : (Ln 5, Col 12)
+            @Tarminal : (Ln 5, Col 12) "
+"
+    _EOF : (Ln 5, Col 13)

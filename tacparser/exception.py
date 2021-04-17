@@ -10,7 +10,7 @@ class ParseException(TacParserException):
         self.__msg = message
 
     def __repr__(self) -> str:
-        return self.__msg
+        return "ParseException({})".format(repr(self.__msg))
 
     def __str__(self) -> str:
         return self.__repr__()

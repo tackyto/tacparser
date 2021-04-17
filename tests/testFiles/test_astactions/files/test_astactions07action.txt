@@ -1,0 +1,8 @@
+// Line Comment
+Person[@L  > 40] {this.startline = "@L > 40";} // Line Comment
+Person[@L == 12] {this.startlineeq = "@L == 12";} // Line Comment
+Person[@EL < 4 ] {this.endline = "@EL < 4";} /* Person {this.comment = "false";} */
+Person[@C  >= 11] {this.startcolumn = "@C >= 11";}
+Person[@EC <= 77] {this.endvolumn = "@EC <= 77";}
+/* comment */
+// Line Comment

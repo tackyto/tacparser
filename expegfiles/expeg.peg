@@ -34,9 +34,11 @@ DefinitionComment <- Comment+
 #   ※パラメータ受け取りの記載例
 #   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
 #   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
-DefinitionIdentifier <- Identifier ParameterList / Identifier
-ParameterList <- COLON OPEN Parameter ( COMMA Parameter )* CLOSE
-Parameter <- COMMERCIAL_AT ParameterName
+
+# DefinitionIdentifier <- Identifier ParameterList / Identifier
+# ParameterList <- COLON OPEN Parameter ( COMMA Parameter )* CLOSE
+# Parameter <- COMMERCIAL_AT ParameterName
+DefinitionIdentifier <- Identifier
 
 # Expression : 構文規則の本体
 Expression <- Selection / Sequence
@@ -88,8 +90,6 @@ RepeatCnt <- Number
 #   IdentifierCall : パラメータ付の規則呼び出し
 Primary   <- RegularExp
            / IdentifierCall
-           / Parameter
-           / AssignmentValue
            / Identifier !LEFTARROW !COLON !SUB_LEFTARROW
            / MacroIdentifier !LEFTARROW !COLON !SUB_LEFTARROW
            / OPEN Expression CLOSE
@@ -100,11 +100,6 @@ Primary   <- RegularExp
 #   HtmlStartTag:(@p) <- "<" @p Spacing HtmlTagAttributes ">"
 #   HtmlLinkTag <- HtmlStartTag:( "A" / "a" ) HtmlContents HtmlEndTag:( "A" / "a" )
 IdentifierCall <- Identifier COLON OPEN Expression ( COMMA Expression )* CLOSE
-
-# AssignmentValue : 代入値呼び出し
-#   例) 下記右側の $x
-#   XmlAnyTag <- "<" Tagname=$x TagAttributes ">" Contents "</" $x Spacing? ">"
-AssignmentValue <- DOLLAR_SIGN ParameterName
 
 # Macro（追加構文） : マクロ
 #   構文解析時にノードを作成せず、呼び出した規則の一部として展開する。
@@ -164,7 +159,7 @@ Identifier <- ( r"[a-zA-Z][a-zA-Z0-9_]*" / ENDOFFILE ) Spacing?
 # マクロ定義
 #    マクロ定義は、"_" で開始し、英大文字のみ使用可能とする。
 MacroIdentifier <- r"_[A-Z][A-Z0-9_]*" Spacing?
-ParameterName <- r"[a-zA-Z][a-zA-Z0-9_]*" Spacing?
+# ParameterName <- r"[a-zA-Z][a-zA-Z0-9_]*" Spacing?
 
 # リテラル
 # (追加構文)
@@ -178,7 +173,7 @@ DoubleQuotesLiteralContents <- r'(\\.|[^"\\])*'
 LiteralOption <- COLON "I"
 
 # 数字
-Number <- r"[1-9][0-9]*" Spacing?
+Number <- r"0|[1-9][0-9]*" Spacing?
 
 # PEG に追加： 終端を示す記号
 ENDOFFILE <- '_EOF' Spacing?
@@ -201,15 +196,15 @@ CURL_OPEN <- '{'  Spacing?
 CURL_CLOSE <- '}' Spacing?
 COLON <- ':' Spacing?
 COMMA <- ',' Spacing?
-COMMERCIAL_AT <- '@'
-DOLLAR_SIGN <- '$'
-EQUAL <- '=' Spacing?
+# COMMERCIAL_AT <- '@'
+# DOLLAR_SIGN <- '$'
+# EQUAL <- '=' Spacing?
 REGPREFIX <- 'r'
 
 Spacing <- Space+
 
 Comment <- '#' r"[^\r\n]*" EndOfLine
-Space <- ' ' / '\t' / EndOfLine
+Space <- ' ' / r"\t" / EndOfLine
 
 EndOfLine <- r"\r\n|\n|\r"
 

@@ -198,10 +198,10 @@ class Reader(object):
         """
         if startpos > self.length:
             raise ValueError
-        self.__position = startpos
-
         if endpos > self.length:
             raise ValueError
+
+        self.__position = startpos
         self.__endposition = endpos
         self.maxposition = startpos
         self.length = len(self.contents)

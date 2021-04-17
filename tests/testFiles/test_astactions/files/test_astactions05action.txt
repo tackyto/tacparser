@@ -1,0 +1,8 @@
+Person > Name {this.name = $.get_str();}
+Society > SocietyName {this.name = $.get_str();}
+Family > FamilyName {this.name = $.get_str();}
+Family > Person[0] {this.landlord = $.name;}
+Family < Society {this.society = $.name;}
+Person << Society {this.society = $.name;}
+Family > Person[0] ++ Person[-1] {this.little = $.name;}
+Family > Person[-1] -- Person[-1] {this.parent = $.name;}

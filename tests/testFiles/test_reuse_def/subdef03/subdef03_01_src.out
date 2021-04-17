@@ -1,75 +1,75 @@
-0 : SubDef03 : (Ln 1, Col 0)
-    0 : Line : (Ln 1, Col 0)
-        0 : Word : (Ln 1, Col 0)
-            0 : AlphaWord : (Ln 1, Col 0)
+SubDef03 : (Ln 1, Col 0)
+    Line : (Ln 1, Col 0)
+        Word : (Ln 1, Col 0)
+            AlphaWord : (Ln 1, Col 0)
                 @Tarminal : (Ln 1, Col 0) "Word"
-        1 : Spacing : (Ln 1, Col 4)
+        Spacing : (Ln 1, Col 4)
             @Tarminal : (Ln 1, Col 4) " "
-        0 : Word : (Ln 1, Col 5)
-            1 : AlphaWord : (Ln 1, Col 5)
+        Word : (Ln 1, Col 5)
+            AlphaWord : (Ln 1, Col 5)
                 @Tarminal : (Ln 1, Col 5) "Word"
-        3 : Spacing : (Ln 1, Col 9)
+        Spacing : (Ln 1, Col 9)
             @Tarminal : (Ln 1, Col 9) " "
-        0 : Word : (Ln 1, Col 10)
-            2 : AlphaWord : (Ln 1, Col 10)
+        Word : (Ln 1, Col 10)
+            AlphaWord : (Ln 1, Col 10)
                 @Tarminal : (Ln 1, Col 10) "Word"
-        5 : Spacing : (Ln 1, Col 14)
+        Spacing : (Ln 1, Col 14)
             @Tarminal : (Ln 1, Col 14) " "
-        0 : Word : (Ln 1, Col 15)
-            3 : Number : (Ln 1, Col 15)
+        Word : (Ln 1, Col 15)
+            Number : (Ln 1, Col 15)
                 @Tarminal : (Ln 1, Col 15) "12345"
-        7 : Spacing : (Ln 1, Col 20)
+        Spacing : (Ln 1, Col 20)
             @Tarminal : (Ln 1, Col 20) " "
-        0 : Word : (Ln 1, Col 21)
-            4 : Number : (Ln 1, Col 21)
+        Word : (Ln 1, Col 21)
+            Number : (Ln 1, Col 21)
                 @Tarminal : (Ln 1, Col 21) "98765"
-    0 : Line : (Ln 2, Col 0)
-        9 : FirstSpace : (Ln 2, Col 0)
+    Line : (Ln 2, Col 0)
+        FirstSpace : (Ln 2, Col 0)
             @Tarminal : (Ln 2, Col 0) "     "
-        0 : Word : (Ln 2, Col 5)
-            5 : AlphaWord : (Ln 2, Col 5)
+        Word : (Ln 2, Col 5)
+            AlphaWord : (Ln 2, Col 5)
                 @Tarminal : (Ln 2, Col 5) "Head"
-        11 : Spacing : (Ln 2, Col 9)
+        Spacing : (Ln 2, Col 9)
             @Tarminal : (Ln 2, Col 9) " "
-        0 : Word : (Ln 2, Col 10)
-            6 : AlphaWord : (Ln 2, Col 10)
+        Word : (Ln 2, Col 10)
+            AlphaWord : (Ln 2, Col 10)
                 @Tarminal : (Ln 2, Col 10) "Spacing"
-        13 : Spacing : (Ln 2, Col 17)
+        Spacing : (Ln 2, Col 17)
             @Tarminal : (Ln 2, Col 17) " "
             @Tarminal : (Ln 2, Col 18) " "
             @Tarminal : (Ln 2, Col 19) " "
             @Tarminal : (Ln 2, Col 20) " "
             @Tarminal : (Ln 2, Col 21) " "
             @Tarminal : (Ln 2, Col 22) " "
-    0 : Line : (Ln 3, Col 0)
-        14 : EmptyLine : (Ln 3, Col 0)
-    0 : Line : (Ln 4, Col 0)
-        15 : EmptyLine : (Ln 4, Col 0)
-    0 : Line : (Ln 5, Col 0)
-        0 : Word : (Ln 5, Col 0)
-            7 : Number : (Ln 5, Col 0)
+    Line : (Ln 3, Col 0)
+        EmptyLine : (Ln 3, Col 0)
+    Line : (Ln 4, Col 0)
+        EmptyLine : (Ln 4, Col 0)
+    Line : (Ln 5, Col 0)
+        Word : (Ln 5, Col 0)
+            Number : (Ln 5, Col 0)
                 @Tarminal : (Ln 5, Col 0) "12345"
-    0 : Line : (Ln 6, Col 0)
-        17 : EmptyLine : (Ln 6, Col 0)
-    0 : Line : (Ln 7, Col 0)
-        0 : Word : (Ln 7, Col 0)
-            8 : AlphaWord : (Ln 7, Col 0)
+    Line : (Ln 6, Col 0)
+        EmptyLine : (Ln 6, Col 0)
+    Line : (Ln 7, Col 0)
+        Word : (Ln 7, Col 0)
+            AlphaWord : (Ln 7, Col 0)
                 @Tarminal : (Ln 7, Col 0) "Word"
-        19 : Spacing : (Ln 7, Col 4)
+        Spacing : (Ln 7, Col 4)
             @Tarminal : (Ln 7, Col 4) " "
-        0 : Word : (Ln 7, Col 5)
-            9 : UnderScore : (Ln 7, Col 5)
+        Word : (Ln 7, Col 5)
+            UnderScore : (Ln 7, Col 5)
                 @Tarminal : (Ln 7, Col 5) "_"
-            10 : Line : (Ln 7, Col 6)
-        21 : Spacing : (Ln 7, Col 6)
+            Line : (Ln 7, Col 6)
+        Spacing : (Ln 7, Col 6)
             @Tarminal : (Ln 7, Col 6) " "
             @Tarminal : (Ln 7, Col 7) " "
             @Tarminal : (Ln 7, Col 8) " "
-        0 : Word : (Ln 7, Col 9)
-            11 : Number : (Ln 7, Col 9)
+        Word : (Ln 7, Col 9)
+            Number : (Ln 7, Col 9)
                 @Tarminal : (Ln 7, Col 9) "12345"
-        23 : Spacing : (Ln 7, Col 14)
+        Spacing : (Ln 7, Col 14)
             @Tarminal : (Ln 7, Col 14) " "
-        0 : Word : (Ln 7, Col 15)
-            12 : AlphaWord : (Ln 7, Col 15)
+        Word : (Ln 7, Col 15)
+            AlphaWord : (Ln 7, Col 15)
                 @Tarminal : (Ln 7, Col 15) "test"

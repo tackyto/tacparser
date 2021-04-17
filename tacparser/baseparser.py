@@ -103,7 +103,7 @@ class Parser(object):
         try:
             self._reader = FileReader(filepath, encoding)
         except (FileNotFoundError, IOError):
-            self.__logger.fatal("Wrong file or file path. \"{0}\"".format(filepath))
+            self.__logger.error("Wrong file or file path. \"{0}\"".format(filepath))
             raise
 
         if not typename:
@@ -112,7 +112,7 @@ class Parser(object):
         try:
             rootexp = self.def_dict[typename]
         except KeyError:
-            self.__logger.fatal("TypeName \"{0}\" was not found".format(typename))
+            self.__logger.critical("TypeName \"{0}\" was not found".format(typename))
             raise
 
         self.__logger.info("Parsing file  \"{0}\" started. rule:{1}".format(filepath, typename))
@@ -121,7 +121,7 @@ class Parser(object):
         try:
             self._result, self._tree = self._parse(rootexp, typename)
         except RecursionError:
-            self.__logger.fatal("RecursionError!")
+            self.__logger.critical("RecursionError!")
             return False, None
 
         if not self._result:
@@ -271,19 +271,35 @@ class Parser(object):
             node = FailureNode(s)
             node.set_position(self._reader, 0, self._reader.getmaxposition())
 
-            return flg, node
+            return False, node
 
     def __complete_tree(self, root:Node) -> None:
         """
-        ツリーの各ノードに親ノードを設定する。
+        ツリーの各ノードに親ノード、隣接ノードを設定する。
 
         Parameters
         ----------
         root : Node
             ルートノード
         """
-        for cn in root.children:
+        child_cnt = len(root.children)
+        for i in range(child_cnt):
+            cn = root.children[i]
+            # 隣接ノード設定
+            if i >= 0 and i+1 < child_cnt:
+                # right_neighbor の存在確認
+                cn.right_neighbor = root.children[i+1]
+            else:
+                cn.right_neighbor = None
+            if i >= 1:
+                # left_neighbor の存在確認
+                cn.left_neighbor = root.children[i-1]
+            else:
+                cn.left_neighbor = None
+            
+            # 親ノード設定
             cn.parent = root
+
             if isinstance(cn, NonTerminalNode):
                 self.__complete_tree(cn)
 
@@ -555,7 +571,7 @@ class Parser(object):
             関数
         """
 
-        def __not(r, _f:ParseFunction) -> ParseResult:
+        def __not(r:Reader, _f:ParseFunction) -> ParseResult:
             """
             input の関数を実行する。
             実行結果、作成ノード を受け取り、成功した場合
@@ -598,7 +614,7 @@ class Parser(object):
             関数
         """
 
-        def trm(r, _f:ParseFunction) -> ParseResult:
+        def trm(r:Reader, _f:ParseFunction) -> ParseResult:
             """
             input の関数を実行する。
             実行結果、作成ノード を受け取り、input に成功した場合
@@ -750,7 +766,7 @@ class Parser(object):
             結果が[flg, Node]のタプルを返す関数
         """
 
-        def p(reader, _f:ParseFunction, _typename:str) -> ParseResult:
+        def p(reader:Reader, _f:ParseFunction, _typename:str) -> ParseResult:
             """
             ノンターミナルノードを作成する
             実行結果、作成ノード を受け取り、成功した場合
@@ -879,7 +895,7 @@ class Parser(object):
         try:
             flg, ret = func()
         except RecursionError:
-            self.__logger.fatal("<- {0}".format(typename))
+            self.__logger.critical("<- {0}".format(typename))
             raise
 
         if flg:
@@ -946,9 +962,13 @@ def reconstruct_tree(
                 if _i >= 0 and _i+1 < _children_cnt:
                     # right_neighbor の存在確認
                     _children.right_neighbor = _newchildren[_i+1]
+                else:
+                    _children.right_neighbor = None
                 if _i >= 1:
                     # left_neighbor の存在確認
                     _children.left_neighbor = _newchildren[_i-1]
+                else:
+                    _children.left_neighbor = None
 
             return _retnode,
         else:

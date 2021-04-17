@@ -1,0 +1,2 @@
+Society > SocietyName {this.name = $.get_str();}
+Society > Family[0:3] {$.society = this.name;}
