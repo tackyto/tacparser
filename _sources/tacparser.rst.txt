@@ -4,6 +4,22 @@ tacparser package
 Submodules
 ----------
 
+tacparser.actionsparser module
+------------------------------
+
+.. automodule:: tacparser.actionsparser
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tacparser.astactions module
+---------------------------
+
+.. automodule:: tacparser.astactions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tacparser.baseparser module
 ---------------------------
 
