@@ -220,6 +220,25 @@ class Reader(object):
         else:
             return False
 
+    def get_contents(self, startpos:int, endpos:int) -> str:
+        """
+        開始位置と終了位置から対応する文字列を返す
+        単純に self.contensts のスライスを返す
+
+        Parameters
+        ----------
+        startpos : int
+            contents上の開始位置
+        endpos : int
+            contents上の終了位置
+
+        Returns
+        ---------- 
+        contents : str
+            開始位置と終了位置に対応する文字列
+        """
+        return self.contents[startpos:endpos]
+
 
 class FileReader(Reader):
     """
