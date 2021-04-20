@@ -8,6 +8,7 @@ from .node import FailureNode, NonTerminalNode
 from .exception import TacParserException, ParseException
 from .baseparser import postorder_travel
 from .expegparser import ExPegParser
+from .astactions import AstActions
 
 # 標準の Logger
 config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
@@ -314,7 +315,7 @@ class ParserGenerator(object):
             定義に対応する文字列
         """
         # ツリー全体を取得
-        orig = tree.get_str().splitlines()
+        orig = self.parser.get_contents(tree).splitlines()
         # コメント
         cmtline = ""
         for l in orig:

@@ -1,0 +1,242 @@
+Actions : (Ln 1, Col 0)
+    ActionDefinition : (Ln 1, Col 0)
+        Selector : (Ln 1, Col 0)
+            Descendants : (Ln 1, Col 0)
+                Conditions : (Ln 1, Col 0)
+                    Identifier : (Ln 1, Col 0)
+                        @Tarminal : (Ln 1, Col 0) "Family"
+                    OrCondition : (Ln 1, Col 6)
+                        SingleCondition : (Ln 1, Col 7)
+                            AttributeLimitation : (Ln 1, Col 7)
+                                AttributeSimple : (Ln 1, Col 7)
+                                    AttributeName : (Ln 1, Col 7)
+                                        @Tarminal : (Ln 1, Col 7) "foo"
+            Children : (Ln 1, Col 12)
+                Conditions : (Ln 1, Col 14)
+                    Identifier : (Ln 1, Col 14)
+                        @Tarminal : (Ln 1, Col 14) "Name"
+                    OrCondition : (Ln 1, Col 18)
+                        SingleCondition : (Ln 1, Col 19)
+                            AttributeLimitation : (Ln 1, Col 19)
+                                AttributeSimpleNot : (Ln 1, Col 19)
+                                    AttributeName : (Ln 1, Col 20)
+                                        @Tarminal : (Ln 1, Col 20) "foo"
+        Action : (Ln 1, Col 26)
+            Substitution : (Ln 1, Col 26)
+                Variable : (Ln 1, Col 26)
+                    TargetValue : (Ln 1, Col 26)
+                        ParameterName : (Ln 1, Col 28)
+                            @Tarminal : (Ln 1, Col 28) "familyname"
+                Value : (Ln 1, Col 41)
+                    ThisString : (Ln 1, Col 41)
+                        TypeDictionary : (Ln 1, Col 54)
+                            TypeDictItems : (Ln 1, Col 55)
+                                TypeItem : (Ln 1, Col 55)
+                                    Identifier : (Ln 1, Col 55)
+                                        @Tarminal : (Ln 1, Col 55) "Spacing"
+                                    TypeValueString : (Ln 1, Col 65)
+                                        Literal : (Ln 1, Col 65)
+                                            DoubleQuotesLiteral : (Ln 1, Col 65)
+                                                @Tarminal : (Ln 1, Col 65) """
+                                                @Tarminal : (Ln 1, Col 66) ""
+                                                @Tarminal : (Ln 1, Col 66) """
+    ActionDefinition : (Ln 2, Col 0)
+        Selector : (Ln 2, Col 0)
+            Descendants : (Ln 2, Col 0)
+                Conditions : (Ln 2, Col 0)
+                    Identifier : (Ln 2, Col 0)
+                        @Tarminal : (Ln 2, Col 0) "Person"
+                    OrCondition : (Ln 2, Col 6)
+                        SingleCondition : (Ln 2, Col 7)
+                            AttributeLimitation : (Ln 2, Col 7)
+                                AttributeEqual : (Ln 2, Col 7)
+                                    AttributeName : (Ln 2, Col 7)
+                                        @Tarminal : (Ln 2, Col 7) "foo"
+                                    AttributeValue : (Ln 2, Col 14)
+                                        Literal : (Ln 2, Col 14)
+                                            DoubleQuotesLiteral : (Ln 2, Col 14)
+                                                @Tarminal : (Ln 2, Col 14) """
+                                                @Tarminal : (Ln 2, Col 15) "Bar"
+                                                @Tarminal : (Ln 2, Col 18) """
+                        SingleCondition : (Ln 2, Col 22)
+                            AttributeLimitation : (Ln 2, Col 22)
+                                AttributeNotEaual : (Ln 2, Col 22)
+                                    AttributeName : (Ln 2, Col 22)
+                                        @Tarminal : (Ln 2, Col 22) "bar"
+                                    AttributeValue : (Ln 2, Col 29)
+                                        Literal : (Ln 2, Col 29)
+                                            DoubleQuotesLiteral : (Ln 2, Col 29)
+                                                @Tarminal : (Ln 2, Col 29) """
+                                                @Tarminal : (Ln 2, Col 30) "Bar"
+                                                @Tarminal : (Ln 2, Col 33) """
+            Children : (Ln 2, Col 36)
+                Conditions : (Ln 2, Col 38)
+                    Identifier : (Ln 2, Col 38)
+                        @Tarminal : (Ln 2, Col 38) "Name"
+        Action : (Ln 2, Col 44)
+            Substitution : (Ln 2, Col 44)
+                Variable : (Ln 2, Col 44)
+                    TargetValue : (Ln 2, Col 44)
+                        ParameterName : (Ln 2, Col 46)
+                            @Tarminal : (Ln 2, Col 46) "name"
+                Value : (Ln 2, Col 53)
+                    ThisString : (Ln 2, Col 53)
+                        TypeDictionary : (Ln 2, Col 66)
+                            TypeDictItems : (Ln 3, Col 2)
+                                TypeItem : (Ln 3, Col 2)
+                                    Identifier : (Ln 3, Col 2)
+                                        @Tarminal : (Ln 3, Col 2) "Spacing"
+                                    TypeValueString : (Ln 3, Col 12)
+                                        Literal : (Ln 3, Col 12)
+                                            DoubleQuotesLiteral : (Ln 3, Col 12)
+                                                @Tarminal : (Ln 3, Col 12) """
+                                                @Tarminal : (Ln 3, Col 13) ""
+                                                @Tarminal : (Ln 3, Col 13) """
+                                TypeItem : (Ln 4, Col 3)
+                                    Identifier : (Ln 4, Col 3)
+                                        @Tarminal : (Ln 4, Col 3) "Tab"
+                                    TypeValueString : (Ln 4, Col 9)
+                                        Literal : (Ln 4, Col 9)
+                                            DoubleQuotesLiteral : (Ln 4, Col 9)
+                                                @Tarminal : (Ln 4, Col 9) """
+                                                @Tarminal : (Ln 4, Col 10) "\t\t\n"
+                                                @Tarminal : (Ln 4, Col 16) """
+    ActionDefinition : (Ln 5, Col 0)
+        Selector : (Ln 5, Col 0)
+            Descendants : (Ln 5, Col 0)
+                Conditions : (Ln 5, Col 0)
+                    Identifier : (Ln 5, Col 0)
+                        @Tarminal : (Ln 5, Col 0) "Person"
+                    OrCondition : (Ln 5, Col 6)
+                        SingleCondition : (Ln 5, Col 7)
+                            AttributeLimitation : (Ln 5, Col 7)
+                                AttributeContains : (Ln 5, Col 7)
+                                    AttributeName : (Ln 5, Col 7)
+                                        @Tarminal : (Ln 5, Col 7) "goo"
+                                    AttributeValue : (Ln 5, Col 14)
+                                        Literal : (Ln 5, Col 14)
+                                            DoubleQuotesLiteral : (Ln 5, Col 14)
+                                                @Tarminal : (Ln 5, Col 14) """
+                                                @Tarminal : (Ln 5, Col 15) "Goo"
+                                                @Tarminal : (Ln 5, Col 18) """
+                    OrCondition : (Ln 5, Col 20)
+                        SingleCondition : (Ln 5, Col 21)
+                            AttributeLimitation : (Ln 5, Col 21)
+                                AttributeNotContains : (Ln 5, Col 21)
+                                    AttributeName : (Ln 5, Col 21)
+                                        @Tarminal : (Ln 5, Col 21) "car"
+                                    AttributeValue : (Ln 5, Col 28)
+                                        Literal : (Ln 5, Col 28)
+                                            DoubleQuotesLiteral : (Ln 5, Col 28)
+                                                @Tarminal : (Ln 5, Col 28) """
+                                                @Tarminal : (Ln 5, Col 29) "Car"
+                                                @Tarminal : (Ln 5, Col 32) """
+            Children : (Ln 5, Col 35)
+                Conditions : (Ln 5, Col 37)
+                    Identifier : (Ln 5, Col 37)
+                        @Tarminal : (Ln 5, Col 37) "Age"
+        Action : (Ln 5, Col 42)
+            Substitution : (Ln 5, Col 42)
+                Variable : (Ln 5, Col 42)
+                    TargetValue : (Ln 5, Col 42)
+                        ParameterName : (Ln 5, Col 44)
+                            @Tarminal : (Ln 5, Col 44) "age"
+                Value : (Ln 5, Col 50)
+                    ThisString : (Ln 5, Col 50)
+                        TypeDictionary : (Ln 5, Col 63)
+                            TypeDictItems : (Ln 5, Col 65)
+                                TypeItem : (Ln 5, Col 65)
+                                    Identifier : (Ln 5, Col 65)
+                                        @Tarminal : (Ln 5, Col 65) "Nodetype"
+                                    TypeValueString : (Ln 5, Col 76)
+                                        Literal : (Ln 5, Col 76)
+                                            DoubleQuotesLiteral : (Ln 5, Col 76)
+                                                @Tarminal : (Ln 5, Col 76) """
+                                                @Tarminal : (Ln 5, Col 77) "aaaaabbbb日本語"
+                                                @Tarminal : (Ln 5, Col 89) """
+    ActionDefinition : (Ln 7, Col 0)
+        Selector : (Ln 7, Col 0)
+            Descendants : (Ln 7, Col 0)
+                Conditions : (Ln 7, Col 0)
+                    Identifier : (Ln 7, Col 0)
+                        @Tarminal : (Ln 7, Col 0) "Person"
+                    OrCondition : (Ln 7, Col 6)
+                        SingleCondition : (Ln 7, Col 7)
+                            AttributeLimitation : (Ln 7, Col 7)
+                                AttributeStartsWith : (Ln 7, Col 7)
+                                    AttributeName : (Ln 7, Col 7)
+                                        @Tarminal : (Ln 7, Col 7) "hoo"
+                                    AttributeValue : (Ln 7, Col 14)
+                                        Literal : (Ln 7, Col 14)
+                                            DoubleQuotesLiteral : (Ln 7, Col 14)
+                                                @Tarminal : (Ln 7, Col 14) """
+                                                @Tarminal : (Ln 7, Col 15) "Hoo"
+                                                @Tarminal : (Ln 7, Col 18) """
+                        SingleCondition : (Ln 7, Col 22)
+                            AttributeLimitation : (Ln 7, Col 22)
+                                AttributeNotStartsWith : (Ln 7, Col 22)
+                                    AttributeName : (Ln 7, Col 22)
+                                        @Tarminal : (Ln 7, Col 22) "dar"
+                                    AttributeValue : (Ln 7, Col 29)
+                                        Literal : (Ln 7, Col 29)
+                                            DoubleQuotesLiteral : (Ln 7, Col 29)
+                                                @Tarminal : (Ln 7, Col 29) """
+                                                @Tarminal : (Ln 7, Col 30) "Dar"
+                                                @Tarminal : (Ln 7, Col 33) """
+            Children : (Ln 7, Col 36)
+                Conditions : (Ln 7, Col 38)
+                    Identifier : (Ln 7, Col 38)
+                        @Tarminal : (Ln 7, Col 38) "Name"
+                    OrCondition : (Ln 7, Col 42)
+                        SingleCondition : (Ln 7, Col 43)
+                            AttributeLimitation : (Ln 7, Col 43)
+                                AttibuteEndsWith : (Ln 7, Col 43)
+                                    AttributeName : (Ln 7, Col 43)
+                                        @Tarminal : (Ln 7, Col 43) "ioo"
+                                    AttributeValue : (Ln 7, Col 50)
+                                        Literal : (Ln 7, Col 50)
+                                            DoubleQuotesLiteral : (Ln 7, Col 50)
+                                                @Tarminal : (Ln 7, Col 50) """
+                                                @Tarminal : (Ln 7, Col 51) "Ioo"
+                                                @Tarminal : (Ln 7, Col 54) """
+                    OrCondition : (Ln 7, Col 56)
+                        SingleCondition : (Ln 7, Col 57)
+                            AttributeLimitation : (Ln 7, Col 57)
+                                AttributeNotEndsWith : (Ln 7, Col 57)
+                                    AttributeName : (Ln 7, Col 57)
+                                        @Tarminal : (Ln 7, Col 57) "ear"
+                                    AttributeValue : (Ln 7, Col 64)
+                                        Literal : (Ln 7, Col 64)
+                                            DoubleQuotesLiteral : (Ln 7, Col 64)
+                                                @Tarminal : (Ln 7, Col 64) """
+                                                @Tarminal : (Ln 7, Col 65) "Ear"
+                                                @Tarminal : (Ln 7, Col 68) """
+        Action : (Ln 8, Col 5)
+            Substitution : (Ln 8, Col 5)
+                Variable : (Ln 8, Col 5)
+                    TargetValue : (Ln 8, Col 5)
+                        ParameterName : (Ln 8, Col 7)
+                            @Tarminal : (Ln 8, Col 7) "name"
+                Value : (Ln 8, Col 14)
+                    ThisString : (Ln 8, Col 14)
+                        TypeDictionary : (Ln 8, Col 27)
+                            TypeDictItems : (Ln 9, Col 2)
+                                TypeItem : (Ln 9, Col 2)
+                                    Identifier : (Ln 9, Col 2)
+                                        @Tarminal : (Ln 9, Col 2) "Spacing"
+                                    TypeValueString : (Ln 9, Col 12)
+                                        Literal : (Ln 9, Col 12)
+                                            DoubleQuotesLiteral : (Ln 9, Col 12)
+                                                @Tarminal : (Ln 9, Col 12) """
+                                                @Tarminal : (Ln 9, Col 13) ""
+                                                @Tarminal : (Ln 9, Col 13) """
+                                TypeItem : (Ln 10, Col 3)
+                                    Identifier : (Ln 10, Col 3)
+                                        @Tarminal : (Ln 10, Col 3) "Tab"
+                                    TypeValueString : (Ln 10, Col 9)
+                                        Literal : (Ln 10, Col 9)
+                                            DoubleQuotesLiteral : (Ln 10, Col 9)
+                                                @Tarminal : (Ln 10, Col 9) """
+                                                @Tarminal : (Ln 10, Col 10) "\t\t\n"
+                                                @Tarminal : (Ln 10, Col 16) """
+    _EOF : (Ln 10, Col 22)

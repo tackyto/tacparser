@@ -1,0 +1,25 @@
+Definition >> DefinitionIdentifier {this.name = $.get_str({Spacing : ""});}
+Definition >> DefinitionExpression {
+    this.expression = $.get_str({
+        Literal : "",
+        RegularExp : "",
+        Spacing : " ",
+        SLASH : " ",
+        AMPERSAND : " ",
+        EXCLAMATION : " ",
+        MUCH_GREATER_THAN : " ",
+        QUESTION : " ",
+        STAR : " ",
+        PLUS : " ",
+        OPEN : " ",
+        CLOSE : " "
+    });
+}
+MacroDefinition > MacroIdentifier {this.name = $.get_str({Spacing : ""});}
+MacroDefinition > MacroExpression {this.expression = $.get_str();}
+
+DefinitionIdentifier 
+        ++ DefinitionExpression 
+        >> Identifier {
+    $.definition = this.get_str({Spacing : ""});
+}

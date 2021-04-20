@@ -222,7 +222,7 @@ for node in nodes:
 sample_acitons.txt
 ```
 Person > Name { this.name = $.get_str(); }
-Family > Name { this.name = $.get_str(); }
+Family > Name { this.name = $.get_str({Spacing : "", Comment : ""}); }
 Person[name=="Aaaa"] { this.is_all_a = "1"; }
 ```
 
@@ -278,6 +278,7 @@ Person[name=="Aaaa"] { this.is_all_a = "1"; }
 | TypeA[@EL > 10] | 終了行番号が 10 より大きいTypeA |
 | TypeA[@EC > 10] | 終了列番号が 10 より大きいTypeA |
 | TypeA[foo] | foo属性を持つ TypeA |
+| TypeA[!foo] | foo属性を持たない TypeA |
 | TypeA[foo == "bar"] | foo属性が "bar" である TypeA |
 | TypeA[foo ^= "bar"] | foo属性が "bar" で始まる TypeA |
 | TypeA[foo $= "bar"] | foo属性が "bar" で終わる TypeA |
@@ -295,7 +296,8 @@ Person[name=="Aaaa"] { this.is_all_a = "1"; }
 
 アクション部は、現在代入操作のみ行えます。  
 `this` は最初に指定したセレクタ （`Type[Condidion][Condition...]` までのまとまりで見つかったもの）で見つかったノードが、`$` は最後の纏まりで見つかったノードを示しています。  
-`get_str()` により、そのノードの文字列を取得できます。またリテラルを直接代入することもできます。（記載例を参照）
+`get_str()` により、そのノードの文字列を取得できます。またリテラルを直接代入することもできます。（記載例を参照）  
+また、`get_str()` には、辞書形式の記載で、探索時に配下の特定のノードを指定の文字列に変換して出力する機能があります。
 
 
 ## 実装予定

@@ -69,3 +69,38 @@ class TestActionsParser(unittest.TestCase):
             fout.write(node.print_tree())
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+    def test_actions04(self):
+        action_str = 'Family > Name {$.familyname = this.get_str({Spacing : ""});}\n' + \
+                     'Person > Name {$.name = this.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n' + \
+                     'Person > Age {$.age = this.get_str({ Nodetype : "aaaaabbbb日本語"\n\t\t });}\n'
+
+        flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
+        self.assertTrue(flg)
+
+        pathoutfile = os.path.join(self.test_dir, "actions04_src.out")
+        pathoutfile_dist = os.path.join(self.test_dir, "actions04_dist.out")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(node.print_tree())
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+    def test_actions05(self):
+        action_str = 'Family[foo] > Name[!foo] {$.familyname = this.get_str({Spacing : ""});}\n' + \
+                     'Person[foo == "Bar" | bar != "Bar"] > Name {$.name = this.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n' + \
+                     'Person[goo *= "Goo"][car !* "Car"] > Age {$.age = this.get_str({ Nodetype : "aaaaabbbb日本語"\n\t\t });}\n' + \
+                     'Person[hoo ^= "Hoo" | dar !^ "Dar"] > Name[ioo $= "Ioo"][ear !$ "Ear"]\n' + \
+                     '\t\t\t {$.name = this.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n'
+
+        flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
+        self.assertTrue(flg)
+
+        pathoutfile = os.path.join(self.test_dir, "actions05_src.out")
+        pathoutfile_dist = os.path.join(self.test_dir, "actions05_dist.out")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(node.print_tree())
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+

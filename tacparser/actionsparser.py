@@ -59,6 +59,7 @@ class ActionsParser(Parser):
                          "AttributeNotEndsWith": self.p_attributenotendswith,
                          "AttributeNotContains": self.p_attributenotcontains,
                          "AttributeSimple": self.p_attributesimple,
+                         "AttributeSimpleNot": self.p_attributesimplenot,
                          "AttributeName": self.p_attributename,
                          "STARTS_WITH": self.p_starts_with,
                          "ENDS_WITH": self.p_ends_with,
@@ -67,6 +68,7 @@ class ActionsParser(Parser):
                          "NOT_STARTS_WITH": self.p_not_starts_with,
                          "NOT_ENDS_WITH": self.p_not_ends_with,
                          "NOT_CONTAINS": self.p_not_contains,
+                         "NOT": self.p_not,
                          "AttributeValue": self.p_attributevalue,
                          "Action": self.p_action,
                          "Substitution": self.p_substitution,
@@ -77,12 +79,18 @@ class ActionsParser(Parser):
                          "DoubleQuotesLiteral": self.p_doublequotesliteral,
                          "ThisString": self.p_thisstring,
                          "TargetString": self.p_targetstring,
+                         "TypeDictionary": self.p_typedictionary,
+                         "TypeDictItems": self.p_typedictitems,
+                         "TypeItem": self.p_typeitem,
+                         "TypeValueString": self.p_typevaluestring,
                          "ThisValue": self.p_thisvalue,
                          "TargetValue": self.p_targetvalue,
                          "ParameterName": self.p_parametername,
                          "THIS": self.p_this,
                          "S": self.p_s,
                          "EndOfLine": self.p_endofline,
+                         "OPEN": self.p_open,
+                         "CLOSE": self.p_close,
                          "CURL_OPEN": self.p_curl_open,
                          "CURL_CLOSE": self.p_curl_close,
                          "BRAKET_OPEN": self.p_braket_open,
@@ -426,6 +434,7 @@ class ActionsParser(Parser):
         #                      / AttributeNotEndsWith
         #                      / AttributeNotContains
         #                      / AttributeSimple
+        #                      / AttributeSimpleNot
         return self._sel(self._p(self.p_attributeequal, "AttributeEqual"),
                          self._p(self.p_attributestartswith, "AttributeStartsWith"),
                          self._p(self.p_attibuteendswith, "AttibuteEndsWith"),
@@ -434,7 +443,8 @@ class ActionsParser(Parser):
                          self._p(self.p_attributenotstartswith, "AttributeNotStartsWith"),
                          self._p(self.p_attributenotendswith, "AttributeNotEndsWith"),
                          self._p(self.p_attributenotcontains, "AttributeNotContains"),
-                         self._p(self.p_attributesimple, "AttributeSimple")
+                         self._p(self.p_attributesimple, "AttributeSimple"),
+                         self._p(self.p_attributesimplenot, "AttributeSimpleNot")
                          )
 
     def p_attributeequal(self):
@@ -499,6 +509,13 @@ class ActionsParser(Parser):
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
+    def p_attributesimplenot(self):
+        # AttributeSimpleNot     <- >>NOT AttributeName >>S?
+        return self._seq(self._skip(self._p(self.p_not, "NOT")),
+                         self._p(self.p_attributename, "AttributeName"),
+                         self._skip(self._opt(self._p(self.p_s, "S")))
+                         )
+
     _reg_p_attributename0 = regex.compile("[a-z_][a-z0-9_]*", regex.M)
 
     def p_attributename(self):
@@ -549,6 +566,12 @@ class ActionsParser(Parser):
                          self._opt(self._p(self.p_s, "S"))
                          )
 
+    def p_not(self):
+        # NOT             <- '!' S?
+        return self._seq(self._l('!'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
     def p_attributevalue(self):
         # # TODO : 数値やリスト、辞書などの操作
         # AttributeValue <- Literal
@@ -561,12 +584,12 @@ class ActionsParser(Parser):
         # # 例：
         # # { 
         # #    this.parameter_name = $.get_str(); 
+        # #    this.param_no_space = $.get_str({Spacing:"", Comment:""}); 
         # #    $.parameter = this.parameter2;
         # # }
         # # 
         # # $ は一致したノードのパラメータ
         # # this は最初の条件式に一致するノードのパラメータ
-        # # x += y , x.append(y) などの構文も追加したい
         # # ----------------------------------------
         # Action <- Substitution 
         return self._p(self.p_substitution, "Substitution")
@@ -605,38 +628,70 @@ class ActionsParser(Parser):
     _reg_p_singlequotesliteral0 = regex.compile("(\\\\.|[^'\\\\])*", regex.M)
 
     def p_singlequotesliteral(self):
-        # SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'" >>S?
-        return self._seq(self._skip(self._l("'")),
+        # SingleQuotesLiteral <- "'" r"(\\.|[^'\\])*" "'" >>S?
+        return self._seq(self._l("'"),
                          self._r(self._reg_p_singlequotesliteral0),
-                         self._skip(self._l("'")),
+                         self._l("'"),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
     _reg_p_doublequotesliteral0 = regex.compile('(\\\\.|[^"\\\\])*', regex.M)
 
     def p_doublequotesliteral(self):
-        # DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"' >>S?
-        return self._seq(self._skip(self._l('"')),
+        # DoubleQuotesLiteral <- '"' r'(\\.|[^"\\])*' '"' >>S?
+        return self._seq(self._l('"'),
                          self._r(self._reg_p_doublequotesliteral0),
-                         self._skip(self._l('"')),
+                         self._l('"'),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
     def p_thisstring(self):
-        # ThisString <- >>THIS >>DOT >>'get_str()' >>S?
+        # ThisString <- >>THIS >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
         return self._seq(self._skip(self._p(self.p_this, "THIS")),
                          self._skip(self._p(self.p_dot, "DOT")),
-                         self._skip(self._l('get_str()')),
+                         self._skip(self._l('get_str')),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._opt(self._p(self.p_typedictionary, "TypeDictionary")),
+                         self._skip(self._p(self.p_close, "CLOSE")),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
     def p_targetstring(self):
-        # TargetString <- >>DOLLAR >>DOT >>'get_str()' >>S?
+        # TargetString <- >>DOLLAR >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
         return self._seq(self._skip(self._p(self.p_dollar, "DOLLAR")),
                          self._skip(self._p(self.p_dot, "DOT")),
-                         self._skip(self._l('get_str()')),
+                         self._skip(self._l('get_str')),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._opt(self._p(self.p_typedictionary, "TypeDictionary")),
+                         self._skip(self._p(self.p_close, "CLOSE")),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
+
+    def p_typedictionary(self):
+        # TypeDictionary <- >>CURL_OPEN TypeDictItems? >>CURL_CLOSE
+        return self._seq(self._skip(self._p(self.p_curl_open, "CURL_OPEN")),
+                         self._opt(self._p(self.p_typedictitems, "TypeDictItems")),
+                         self._skip(self._p(self.p_curl_close, "CURL_CLOSE"))
+                         )
+
+    def p_typedictitems(self):
+        # TypeDictItems <- TypeItem ( >>COMMA TypeItem )*
+        return self._seq(self._p(self.p_typeitem, "TypeItem"),
+                         self._rpt(self._seq(self._skip(self._p(self.p_comma, "COMMA")),
+                                             self._p(self.p_typeitem, "TypeItem")
+                                             ), 0)
+                         )
+
+    def p_typeitem(self):
+        # TypeItem <- Identifier >>COLON TypeValueString
+        return self._seq(self._p(self.p_identifier, "Identifier"),
+                         self._skip(self._p(self.p_colon, "COLON")),
+                         self._p(self.p_typevaluestring, "TypeValueString")
+                         )
+
+    def p_typevaluestring(self):
+        # TypeValueString <- Literal
+        return self._p(self.p_literal, "Literal")
 
     def p_thisvalue(self):
         # ThisValue <- >>THIS >>DOT ParameterName
@@ -684,9 +739,19 @@ class ActionsParser(Parser):
         # EndOfLine <- r"\r\n|\n|\r"
         return self._r(self._reg_p_endofline0)
 
+    def p_open(self):
+        # OPEN <- '(' S?
+        return self._seq(self._l('('),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_close(self):
+        # CLOSE <- ')' S?
+        return self._seq(self._l(')'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
     def p_curl_open(self):
-        # # OPEN <- '(' S?
-        # # CLOSE <- ')' S?
         # CURL_OPEN  <- '{'  S?
         return self._seq(self._l('{'),
                          self._opt(self._p(self.p_s, "S"))

@@ -66,6 +66,24 @@ class Parser(object):
             構文解析結果のルートノード
         """
         return self._tree
+    
+    def get_contents(self, node:Node) -> str:
+        """
+        引数Nodeの解析結果に相当する元の文字列をそのまま返す。
+
+        skip等でノードが作成されていない場合でも該当部分の文字列を返す。
+       
+        Parameters
+        ----------
+        node : Node
+            対象のノード
+        
+        Returns
+        ----------
+        contents : str
+            ノードの開始位置と終了位置から該当する文字列
+        """
+        return self._reader.get_contents(node.startpos, node.endpos)
 
     def parse_file(self, filepath:str, encoding:str="utf-8", typename:str="") -> tuple[bool, "Node"]:
         """
