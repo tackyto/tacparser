@@ -77,16 +77,17 @@ class ActionsParser(Parser):
                          "Literal": self.p_literal,
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
                          "DoubleQuotesLiteral": self.p_doublequotesliteral,
-                         "ThisString": self.p_thisstring,
+                         "RootString": self.p_rootstring,
                          "TargetString": self.p_targetstring,
                          "TypeDictionary": self.p_typedictionary,
                          "TypeDictItems": self.p_typedictitems,
                          "TypeItem": self.p_typeitem,
                          "TypeValueString": self.p_typevaluestring,
-                         "ThisValue": self.p_thisvalue,
+                         "RootValue": self.p_rootvalue,
                          "TargetValue": self.p_targetvalue,
                          "ParameterName": self.p_parametername,
-                         "THIS": self.p_this,
+                         "ROOT": self.p_root,
+                         "TARGET": self.p_target,
                          "S": self.p_s,
                          "EndOfLine": self.p_endofline,
                          "OPEN": self.p_open,
@@ -99,7 +100,6 @@ class ActionsParser(Parser):
                          "COMMA": self.p_comma,
                          "DOT": self.p_dot,
                          "SEMICOLON": self.p_semicolon,
-                         "DOLLAR": self.p_dollar,
                          "EQUAL": self.p_equal,
                          "VERTICAL_BAR": self.p_vertical_bar,
                          "LINE_COMMENT_START": self.p_line_comment_start,
@@ -138,7 +138,7 @@ class ActionsParser(Parser):
         # # astから要素を選択する記法
         # #     css like な記載方法
         # # 
-        # #     <Selector> { parameter_name = this.parameter; }
+        # #     <Selector> { parameter_name = root.parameter; }
         # # ----------------------------------------
         # ActionDefinition <- Selector ( >>COMMA Selector)*
         #                     >>CURL_OPEN Action >>SEMICOLON ( Action >>SEMICOLON )* >>CURL_CLOSE
@@ -583,13 +583,13 @@ class ActionsParser(Parser):
         # # ----------------------------------------
         # # 例：
         # # { 
-        # #    this.parameter_name = $.get_str(); 
-        # #    this.param_no_space = $.get_str({Spacing:"", Comment:""}); 
-        # #    $.parameter = this.parameter2;
+        # #    root.parameter_name = target.get_str(); 
+        # #    root.param_no_space = target.get_str({Spacing:"", Comment:""}); 
+        # #    target.parameter = root.parameter2;
         # # }
         # # 
         # # $ は一致したノードのパラメータ
-        # # this は最初の条件式に一致するノードのパラメータ
+        # # root は最初の条件式に一致するノードのパラメータ
         # # ----------------------------------------
         # Action <- Substitution 
         return self._p(self.p_substitution, "Substitution")
@@ -603,19 +603,19 @@ class ActionsParser(Parser):
                          )
 
     def p_variable(self):
-        # Variable <- ThisValue / TargetValue
-        return self._sel(self._p(self.p_thisvalue, "ThisValue"),
+        # Variable <- RootValue / TargetValue
+        return self._sel(self._p(self.p_rootvalue, "RootValue"),
                          self._p(self.p_targetvalue, "TargetValue")
                          )
 
     def p_value(self):
         # # TODO : int , list の操作
-        # # Value <- Number / Literal / EmptyList / ThisValue / TargetValue
-        # Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
+        # # Value <- Number / Literal / EmptyList / RootValue / TargetValue
+        # Value <- Literal / RootString / TargetString / RootValue / TargetValue
         return self._sel(self._p(self.p_literal, "Literal"),
-                         self._p(self.p_thisstring, "ThisString"),
+                         self._p(self.p_rootstring, "RootString"),
                          self._p(self.p_targetstring, "TargetString"),
-                         self._p(self.p_thisvalue, "ThisValue"),
+                         self._p(self.p_rootvalue, "RootValue"),
                          self._p(self.p_targetvalue, "TargetValue")
                          )
 
@@ -645,9 +645,9 @@ class ActionsParser(Parser):
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
-    def p_thisstring(self):
-        # ThisString <- >>THIS >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
-        return self._seq(self._skip(self._p(self.p_this, "THIS")),
+    def p_rootstring(self):
+        # RootString <- >>ROOT >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
+        return self._seq(self._skip(self._p(self.p_root, "ROOT")),
                          self._skip(self._p(self.p_dot, "DOT")),
                          self._skip(self._l('get_str')),
                          self._skip(self._p(self.p_open, "OPEN")),
@@ -657,8 +657,8 @@ class ActionsParser(Parser):
                          )
 
     def p_targetstring(self):
-        # TargetString <- >>DOLLAR >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
-        return self._seq(self._skip(self._p(self.p_dollar, "DOLLAR")),
+        # TargetString <- >>TARGET >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
+        return self._seq(self._skip(self._p(self.p_target, "TARGET")),
                          self._skip(self._p(self.p_dot, "DOT")),
                          self._skip(self._l('get_str')),
                          self._skip(self._p(self.p_open, "OPEN")),
@@ -693,16 +693,16 @@ class ActionsParser(Parser):
         # TypeValueString <- Literal
         return self._p(self.p_literal, "Literal")
 
-    def p_thisvalue(self):
-        # ThisValue <- >>THIS >>DOT ParameterName
-        return self._seq(self._skip(self._p(self.p_this, "THIS")),
+    def p_rootvalue(self):
+        # RootValue <- >>ROOT >>DOT ParameterName
+        return self._seq(self._skip(self._p(self.p_root, "ROOT")),
                          self._skip(self._p(self.p_dot, "DOT")),
                          self._p(self.p_parametername, "ParameterName")
                          )
 
     def p_targetvalue(self):
-        # TargetValue <- >>DOLLAR >>DOT ParameterName
-        return self._seq(self._skip(self._p(self.p_dollar, "DOLLAR")),
+        # TargetValue <- >>TARGET >>DOT ParameterName
+        return self._seq(self._skip(self._p(self.p_target, "TARGET")),
                          self._skip(self._p(self.p_dot, "DOT")),
                          self._p(self.p_parametername, "ParameterName")
                          )
@@ -715,9 +715,15 @@ class ActionsParser(Parser):
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
-    def p_this(self):
-        # THIS <- 'this' S?
-        return self._seq(self._l('this'),
+    def p_root(self):
+        # ROOT <- 'root' S?
+        return self._seq(self._l('root'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_target(self):
+        # TARGET <- 'target' S?
+        return self._seq(self._l('target'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 
@@ -799,13 +805,8 @@ class ActionsParser(Parser):
                          self._opt(self._p(self.p_s, "S"))
                          )
 
-    def p_dollar(self):
-        # DOLLAR <- '$' S?
-        return self._seq(self._l('$'),
-                         self._opt(self._p(self.p_s, "S"))
-                         )
-
     def p_equal(self):
+        # # DOLLAR <- '$' S?
         # EQUAL <- '=' S?
         return self._seq(self._l('='),
                          self._opt(self._p(self.p_s, "S"))

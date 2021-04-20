@@ -1,13 +1,13 @@
-Person > Name {this.name = $.get_str();} // name 属性を設定
-Person > Sex >> Male   {this.sex = "M";} // 性別を設定
-Person > Sex >> Female {this.sex = "F";} // 性別を設定
-Person[name == "Aaaa Aaaa"] {this.name_is_all_a = "1";} // Equal
-Person[name ^= "Bbbb" ] {this.startswith = "Bbbb";} // Starts With
-Person[name $= "Cccc" ] {this.endswith = "Cccc";} // Ends With
-Person[name *= "a C" ] {this.contains = "a C";} // Contains 
-Person[sex != "M" ] {this.notequal = "not man";} // Not Equal
-Person[name !^ "A" ] {this.notstartswith = "A";} // Not Starts With
-Person[name !$ "b" ][name !$ "d" ] {this.notendswith = "b&d";} // Not Ends With
-Person[name !* "aa" ][name !* "dd"] {this.not_contains = "aa & dd";} // Not Contains 
-Person[name_is_all_a] {this.only_name_is_all_a = "1";} // Having Attribute
-Person[!name_is_all_a] {this.only_name_is_all_a = "0";} // Not Having Attribute
+Person > Name {root.name = target.get_str();} // name 属性を設定
+Person > Sex >> Male   {root.sex = "M";} // 性別を設定
+Person > Sex >> Female {root.sex = "F";} // 性別を設定
+Person[name == "Aaaa Aaaa"] {root.name_is_all_a = "1";} // Equal
+Person[name ^= "Bbbb" ] {root.startswith = "Bbbb";} // Starts With
+Person[name $= "Cccc" ] {root.endswith = "Cccc";} // Ends With
+Person[name *= "a C" ] {root.contains = "a C";} // Contains 
+Person[sex != "M" ] {root.notequal = "not man";} // Not Equal
+Person[name !^ "A" ] {root.notstartswith = "A";} // Not Starts With
+Person[name !$ "b" ][name !$ "d" ] {root.notendswith = "b&d";} // Not Ends With
+Person[name !* "aa" ][name !* "dd"] {root.not_contains = "aa & dd";} // Not Contains 
+Person[name_is_all_a] {root.only_name_is_all_a = "1";} // Having Attribute
+Person[!name_is_all_a] {root.only_name_is_all_a = "0";} // Not Having Attribute

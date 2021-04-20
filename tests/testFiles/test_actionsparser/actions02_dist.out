@@ -19,7 +19,7 @@ Actions : (Ln 1, Col 0)
         Action : (Ln 2, Col 1)
             Substitution : (Ln 2, Col 1)
                 Variable : (Ln 2, Col 1)
-                    ThisValue : (Ln 2, Col 1)
+                    RootValue : (Ln 2, Col 1)
                         ParameterName : (Ln 2, Col 6)
                             @Tarminal : (Ln 2, Col 6) "variable"
                 Value : (Ln 2, Col 17)

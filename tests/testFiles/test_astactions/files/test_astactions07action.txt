@@ -1,8 +1,8 @@
 // Line Comment
-Person[@L  > 40] {this.startline = "@L > 40";} // Line Comment
-Person[@L == 12] {this.startlineeq = "@L == 12";} // Line Comment
-Person[@EL < 4 ] {this.endline = "@EL < 4";} /* Person {this.comment = "false";} */
-Person[@C  >= 11] {this.startcolumn = "@C >= 11";}
-Person[@EC <= 77] {this.endvolumn = "@EC <= 77";}
+Person[@L  > 40] {root.startline = "@L > 40";} // Line Comment
+Person[@L == 12] {root.startlineeq = "@L == 12";} // Line Comment
+Person[@EL < 4 ] {root.endline = "@EL < 4";} /* Person {root.comment = "false";} */
+Person[@C  >= 11] {root.startcolumn = "@C >= 11";}
+Person[@EC <= 77] {root.endvolumn = "@EC <= 77";}
 /* comment */
 // Line Comment

@@ -469,15 +469,15 @@ class AstActions(object):
 
     def _get_action_substitution(self, _node:NonTerminalNode) -> ActionFuncType:
         # Substitution <- Variable >>EQUAL Value
-        # Variable <- ThisValue / TargetValue
-        # Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
-        # ThisValue <- >>THIS >>DOT ParameterName
+        # Variable <- RootValue / TargetValue
+        # Value <- Literal / RootString / TargetString / RootValue / TargetValue
+        # RootValue <- >>ROOT >>DOT ParameterName
         # TargetValue <- >>DOLLAR >>DOT ParameterName
 
         val_n = _node.get_childnode("Value")[0]
         val_target = val_n.children[0]
         get_val_f:Callable[[NonTerminalNode, NonTerminalNode], str] = None
-        if val_target.type =="ThisString":
+        if val_target.type =="RootString":
             dictionary_nodes = val_target.get_childnode("TypeDictionary")
             type_dict = {}
             if len(dictionary_nodes) > 0:
@@ -489,7 +489,7 @@ class AstActions(object):
             if len(dictionary_nodes) > 0:
                 type_dict = self._get_typedictionary(dictionary_nodes[0])
             get_val_f = lambda p, n: n.get_str(type_dict)
-        elif val_target.type =="ThisValue":
+        elif val_target.type =="RootValue":
             val_param = val_target.get_childnode("ParameterName")[0].get_str()
             get_val_f = lambda p, n: p.get_attr(val_param)
         elif val_target.type =="TargetValue":
@@ -506,7 +506,7 @@ class AstActions(object):
         var_n = _node.get_childnode("Variable")[0]
         var_target = var_n.children[0]
         get_subst_f:Callable[[NonTerminalNode, NonTerminalNode], None] = None
-        if var_target.type =="ThisValue":
+        if var_target.type =="RootValue":
             var_param = var_target.get_childnode("ParameterName")[0].get_str()
             get_subst_f = lambda p, n: p.set_attr(var_param, get_val_f(p,n))
         elif var_target.type =="TargetValue":

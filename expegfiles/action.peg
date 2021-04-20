@@ -12,7 +12,7 @@ Actions <- ( ActionDefinition / >>Comment / >>S )* _EOF
 # astから要素を選択する記法
 #     css like な記載方法
 # 
-#     <Selector> { parameter_name = this.parameter; }
+#     <Selector> { parameter_name = root.parameter; }
 # ----------------------------------------
 ActionDefinition <- Selector ( >>COMMA Selector)*
                     >>CURL_OPEN Action >>SEMICOLON ( Action >>SEMICOLON )* >>CURL_CLOSE
@@ -178,22 +178,22 @@ AttributeValue <- Literal
 # ----------------------------------------
 # 例：
 # { 
-#    this.parameter_name = $.get_str(); 
-#    this.param_no_space = $.get_str({Spacing:"", Comment:""}); 
-#    $.parameter = this.parameter2;
+#    root.parameter_name = target.get_str(); 
+#    root.param_no_space = target.get_str({Spacing:"", Comment:""}); 
+#    target.parameter = root.parameter2;
 # }
 # 
 # $ は一致したノードのパラメータ
-# this は最初の条件式に一致するノードのパラメータ
+# root は最初の条件式に一致するノードのパラメータ
 # ----------------------------------------
 Action <- Substitution 
 #        / AppendList
 Substitution <- Variable >>EQUAL Value
-Variable <- ThisValue / TargetValue
+Variable <- RootValue / TargetValue
 
 # TODO : int , list の操作
-# Value <- Number / Literal / EmptyList / ThisValue / TargetValue
-Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
+# Value <- Number / Literal / EmptyList / RootValue / TargetValue
+Value <- Literal / RootString / TargetString / RootValue / TargetValue
 
 # TODO : 未実装
 # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
@@ -202,19 +202,20 @@ Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
 SingleQuotesLiteral <- "'" r"(\\.|[^'\\])*" "'" >>S?
 DoubleQuotesLiteral <- '"' r'(\\.|[^"\\])*' '"' >>S?
 
-ThisString <- >>THIS >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
-TargetString <- >>DOLLAR >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
+RootString <- >>ROOT >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
+TargetString <- >>TARGET >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
 
 TypeDictionary <- >>CURL_OPEN TypeDictItems? >>CURL_CLOSE
 TypeDictItems <- TypeItem ( >>COMMA TypeItem )*
 TypeItem <- Identifier >>COLON TypeValueString
 TypeValueString <- Literal
 
-ThisValue <- >>THIS >>DOT ParameterName
-TargetValue <- >>DOLLAR >>DOT ParameterName
+RootValue <- >>ROOT >>DOT ParameterName
+TargetValue <- >>TARGET >>DOT ParameterName
 ParameterName <- r"[a-z][a-z_]*" >>S?
 
-THIS <- 'this' S?
+ROOT <- 'root' S?
+TARGET <- 'target' S?
 # APPEND <- 'append'
 
 # ----------------------------------------
@@ -233,7 +234,7 @@ COLON <- ':' S?
 COMMA <- ',' S?
 DOT <- '.' S?
 SEMICOLON <- ';' S?
-DOLLAR <- '$' S?
+# DOLLAR <- '$' S?
 EQUAL <- '=' S?
 VERTICAL_BAR <- '|' S?
 

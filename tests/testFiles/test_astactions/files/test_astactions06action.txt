@@ -1,2 +1,2 @@
-Society > SocietyName {this.name = $.get_str();}
-Society > Family[0:3] {$.society = this.name;}
+Society > SocietyName {root.name = target.get_str();}
+Society > Family[0:3] {target.society = root.name;}

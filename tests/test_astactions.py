@@ -212,7 +212,7 @@ class TestASTActionsNode(unittest.TestCase):
     def test_get_action_func_err3(self):
         child_nodes =   (   NonTerminalNode("Substitution", (
                                 NonTerminalNode("Value", (
-                                    NonTerminalNode("ThisString", (
+                                    NonTerminalNode("RootString", (
                                     )),
                                 )),
                                 NonTerminalNode("Variable", (
@@ -256,7 +256,7 @@ class TestASTActionsString(unittest.TestCase):
 
     def test_actions01(self):
         file_name = "test_astactions01.txt"
-        action_string = 'NodeName {\n\tthis.variable = "value";\n\t$.variable=this.value;\n}'
+        action_string = 'NodeName {\n\troot.variable = "value";\n\ttarget.variable=root.value;\n}'
         self.apply_astactionstest_string(file_name, action_string)
     
     def test_actions_read_error(self):
@@ -268,31 +268,31 @@ class TestASTActionsString(unittest.TestCase):
 
     def test_actions02(self):
         file_name = "test_astactions02.txt"
-        action_string = 'Family > FamilyName {this.familyname = $.get_str();}\n' + \
-                        'Person > Name {this.name = $.get_str();}\n' + \
-                        'Person > Age {this.age = $.get_str();}\n' + \
-                        'Person > Sex >> Male {this.sex = "M";}\n' + \
-                        'Person > Sex >> Female {this.sex = "F";}'
+        action_string = 'Family > FamilyName {root.familyname = target.get_str();}\n' + \
+                        'Person > Name {root.name = target.get_str();}\n' + \
+                        'Person > Age {root.age = target.get_str();}\n' + \
+                        'Person > Sex >> Male {root.sex = "M";}\n' + \
+                        'Person > Sex >> Female {root.sex = "F";}'
         self.apply_astactionstest_string(file_name, action_string)
 
     def test_actions03(self):
         file_name = "test_astactions03.txt"
-        action_string = 'Family + Family > FamilyName {this.rightneighbor = $.get_str();}\n' + \
-                        'Family - Family > FamilyName {this.leftneighbor = $.get_str();}\n' + \
-                        'Family[@l >= 8] {this.order = "Bottom";}\n' + \
-                        'Family[@l < 8] {this.order = "Top";}\n'
+        action_string = 'Family + Family > FamilyName {root.rightneighbor = target.get_str();}\n' + \
+                        'Family - Family > FamilyName {root.leftneighbor = target.get_str();}\n' + \
+                        'Family[@l >= 8] {root.order = "Bottom";}\n' + \
+                        'Family[@l < 8] {root.order = "Top";}\n'
         self.apply_astactionstest_string(file_name, action_string)
 
     def test_actions04(self):
         file_name = "test_astactions04.txt"
-        action_string = 'Person > Name {this.name = $.get_str();}\n' + \
-                        'Society > SocietyName {this.name = $.get_str();}\n' + \
-                        'Family > FamilyName {this.name = $.get_str();}\n' + \
-                        'Family > Person[0] {this.landlord = $.name;}\n' + \
-                        'Family < Society {this.society = $.name;}\n' + \
-                        'Person << Society {this.society = $.name;}\n' + \
-                        'Family > Person[0] ++ Person[-1] {this.little = $.name;}\n' + \
-                        'Family > Person[-1] -- Person[-1] {this.parent = $.name;}\n' 
+        action_string = 'Person > Name {root.name = target.get_str();}\n' + \
+                        'Society > SocietyName {root.name = target.get_str();}\n' + \
+                        'Family > FamilyName {root.name = target.get_str();}\n' + \
+                        'Family > Person[0] {root.landlord = target.name;}\n' + \
+                        'Family < Society {root.society = target.name;}\n' + \
+                        'Person << Society {root.society = target.name;}\n' + \
+                        'Family > Person[0] ++ Person[-1] {root.little = target.name;}\n' + \
+                        'Family > Person[-1] -- Person[-1] {root.parent = target.name;}\n' 
         self.apply_astactionstest_string(file_name, action_string)
 
 

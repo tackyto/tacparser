@@ -25,7 +25,7 @@ class TestActionsParser(unittest.TestCase):
         ActionsParser()
 
     def test_actions01(self):
-        action_str = 'NodeName {\n\tthis.variable = "value";\n\t$.variable=this.value;\n}'
+        action_str = 'NodeName {\n\troot.variable = "value";\n\ttarget.variable=root.value;\n}'
 
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
@@ -39,7 +39,7 @@ class TestActionsParser(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
     def test_actions02(self):
-        action_str = 'NodeName[foo | bar] {\n\tthis.variable = "value";}'
+        action_str = 'NodeName[foo | bar] {\n\troot.variable = "value";}'
 
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
@@ -53,11 +53,11 @@ class TestActionsParser(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
     def test_actions03(self):
-        action_str = 'Family > FamilyName {$.familyname = this.get_str();}\n' + \
-                     'Person > Name {$.name = this.get_str();}\n' + \
-                     'Person > Age {$.age = this.get_str();}\n' + \
-                     'Person > Sex >> Male {$.sex = "M";}\n' + \
-                     'Person > Sex >> Female {$.sex = "F";}'
+        action_str = 'Family > FamilyName {target.familyname = root.get_str();}\n' + \
+                     'Person > Name {target.name = root.get_str();}\n' + \
+                     'Person > Age {target.age = root.get_str();}\n' + \
+                     'Person > Sex >> Male {target.sex = "M";}\n' + \
+                     'Person > Sex >> Female {target.sex = "F";}'
 
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
@@ -71,9 +71,9 @@ class TestActionsParser(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
     def test_actions04(self):
-        action_str = 'Family > Name {$.familyname = this.get_str({Spacing : ""});}\n' + \
-                     'Person > Name {$.name = this.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n' + \
-                     'Person > Age {$.age = this.get_str({ Nodetype : "aaaaabbbb日本語"\n\t\t });}\n'
+        action_str = 'Family > Name {target.familyname = root.get_str({Spacing : ""});}\n' + \
+                     'Person > Name {target.name = root.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n' + \
+                     'Person > Age {target.age = root.get_str({ Nodetype : "aaaaabbbb日本語"\n\t\t });}\n'
 
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
@@ -87,11 +87,11 @@ class TestActionsParser(unittest.TestCase):
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
 
     def test_actions05(self):
-        action_str = 'Family[foo] > Name[!foo] {$.familyname = this.get_str({Spacing : ""});}\n' + \
-                     'Person[foo == "Bar" | bar != "Bar"] > Name {$.name = this.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n' + \
-                     'Person[goo *= "Goo"][car !* "Car"] > Age {$.age = this.get_str({ Nodetype : "aaaaabbbb日本語"\n\t\t });}\n' + \
+        action_str = 'Family[foo] > Name[!foo] {target.familyname = root.get_str({Spacing : ""});}\n' + \
+                     'Person[foo == "Bar" | bar != "Bar"] > Name {target.name = root.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n' + \
+                     'Person[goo *= "Goo"][car !* "Car"] > Age {target.age = root.get_str({ Nodetype : "aaaaabbbb日本語"\n\t\t });}\n' + \
                      'Person[hoo ^= "Hoo" | dar !^ "Dar"] > Name[ioo $= "Ioo"][ear !$ "Ear"]\n' + \
-                     '\t\t\t {$.name = this.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n'
+                     '\t\t\t {target.name = root.get_str({ \n\t\tSpacing : "" ,\n\t\t Tab : "\\t\\t\\n"});}\n'
 
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)

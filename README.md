@@ -221,9 +221,9 @@ for node in nodes:
 ### 記載例
 sample_acitons.txt
 ```
-Person > Name { this.name = $.get_str(); }
-Family > Name { this.name = $.get_str({Spacing : "", Comment : ""}); }
-Person[name=="Aaaa"] { this.is_all_a = "1"; }
+Person > Name { root.name = target.get_str(); }
+Family > Name { root.name = target.get_str({Spacing : "", Comment : ""}); }
+Person[name=="Aaaa"] { root.is_all_a = "1"; }
 ```
 
 ここで、セレクタ部は `{...}` の前の部分、アクション部は `{...}` の内部です。  
@@ -258,7 +258,7 @@ Person[name=="Aaaa"] { this.is_all_a = "1"; }
 上記のセレクタを用いることで、求めたいノードを検索します。  
 複数を繋げた、`TypeA > TypeB[x="hoge"] >> TypeC` のような書き方も可能です。  
 この場合、TypeA の子から x属性が "hoge" であるTypeBを探索し、該当した各TypeB ノードの子孫ノードから TypeC を検索します。  
-この時、アクション部の `this` は 最初に検索した TypeA ノードを、`$` は最後に見つかった TypeC ノードを表します。
+この時、アクション部の `root` は 最初に検索した TypeA ノードを、`$` は最後に見つかった TypeC ノードを表します。
 
 <br>
 
@@ -295,7 +295,7 @@ Person[name=="Aaaa"] { this.is_all_a = "1"; }
 ### アクション部の書き方
 
 アクション部は、現在代入操作のみ行えます。  
-`this` は最初に指定したセレクタ （`Type[Condidion][Condition...]` までのまとまりで見つかったもの）で見つかったノードが、`$` は最後の纏まりで見つかったノードを示しています。  
+ここでの `root` は最初に指定したセレクタ （`Type[Condidion][Condition...]` までのまとまりで見つかったもの）で見つかったノードが、`target` は最後の纏まりで見つかったノードを示しています。  
 `get_str()` により、そのノードの文字列を取得できます。またリテラルを直接代入することもできます。（記載例を参照）  
 また、`get_str()` には、辞書形式の記載で、探索時に配下の特定のノードを指定の文字列に変換して出力する機能があります。
 
