@@ -22,7 +22,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
                         @Tarminal : (3, 58 - 3, 63 : 90 - 95) "0123-"
                         @Tarminal : (3, 63 - 3, 68 : 95 - 100) "4567-"
                         @Tarminal : (3, 68 - 3, 72 : 100 - 104) "8901"
-            Person : (4, 9 - 4, 76 : 116 - 183) : {name: Aaaa Bbbb, notequal: not man, sex: F}
+            Person : (4, 9 - 4, 76 : 116 - 183) : {name: Aaaa Bbbb, notequal: not man, only_name_is_all_a: 0, sex: F}
                 Name : (4, 9 - 4, 29 : 116 - 136) : {}
                     Literal : (4, 16 - 4, 27 : 123 - 134) : {}
                         @Tarminal : (4, 17 - 4, 26 : 124 - 133) "Aaaa Bbbb"
@@ -37,7 +37,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
                         @Tarminal : (4, 61 - 4, 66 : 168 - 173) "0123-"
                         @Tarminal : (4, 66 - 4, 71 : 173 - 178) "4567-"
                         @Tarminal : (4, 71 - 4, 75 : 178 - 182) "8902"
-            Person : (5, 9 - 5, 46 : 194 - 231) : {contains: a C, endswith: Cccc, name: Aaaa Cccc, notendswith: b&d, sex: M}
+            Person : (5, 9 - 5, 46 : 194 - 231) : {contains: a C, endswith: Cccc, name: Aaaa Cccc, notendswith: b&d, only_name_is_all_a: 0, sex: M}
                 Name : (5, 9 - 5, 29 : 194 - 214) : {}
                     Literal : (5, 16 - 5, 27 : 201 - 212) : {}
                         @Tarminal : (5, 17 - 5, 26 : 202 - 211) "Aaaa Cccc"
@@ -47,7 +47,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
                 Sex : (5, 39 - 5, 46 : 224 - 231) : {}
                     MorF : (5, 45 - 5, 46 : 230 - 231) : {}
                         Male : (5, 45 - 5, 46 : 230 - 231) : {}
-            Person : (6, 9 - 6, 46 : 242 - 279) : {name: Aaaa Dddd, notequal: not man, sex: F}
+            Person : (6, 9 - 6, 46 : 242 - 279) : {name: Aaaa Dddd, notequal: not man, only_name_is_all_a: 0, sex: F}
                 Name : (6, 9 - 6, 29 : 242 - 262) : {}
                     Literal : (6, 16 - 6, 27 : 249 - 260) : {}
                         @Tarminal : (6, 17 - 6, 26 : 250 - 259) "Aaaa Dddd"
@@ -61,7 +61,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
             FamilyName : (8, 4 - 8, 19 : 291 - 306) : {}
                 Literal : (8, 4 - 8, 19 : 291 - 306) : {}
                     @Tarminal : (8, 5 - 8, 17 : 292 - 304) "FamilyName02"
-            Person : (9, 9 - 9, 73 : 317 - 381) : {name: Bbbb Aaaa, notendswith: b&d, notstartswith: A, sex: M, startswith: Bbbb}
+            Person : (9, 9 - 9, 73 : 317 - 381) : {name: Bbbb Aaaa, notendswith: b&d, notstartswith: A, only_name_is_all_a: 0, sex: M, startswith: Bbbb}
                 Name : (9, 9 - 9, 29 : 317 - 337) : {}
                     Literal : (9, 16 - 9, 27 : 324 - 335) : {}
                         @Tarminal : (9, 17 - 9, 26 : 325 - 334) "Bbbb Aaaa"
@@ -76,7 +76,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
                         @Tarminal : (9, 58 - 9, 63 : 366 - 371) "0123-"
                         @Tarminal : (9, 63 - 9, 68 : 371 - 376) "4567-"
                         @Tarminal : (9, 68 - 9, 72 : 376 - 380) "8901"
-            Person : (10, 9 - 10, 52 : 392 - 435) : {name: Bbbb Bbbb, not_contains: aa & dd, notequal: not man, notstartswith: A, sex: F, startswith: Bbbb}
+            Person : (10, 9 - 10, 52 : 392 - 435) : {name: Bbbb Bbbb, not_contains: aa & dd, notequal: not man, notstartswith: A, only_name_is_all_a: 0, sex: F, startswith: Bbbb}
                 Name : (10, 9 - 10, 29 : 392 - 412) : {}
                     Literal : (10, 16 - 10, 27 : 399 - 410) : {}
                         @Tarminal : (10, 17 - 10, 26 : 400 - 409) "Bbbb Bbbb"
@@ -86,7 +86,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
                 Sex : (10, 39 - 10, 52 : 422 - 435) : {}
                     MorF : (10, 45 - 10, 52 : 428 - 435) : {}
                         Female : (10, 45 - 10, 52 : 428 - 435) : {}
-            Person : (11, 9 - 11, 46 : 446 - 483) : {endswith: Cccc, name: Bbbb Cccc, not_contains: aa & dd, notendswith: b&d, notstartswith: A, sex: M, startswith: Bbbb}
+            Person : (11, 9 - 11, 46 : 446 - 483) : {endswith: Cccc, name: Bbbb Cccc, not_contains: aa & dd, notendswith: b&d, notstartswith: A, only_name_is_all_a: 0, sex: M, startswith: Bbbb}
                 Name : (11, 9 - 11, 29 : 446 - 466) : {}
                     Literal : (11, 16 - 11, 27 : 453 - 464) : {}
                         @Tarminal : (11, 17 - 11, 26 : 454 - 463) "Bbbb Cccc"
@@ -96,7 +96,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
                 Sex : (11, 39 - 11, 46 : 476 - 483) : {}
                     MorF : (11, 45 - 11, 46 : 482 - 483) : {}
                         Male : (11, 45 - 11, 46 : 482 - 483) : {}
-            Person : (12, 9 - 12, 37 : 494 - 522) : {name: Bbbb Dddd, notequal: not man, notstartswith: A, startswith: Bbbb}
+            Person : (12, 9 - 12, 37 : 494 - 522) : {name: Bbbb Dddd, notequal: not man, notstartswith: A, only_name_is_all_a: 0, startswith: Bbbb}
                 Name : (12, 9 - 12, 29 : 494 - 514) : {}
                     Literal : (12, 16 - 12, 27 : 501 - 512) : {}
                         @Tarminal : (12, 17 - 12, 26 : 502 - 511) "Bbbb Dddd"
@@ -107,7 +107,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
             FamilyName : (14, 4 - 14, 19 : 534 - 549) : {}
                 Literal : (14, 4 - 14, 19 : 534 - 549) : {}
                     @Tarminal : (14, 5 - 14, 17 : 535 - 547) "FamilyName03"
-            Person : (15, 9 - 15, 73 : 560 - 624) : {name: Cccc Aaaa, notendswith: b&d, notstartswith: A, sex: M}
+            Person : (15, 9 - 15, 73 : 560 - 624) : {name: Cccc Aaaa, notendswith: b&d, notstartswith: A, only_name_is_all_a: 0, sex: M}
                 Name : (15, 9 - 15, 29 : 560 - 580) : {}
                     Literal : (15, 16 - 15, 27 : 567 - 578) : {}
                         @Tarminal : (15, 17 - 15, 26 : 568 - 577) "Cccc Aaaa"
@@ -122,7 +122,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
                         @Tarminal : (15, 58 - 15, 63 : 609 - 614) "0123-"
                         @Tarminal : (15, 63 - 15, 68 : 614 - 619) "4567-"
                         @Tarminal : (15, 68 - 15, 72 : 619 - 623) "8903"
-            Person : (16, 9 - 16, 52 : 635 - 678) : {name: Cccc Bbbb, not_contains: aa & dd, notequal: not man, notstartswith: A, sex: F}
+            Person : (16, 9 - 16, 52 : 635 - 678) : {name: Cccc Bbbb, not_contains: aa & dd, notequal: not man, notstartswith: A, only_name_is_all_a: 0, sex: F}
                 Name : (16, 9 - 16, 29 : 635 - 655) : {}
                     Literal : (16, 16 - 16, 27 : 642 - 653) : {}
                         @Tarminal : (16, 17 - 16, 26 : 643 - 652) "Cccc Bbbb"
@@ -155,7 +155,7 @@ ASTActionsTest : (1, 0 - 24, 2 : 0 - 895) : {}
             FamilyName : (21, 4 - 21, 19 : 790 - 805) : {}
                 Literal : (21, 4 - 21, 19 : 790 - 805) : {}
                     @Tarminal : (21, 5 - 21, 17 : 791 - 803) "FamilyName05"
-            Person : (22, 9 - 22, 78 : 816 - 885) : {name: Dddd Aaaa, notendswith: b&d, notstartswith: A, sex: M}
+            Person : (22, 9 - 22, 78 : 816 - 885) : {name: Dddd Aaaa, notendswith: b&d, notstartswith: A, only_name_is_all_a: 0, sex: M}
                 Name : (22, 9 - 22, 29 : 816 - 836) : {}
                     Literal : (22, 16 - 22, 27 : 823 - 834) : {}
                         @Tarminal : (22, 17 - 22, 26 : 824 - 833) "Dddd Aaaa"

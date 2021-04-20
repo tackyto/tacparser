@@ -125,6 +125,7 @@ END_LINE        <- '@EL':I S?
 END_COLUMN      <- '@EC':I S?
 
 # TypeA[foo]                    foo属性を持つ TypeA
+# TypeA[!foo]                   foo属性を持たない TypeA
 # TypeA[foo == "bar"]           foo属性が "bar" である TypeA
 # TypeA[foo ^= "bar"]           foo属性が "bar" で始まる TypeA
 # TypeA[foo $= "bar"]           foo属性が "bar" で終わる TypeA
@@ -145,6 +146,7 @@ AttributeLimitation <- AttributeEqual
                      / AttributeNotEndsWith
                      / AttributeNotContains
                      / AttributeSimple
+                     / AttributeSimpleNot
 
 AttributeEqual         <- AttributeName >>EQUAL_EQUAL AttributeValue
 AttributeStartsWith    <- AttributeName >>STARTS_WITH AttributeValue
@@ -155,6 +157,7 @@ AttributeNotStartsWith <- AttributeName >>NOT_STARTS_WITH AttributeValue
 AttributeNotEndsWith   <- AttributeName >>NOT_ENDS_WITH AttributeValue
 AttributeNotContains   <- AttributeName >>NOT_CONTAINS AttributeValue
 AttributeSimple        <- AttributeName >>S?
+AttributeSimpleNot     <- >>NOT AttributeName >>S?
 
 AttributeName <- r"[a-z_][a-z0-9_]*" >>S?
 
@@ -165,6 +168,7 @@ NOT_EQUAL       <- '!=' S?
 NOT_STARTS_WITH <- '!^' S?
 NOT_ENDS_WITH   <- '!$' S?
 NOT_CONTAINS    <- '!*' S?
+NOT             <- '!' S?
 
 # TODO : 数値やリスト、辞書などの操作
 AttributeValue <- Literal
@@ -175,12 +179,12 @@ AttributeValue <- Literal
 # 例：
 # { 
 #    this.parameter_name = $.get_str(); 
+#    this.param_no_space = $.get_str({Spacing:"", Comment:""}); 
 #    $.parameter = this.parameter2;
 # }
 # 
 # $ は一致したノードのパラメータ
 # this は最初の条件式に一致するノードのパラメータ
-# x += y , x.append(y) などの構文も追加したい
 # ----------------------------------------
 Action <- Substitution 
 #        / AppendList
@@ -195,13 +199,17 @@ Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
 # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
 
 Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
-SingleQuotesLiteral <- >>"'" r"(\\.|[^'\\])*" >>"'" >>S?
-DoubleQuotesLiteral <- >>'"' r'(\\.|[^"\\])*' >>'"' >>S?
+SingleQuotesLiteral <- "'" r"(\\.|[^'\\])*" "'" >>S?
+DoubleQuotesLiteral <- '"' r'(\\.|[^"\\])*' '"' >>S?
 
-# EmptyList <- '[]'
+ThisString <- >>THIS >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
+TargetString <- >>DOLLAR >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
 
-ThisString <- >>THIS >>DOT >>'get_str()' >>S?
-TargetString <- >>DOLLAR >>DOT >>'get_str()' >>S?
+TypeDictionary <- >>CURL_OPEN TypeDictItems? >>CURL_CLOSE
+TypeDictItems <- TypeItem ( >>COMMA TypeItem )*
+TypeItem <- Identifier >>COLON TypeValueString
+TypeValueString <- Literal
+
 ThisValue <- >>THIS >>DOT ParameterName
 TargetValue <- >>DOLLAR >>DOT ParameterName
 ParameterName <- r"[a-z][a-z_]*" >>S?
@@ -215,8 +223,8 @@ THIS <- 'this' S?
 S <- ( ' ' / r"\t" / EndOfLine )+
 EndOfLine <- r"\r\n|\n|\r"
 
-# OPEN <- '(' S?
-# CLOSE <- ')' S?
+OPEN <- '(' S?
+CLOSE <- ')' S?
 CURL_OPEN  <- '{'  S?
 CURL_CLOSE <- '}' S?
 BRAKET_OPEN  <-  '[' S?

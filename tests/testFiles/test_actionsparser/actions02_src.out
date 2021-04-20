@@ -25,5 +25,7 @@ Actions : (Ln 1, Col 0)
                 Value : (Ln 2, Col 17)
                     Literal : (Ln 2, Col 17)
                         DoubleQuotesLiteral : (Ln 2, Col 17)
+                            @Tarminal : (Ln 2, Col 17) """
                             @Tarminal : (Ln 2, Col 18) "value"
+                            @Tarminal : (Ln 2, Col 23) """
     _EOF : (Ln 2, Col 26)

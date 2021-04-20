@@ -5,11 +5,13 @@ import unittest
 from unittest.mock import Mock
 
 from logging import config, getLogger
+from tacparser import expegparser
 
 from tacparser.actionsparser import ActionsParser
 from tacparser.astactions import AstActions, ActionException
 from tacparser.node import NonTerminalNode, TerminalNode
 from tacparser.parsergenerator import ParserGenerator
+from tacparser.expegparser import ExPegParser
 
 from tests.testmodules import astactionstest
 
@@ -228,6 +230,17 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
 
+    def test_get_typedictionary(self):
+        node = NonTerminalNode("Unknown", ())
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_typedictionary(node)
+
+        msg = err.exception.args[0]
+        expstr = "_get_typedictionary に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+
+
 class TestASTActionsString(unittest.TestCase):
     test_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_astactions"))
 
@@ -353,6 +366,36 @@ class TestASTActionsString(unittest.TestCase):
             fout.write(test_node.print_tree(detail_flg=True))
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+
+class TestASTActionsExpeg(unittest.TestCase):
+    test_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_astactions"))
+
+    def test_actions_expeg_file(self):
+        datafilename = "test_expeg_data.txt"
+        actionfilename = "test_expeg_action.txt"
+        self.apply_expegaction_file(datafilename, actionfilename)
+
+    def apply_expegaction_file(self, sourcefilename, actionfilename):
+        filepath = os.path.join(self.test_dir, "files", sourcefilename)
+        actionfilepath = os.path.join(self.test_dir, "files", actionfilename)
+        parser = ExPegParser(test_logger)
+        result, test_node = parser.parse_file(filepath)
+        self.assertTrue(result)
+
+        ast_actions = AstActions(logger=test_logger)
+        ast_actions.read_file(actionfilepath)
+        ast_actions.apply(test_node)
+
+        pathoutfile = os.path.join(self.test_dir, "files", sourcefilename + ".out")
+        pathoutfile_dist = os.path.join(self.test_dir, "files", sourcefilename + ".dist")
+
+        with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
+            fout.write(test_node.print_tree(detail_flg=True))
+
+        self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
+
+
 
 
 

@@ -393,10 +393,10 @@ class AstActions(object):
             match_type_node = attrlim_node.children[0]
             attrname = match_type_node.get_childnode("AttributeName")[0].get_str()
             attrval = ""
-            if match_type_node.type != "AttributeSimple":
+            if match_type_node.type not in ("AttributeSimple", "AttributeSimpleNot"):
                 attrval_nodes = match_type_node.get_childnode("AttributeValue")
                 if len(attrval_nodes) > 0:
-                    attrval = attrval_nodes[0].get_str()
+                    attrval = eval(attrval_nodes[0].get_str())
                 else:
                     raise ActionException("AttributeValue が指定されていません。")
 
@@ -419,6 +419,8 @@ class AstActions(object):
                 match = lambda n: attrval not in n.get_attr(attrname)
             elif match_type_node.type == "AttributeSimple":
                 match = lambda n: n.get_attr(attrname) is not None
+            elif match_type_node.type == "AttributeSimpleNot":
+                match = lambda n: n.get_attr(attrname) is None
             else: raise ActionException("AttributeLimitation の子ノード に想定していないノード\"{}\"が存在します。"
                             .format(match_type_node.type))
             return lambda node_list: list(filter(match, node_list))
@@ -454,60 +456,82 @@ class AstActions(object):
 
         return type_name, orcondition_funcs
     
-    @staticmethod
-    def _get_action_func(node:NonTerminalNode) -> ActionFuncType:
+    def _get_action_func(self, node:NonTerminalNode) -> ActionFuncType:
         # 代入式を実行する関数を返す
         # Action <- Substitution 
 
-        def get_action_substitution(_node:NonTerminalNode) -> ActionFuncType:
-            # Substitution <- Variable >>EQUAL Value
-            # Variable <- ThisValue / TargetValue
-            # Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
-            # ThisValue <- >>THIS >>DOT ParameterName
-            # TargetValue <- >>DOLLAR >>DOT ParameterName
-
-            val_n = _node.get_childnode("Value")[0]
-            val_target = val_n.children[0]
-            get_val_f:Callable[[NonTerminalNode, NonTerminalNode], str] = None
-            if val_target.type =="ThisString":
-                get_val_f = lambda p, n: p.get_str()
-            elif val_target.type =="TargetString":
-                get_val_f = lambda p, n: n.get_str()
-            elif val_target.type =="ThisValue":
-                val_param = val_target.get_childnode("ParameterName")[0].get_str()
-                get_val_f = lambda p, n: p.get_attr(val_param)
-            elif val_target.type =="TargetValue":
-                val_param = val_target.get_childnode("ParameterName")[0].get_str()
-                get_val_f = lambda p, n: n.get_attr(val_param)
-            elif val_target.type =="Literal":
-                val = val_target.get_str()
-                get_val_f = lambda p, n: val
-            else:
-                raise ActionException(
-                    "Valueの子に想定しないノード\"{}\"が指定されました。"
-                    .format(val_target.type))
-
-            var_n = _node.get_childnode("Variable")[0]
-            var_target = var_n.children[0]
-            get_subst_f:Callable[[NonTerminalNode, NonTerminalNode], None] = None
-            if var_target.type =="ThisValue":
-                var_param = var_target.get_childnode("ParameterName")[0].get_str()
-                get_subst_f = lambda p, n: p.set_attr(var_param, get_val_f(p,n))
-            elif var_target.type =="TargetValue":
-                var_param = var_target.get_childnode("ParameterName")[0].get_str()
-                get_subst_f = lambda p, n: n.set_attr(var_param, get_val_f(p,n))
-            else:
-                raise ActionException(
-                    "Variableの子に想定しないノード\"{}\"が指定されました。"
-                    .format(var_target.type))
-            
-            return lambda p, n: get_subst_f(p,n)
-
         action_type_node = node.children[0]
         if action_type_node.type == "Substitution":
-            return get_action_substitution(action_type_node)
+            return self._get_action_substitution(action_type_node)
         else:
             raise ActionException("想定しない Action が指定されました。")
+    
+
+    def _get_action_substitution(self, _node:NonTerminalNode) -> ActionFuncType:
+        # Substitution <- Variable >>EQUAL Value
+        # Variable <- ThisValue / TargetValue
+        # Value <- Literal / ThisString / TargetString / ThisValue / TargetValue
+        # ThisValue <- >>THIS >>DOT ParameterName
+        # TargetValue <- >>DOLLAR >>DOT ParameterName
+
+        val_n = _node.get_childnode("Value")[0]
+        val_target = val_n.children[0]
+        get_val_f:Callable[[NonTerminalNode, NonTerminalNode], str] = None
+        if val_target.type =="ThisString":
+            dictionary_nodes = val_target.get_childnode("TypeDictionary")
+            type_dict = {}
+            if len(dictionary_nodes) > 0:
+                type_dict = self._get_typedictionary(dictionary_nodes[0])
+            get_val_f = lambda p, n: p.get_str(type_dict)
+        elif val_target.type =="TargetString":
+            dictionary_nodes = val_target.get_childnode("TypeDictionary")
+            type_dict = {}
+            if len(dictionary_nodes) > 0:
+                type_dict = self._get_typedictionary(dictionary_nodes[0])
+            get_val_f = lambda p, n: n.get_str(type_dict)
+        elif val_target.type =="ThisValue":
+            val_param = val_target.get_childnode("ParameterName")[0].get_str()
+            get_val_f = lambda p, n: p.get_attr(val_param)
+        elif val_target.type =="TargetValue":
+            val_param = val_target.get_childnode("ParameterName")[0].get_str()
+            get_val_f = lambda p, n: n.get_attr(val_param)
+        elif val_target.type =="Literal":
+            val = eval(val_target.get_str())
+            get_val_f = lambda p, n: val
+        else:
+            raise ActionException(
+                "Valueの子に想定しないノード\"{}\"が指定されました。"
+                .format(val_target.type))
+
+        var_n = _node.get_childnode("Variable")[0]
+        var_target = var_n.children[0]
+        get_subst_f:Callable[[NonTerminalNode, NonTerminalNode], None] = None
+        if var_target.type =="ThisValue":
+            var_param = var_target.get_childnode("ParameterName")[0].get_str()
+            get_subst_f = lambda p, n: p.set_attr(var_param, get_val_f(p,n))
+        elif var_target.type =="TargetValue":
+            var_param = var_target.get_childnode("ParameterName")[0].get_str()
+            get_subst_f = lambda p, n: n.set_attr(var_param, get_val_f(p,n))
+        else:
+            raise ActionException(
+                "Variableの子に想定しないノード\"{}\"が指定されました。"
+                .format(var_target.type))
+        
+        return lambda p, n: get_subst_f(p,n)
+
+    def _get_typedictionary(self, node:NonTerminalNode) -> dict[str, str]:
+        if node.type != "TypeDictionary":
+            raise ActionException("_get_typedictionary に想定しないノード\"{}\"が指定されました。"
+                .format(node.type))
+        
+        typeitems = node.search_node("TypeItem")
+        ret_dict = {}
+        for typeitem in typeitems:
+            typename = typeitem.search_node("Identifier")[0].get_str()
+            literal_node = typeitem.search_node("Literal")[0]
+            literal_value = eval(literal_node.get_str())
+            ret_dict[typename] = literal_value
+        return ret_dict
 
 
 class _ActionDefinition(object):
