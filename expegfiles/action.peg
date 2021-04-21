@@ -181,22 +181,46 @@ AttributeValue <- Literal
 #    root.parameter_name = target.get_str(); 
 #    root.param_no_space = target.get_str({Spacing:"", Comment:""}); 
 #    target.parameter = root.parameter2;
+#    target.index = index(root);
+#    target.list = [root.value, root, 12, "string" ];
+#    target.add_str = "aaa" + root.somestring + target.somestring + "bbb\n";
+#    target.add_int = root.someint + 10;
+#    target.append = root.someint + 10;
 # }
 # 
 # $ は一致したノードのパラメータ
 # root は最初の条件式に一致するノードのパラメータ
 # ----------------------------------------
 Action <- Substitution 
-#        / AppendList
+        / AppendList
 Substitution <- Variable >>EQUAL Value
 Variable <- RootValue / TargetValue
 
 # TODO : int , list の操作
 # Value <- Number / Literal / EmptyList / RootValue / TargetValue
-Value <- Literal / RootString / TargetString / RootValue / TargetValue
+Value <- AddValueTerms
+       / ValueTerm
+       / ListValue
+       / NodeValue
 
-# TODO : 未実装
-# AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
+AddValueTerms <- ValueTerm (PLUS ValueTerm)+
+ValueTerm <- Literal / Number
+           / RootString / TargetString 
+           / RootValue / TargetValue 
+           / RootIndex / TargetIndex
+
+ListValue <- >>'[' >>S? ( ValueTerm >>COMMA)* >>']' >>S?
+NodeValue <- RootNode / TargetNode
+
+RootIndex <- >>INDEX >>OPEN >>ROOT >>CLOSE
+TargetIndex <- >>INDEX >>OPEN >>TARGET >>CLOSE
+
+RootNode <- >>ROOT
+TargetNode <- >>TARGET
+
+EmptyList <- >>'[' >>S? >>']' >>S?
+
+AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
 
 Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
 SingleQuotesLiteral <- "'" r"(\\.|[^'\\])*" "'" >>S?
@@ -214,9 +238,10 @@ RootValue <- >>ROOT >>DOT ParameterName
 TargetValue <- >>TARGET >>DOT ParameterName
 ParameterName <- r"[a-z][a-z_]*" >>S?
 
+INDEX <- 'index' S?
 ROOT <- 'root' S?
 TARGET <- 'target' S?
-# APPEND <- 'append'
+APPEND <- 'append' S?
 
 # ----------------------------------------
 # Terminal

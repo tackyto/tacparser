@@ -35,6 +35,9 @@ class Node(object):
         # 付加情報辞書
         self._attribute:dict[str,str] = {}
 
+    def __str__(self) -> str:
+        return "<" + self._get_node_str(False) + ">"
+
     def set_position(self, r:"Reader", startpos:int, endpos:int) -> None:
         self.startpos = startpos
         self.endpos = endpos

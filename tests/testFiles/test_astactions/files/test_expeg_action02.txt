@@ -1,0 +1,18 @@
+ExPeg >> RootDefinition >> DefinitionIdentifier > Identifier {
+    root.name = target.get_str({Spacing : ""});
+}
+Definition {
+    root.number = index(root);
+    root.identifiers = [];
+    root.root_exp = [];
+}
+Definition >> DefinitionIdentifier {
+    root.definitionidentifier = target;
+}
+Definition >> DefinitionExpression >> Identifier {
+    root.identifiers.append("<list>" + target.get_str({Spacing:""}) + "</list>");
+    target.number = index(target);
+}
+ExPeg >> Definition {
+    target.root_exp.append("<root>" + root.name + "</root>");
+}

@@ -12,7 +12,7 @@ config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
 default_logger = getLogger(__name__)
 
 # 型エイリアス
-ActionFuncType = Callable[[NonTerminalNode, NonTerminalNode]]
+ActionFuncType = Callable[[NonTerminalNode, NonTerminalNode, int, int]]
 SelectResultType = list[ tuple[NonTerminalNode, list[NonTerminalNode] ] ]
 StartSelectorFuncType = Callable[ [NonTerminalNode], SelectResultType ]
 SelectorFuncType = Callable[ [NonTerminalNode],
@@ -85,6 +85,7 @@ class AstActions(object):
         """
         flg, root_node = self.parser.parse_string(actions_str, self.parser.p_actions)
         if not flg:
+            self.logger.error(root_node)
             raise ActionException("アクション文字列を読み込めませんでした")
 
         ret = []
@@ -459,65 +460,206 @@ class AstActions(object):
     def _get_action_func(self, node:NonTerminalNode) -> ActionFuncType:
         # 代入式を実行する関数を返す
         # Action <- Substitution 
+        #         / AppendList
 
         action_type_node = node.children[0]
         if action_type_node.type == "Substitution":
-            return self._get_action_substitution(action_type_node)
+            return self._get_substitution_func(action_type_node)
+        if action_type_node.type == "AppendList":
+            return self._get_append_list_func(action_type_node)
         else:
             raise ActionException("想定しない Action が指定されました。")
     
 
-    def _get_action_substitution(self, _node:NonTerminalNode) -> ActionFuncType:
+    def _get_substitution_func(self, _node:NonTerminalNode) -> ActionFuncType:
         # Substitution <- Variable >>EQUAL Value
         # Variable <- RootValue / TargetValue
-        # Value <- Literal / RootString / TargetString / RootValue / TargetValue
-        # RootValue <- >>ROOT >>DOT ParameterName
-        # TargetValue <- >>DOLLAR >>DOT ParameterName
-
+        # Value <- AddValueTerms
+        #        / ValueTerm
+        #        / ListValue
+        #        / NodeValue
         val_n = _node.get_childnode("Value")[0]
-        val_target = val_n.children[0]
+        get_val_f = self._get_value_func(val_n)
+
+        var_n = _node.get_childnode("Variable")[0]
+        var_target = var_n.children[0]
+        get_subst_f:ActionFuncType = None
+        if var_target.type =="RootValue":
+            var_param = var_target.get_childnode("ParameterName")[0].get_str()
+            get_subst_f = lambda _root, _target, _r_idx, _t_idx: \
+                        _root.set_attr(var_param, get_val_f(_root, _target, _r_idx, _t_idx))
+        elif var_target.type =="TargetValue":
+            var_param = var_target.get_childnode("ParameterName")[0].get_str()
+            get_subst_f = lambda _root, target, r_idx, t_idx: \
+                        target.set_attr(var_param, get_val_f(_root, target, r_idx, t_idx))
+        else:
+            raise ActionException(
+                "Variableの子に想定しないノード\"{}\"が指定されました。"
+                .format(var_target.type))
+        
+        return lambda root, target, r_idx, t_idx: get_subst_f(root, target, r_idx, t_idx)
+
+    def _get_append_list_func(self, _append_list_node:NonTerminalNode) -> ActionFuncType:
+        """
+        AppendList ノードから、値を取得する関数を取得
+        """
+        # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
+        val_n = _append_list_node.get_childnode("Value")[0]
+        get_val_f = self._get_value_func(val_n)
+
+        def append_node_attr(_node:NonTerminalNode, _param:str,
+                    _root:NonTerminalNode, 
+                    _target:NonTerminalNode,
+                    _r_idx:int, _t_idx:int ):
+            list_value:list = _node.get_attr(_param)
+            value = get_val_f(_root, _target, _r_idx, _t_idx)
+            list_value.append(value)
+
+        var_n = _append_list_node.get_childnode("Variable")[0]
+        var_target = var_n.children[0]
+        get_subst_f:ActionFuncType = None
+        if var_target.type =="RootValue":
+            var_param = var_target.get_childnode("ParameterName")[0].get_str()
+            get_subst_f = lambda _root, _target, _r_idx, _t_idx: \
+                        append_node_attr(_root, var_param, _root, _target, _r_idx, _t_idx)
+        elif var_target.type =="TargetValue":
+            var_param = var_target.get_childnode("ParameterName")[0].get_str()
+            get_subst_f = lambda _root, _target, _r_idx, _t_idx: \
+                        append_node_attr(_target, var_param, _root, _target, _r_idx, _t_idx)
+        else:
+            raise ActionException(
+                "Variableの子に想定しないノード\"{}\"が指定されました。"
+                .format(var_target.type))
+        
+        return lambda root, target, r_idx, t_idx: \
+                    get_subst_f(root, target, r_idx, t_idx)
+
+    def _get_value_func(self, _value_node:NonTerminalNode) -> ActionFuncType:
+        val_target = _value_node.children[0]
+        get_val_f = None
+        if val_target.type == "AddValueTerms":
+            get_val_f = self._get_add_value_teams_func(val_target)
+        elif val_target.type == "ValueTerm":
+            get_val_f = self._get_value_term_func(val_target)
+        elif val_target.type == "ListValue":
+            get_val_f = self._get_list_value_func(val_target)
+        elif val_target.type == "NodeValue":
+            get_val_f = self._get_node_value_func(val_target)
+        else:
+            raise ActionException(
+                "Valueの子に想定しないノード\"{}\"が指定されました。"
+                .format(val_target.type))
+        
+        return get_val_f
+
+    def _get_add_value_teams_func(self, _add_value_terms_node:NonTerminalNode) -> ActionFuncType:
+        """
+        AddValueTerms ノードから、値を取得する関数を取得
+        """
+        # AddValueTerms <- ValueTerm (PLUS ValueTerm)+
+        list_valueterms = _add_value_terms_node.get_childnode("ValueTerm")
+        flist = [self._get_value_term_func(value_term_node) \
+                    for value_term_node in list_valueterms]
+
+        def add_value_func(_flist:list[ActionFuncType], 
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+
+            ret = flist[0](_root, _target, _r_idx, _t_idx)
+            for _f in flist[1:]:
+                ret = ret + _f(_root, _target, _r_idx, _t_idx)
+            return ret
+        
+        return lambda root, target, r_idx, t_idx: \
+                    add_value_func(flist, root, target, r_idx,t_idx)
+
+    def _get_value_term_func(self, _value_term_node:NonTerminalNode) -> ActionFuncType:
+        """
+        ValueTerm ノードから、値を取得する関数を取得
+        """
+        # ValueTerm <- Literal / Number
+        #            / RootString / TargetString 
+        #            / RootValue / TargetValue 
+        #            / RootIndex / TargetIndex
+        val_target = _value_term_node.children[0]
         get_val_f:Callable[[NonTerminalNode, NonTerminalNode], str] = None
         if val_target.type =="RootString":
             dictionary_nodes = val_target.get_childnode("TypeDictionary")
             type_dict = {}
             if len(dictionary_nodes) > 0:
                 type_dict = self._get_typedictionary(dictionary_nodes[0])
-            get_val_f = lambda p, n: p.get_str(type_dict)
+            get_val_f = lambda root, target, r_idx, t_idx: \
+                        root.get_str(type_dict)
         elif val_target.type =="TargetString":
             dictionary_nodes = val_target.get_childnode("TypeDictionary")
             type_dict = {}
             if len(dictionary_nodes) > 0:
                 type_dict = self._get_typedictionary(dictionary_nodes[0])
-            get_val_f = lambda p, n: n.get_str(type_dict)
+            get_val_f = lambda root, target, r_idx, t_idx: \
+                        target.get_str(type_dict)
         elif val_target.type =="RootValue":
             val_param = val_target.get_childnode("ParameterName")[0].get_str()
-            get_val_f = lambda p, n: p.get_attr(val_param)
+            get_val_f = lambda root, target, r_idx, t_idx: \
+                        root.get_attr(val_param)
         elif val_target.type =="TargetValue":
             val_param = val_target.get_childnode("ParameterName")[0].get_str()
-            get_val_f = lambda p, n: n.get_attr(val_param)
+            get_val_f = lambda root, target, r_idx, t_idx: \
+                        target.get_attr(val_param)
         elif val_target.type =="Literal":
             val = eval(val_target.get_str())
-            get_val_f = lambda p, n: val
+            get_val_f = lambda root, target, r_idx, t_idx: val
+        elif val_target.type =="Number":
+            val = eval(val_target.get_str())
+            get_val_f = lambda root, target, r_idx, t_idx: val
+        elif val_target.type =="RootIndex":
+            get_val_f = lambda root, target, r_idx, t_idx: r_idx
+        elif val_target.type =="TargetIndex":
+            get_val_f = lambda root, target, r_idx, t_idx: t_idx
         else:
             raise ActionException(
-                "Valueの子に想定しないノード\"{}\"が指定されました。"
+                "ValueTermの子に想定しないノード\"{}\"が指定されました。"
                 .format(val_target.type))
+        
+        return get_val_f
+    
+    def _get_list_value_func(self, _list_value_node:NonTerminalNode) -> ActionFuncType:
+        """
+        ListValue ノードから、値を取得する関数を取得
+        """
+        # ListValue <- >>'[' >>S? ( ValueTerm >>COMMA)* >>']' >>S?
+        list_valueterms = _list_value_node.get_childnode("ValueTerm")
+        flist = [self._get_value_term_func(value_term_node) \
+                    for value_term_node in list_valueterms]
 
-        var_n = _node.get_childnode("Variable")[0]
-        var_target = var_n.children[0]
-        get_subst_f:Callable[[NonTerminalNode, NonTerminalNode], None] = None
-        if var_target.type =="RootValue":
-            var_param = var_target.get_childnode("ParameterName")[0].get_str()
-            get_subst_f = lambda p, n: p.set_attr(var_param, get_val_f(p,n))
-        elif var_target.type =="TargetValue":
-            var_param = var_target.get_childnode("ParameterName")[0].get_str()
-            get_subst_f = lambda p, n: n.set_attr(var_param, get_val_f(p,n))
+        def list_value_func(_flist:list[ActionFuncType], 
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+            return [_f(_root, _target, _r_idx, _t_idx) for _f in _flist]
+        
+        return lambda root, target, r_idx, t_idx: \
+                    list_value_func(flist, root, target, r_idx,t_idx)
+
+    def _get_node_value_func(self, _node_value_node:NonTerminalNode) -> ActionFuncType:
+        """
+        NodeValue ノードから、値を取得する関数を取得
+        """
+        # NodeValue <- RootNode / TargetNode
+        val_target = _node_value_node.children[0]
+        get_val_f:ActionFuncType = None
+        if val_target.type =="RootNode":
+            get_val_f = lambda root, target, r_idx, t_idx: root
+        elif val_target.type =="TargetNode":
+            dictionary_nodes = val_target.get_childnode("TypeDictionary")
+            type_dict = {}
+            if len(dictionary_nodes) > 0:
+                type_dict = self._get_typedictionary(dictionary_nodes[0])
+            get_val_f = lambda root, target, r_idx, t_idx: target
         else:
             raise ActionException(
-                "Variableの子に想定しないノード\"{}\"が指定されました。"
-                .format(var_target.type))
+                "NodeValueの子に想定しないノード\"{}\"が指定されました。"
+                .format(val_target.type))
         
-        return lambda p, n: get_subst_f(p,n)
+        return get_val_f
 
     def _get_typedictionary(self, node:NonTerminalNode) -> dict[str, str]:
         if node.type != "TypeDictionary":
@@ -545,10 +687,12 @@ class _ActionDefinition(object):
         for selector in self.selectors:
             action_nodes.extend(selector(node))
         
-        for start_node, target_nodes in action_nodes:
-            for tartget_node in target_nodes:
+        for start_index, node_tuple in enumerate(action_nodes):
+            start_node, target_nodes = node_tuple
+            for target_index, tartget_node in enumerate(target_nodes):
                 for action in self.actions:
-                    action(start_node, tartget_node)
+                    action(start_node, tartget_node, start_index, target_index)
+
 
 class ActionException(Exception):
     def __init__(self, *args: object) -> None:

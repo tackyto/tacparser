@@ -74,6 +74,16 @@ class ActionsParser(Parser):
                          "Substitution": self.p_substitution,
                          "Variable": self.p_variable,
                          "Value": self.p_value,
+                         "AddValueTerms": self.p_addvalueterms,
+                         "ValueTerm": self.p_valueterm,
+                         "ListValue": self.p_listvalue,
+                         "NodeValue": self.p_nodevalue,
+                         "RootIndex": self.p_rootindex,
+                         "TargetIndex": self.p_targetindex,
+                         "RootNode": self.p_rootnode,
+                         "TargetNode": self.p_targetnode,
+                         "EmptyList": self.p_emptylist,
+                         "AppendList": self.p_appendlist,
                          "Literal": self.p_literal,
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
                          "DoubleQuotesLiteral": self.p_doublequotesliteral,
@@ -86,8 +96,10 @@ class ActionsParser(Parser):
                          "RootValue": self.p_rootvalue,
                          "TargetValue": self.p_targetvalue,
                          "ParameterName": self.p_parametername,
+                         "INDEX": self.p_index,
                          "ROOT": self.p_root,
                          "TARGET": self.p_target,
+                         "APPEND": self.p_append,
                          "S": self.p_s,
                          "EndOfLine": self.p_endofline,
                          "OPEN": self.p_open,
@@ -586,16 +598,23 @@ class ActionsParser(Parser):
         # #    root.parameter_name = target.get_str(); 
         # #    root.param_no_space = target.get_str({Spacing:"", Comment:""}); 
         # #    target.parameter = root.parameter2;
+        # #    target.index = index(root);
+        # #    target.list = [root.value, root, 12, "string" ];
+        # #    target.add_str = "aaa" + root.somestring + target.somestring + "bbb\n";
+        # #    target.add_int = root.someint + 10;
+        # #    target.append = root.someint + 10;
         # # }
         # # 
         # # $ は一致したノードのパラメータ
         # # root は最初の条件式に一致するノードのパラメータ
         # # ----------------------------------------
         # Action <- Substitution 
-        return self._p(self.p_substitution, "Substitution")
+        #         / AppendList
+        return self._sel(self._p(self.p_substitution, "Substitution"),
+                         self._p(self.p_appendlist, "AppendList")
+                         )
 
     def p_substitution(self):
-        # #        / AppendList
         # Substitution <- Variable >>EQUAL Value
         return self._seq(self._p(self.p_variable, "Variable"),
                          self._skip(self._p(self.p_equal, "EQUAL")),
@@ -611,12 +630,96 @@ class ActionsParser(Parser):
     def p_value(self):
         # # TODO : int , list の操作
         # # Value <- Number / Literal / EmptyList / RootValue / TargetValue
-        # Value <- Literal / RootString / TargetString / RootValue / TargetValue
+        # Value <- AddValueTerms
+        #        / ValueTerm
+        #        / ListValue
+        #        / NodeValue
+        return self._sel(self._p(self.p_addvalueterms, "AddValueTerms"),
+                         self._p(self.p_valueterm, "ValueTerm"),
+                         self._p(self.p_listvalue, "ListValue"),
+                         self._p(self.p_nodevalue, "NodeValue")
+                         )
+
+    def p_addvalueterms(self):
+        # AddValueTerms <- ValueTerm (PLUS ValueTerm)+
+        return self._seq(self._p(self.p_valueterm, "ValueTerm"),
+                         self._rpt(self._seq(self._p(self.p_plus, "PLUS"),
+                                             self._p(self.p_valueterm, "ValueTerm")
+                                             ), 1)
+                         )
+
+    def p_valueterm(self):
+        # ValueTerm <- Literal / Number
+        #            / RootString / TargetString 
+        #            / RootValue / TargetValue 
+        #            / RootIndex / TargetIndex
         return self._sel(self._p(self.p_literal, "Literal"),
+                         self._p(self.p_number, "Number"),
                          self._p(self.p_rootstring, "RootString"),
                          self._p(self.p_targetstring, "TargetString"),
                          self._p(self.p_rootvalue, "RootValue"),
-                         self._p(self.p_targetvalue, "TargetValue")
+                         self._p(self.p_targetvalue, "TargetValue"),
+                         self._p(self.p_rootindex, "RootIndex"),
+                         self._p(self.p_targetindex, "TargetIndex")
+                         )
+
+    def p_listvalue(self):
+        # ListValue <- >>'[' >>S? ( ValueTerm >>COMMA)* >>']' >>S?
+        return self._seq(self._skip(self._l('[')),
+                         self._skip(self._opt(self._p(self.p_s, "S"))),
+                         self._rpt(self._seq(self._p(self.p_valueterm, "ValueTerm"),
+                                             self._skip(self._p(self.p_comma, "COMMA"))
+                                             ), 0),
+                         self._skip(self._l(']')),
+                         self._skip(self._opt(self._p(self.p_s, "S")))
+                         )
+
+    def p_nodevalue(self):
+        # NodeValue <- RootNode / TargetNode
+        return self._sel(self._p(self.p_rootnode, "RootNode"),
+                         self._p(self.p_targetnode, "TargetNode")
+                         )
+
+    def p_rootindex(self):
+        # RootIndex <- >>INDEX >>OPEN >>ROOT >>CLOSE
+        return self._seq(self._skip(self._p(self.p_index, "INDEX")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._skip(self._p(self.p_root, "ROOT")),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_targetindex(self):
+        # TargetIndex <- >>INDEX >>OPEN >>TARGET >>CLOSE
+        return self._seq(self._skip(self._p(self.p_index, "INDEX")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._skip(self._p(self.p_target, "TARGET")),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_rootnode(self):
+        # RootNode <- >>ROOT
+        return self._skip(self._p(self.p_root, "ROOT"))
+
+    def p_targetnode(self):
+        # TargetNode <- >>TARGET
+        return self._skip(self._p(self.p_target, "TARGET"))
+
+    def p_emptylist(self):
+        # EmptyList <- >>'[' >>S? >>']' >>S?
+        return self._seq(self._skip(self._l('[')),
+                         self._skip(self._opt(self._p(self.p_s, "S"))),
+                         self._skip(self._l(']')),
+                         self._skip(self._opt(self._p(self.p_s, "S")))
+                         )
+
+    def p_appendlist(self):
+        # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
+        return self._seq(self._p(self.p_variable, "Variable"),
+                         self._skip(self._p(self.p_dot, "DOT")),
+                         self._skip(self._p(self.p_append, "APPEND")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._p(self.p_value, "Value"),
+                         self._skip(self._p(self.p_close, "CLOSE"))
                          )
 
     def p_literal(self):
@@ -715,6 +818,12 @@ class ActionsParser(Parser):
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
+    def p_index(self):
+        # INDEX <- 'index' S?
+        return self._seq(self._l('index'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
     def p_root(self):
         # ROOT <- 'root' S?
         return self._seq(self._l('root'),
@@ -724,6 +833,12 @@ class ActionsParser(Parser):
     def p_target(self):
         # TARGET <- 'target' S?
         return self._seq(self._l('target'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_append(self):
+        # APPEND <- 'append' S?
+        return self._seq(self._l('append'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 

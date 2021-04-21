@@ -212,7 +212,9 @@ class TestASTActionsNode(unittest.TestCase):
     def test_get_action_func_err3(self):
         child_nodes =   (   NonTerminalNode("Substitution", (
                                 NonTerminalNode("Value", (
-                                    NonTerminalNode("RootString", (
+                                    NonTerminalNode("NodeValue", (
+                                        NonTerminalNode("RootNode", (
+                                        )),
                                     )),
                                 )),
                                 NonTerminalNode("Variable", (
@@ -371,9 +373,14 @@ class TestASTActionsString(unittest.TestCase):
 class TestASTActionsExpeg(unittest.TestCase):
     test_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "./testFiles/test_astactions"))
 
-    def test_actions_expeg_file(self):
+    def test_actions_expeg_file_01(self):
         datafilename = "test_expeg_data.txt"
         actionfilename = "test_expeg_action.txt"
+        self.apply_expegaction_file(datafilename, actionfilename)
+
+    def test_actions_expeg_file_02(self):
+        datafilename = "test_expeg_data.txt"
+        actionfilename = "test_expeg_action02.txt"
         self.apply_expegaction_file(datafilename, actionfilename)
 
     def apply_expegaction_file(self, sourcefilename, actionfilename):
@@ -387,8 +394,8 @@ class TestASTActionsExpeg(unittest.TestCase):
         ast_actions.read_file(actionfilepath)
         ast_actions.apply(test_node)
 
-        pathoutfile = os.path.join(self.test_dir, "files", sourcefilename + ".out")
-        pathoutfile_dist = os.path.join(self.test_dir, "files", sourcefilename + ".dist")
+        pathoutfile = os.path.join(self.test_dir, "files", actionfilename + ".out")
+        pathoutfile_dist = os.path.join(self.test_dir, "files", actionfilename + ".dist")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(test_node.print_tree(detail_flg=True))
