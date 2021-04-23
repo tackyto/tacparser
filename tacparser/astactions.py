@@ -706,7 +706,7 @@ class _ActionDefinition(object):
                 self.__logger.warn(str(e))
                 self.__logger.warn("セレクタ \"{}\"に失敗しました。"
                         .format(selector_str))
-            return False
+                return False
 
         for start_index, node_tuple in enumerate(action_nodes):
             start_node, target_nodes = node_tuple

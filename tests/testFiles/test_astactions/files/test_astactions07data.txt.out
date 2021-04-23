@@ -7,7 +7,7 @@ ASTActionsTest : (1, 0 - 43, 2 : 0 - 773) : {}
             FamilyName : (2, 4 - 2, 19 : 15 - 30) : {}
                 Literal : (2, 4 - 2, 19 : 15 - 30) : {}
                     @Tarminal : (2, 5 - 2, 17 : 16 - 28) "FamilyName01"
-            Person : (3, 9 - 3, 73 : 41 - 105) : {}
+            Person : (3, 9 - 3, 73 : 41 - 105) : {endline: @EL < 4, endvolumn: @EC <= 77}
                 Name : (3, 9 - 3, 29 : 41 - 61) : {}
                     Literal : (3, 16 - 3, 27 : 48 - 59) : {}
                         @Tarminal : (3, 17 - 3, 26 : 49 - 58) "Aaaa Aaaa"
@@ -22,7 +22,7 @@ ASTActionsTest : (1, 0 - 43, 2 : 0 - 773) : {}
                         @Tarminal : (3, 58 - 3, 63 : 90 - 95) "0123-"
                         @Tarminal : (3, 63 - 3, 68 : 95 - 100) "4567-"
                         @Tarminal : (3, 68 - 3, 72 : 100 - 104) "8901"
-            Person : (4, 10 - 4, 74 : 117 - 181) : {}
+            Person : (4, 10 - 4, 74 : 117 - 181) : {endvolumn: @EC <= 77}
                 Name : (4, 10 - 4, 30 : 117 - 137) : {}
                     Literal : (4, 17 - 4, 28 : 124 - 135) : {}
                         @Tarminal : (4, 18 - 4, 27 : 125 - 134) "Aaaa Bbbb"
@@ -41,7 +41,7 @@ ASTActionsTest : (1, 0 - 43, 2 : 0 - 773) : {}
             FamilyName : (11, 4 - 11, 19 : 198 - 213) : {}
                 Literal : (11, 4 - 11, 19 : 198 - 213) : {}
                     @Tarminal : (11, 5 - 11, 17 : 199 - 211) "FamilyName02"
-            Person : (12, 11 - 12, 75 : 226 - 290) : {}
+            Person : (12, 11 - 12, 75 : 226 - 290) : {endvolumn: @EC <= 77, startcolumn: @C >= 11, startlineeq: @L == 12}
                 Name : (12, 11 - 12, 31 : 226 - 246) : {}
                     Literal : (12, 18 - 12, 29 : 233 - 244) : {}
                         @Tarminal : (12, 19 - 12, 28 : 234 - 243) "Bbbb Aaaa"
@@ -56,7 +56,7 @@ ASTActionsTest : (1, 0 - 43, 2 : 0 - 773) : {}
                         @Tarminal : (12, 60 - 12, 65 : 275 - 280) "0123-"
                         @Tarminal : (12, 65 - 12, 70 : 280 - 285) "4567-"
                         @Tarminal : (12, 70 - 12, 74 : 285 - 289) "8901"
-            Person : (13, 12 - 13, 55 : 304 - 347) : {}
+            Person : (13, 12 - 13, 55 : 304 - 347) : {endvolumn: @EC <= 77, startcolumn: @C >= 11}
                 Name : (13, 12 - 13, 32 : 304 - 324) : {}
                     Literal : (13, 19 - 13, 30 : 311 - 322) : {}
                         @Tarminal : (13, 20 - 13, 29 : 312 - 321) "Bbbb Bbbb"
@@ -70,7 +70,7 @@ ASTActionsTest : (1, 0 - 43, 2 : 0 - 773) : {}
             FamilyName : (21, 4 - 21, 19 : 367 - 382) : {}
                 Literal : (21, 4 - 21, 19 : 367 - 382) : {}
                     @Tarminal : (21, 5 - 21, 17 : 368 - 380) "FamilyName03"
-            Person : (22, 13 - 22, 76 : 397 - 460) : {}
+            Person : (22, 13 - 22, 76 : 397 - 460) : {endvolumn: @EC <= 77, startcolumn: @C >= 11}
                 Name : (22, 13 - 22, 33 : 397 - 417) : {}
                     Literal : (22, 20 - 22, 31 : 404 - 415) : {}
                         @Tarminal : (22, 21 - 22, 30 : 405 - 414) "Cccc Aaaa"
@@ -85,7 +85,7 @@ ASTActionsTest : (1, 0 - 43, 2 : 0 - 773) : {}
                         @Tarminal : (22, 62 - 22, 67 : 446 - 451) "0123-"
                         @Tarminal : (22, 67 - 22, 72 : 451 - 456) "4567-"
                         @Tarminal : (22, 72 - 22, 76 : 456 - 460) "8903"
-            Person : (23, 14 - 23, 57 : 476 - 519) : {}
+            Person : (23, 14 - 23, 57 : 476 - 519) : {endvolumn: @EC <= 77, startcolumn: @C >= 11}
                 Name : (23, 14 - 23, 34 : 476 - 496) : {}
                     Literal : (23, 21 - 23, 32 : 483 - 494) : {}
                         @Tarminal : (23, 22 - 23, 31 : 484 - 493) "Cccc Bbbb"
@@ -99,7 +99,7 @@ ASTActionsTest : (1, 0 - 43, 2 : 0 - 773) : {}
             FamilyName : (31, 4 - 31, 19 : 543 - 558) : {}
                 Literal : (31, 4 - 31, 19 : 543 - 558) : {}
                     @Tarminal : (31, 5 - 31, 17 : 544 - 556) "FamilyName04"
-            Person : (32, 15 - 32, 77 : 575 - 637) : {}
+            Person : (32, 15 - 32, 77 : 575 - 637) : {endvolumn: @EC <= 77, startcolumn: @C >= 11}
                 Name : (32, 15 - 32, 35 : 575 - 595) : {}
                     Literal : (32, 22 - 32, 33 : 582 - 593) : {}
                         @Tarminal : (32, 23 - 32, 32 : 583 - 592) "Aaaa Aaaa"
@@ -118,7 +118,7 @@ ASTActionsTest : (1, 0 - 43, 2 : 0 - 773) : {}
             FamilyName : (40, 4 - 40, 19 : 661 - 676) : {}
                 Literal : (40, 4 - 40, 19 : 661 - 676) : {}
                     @Tarminal : (40, 5 - 40, 17 : 662 - 674) "FamilyName05"
-            Person : (41, 16 - 41, 85 : 694 - 763) : {}
+            Person : (41, 16 - 41, 85 : 694 - 763) : {startcolumn: @C >= 11, startline: @L > 40}
                 Name : (41, 16 - 41, 36 : 694 - 714) : {}
                     Literal : (41, 23 - 41, 34 : 701 - 712) : {}
                         @Tarminal : (41, 24 - 41, 33 : 702 - 711) "Dddd Aaaa"

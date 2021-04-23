@@ -12,7 +12,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                     @Tarminal : (2, 0 - 3, 0 : 22 - 23) "
 "
     RootDefinition : (3, 0 - 7, 0 : 23 - 167) : {}
-        Definition : (3, 0 - 7, 0 : 23 - 167) : {}
+        Definition : (3, 0 - 7, 0 : 23 - 167) : {expression: Spacing  PegComment RootDefinition   PegComment  Definition  SubDefinition  MacroDefinition   _EOF , name: ExPeg}
             DefinitionComment : (3, 0 - 4, 0 : 23 - 34) : {}
                 Comment : (3, 0 - 4, 0 : 23 - 34) : {}
                     @Tarminal : (3, 0 - 3, 1 : 23 - 24) "#"
@@ -45,7 +45,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                 Suffix : (4, 12 - 4, 21 : 46 - 55) : {}
                                     QuestionSuffix : (4, 12 - 4, 21 : 46 - 55) : {}
                                         Primary : (4, 12 - 4, 19 : 46 - 53) : {}
-                                            Identifier : (4, 12 - 4, 19 : 46 - 53) : {}
+                                            Identifier : (4, 12 - 4, 19 : 46 - 53) : {definition: ExPeg}
                                                 @Tarminal : (4, 12 - 4, 19 : 46 - 53) "Spacing"
                                         QUESTION : (4, 19 - 4, 21 : 53 - 55) : {}
                                             @Tarminal : (4, 19 - 4, 20 : 53 - 54) "?"
@@ -67,7 +67,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                         Suffix : (4, 23 - 4, 35 : 57 - 69) : {}
                                                             QuestionSuffix : (4, 23 - 4, 35 : 57 - 69) : {}
                                                                 Primary : (4, 23 - 4, 33 : 57 - 67) : {}
-                                                                    Identifier : (4, 23 - 4, 33 : 57 - 67) : {}
+                                                                    Identifier : (4, 23 - 4, 33 : 57 - 67) : {definition: ExPeg}
                                                                         @Tarminal : (4, 23 - 4, 33 : 57 - 67) "PegComment"
                                                                 QUESTION : (4, 33 - 4, 35 : 67 - 69) : {}
                                                                     @Tarminal : (4, 33 - 4, 34 : 67 - 68) "?"
@@ -77,7 +77,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (4, 35 - 4, 50 : 69 - 84) : {}
                                                         Suffix : (4, 35 - 4, 50 : 69 - 84) : {}
                                                             Primary : (4, 35 - 4, 50 : 69 - 84) : {}
-                                                                Identifier : (4, 35 - 4, 50 : 69 - 84) : {}
+                                                                Identifier : (4, 35 - 4, 50 : 69 - 84) : {definition: ExPeg}
                                                                     @Tarminal : (4, 35 - 4, 49 : 69 - 83) "RootDefinition"
                                                                     Spacing : (4, 49 - 4, 50 : 83 - 84) : {}
                                                                         Space : (4, 49 - 4, 50 : 83 - 84) : {}
@@ -129,7 +129,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                             Prefix : (5, 14 - 5, 25 : 100 - 111) : {}
                                                                 Suffix : (5, 14 - 5, 25 : 100 - 111) : {}
                                                                     Primary : (5, 14 - 5, 25 : 100 - 111) : {}
-                                                                        Identifier : (5, 14 - 5, 25 : 100 - 111) : {}
+                                                                        Identifier : (5, 14 - 5, 25 : 100 - 111) : {definition: ExPeg}
                                                                             @Tarminal : (5, 14 - 5, 24 : 100 - 110) "PegComment"
                                                                             Spacing : (5, 24 - 5, 25 : 110 - 111) : {}
                                                                                 Space : (5, 24 - 5, 25 : 110 - 111) : {}
@@ -144,7 +144,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                             Prefix : (5, 27 - 5, 38 : 113 - 124) : {}
                                                                 Suffix : (5, 27 - 5, 38 : 113 - 124) : {}
                                                                     Primary : (5, 27 - 5, 38 : 113 - 124) : {}
-                                                                        Identifier : (5, 27 - 5, 38 : 113 - 124) : {}
+                                                                        Identifier : (5, 27 - 5, 38 : 113 - 124) : {definition: ExPeg}
                                                                             @Tarminal : (5, 27 - 5, 37 : 113 - 123) "Definition"
                                                                             Spacing : (5, 37 - 5, 38 : 123 - 124) : {}
                                                                                 Space : (5, 37 - 5, 38 : 123 - 124) : {}
@@ -159,7 +159,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                             Prefix : (5, 40 - 5, 54 : 126 - 140) : {}
                                                                 Suffix : (5, 40 - 5, 54 : 126 - 140) : {}
                                                                     Primary : (5, 40 - 5, 54 : 126 - 140) : {}
-                                                                        Identifier : (5, 40 - 5, 54 : 126 - 140) : {}
+                                                                        Identifier : (5, 40 - 5, 54 : 126 - 140) : {definition: ExPeg}
                                                                             @Tarminal : (5, 40 - 5, 53 : 126 - 139) "SubDefinition"
                                                                             Spacing : (5, 53 - 5, 54 : 139 - 140) : {}
                                                                                 Space : (5, 53 - 5, 54 : 139 - 140) : {}
@@ -174,7 +174,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                             Prefix : (5, 56 - 5, 72 : 142 - 158) : {}
                                                                 Suffix : (5, 56 - 5, 72 : 142 - 158) : {}
                                                                     Primary : (5, 56 - 5, 72 : 142 - 158) : {}
-                                                                        Identifier : (5, 56 - 5, 72 : 142 - 158) : {}
+                                                                        Identifier : (5, 56 - 5, 72 : 142 - 158) : {definition: ExPeg}
                                                                             @Tarminal : (5, 56 - 5, 71 : 142 - 157) "MacroDefinition"
                                                                             Spacing : (5, 71 - 5, 72 : 157 - 158) : {}
                                                                                 Space : (5, 71 - 5, 72 : 157 - 158) : {}
@@ -189,7 +189,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (5, 75 - 7, 0 : 161 - 167) : {}
                                 Suffix : (5, 75 - 7, 0 : 161 - 167) : {}
                                     Primary : (5, 75 - 7, 0 : 161 - 167) : {}
-                                        Identifier : (5, 75 - 7, 0 : 161 - 167) : {}
+                                        Identifier : (5, 75 - 7, 0 : 161 - 167) : {definition: ExPeg}
                                             ENDOFFILE : (5, 75 - 7, 0 : 161 - 167) : {}
                                                 @Tarminal : (5, 75 - 5, 79 : 161 - 165) "_EOF"
                                                 Spacing : (5, 79 - 7, 0 : 165 - 167) : {}
@@ -201,7 +201,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                         EndOfLine : (6, 0 - 7, 0 : 166 - 167) : {}
                                                             @Tarminal : (6, 0 - 7, 0 : 166 - 167) "
 "
-    Definition : (7, 0 - 10, 0 : 167 - 215) : {}
+    Definition : (7, 0 - 10, 0 : 167 - 215) : {expression: Comment Spacing , name: PegComment}
         DefinitionComment : (7, 0 - 8, 0 : 167 - 183) : {}
             Comment : (7, 0 - 8, 0 : 167 - 183) : {}
                 @Tarminal : (7, 0 - 7, 1 : 167 - 168) "#"
@@ -228,7 +228,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (8, 14 - 8, 23 : 197 - 206) : {}
                                 PlusSuffix : (8, 14 - 8, 23 : 197 - 206) : {}
                                     Primary : (8, 14 - 8, 21 : 197 - 204) : {}
-                                        Identifier : (8, 14 - 8, 21 : 197 - 204) : {}
+                                        Identifier : (8, 14 - 8, 21 : 197 - 204) : {definition: PegComment}
                                             @Tarminal : (8, 14 - 8, 21 : 197 - 204) "Comment"
                                     PLUS : (8, 21 - 8, 23 : 204 - 206) : {}
                                         @Tarminal : (8, 21 - 8, 22 : 204 - 205) "+"
@@ -238,7 +238,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (8, 23 - 10, 0 : 206 - 215) : {}
                             Suffix : (8, 23 - 10, 0 : 206 - 215) : {}
                                 Primary : (8, 23 - 10, 0 : 206 - 215) : {}
-                                    Identifier : (8, 23 - 10, 0 : 206 - 215) : {}
+                                    Identifier : (8, 23 - 10, 0 : 206 - 215) : {definition: PegComment}
                                         @Tarminal : (8, 23 - 8, 30 : 206 - 213) "Spacing"
                                         Spacing : (8, 30 - 10, 0 : 213 - 215) : {}
                                             Space : (8, 30 - 9, 0 : 213 - 214) : {}
@@ -249,7 +249,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (9, 0 - 10, 0 : 214 - 215) : {}
                                                     @Tarminal : (9, 0 - 10, 0 : 214 - 215) "
 "
-    Definition : (10, 0 - 13, 0 : 215 - 284) : {}
+    Definition : (10, 0 - 13, 0 : 215 - 284) : {expression: Definition , name: RootDefinition}
         DefinitionComment : (10, 0 - 11, 0 : 215 - 254) : {}
             Comment : (10, 0 - 11, 0 : 215 - 254) : {}
                 @Tarminal : (10, 0 - 10, 1 : 215 - 216) "#"
@@ -275,7 +275,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (11, 18 - 13, 0 : 272 - 284) : {}
                             Suffix : (11, 18 - 13, 0 : 272 - 284) : {}
                                 Primary : (11, 18 - 13, 0 : 272 - 284) : {}
-                                    Identifier : (11, 18 - 13, 0 : 272 - 284) : {}
+                                    Identifier : (11, 18 - 13, 0 : 272 - 284) : {definition: RootDefinition}
                                         @Tarminal : (11, 18 - 11, 28 : 272 - 282) "Definition"
                                         Spacing : (11, 28 - 13, 0 : 282 - 284) : {}
                                             Space : (11, 28 - 12, 0 : 282 - 283) : {}
@@ -286,7 +286,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (12, 0 - 13, 0 : 283 - 284) : {}
                                                     @Tarminal : (12, 0 - 13, 0 : 283 - 284) "
 "
-    Definition : (13, 0 - 17, 0 : 284 - 500) : {}
+    Definition : (13, 0 - 17, 0 : 284 - 500) : {expression: DefinitionComment DefinitionIdentifier Spacing LEFTARROW DefinitionExpression , name: Definition}
         DefinitionComment : (13, 0 - 16, 0 : 284 - 406) : {}
             Comment : (13, 0 - 14, 0 : 284 - 307) : {}
                 @Tarminal : (13, 0 - 13, 1 : 284 - 285) "#"
@@ -325,7 +325,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (16, 14 - 16, 33 : 420 - 439) : {}
                                 QuestionSuffix : (16, 14 - 16, 33 : 420 - 439) : {}
                                     Primary : (16, 14 - 16, 31 : 420 - 437) : {}
-                                        Identifier : (16, 14 - 16, 31 : 420 - 437) : {}
+                                        Identifier : (16, 14 - 16, 31 : 420 - 437) : {definition: Definition}
                                             @Tarminal : (16, 14 - 16, 31 : 420 - 437) "DefinitionComment"
                                     QUESTION : (16, 31 - 16, 33 : 437 - 439) : {}
                                         @Tarminal : (16, 31 - 16, 32 : 437 - 438) "?"
@@ -335,7 +335,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (16, 33 - 16, 54 : 439 - 460) : {}
                             Suffix : (16, 33 - 16, 54 : 439 - 460) : {}
                                 Primary : (16, 33 - 16, 54 : 439 - 460) : {}
-                                    Identifier : (16, 33 - 16, 54 : 439 - 460) : {}
+                                    Identifier : (16, 33 - 16, 54 : 439 - 460) : {definition: Definition}
                                         @Tarminal : (16, 33 - 16, 53 : 439 - 459) "DefinitionIdentifier"
                                         Spacing : (16, 53 - 16, 54 : 459 - 460) : {}
                                             Space : (16, 53 - 16, 54 : 459 - 460) : {}
@@ -344,7 +344,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (16, 54 - 16, 63 : 460 - 469) : {}
                                 QuestionSuffix : (16, 54 - 16, 63 : 460 - 469) : {}
                                     Primary : (16, 54 - 16, 61 : 460 - 467) : {}
-                                        Identifier : (16, 54 - 16, 61 : 460 - 467) : {}
+                                        Identifier : (16, 54 - 16, 61 : 460 - 467) : {definition: Definition}
                                             @Tarminal : (16, 54 - 16, 61 : 460 - 467) "Spacing"
                                     QUESTION : (16, 61 - 16, 63 : 467 - 469) : {}
                                         @Tarminal : (16, 61 - 16, 62 : 467 - 468) "?"
@@ -354,7 +354,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (16, 63 - 16, 73 : 469 - 479) : {}
                             Suffix : (16, 63 - 16, 73 : 469 - 479) : {}
                                 Primary : (16, 63 - 16, 73 : 469 - 479) : {}
-                                    Identifier : (16, 63 - 16, 73 : 469 - 479) : {}
+                                    Identifier : (16, 63 - 16, 73 : 469 - 479) : {definition: Definition}
                                         @Tarminal : (16, 63 - 16, 72 : 469 - 478) "LEFTARROW"
                                         Spacing : (16, 72 - 16, 73 : 478 - 479) : {}
                                             Space : (16, 72 - 16, 73 : 478 - 479) : {}
@@ -362,14 +362,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (16, 73 - 17, 0 : 479 - 500) : {}
                             Suffix : (16, 73 - 17, 0 : 479 - 500) : {}
                                 Primary : (16, 73 - 17, 0 : 479 - 500) : {}
-                                    Identifier : (16, 73 - 17, 0 : 479 - 500) : {}
+                                    Identifier : (16, 73 - 17, 0 : 479 - 500) : {definition: Definition}
                                         @Tarminal : (16, 73 - 16, 93 : 479 - 499) "DefinitionExpression"
                                         Spacing : (16, 93 - 17, 0 : 499 - 500) : {}
                                             Space : (16, 93 - 17, 0 : 499 - 500) : {}
                                                 EndOfLine : (16, 93 - 17, 0 : 499 - 500) : {}
                                                     @Tarminal : (16, 93 - 17, 0 : 499 - 500) "
 "
-    Definition : (17, 0 - 19, 0 : 500 - 536) : {}
+    Definition : (17, 0 - 19, 0 : 500 - 536) : {expression: Expression , name: DefinitionExpression}
         DefinitionIdentifier : (17, 0 - 17, 21 : 500 - 521) : {}
             Identifier : (17, 0 - 17, 21 : 500 - 521) : {}
                 @Tarminal : (17, 0 - 17, 20 : 500 - 520) "DefinitionExpression"
@@ -388,7 +388,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (17, 24 - 19, 0 : 524 - 536) : {}
                             Suffix : (17, 24 - 19, 0 : 524 - 536) : {}
                                 Primary : (17, 24 - 19, 0 : 524 - 536) : {}
-                                    Identifier : (17, 24 - 19, 0 : 524 - 536) : {}
+                                    Identifier : (17, 24 - 19, 0 : 524 - 536) : {definition: DefinitionExpression}
                                         @Tarminal : (17, 24 - 17, 34 : 524 - 534) "Expression"
                                         Spacing : (17, 34 - 19, 0 : 534 - 536) : {}
                                             Space : (17, 34 - 18, 0 : 534 - 535) : {}
@@ -399,7 +399,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (18, 0 - 19, 0 : 535 - 536) : {}
                                                     @Tarminal : (18, 0 - 19, 0 : 535 - 536) "
 "
-    Definition : (19, 0 - 29, 0 : 536 - 902) : {}
+    Definition : (19, 0 - 29, 0 : 536 - 902) : {expression: DefinitionComment DefinitionIdentifier Spacing SUB_LEFTARROW DefinitionExpression , name: SubDefinition}
         DefinitionComment : (19, 0 - 27, 0 : 536 - 800) : {}
             Comment : (19, 0 - 20, 0 : 536 - 570) : {}
                 @Tarminal : (19, 0 - 19, 1 : 536 - 537) "#"
@@ -468,7 +468,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (27, 17 - 27, 36 : 817 - 836) : {}
                                 QuestionSuffix : (27, 17 - 27, 36 : 817 - 836) : {}
                                     Primary : (27, 17 - 27, 34 : 817 - 834) : {}
-                                        Identifier : (27, 17 - 27, 34 : 817 - 834) : {}
+                                        Identifier : (27, 17 - 27, 34 : 817 - 834) : {definition: SubDefinition}
                                             @Tarminal : (27, 17 - 27, 34 : 817 - 834) "DefinitionComment"
                                     QUESTION : (27, 34 - 27, 36 : 834 - 836) : {}
                                         @Tarminal : (27, 34 - 27, 35 : 834 - 835) "?"
@@ -478,7 +478,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (27, 36 - 27, 57 : 836 - 857) : {}
                             Suffix : (27, 36 - 27, 57 : 836 - 857) : {}
                                 Primary : (27, 36 - 27, 57 : 836 - 857) : {}
-                                    Identifier : (27, 36 - 27, 57 : 836 - 857) : {}
+                                    Identifier : (27, 36 - 27, 57 : 836 - 857) : {definition: SubDefinition}
                                         @Tarminal : (27, 36 - 27, 56 : 836 - 856) "DefinitionIdentifier"
                                         Spacing : (27, 56 - 27, 57 : 856 - 857) : {}
                                             Space : (27, 56 - 27, 57 : 856 - 857) : {}
@@ -487,7 +487,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (27, 57 - 27, 66 : 857 - 866) : {}
                                 QuestionSuffix : (27, 57 - 27, 66 : 857 - 866) : {}
                                     Primary : (27, 57 - 27, 64 : 857 - 864) : {}
-                                        Identifier : (27, 57 - 27, 64 : 857 - 864) : {}
+                                        Identifier : (27, 57 - 27, 64 : 857 - 864) : {definition: SubDefinition}
                                             @Tarminal : (27, 57 - 27, 64 : 857 - 864) "Spacing"
                                     QUESTION : (27, 64 - 27, 66 : 864 - 866) : {}
                                         @Tarminal : (27, 64 - 27, 65 : 864 - 865) "?"
@@ -497,7 +497,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (27, 66 - 27, 80 : 866 - 880) : {}
                             Suffix : (27, 66 - 27, 80 : 866 - 880) : {}
                                 Primary : (27, 66 - 27, 80 : 866 - 880) : {}
-                                    Identifier : (27, 66 - 27, 80 : 866 - 880) : {}
+                                    Identifier : (27, 66 - 27, 80 : 866 - 880) : {definition: SubDefinition}
                                         @Tarminal : (27, 66 - 27, 79 : 866 - 879) "SUB_LEFTARROW"
                                         Spacing : (27, 79 - 27, 80 : 879 - 880) : {}
                                             Space : (27, 79 - 27, 80 : 879 - 880) : {}
@@ -505,7 +505,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (27, 80 - 29, 0 : 880 - 902) : {}
                             Suffix : (27, 80 - 29, 0 : 880 - 902) : {}
                                 Primary : (27, 80 - 29, 0 : 880 - 902) : {}
-                                    Identifier : (27, 80 - 29, 0 : 880 - 902) : {}
+                                    Identifier : (27, 80 - 29, 0 : 880 - 902) : {definition: SubDefinition}
                                         @Tarminal : (27, 80 - 27, 100 : 880 - 900) "DefinitionExpression"
                                         Spacing : (27, 100 - 29, 0 : 900 - 902) : {}
                                             Space : (27, 100 - 28, 0 : 900 - 901) : {}
@@ -516,7 +516,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (28, 0 - 29, 0 : 901 - 902) : {}
                                                     @Tarminal : (28, 0 - 29, 0 : 901 - 902) "
 "
-    Definition : (29, 0 - 32, 0 : 902 - 945) : {}
+    Definition : (29, 0 - 32, 0 : 902 - 945) : {expression: Comment , name: DefinitionComment}
         DefinitionComment : (29, 0 - 30, 0 : 902 - 914) : {}
             Comment : (29, 0 - 30, 0 : 902 - 914) : {}
                 @Tarminal : (29, 0 - 29, 1 : 902 - 903) "#"
@@ -543,7 +543,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (30, 21 - 32, 0 : 935 - 945) : {}
                                 PlusSuffix : (30, 21 - 32, 0 : 935 - 945) : {}
                                     Primary : (30, 21 - 30, 28 : 935 - 942) : {}
-                                        Identifier : (30, 21 - 30, 28 : 935 - 942) : {}
+                                        Identifier : (30, 21 - 30, 28 : 935 - 942) : {definition: DefinitionComment}
                                             @Tarminal : (30, 21 - 30, 28 : 935 - 942) "Comment"
                                     PLUS : (30, 28 - 32, 0 : 942 - 945) : {}
                                         @Tarminal : (30, 28 - 30, 29 : 942 - 943) "+"
@@ -592,7 +592,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                 EndOfLine : (37, 0 - 38, 0 : 1203 - 1204) : {}
                     @Tarminal : (37, 0 - 38, 0 : 1203 - 1204) "
 "
-    Definition : (38, 0 - 43, 0 : 1204 - 1414) : {}
+    Definition : (38, 0 - 43, 0 : 1204 - 1414) : {expression: Identifier , name: DefinitionIdentifier}
         DefinitionComment : (38, 0 - 41, 0 : 1204 - 1378) : {}
             Comment : (38, 0 - 39, 0 : 1204 - 1268) : {}
                 @Tarminal : (38, 0 - 38, 1 : 1204 - 1205) "#"
@@ -630,7 +630,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (41, 24 - 43, 0 : 1402 - 1414) : {}
                             Suffix : (41, 24 - 43, 0 : 1402 - 1414) : {}
                                 Primary : (41, 24 - 43, 0 : 1402 - 1414) : {}
-                                    Identifier : (41, 24 - 43, 0 : 1402 - 1414) : {}
+                                    Identifier : (41, 24 - 43, 0 : 1402 - 1414) : {definition: DefinitionIdentifier}
                                         @Tarminal : (41, 24 - 41, 34 : 1402 - 1412) "Identifier"
                                         Spacing : (41, 34 - 43, 0 : 1412 - 1414) : {}
                                             Space : (41, 34 - 42, 0 : 1412 - 1413) : {}
@@ -641,7 +641,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (42, 0 - 43, 0 : 1413 - 1414) : {}
                                                     @Tarminal : (42, 0 - 43, 0 : 1413 - 1414) "
 "
-    Definition : (43, 0 - 45, 0 : 1414 - 1472) : {}
+    Definition : (43, 0 - 45, 0 : 1414 - 1472) : {expression: Selection  Sequence , name: Expression}
         DefinitionComment : (43, 0 - 44, 0 : 1414 - 1437) : {}
             Comment : (43, 0 - 44, 0 : 1414 - 1437) : {}
                 @Tarminal : (43, 0 - 43, 1 : 1414 - 1415) "#"
@@ -668,7 +668,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (44, 14 - 44, 24 : 1451 - 1461) : {}
                                 Suffix : (44, 14 - 44, 24 : 1451 - 1461) : {}
                                     Primary : (44, 14 - 44, 24 : 1451 - 1461) : {}
-                                        Identifier : (44, 14 - 44, 24 : 1451 - 1461) : {}
+                                        Identifier : (44, 14 - 44, 24 : 1451 - 1461) : {definition: Expression}
                                             @Tarminal : (44, 14 - 44, 23 : 1451 - 1460) "Selection"
                                             Spacing : (44, 23 - 44, 24 : 1460 - 1461) : {}
                                                 Space : (44, 23 - 44, 24 : 1460 - 1461) : {}
@@ -683,14 +683,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (44, 26 - 45, 0 : 1463 - 1472) : {}
                                 Suffix : (44, 26 - 45, 0 : 1463 - 1472) : {}
                                     Primary : (44, 26 - 45, 0 : 1463 - 1472) : {}
-                                        Identifier : (44, 26 - 45, 0 : 1463 - 1472) : {}
+                                        Identifier : (44, 26 - 45, 0 : 1463 - 1472) : {definition: Expression}
                                             @Tarminal : (44, 26 - 44, 34 : 1463 - 1471) "Sequence"
                                             Spacing : (44, 34 - 45, 0 : 1471 - 1472) : {}
                                                 Space : (44, 34 - 45, 0 : 1471 - 1472) : {}
                                                     EndOfLine : (44, 34 - 45, 0 : 1471 - 1472) : {}
                                                         @Tarminal : (44, 34 - 45, 0 : 1471 - 1472) "
 "
-    Definition : (45, 0 - 46, 0 : 1472 - 1512) : {}
+    Definition : (45, 0 - 46, 0 : 1472 - 1512) : {expression: Sequence  SLASH Sequence  , name: Selection}
         DefinitionIdentifier : (45, 0 - 45, 10 : 1472 - 1482) : {}
             Identifier : (45, 0 - 45, 10 : 1472 - 1482) : {}
                 @Tarminal : (45, 0 - 45, 9 : 1472 - 1481) "Selection"
@@ -709,7 +709,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (45, 13 - 45, 22 : 1485 - 1494) : {}
                             Suffix : (45, 13 - 45, 22 : 1485 - 1494) : {}
                                 Primary : (45, 13 - 45, 22 : 1485 - 1494) : {}
-                                    Identifier : (45, 13 - 45, 22 : 1485 - 1494) : {}
+                                    Identifier : (45, 13 - 45, 22 : 1485 - 1494) : {definition: Selection}
                                         @Tarminal : (45, 13 - 45, 21 : 1485 - 1493) "Sequence"
                                         Spacing : (45, 21 - 45, 22 : 1493 - 1494) : {}
                                             Space : (45, 21 - 45, 22 : 1493 - 1494) : {}
@@ -726,7 +726,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (45, 23 - 45, 29 : 1495 - 1501) : {}
                                                         Suffix : (45, 23 - 45, 29 : 1495 - 1501) : {}
                                                             Primary : (45, 23 - 45, 29 : 1495 - 1501) : {}
-                                                                Identifier : (45, 23 - 45, 29 : 1495 - 1501) : {}
+                                                                Identifier : (45, 23 - 45, 29 : 1495 - 1501) : {definition: Selection}
                                                                     @Tarminal : (45, 23 - 45, 28 : 1495 - 1500) "SLASH"
                                                                     Spacing : (45, 28 - 45, 29 : 1500 - 1501) : {}
                                                                         Space : (45, 28 - 45, 29 : 1500 - 1501) : {}
@@ -734,7 +734,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (45, 29 - 45, 37 : 1501 - 1509) : {}
                                                         Suffix : (45, 29 - 45, 37 : 1501 - 1509) : {}
                                                             Primary : (45, 29 - 45, 37 : 1501 - 1509) : {}
-                                                                Identifier : (45, 29 - 45, 37 : 1501 - 1509) : {}
+                                                                Identifier : (45, 29 - 45, 37 : 1501 - 1509) : {definition: Selection}
                                                                     @Tarminal : (45, 29 - 45, 37 : 1501 - 1509) "Sequence"
                                         CLOSE : (45, 37 - 45, 38 : 1509 - 1510) : {}
                                             @Tarminal : (45, 37 - 45, 38 : 1509 - 1510) ")"
@@ -745,7 +745,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (45, 39 - 46, 0 : 1511 - 1512) : {}
                                                     @Tarminal : (45, 39 - 46, 0 : 1511 - 1512) "
 "
-    Definition : (46, 0 - 47, 0 : 1512 - 1557) : {}
+    Definition : (46, 0 - 47, 0 : 1512 - 1557) : {expression: MultiSequence  SingleSequence , name: Sequence}
         DefinitionIdentifier : (46, 0 - 46, 11 : 1512 - 1523) : {}
             Identifier : (46, 0 - 46, 11 : 1512 - 1523) : {}
                 @Tarminal : (46, 0 - 46, 8 : 1512 - 1520) "Sequence"
@@ -769,7 +769,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (46, 14 - 46, 28 : 1526 - 1540) : {}
                                 Suffix : (46, 14 - 46, 28 : 1526 - 1540) : {}
                                     Primary : (46, 14 - 46, 28 : 1526 - 1540) : {}
-                                        Identifier : (46, 14 - 46, 28 : 1526 - 1540) : {}
+                                        Identifier : (46, 14 - 46, 28 : 1526 - 1540) : {definition: Sequence}
                                             @Tarminal : (46, 14 - 46, 27 : 1526 - 1539) "MultiSequence"
                                             Spacing : (46, 27 - 46, 28 : 1539 - 1540) : {}
                                                 Space : (46, 27 - 46, 28 : 1539 - 1540) : {}
@@ -784,14 +784,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (46, 30 - 47, 0 : 1542 - 1557) : {}
                                 Suffix : (46, 30 - 47, 0 : 1542 - 1557) : {}
                                     Primary : (46, 30 - 47, 0 : 1542 - 1557) : {}
-                                        Identifier : (46, 30 - 47, 0 : 1542 - 1557) : {}
+                                        Identifier : (46, 30 - 47, 0 : 1542 - 1557) : {definition: Sequence}
                                             @Tarminal : (46, 30 - 46, 44 : 1542 - 1556) "SingleSequence"
                                             Spacing : (46, 44 - 47, 0 : 1556 - 1557) : {}
                                                 Space : (46, 44 - 47, 0 : 1556 - 1557) : {}
                                                     EndOfLine : (46, 44 - 47, 0 : 1556 - 1557) : {}
                                                         @Tarminal : (46, 44 - 47, 0 : 1556 - 1557) "
 "
-    Definition : (47, 0 - 48, 0 : 1557 - 1589) : {}
+    Definition : (47, 0 - 48, 0 : 1557 - 1589) : {expression: Prefix Prefix , name: MultiSequence}
         DefinitionIdentifier : (47, 0 - 47, 14 : 1557 - 1571) : {}
             Identifier : (47, 0 - 47, 14 : 1557 - 1571) : {}
                 @Tarminal : (47, 0 - 47, 13 : 1557 - 1570) "MultiSequence"
@@ -810,7 +810,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (47, 17 - 47, 24 : 1574 - 1581) : {}
                             Suffix : (47, 17 - 47, 24 : 1574 - 1581) : {}
                                 Primary : (47, 17 - 47, 24 : 1574 - 1581) : {}
-                                    Identifier : (47, 17 - 47, 24 : 1574 - 1581) : {}
+                                    Identifier : (47, 17 - 47, 24 : 1574 - 1581) : {definition: MultiSequence}
                                         @Tarminal : (47, 17 - 47, 23 : 1574 - 1580) "Prefix"
                                         Spacing : (47, 23 - 47, 24 : 1580 - 1581) : {}
                                             Space : (47, 23 - 47, 24 : 1580 - 1581) : {}
@@ -819,7 +819,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (47, 24 - 48, 0 : 1581 - 1589) : {}
                                 PlusSuffix : (47, 24 - 48, 0 : 1581 - 1589) : {}
                                     Primary : (47, 24 - 47, 30 : 1581 - 1587) : {}
-                                        Identifier : (47, 24 - 47, 30 : 1581 - 1587) : {}
+                                        Identifier : (47, 24 - 47, 30 : 1581 - 1587) : {definition: MultiSequence}
                                             @Tarminal : (47, 24 - 47, 30 : 1581 - 1587) "Prefix"
                                     PLUS : (47, 30 - 48, 0 : 1587 - 1589) : {}
                                         @Tarminal : (47, 30 - 47, 31 : 1587 - 1588) "+"
@@ -828,7 +828,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (47, 31 - 48, 0 : 1588 - 1589) : {}
                                                     @Tarminal : (47, 31 - 48, 0 : 1588 - 1589) "
 "
-    Definition : (48, 0 - 50, 0 : 1589 - 1615) : {}
+    Definition : (48, 0 - 50, 0 : 1589 - 1615) : {expression: Prefix , name: SingleSequence}
         DefinitionIdentifier : (48, 0 - 48, 15 : 1589 - 1604) : {}
             Identifier : (48, 0 - 48, 15 : 1589 - 1604) : {}
                 @Tarminal : (48, 0 - 48, 14 : 1589 - 1603) "SingleSequence"
@@ -847,7 +847,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (48, 18 - 50, 0 : 1607 - 1615) : {}
                             Suffix : (48, 18 - 50, 0 : 1607 - 1615) : {}
                                 Primary : (48, 18 - 50, 0 : 1607 - 1615) : {}
-                                    Identifier : (48, 18 - 50, 0 : 1607 - 1615) : {}
+                                    Identifier : (48, 18 - 50, 0 : 1607 - 1615) : {definition: SingleSequence}
                                         @Tarminal : (48, 18 - 48, 24 : 1607 - 1613) "Prefix"
                                         Spacing : (48, 24 - 50, 0 : 1613 - 1615) : {}
                                             Space : (48, 24 - 49, 0 : 1613 - 1614) : {}
@@ -858,7 +858,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (49, 0 - 50, 0 : 1614 - 1615) : {}
                                                     @Tarminal : (49, 0 - 50, 0 : 1614 - 1615) "
 "
-    Definition : (50, 0 - 59, 0 : 1615 - 1897) : {}
+    Definition : (50, 0 - 59, 0 : 1615 - 1897) : {expression: AndPrefix  NotPrefix  SkipPrefix  Suffix , name: Prefix}
         DefinitionComment : (50, 0 - 58, 0 : 1615 - 1840) : {}
             Comment : (50, 0 - 51, 0 : 1615 - 1636) : {}
                 @Tarminal : (50, 0 - 50, 1 : 1615 - 1616) "#"
@@ -933,7 +933,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (58, 13 - 58, 23 : 1853 - 1863) : {}
                                 Suffix : (58, 13 - 58, 23 : 1853 - 1863) : {}
                                     Primary : (58, 13 - 58, 23 : 1853 - 1863) : {}
-                                        Identifier : (58, 13 - 58, 23 : 1853 - 1863) : {}
+                                        Identifier : (58, 13 - 58, 23 : 1853 - 1863) : {definition: Prefix}
                                             @Tarminal : (58, 13 - 58, 22 : 1853 - 1862) "AndPrefix"
                                             Spacing : (58, 22 - 58, 23 : 1862 - 1863) : {}
                                                 Space : (58, 22 - 58, 23 : 1862 - 1863) : {}
@@ -948,7 +948,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (58, 25 - 58, 35 : 1865 - 1875) : {}
                                 Suffix : (58, 25 - 58, 35 : 1865 - 1875) : {}
                                     Primary : (58, 25 - 58, 35 : 1865 - 1875) : {}
-                                        Identifier : (58, 25 - 58, 35 : 1865 - 1875) : {}
+                                        Identifier : (58, 25 - 58, 35 : 1865 - 1875) : {definition: Prefix}
                                             @Tarminal : (58, 25 - 58, 34 : 1865 - 1874) "NotPrefix"
                                             Spacing : (58, 34 - 58, 35 : 1874 - 1875) : {}
                                                 Space : (58, 34 - 58, 35 : 1874 - 1875) : {}
@@ -963,7 +963,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (58, 37 - 58, 48 : 1877 - 1888) : {}
                                 Suffix : (58, 37 - 58, 48 : 1877 - 1888) : {}
                                     Primary : (58, 37 - 58, 48 : 1877 - 1888) : {}
-                                        Identifier : (58, 37 - 58, 48 : 1877 - 1888) : {}
+                                        Identifier : (58, 37 - 58, 48 : 1877 - 1888) : {definition: Prefix}
                                             @Tarminal : (58, 37 - 58, 47 : 1877 - 1887) "SkipPrefix"
                                             Spacing : (58, 47 - 58, 48 : 1887 - 1888) : {}
                                                 Space : (58, 47 - 58, 48 : 1887 - 1888) : {}
@@ -978,14 +978,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (58, 50 - 59, 0 : 1890 - 1897) : {}
                                 Suffix : (58, 50 - 59, 0 : 1890 - 1897) : {}
                                     Primary : (58, 50 - 59, 0 : 1890 - 1897) : {}
-                                        Identifier : (58, 50 - 59, 0 : 1890 - 1897) : {}
+                                        Identifier : (58, 50 - 59, 0 : 1890 - 1897) : {definition: Prefix}
                                             @Tarminal : (58, 50 - 58, 56 : 1890 - 1896) "Suffix"
                                             Spacing : (58, 56 - 59, 0 : 1896 - 1897) : {}
                                                 Space : (58, 56 - 59, 0 : 1896 - 1897) : {}
                                                     EndOfLine : (58, 56 - 59, 0 : 1896 - 1897) : {}
                                                         @Tarminal : (58, 56 - 59, 0 : 1896 - 1897) "
 "
-    Definition : (59, 0 - 60, 0 : 1897 - 1927) : {}
+    Definition : (59, 0 - 60, 0 : 1897 - 1927) : {expression: AMPERSAND Suffix , name: AndPrefix}
         DefinitionIdentifier : (59, 0 - 59, 10 : 1897 - 1907) : {}
             Identifier : (59, 0 - 59, 10 : 1897 - 1907) : {}
                 @Tarminal : (59, 0 - 59, 9 : 1897 - 1906) "AndPrefix"
@@ -1004,7 +1004,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (59, 13 - 59, 23 : 1910 - 1920) : {}
                             Suffix : (59, 13 - 59, 23 : 1910 - 1920) : {}
                                 Primary : (59, 13 - 59, 23 : 1910 - 1920) : {}
-                                    Identifier : (59, 13 - 59, 23 : 1910 - 1920) : {}
+                                    Identifier : (59, 13 - 59, 23 : 1910 - 1920) : {definition: AndPrefix}
                                         @Tarminal : (59, 13 - 59, 22 : 1910 - 1919) "AMPERSAND"
                                         Spacing : (59, 22 - 59, 23 : 1919 - 1920) : {}
                                             Space : (59, 22 - 59, 23 : 1919 - 1920) : {}
@@ -1012,14 +1012,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (59, 23 - 60, 0 : 1920 - 1927) : {}
                             Suffix : (59, 23 - 60, 0 : 1920 - 1927) : {}
                                 Primary : (59, 23 - 60, 0 : 1920 - 1927) : {}
-                                    Identifier : (59, 23 - 60, 0 : 1920 - 1927) : {}
+                                    Identifier : (59, 23 - 60, 0 : 1920 - 1927) : {definition: AndPrefix}
                                         @Tarminal : (59, 23 - 59, 29 : 1920 - 1926) "Suffix"
                                         Spacing : (59, 29 - 60, 0 : 1926 - 1927) : {}
                                             Space : (59, 29 - 60, 0 : 1926 - 1927) : {}
                                                 EndOfLine : (59, 29 - 60, 0 : 1926 - 1927) : {}
                                                     @Tarminal : (59, 29 - 60, 0 : 1926 - 1927) "
 "
-    Definition : (60, 0 - 61, 0 : 1927 - 1959) : {}
+    Definition : (60, 0 - 61, 0 : 1927 - 1959) : {expression: EXCLAMATION Suffix , name: NotPrefix}
         DefinitionIdentifier : (60, 0 - 60, 10 : 1927 - 1937) : {}
             Identifier : (60, 0 - 60, 10 : 1927 - 1937) : {}
                 @Tarminal : (60, 0 - 60, 9 : 1927 - 1936) "NotPrefix"
@@ -1038,7 +1038,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (60, 13 - 60, 25 : 1940 - 1952) : {}
                             Suffix : (60, 13 - 60, 25 : 1940 - 1952) : {}
                                 Primary : (60, 13 - 60, 25 : 1940 - 1952) : {}
-                                    Identifier : (60, 13 - 60, 25 : 1940 - 1952) : {}
+                                    Identifier : (60, 13 - 60, 25 : 1940 - 1952) : {definition: NotPrefix}
                                         @Tarminal : (60, 13 - 60, 24 : 1940 - 1951) "EXCLAMATION"
                                         Spacing : (60, 24 - 60, 25 : 1951 - 1952) : {}
                                             Space : (60, 24 - 60, 25 : 1951 - 1952) : {}
@@ -1046,14 +1046,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (60, 25 - 61, 0 : 1952 - 1959) : {}
                             Suffix : (60, 25 - 61, 0 : 1952 - 1959) : {}
                                 Primary : (60, 25 - 61, 0 : 1952 - 1959) : {}
-                                    Identifier : (60, 25 - 61, 0 : 1952 - 1959) : {}
+                                    Identifier : (60, 25 - 61, 0 : 1952 - 1959) : {definition: NotPrefix}
                                         @Tarminal : (60, 25 - 60, 31 : 1952 - 1958) "Suffix"
                                         Spacing : (60, 31 - 61, 0 : 1958 - 1959) : {}
                                             Space : (60, 31 - 61, 0 : 1958 - 1959) : {}
                                                 EndOfLine : (60, 31 - 61, 0 : 1958 - 1959) : {}
                                                     @Tarminal : (60, 31 - 61, 0 : 1958 - 1959) "
 "
-    Definition : (61, 0 - 64, 0 : 1959 - 2000) : {}
+    Definition : (61, 0 - 64, 0 : 1959 - 2000) : {expression: MUCH_GREATER_THAN Suffix , name: SkipPrefix}
         DefinitionIdentifier : (61, 0 - 61, 11 : 1959 - 1970) : {}
             Identifier : (61, 0 - 61, 11 : 1959 - 1970) : {}
                 @Tarminal : (61, 0 - 61, 10 : 1959 - 1969) "SkipPrefix"
@@ -1072,7 +1072,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (61, 14 - 61, 32 : 1973 - 1991) : {}
                             Suffix : (61, 14 - 61, 32 : 1973 - 1991) : {}
                                 Primary : (61, 14 - 61, 32 : 1973 - 1991) : {}
-                                    Identifier : (61, 14 - 61, 32 : 1973 - 1991) : {}
+                                    Identifier : (61, 14 - 61, 32 : 1973 - 1991) : {definition: SkipPrefix}
                                         @Tarminal : (61, 14 - 61, 31 : 1973 - 1990) "MUCH_GREATER_THAN"
                                         Spacing : (61, 31 - 61, 32 : 1990 - 1991) : {}
                                             Space : (61, 31 - 61, 32 : 1990 - 1991) : {}
@@ -1080,7 +1080,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (61, 32 - 64, 0 : 1991 - 2000) : {}
                             Suffix : (61, 32 - 64, 0 : 1991 - 2000) : {}
                                 Primary : (61, 32 - 64, 0 : 1991 - 2000) : {}
-                                    Identifier : (61, 32 - 64, 0 : 1991 - 2000) : {}
+                                    Identifier : (61, 32 - 64, 0 : 1991 - 2000) : {definition: SkipPrefix}
                                         @Tarminal : (61, 32 - 61, 38 : 1991 - 1997) "Suffix"
                                         Spacing : (61, 38 - 64, 0 : 1997 - 2000) : {}
                                             Space : (61, 38 - 62, 0 : 1997 - 1998) : {}
@@ -1095,7 +1095,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (63, 0 - 64, 0 : 1999 - 2000) : {}
                                                     @Tarminal : (63, 0 - 64, 0 : 1999 - 2000) "
 "
-    Definition : (64, 0 - 73, 0 : 2000 - 2332) : {}
+    Definition : (64, 0 - 73, 0 : 2000 - 2332) : {expression: QuestionSuffix  StarSuffix  PlusSuffix  RepeatSuffix  Primary , name: Suffix}
         DefinitionComment : (64, 0 - 72, 0 : 2000 - 2253) : {}
             Comment : (64, 0 - 65, 0 : 2000 - 2024) : {}
                 @Tarminal : (64, 0 - 64, 1 : 2000 - 2001) "#"
@@ -1170,7 +1170,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (72, 13 - 72, 28 : 2266 - 2281) : {}
                                 Suffix : (72, 13 - 72, 28 : 2266 - 2281) : {}
                                     Primary : (72, 13 - 72, 28 : 2266 - 2281) : {}
-                                        Identifier : (72, 13 - 72, 28 : 2266 - 2281) : {}
+                                        Identifier : (72, 13 - 72, 28 : 2266 - 2281) : {definition: Suffix}
                                             @Tarminal : (72, 13 - 72, 27 : 2266 - 2280) "QuestionSuffix"
                                             Spacing : (72, 27 - 72, 28 : 2280 - 2281) : {}
                                                 Space : (72, 27 - 72, 28 : 2280 - 2281) : {}
@@ -1185,7 +1185,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (72, 30 - 72, 41 : 2283 - 2294) : {}
                                 Suffix : (72, 30 - 72, 41 : 2283 - 2294) : {}
                                     Primary : (72, 30 - 72, 41 : 2283 - 2294) : {}
-                                        Identifier : (72, 30 - 72, 41 : 2283 - 2294) : {}
+                                        Identifier : (72, 30 - 72, 41 : 2283 - 2294) : {definition: Suffix}
                                             @Tarminal : (72, 30 - 72, 40 : 2283 - 2293) "StarSuffix"
                                             Spacing : (72, 40 - 72, 41 : 2293 - 2294) : {}
                                                 Space : (72, 40 - 72, 41 : 2293 - 2294) : {}
@@ -1200,7 +1200,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (72, 43 - 72, 54 : 2296 - 2307) : {}
                                 Suffix : (72, 43 - 72, 54 : 2296 - 2307) : {}
                                     Primary : (72, 43 - 72, 54 : 2296 - 2307) : {}
-                                        Identifier : (72, 43 - 72, 54 : 2296 - 2307) : {}
+                                        Identifier : (72, 43 - 72, 54 : 2296 - 2307) : {definition: Suffix}
                                             @Tarminal : (72, 43 - 72, 53 : 2296 - 2306) "PlusSuffix"
                                             Spacing : (72, 53 - 72, 54 : 2306 - 2307) : {}
                                                 Space : (72, 53 - 72, 54 : 2306 - 2307) : {}
@@ -1215,7 +1215,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (72, 56 - 72, 69 : 2309 - 2322) : {}
                                 Suffix : (72, 56 - 72, 69 : 2309 - 2322) : {}
                                     Primary : (72, 56 - 72, 69 : 2309 - 2322) : {}
-                                        Identifier : (72, 56 - 72, 69 : 2309 - 2322) : {}
+                                        Identifier : (72, 56 - 72, 69 : 2309 - 2322) : {definition: Suffix}
                                             @Tarminal : (72, 56 - 72, 68 : 2309 - 2321) "RepeatSuffix"
                                             Spacing : (72, 68 - 72, 69 : 2321 - 2322) : {}
                                                 Space : (72, 68 - 72, 69 : 2321 - 2322) : {}
@@ -1230,14 +1230,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (72, 71 - 73, 0 : 2324 - 2332) : {}
                                 Suffix : (72, 71 - 73, 0 : 2324 - 2332) : {}
                                     Primary : (72, 71 - 73, 0 : 2324 - 2332) : {}
-                                        Identifier : (72, 71 - 73, 0 : 2324 - 2332) : {}
+                                        Identifier : (72, 71 - 73, 0 : 2324 - 2332) : {definition: Suffix}
                                             @Tarminal : (72, 71 - 72, 78 : 2324 - 2331) "Primary"
                                             Spacing : (72, 78 - 73, 0 : 2331 - 2332) : {}
                                                 Space : (72, 78 - 73, 0 : 2331 - 2332) : {}
                                                     EndOfLine : (72, 78 - 73, 0 : 2331 - 2332) : {}
                                                         @Tarminal : (72, 78 - 73, 0 : 2331 - 2332) "
 "
-    Definition : (73, 0 - 74, 0 : 2332 - 2367) : {}
+    Definition : (73, 0 - 74, 0 : 2332 - 2367) : {expression: Primary QUESTION , name: QuestionSuffix}
         DefinitionIdentifier : (73, 0 - 73, 15 : 2332 - 2347) : {}
             Identifier : (73, 0 - 73, 15 : 2332 - 2347) : {}
                 @Tarminal : (73, 0 - 73, 14 : 2332 - 2346) "QuestionSuffix"
@@ -1256,7 +1256,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (73, 18 - 73, 26 : 2350 - 2358) : {}
                             Suffix : (73, 18 - 73, 26 : 2350 - 2358) : {}
                                 Primary : (73, 18 - 73, 26 : 2350 - 2358) : {}
-                                    Identifier : (73, 18 - 73, 26 : 2350 - 2358) : {}
+                                    Identifier : (73, 18 - 73, 26 : 2350 - 2358) : {definition: QuestionSuffix}
                                         @Tarminal : (73, 18 - 73, 25 : 2350 - 2357) "Primary"
                                         Spacing : (73, 25 - 73, 26 : 2357 - 2358) : {}
                                             Space : (73, 25 - 73, 26 : 2357 - 2358) : {}
@@ -1264,14 +1264,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (73, 26 - 74, 0 : 2358 - 2367) : {}
                             Suffix : (73, 26 - 74, 0 : 2358 - 2367) : {}
                                 Primary : (73, 26 - 74, 0 : 2358 - 2367) : {}
-                                    Identifier : (73, 26 - 74, 0 : 2358 - 2367) : {}
+                                    Identifier : (73, 26 - 74, 0 : 2358 - 2367) : {definition: QuestionSuffix}
                                         @Tarminal : (73, 26 - 73, 34 : 2358 - 2366) "QUESTION"
                                         Spacing : (73, 34 - 74, 0 : 2366 - 2367) : {}
                                             Space : (73, 34 - 74, 0 : 2366 - 2367) : {}
                                                 EndOfLine : (73, 34 - 74, 0 : 2366 - 2367) : {}
                                                     @Tarminal : (73, 34 - 74, 0 : 2366 - 2367) "
 "
-    Definition : (74, 0 - 75, 0 : 2367 - 2394) : {}
+    Definition : (74, 0 - 75, 0 : 2367 - 2394) : {expression: Primary STAR , name: StarSuffix}
         DefinitionIdentifier : (74, 0 - 74, 11 : 2367 - 2378) : {}
             Identifier : (74, 0 - 74, 11 : 2367 - 2378) : {}
                 @Tarminal : (74, 0 - 74, 10 : 2367 - 2377) "StarSuffix"
@@ -1290,7 +1290,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (74, 14 - 74, 22 : 2381 - 2389) : {}
                             Suffix : (74, 14 - 74, 22 : 2381 - 2389) : {}
                                 Primary : (74, 14 - 74, 22 : 2381 - 2389) : {}
-                                    Identifier : (74, 14 - 74, 22 : 2381 - 2389) : {}
+                                    Identifier : (74, 14 - 74, 22 : 2381 - 2389) : {definition: StarSuffix}
                                         @Tarminal : (74, 14 - 74, 21 : 2381 - 2388) "Primary"
                                         Spacing : (74, 21 - 74, 22 : 2388 - 2389) : {}
                                             Space : (74, 21 - 74, 22 : 2388 - 2389) : {}
@@ -1298,14 +1298,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (74, 22 - 75, 0 : 2389 - 2394) : {}
                             Suffix : (74, 22 - 75, 0 : 2389 - 2394) : {}
                                 Primary : (74, 22 - 75, 0 : 2389 - 2394) : {}
-                                    Identifier : (74, 22 - 75, 0 : 2389 - 2394) : {}
+                                    Identifier : (74, 22 - 75, 0 : 2389 - 2394) : {definition: StarSuffix}
                                         @Tarminal : (74, 22 - 74, 26 : 2389 - 2393) "STAR"
                                         Spacing : (74, 26 - 75, 0 : 2393 - 2394) : {}
                                             Space : (74, 26 - 75, 0 : 2393 - 2394) : {}
                                                 EndOfLine : (74, 26 - 75, 0 : 2393 - 2394) : {}
                                                     @Tarminal : (74, 26 - 75, 0 : 2393 - 2394) "
 "
-    Definition : (75, 0 - 76, 0 : 2394 - 2421) : {}
+    Definition : (75, 0 - 76, 0 : 2394 - 2421) : {expression: Primary PLUS , name: PlusSuffix}
         DefinitionIdentifier : (75, 0 - 75, 11 : 2394 - 2405) : {}
             Identifier : (75, 0 - 75, 11 : 2394 - 2405) : {}
                 @Tarminal : (75, 0 - 75, 10 : 2394 - 2404) "PlusSuffix"
@@ -1324,7 +1324,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (75, 14 - 75, 22 : 2408 - 2416) : {}
                             Suffix : (75, 14 - 75, 22 : 2408 - 2416) : {}
                                 Primary : (75, 14 - 75, 22 : 2408 - 2416) : {}
-                                    Identifier : (75, 14 - 75, 22 : 2408 - 2416) : {}
+                                    Identifier : (75, 14 - 75, 22 : 2408 - 2416) : {definition: PlusSuffix}
                                         @Tarminal : (75, 14 - 75, 21 : 2408 - 2415) "Primary"
                                         Spacing : (75, 21 - 75, 22 : 2415 - 2416) : {}
                                             Space : (75, 21 - 75, 22 : 2415 - 2416) : {}
@@ -1332,14 +1332,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (75, 22 - 76, 0 : 2416 - 2421) : {}
                             Suffix : (75, 22 - 76, 0 : 2416 - 2421) : {}
                                 Primary : (75, 22 - 76, 0 : 2416 - 2421) : {}
-                                    Identifier : (75, 22 - 76, 0 : 2416 - 2421) : {}
+                                    Identifier : (75, 22 - 76, 0 : 2416 - 2421) : {definition: PlusSuffix}
                                         @Tarminal : (75, 22 - 75, 26 : 2416 - 2420) "PLUS"
                                         Spacing : (75, 26 - 76, 0 : 2420 - 2421) : {}
                                             Space : (75, 26 - 76, 0 : 2420 - 2421) : {}
                                                 EndOfLine : (75, 26 - 76, 0 : 2420 - 2421) : {}
                                                     @Tarminal : (75, 26 - 76, 0 : 2420 - 2421) "
 "
-    Definition : (76, 0 - 78, 0 : 2421 - 2456) : {}
+    Definition : (76, 0 - 78, 0 : 2421 - 2456) : {expression: Primary RepeatNum , name: RepeatSuffix}
         DefinitionIdentifier : (76, 0 - 76, 13 : 2421 - 2434) : {}
             Identifier : (76, 0 - 76, 13 : 2421 - 2434) : {}
                 @Tarminal : (76, 0 - 76, 12 : 2421 - 2433) "RepeatSuffix"
@@ -1358,7 +1358,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (76, 16 - 76, 24 : 2437 - 2445) : {}
                             Suffix : (76, 16 - 76, 24 : 2437 - 2445) : {}
                                 Primary : (76, 16 - 76, 24 : 2437 - 2445) : {}
-                                    Identifier : (76, 16 - 76, 24 : 2437 - 2445) : {}
+                                    Identifier : (76, 16 - 76, 24 : 2437 - 2445) : {definition: RepeatSuffix}
                                         @Tarminal : (76, 16 - 76, 23 : 2437 - 2444) "Primary"
                                         Spacing : (76, 23 - 76, 24 : 2444 - 2445) : {}
                                             Space : (76, 23 - 76, 24 : 2444 - 2445) : {}
@@ -1366,7 +1366,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (76, 24 - 78, 0 : 2445 - 2456) : {}
                             Suffix : (76, 24 - 78, 0 : 2445 - 2456) : {}
                                 Primary : (76, 24 - 78, 0 : 2445 - 2456) : {}
-                                    Identifier : (76, 24 - 78, 0 : 2445 - 2456) : {}
+                                    Identifier : (76, 24 - 78, 0 : 2445 - 2456) : {definition: RepeatSuffix}
                                         @Tarminal : (76, 24 - 76, 33 : 2445 - 2454) "RepeatNum"
                                         Spacing : (76, 33 - 78, 0 : 2454 - 2456) : {}
                                             Space : (76, 33 - 77, 0 : 2454 - 2455) : {}
@@ -1377,7 +1377,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (77, 0 - 78, 0 : 2455 - 2456) : {}
                                                     @Tarminal : (77, 0 - 78, 0 : 2455 - 2456) "
 "
-    Definition : (78, 0 - 80, 0 : 2456 - 2560) : {}
+    Definition : (78, 0 - 80, 0 : 2456 - 2560) : {expression: CURL_OPEN MinRepeat COMMA MaxRepeat CURL_CLOSE  CURL_OPEN RepeatCnt CURL_CLOSE , name: RepeatNum}
         DefinitionIdentifier : (78, 0 - 78, 10 : 2456 - 2466) : {}
             Identifier : (78, 0 - 78, 10 : 2456 - 2466) : {}
                 @Tarminal : (78, 0 - 78, 9 : 2456 - 2465) "RepeatNum"
@@ -1397,7 +1397,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (78, 13 - 78, 23 : 2469 - 2479) : {}
                                 Suffix : (78, 13 - 78, 23 : 2469 - 2479) : {}
                                     Primary : (78, 13 - 78, 23 : 2469 - 2479) : {}
-                                        Identifier : (78, 13 - 78, 23 : 2469 - 2479) : {}
+                                        Identifier : (78, 13 - 78, 23 : 2469 - 2479) : {definition: RepeatNum}
                                             @Tarminal : (78, 13 - 78, 22 : 2469 - 2478) "CURL_OPEN"
                                             Spacing : (78, 22 - 78, 23 : 2478 - 2479) : {}
                                                 Space : (78, 22 - 78, 23 : 2478 - 2479) : {}
@@ -1405,7 +1405,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (78, 23 - 78, 33 : 2479 - 2489) : {}
                                 Suffix : (78, 23 - 78, 33 : 2479 - 2489) : {}
                                     Primary : (78, 23 - 78, 33 : 2479 - 2489) : {}
-                                        Identifier : (78, 23 - 78, 33 : 2479 - 2489) : {}
+                                        Identifier : (78, 23 - 78, 33 : 2479 - 2489) : {definition: RepeatNum}
                                             @Tarminal : (78, 23 - 78, 32 : 2479 - 2488) "MinRepeat"
                                             Spacing : (78, 32 - 78, 33 : 2488 - 2489) : {}
                                                 Space : (78, 32 - 78, 33 : 2488 - 2489) : {}
@@ -1413,7 +1413,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (78, 33 - 78, 39 : 2489 - 2495) : {}
                                 Suffix : (78, 33 - 78, 39 : 2489 - 2495) : {}
                                     Primary : (78, 33 - 78, 39 : 2489 - 2495) : {}
-                                        Identifier : (78, 33 - 78, 39 : 2489 - 2495) : {}
+                                        Identifier : (78, 33 - 78, 39 : 2489 - 2495) : {definition: RepeatNum}
                                             @Tarminal : (78, 33 - 78, 38 : 2489 - 2494) "COMMA"
                                             Spacing : (78, 38 - 78, 39 : 2494 - 2495) : {}
                                                 Space : (78, 38 - 78, 39 : 2494 - 2495) : {}
@@ -1421,7 +1421,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (78, 39 - 78, 49 : 2495 - 2505) : {}
                                 Suffix : (78, 39 - 78, 49 : 2495 - 2505) : {}
                                     Primary : (78, 39 - 78, 49 : 2495 - 2505) : {}
-                                        Identifier : (78, 39 - 78, 49 : 2495 - 2505) : {}
+                                        Identifier : (78, 39 - 78, 49 : 2495 - 2505) : {definition: RepeatNum}
                                             @Tarminal : (78, 39 - 78, 48 : 2495 - 2504) "MaxRepeat"
                                             Spacing : (78, 48 - 78, 49 : 2504 - 2505) : {}
                                                 Space : (78, 48 - 78, 49 : 2504 - 2505) : {}
@@ -1429,7 +1429,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (78, 49 - 79, 11 : 2505 - 2527) : {}
                                 Suffix : (78, 49 - 79, 11 : 2505 - 2527) : {}
                                     Primary : (78, 49 - 79, 11 : 2505 - 2527) : {}
-                                        Identifier : (78, 49 - 79, 11 : 2505 - 2527) : {}
+                                        Identifier : (78, 49 - 79, 11 : 2505 - 2527) : {definition: RepeatNum}
                                             @Tarminal : (78, 49 - 78, 59 : 2505 - 2515) "CURL_CLOSE"
                                             Spacing : (78, 59 - 79, 11 : 2515 - 2527) : {}
                                                 Space : (78, 59 - 79, 0 : 2515 - 2516) : {}
@@ -1468,7 +1468,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (79, 13 - 79, 23 : 2529 - 2539) : {}
                                 Suffix : (79, 13 - 79, 23 : 2529 - 2539) : {}
                                     Primary : (79, 13 - 79, 23 : 2529 - 2539) : {}
-                                        Identifier : (79, 13 - 79, 23 : 2529 - 2539) : {}
+                                        Identifier : (79, 13 - 79, 23 : 2529 - 2539) : {definition: RepeatNum}
                                             @Tarminal : (79, 13 - 79, 22 : 2529 - 2538) "CURL_OPEN"
                                             Spacing : (79, 22 - 79, 23 : 2538 - 2539) : {}
                                                 Space : (79, 22 - 79, 23 : 2538 - 2539) : {}
@@ -1476,7 +1476,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (79, 23 - 79, 33 : 2539 - 2549) : {}
                                 Suffix : (79, 23 - 79, 33 : 2539 - 2549) : {}
                                     Primary : (79, 23 - 79, 33 : 2539 - 2549) : {}
-                                        Identifier : (79, 23 - 79, 33 : 2539 - 2549) : {}
+                                        Identifier : (79, 23 - 79, 33 : 2539 - 2549) : {definition: RepeatNum}
                                             @Tarminal : (79, 23 - 79, 32 : 2539 - 2548) "RepeatCnt"
                                             Spacing : (79, 32 - 79, 33 : 2548 - 2549) : {}
                                                 Space : (79, 32 - 79, 33 : 2548 - 2549) : {}
@@ -1484,14 +1484,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (79, 33 - 80, 0 : 2549 - 2560) : {}
                                 Suffix : (79, 33 - 80, 0 : 2549 - 2560) : {}
                                     Primary : (79, 33 - 80, 0 : 2549 - 2560) : {}
-                                        Identifier : (79, 33 - 80, 0 : 2549 - 2560) : {}
+                                        Identifier : (79, 33 - 80, 0 : 2549 - 2560) : {definition: RepeatNum}
                                             @Tarminal : (79, 33 - 79, 43 : 2549 - 2559) "CURL_CLOSE"
                                             Spacing : (79, 43 - 80, 0 : 2559 - 2560) : {}
                                                 Space : (79, 43 - 80, 0 : 2559 - 2560) : {}
                                                     EndOfLine : (79, 43 - 80, 0 : 2559 - 2560) : {}
                                                         @Tarminal : (79, 43 - 80, 0 : 2559 - 2560) "
 "
-    Definition : (80, 0 - 81, 0 : 2560 - 2580) : {}
+    Definition : (80, 0 - 81, 0 : 2560 - 2580) : {expression: Number , name: MinRepeat}
         DefinitionIdentifier : (80, 0 - 80, 10 : 2560 - 2570) : {}
             Identifier : (80, 0 - 80, 10 : 2560 - 2570) : {}
                 @Tarminal : (80, 0 - 80, 9 : 2560 - 2569) "MinRepeat"
@@ -1510,14 +1510,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (80, 13 - 81, 0 : 2573 - 2580) : {}
                             Suffix : (80, 13 - 81, 0 : 2573 - 2580) : {}
                                 Primary : (80, 13 - 81, 0 : 2573 - 2580) : {}
-                                    Identifier : (80, 13 - 81, 0 : 2573 - 2580) : {}
+                                    Identifier : (80, 13 - 81, 0 : 2573 - 2580) : {definition: MinRepeat}
                                         @Tarminal : (80, 13 - 80, 19 : 2573 - 2579) "Number"
                                         Spacing : (80, 19 - 81, 0 : 2579 - 2580) : {}
                                             Space : (80, 19 - 81, 0 : 2579 - 2580) : {}
                                                 EndOfLine : (80, 19 - 81, 0 : 2579 - 2580) : {}
                                                     @Tarminal : (80, 19 - 81, 0 : 2579 - 2580) "
 "
-    Definition : (81, 0 - 82, 0 : 2580 - 2600) : {}
+    Definition : (81, 0 - 82, 0 : 2580 - 2600) : {expression: Number , name: MaxRepeat}
         DefinitionIdentifier : (81, 0 - 81, 10 : 2580 - 2590) : {}
             Identifier : (81, 0 - 81, 10 : 2580 - 2590) : {}
                 @Tarminal : (81, 0 - 81, 9 : 2580 - 2589) "MaxRepeat"
@@ -1536,14 +1536,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (81, 13 - 82, 0 : 2593 - 2600) : {}
                             Suffix : (81, 13 - 82, 0 : 2593 - 2600) : {}
                                 Primary : (81, 13 - 82, 0 : 2593 - 2600) : {}
-                                    Identifier : (81, 13 - 82, 0 : 2593 - 2600) : {}
+                                    Identifier : (81, 13 - 82, 0 : 2593 - 2600) : {definition: MaxRepeat}
                                         @Tarminal : (81, 13 - 81, 19 : 2593 - 2599) "Number"
                                         Spacing : (81, 19 - 82, 0 : 2599 - 2600) : {}
                                             Space : (81, 19 - 82, 0 : 2599 - 2600) : {}
                                                 EndOfLine : (81, 19 - 82, 0 : 2599 - 2600) : {}
                                                     @Tarminal : (81, 19 - 82, 0 : 2599 - 2600) "
 "
-    Definition : (82, 0 - 84, 0 : 2600 - 2621) : {}
+    Definition : (82, 0 - 84, 0 : 2600 - 2621) : {expression: Number , name: RepeatCnt}
         DefinitionIdentifier : (82, 0 - 82, 10 : 2600 - 2610) : {}
             Identifier : (82, 0 - 82, 10 : 2600 - 2610) : {}
                 @Tarminal : (82, 0 - 82, 9 : 2600 - 2609) "RepeatCnt"
@@ -1562,7 +1562,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (82, 13 - 84, 0 : 2613 - 2621) : {}
                             Suffix : (82, 13 - 84, 0 : 2613 - 2621) : {}
                                 Primary : (82, 13 - 84, 0 : 2613 - 2621) : {}
-                                    Identifier : (82, 13 - 84, 0 : 2613 - 2621) : {}
+                                    Identifier : (82, 13 - 84, 0 : 2613 - 2621) : {definition: RepeatCnt}
                                         @Tarminal : (82, 13 - 82, 19 : 2613 - 2619) "Number"
                                         Spacing : (82, 19 - 84, 0 : 2619 - 2621) : {}
                                             Space : (82, 19 - 83, 0 : 2619 - 2620) : {}
@@ -1573,7 +1573,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (83, 0 - 84, 0 : 2620 - 2621) : {}
                                                     @Tarminal : (83, 0 - 84, 0 : 2620 - 2621) "
 "
-    Definition : (84, 0 - 98, 0 : 2621 - 3027) : {}
+    Definition : (84, 0 - 98, 0 : 2621 - 3027) : {expression: RegularExp  IdentifierCall  Identifier  LEFTARROW  COLON  SUB_LEFTARROW  MacroIdentifier  LEFTARROW  COLON  SUB_LEFTARROW  OPEN Expression CLOSE  Literal , name: Primary}
         DefinitionComment : (84, 0 - 91, 0 : 2621 - 2799) : {}
             Comment : (84, 0 - 85, 0 : 2621 - 2648) : {}
                 @Tarminal : (84, 0 - 84, 1 : 2621 - 2622) "#"
@@ -1640,7 +1640,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (91, 13 - 92, 11 : 2812 - 2834) : {}
                                 Suffix : (91, 13 - 92, 11 : 2812 - 2834) : {}
                                     Primary : (91, 13 - 92, 11 : 2812 - 2834) : {}
-                                        Identifier : (91, 13 - 92, 11 : 2812 - 2834) : {}
+                                        Identifier : (91, 13 - 92, 11 : 2812 - 2834) : {definition: Primary}
                                             @Tarminal : (91, 13 - 91, 23 : 2812 - 2822) "RegularExp"
                                             Spacing : (91, 23 - 92, 11 : 2822 - 2834) : {}
                                                 Space : (91, 23 - 92, 0 : 2822 - 2823) : {}
@@ -1679,7 +1679,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (92, 13 - 93, 11 : 2836 - 2862) : {}
                                 Suffix : (92, 13 - 93, 11 : 2836 - 2862) : {}
                                     Primary : (92, 13 - 93, 11 : 2836 - 2862) : {}
-                                        Identifier : (92, 13 - 93, 11 : 2836 - 2862) : {}
+                                        Identifier : (92, 13 - 93, 11 : 2836 - 2862) : {definition: Primary}
                                             @Tarminal : (92, 13 - 92, 27 : 2836 - 2850) "IdentifierCall"
                                             Spacing : (92, 27 - 93, 11 : 2850 - 2862) : {}
                                                 Space : (92, 27 - 93, 0 : 2850 - 2851) : {}
@@ -1718,7 +1718,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (93, 13 - 93, 24 : 2864 - 2875) : {}
                                 Suffix : (93, 13 - 93, 24 : 2864 - 2875) : {}
                                     Primary : (93, 13 - 93, 24 : 2864 - 2875) : {}
-                                        Identifier : (93, 13 - 93, 24 : 2864 - 2875) : {}
+                                        Identifier : (93, 13 - 93, 24 : 2864 - 2875) : {definition: Primary}
                                             @Tarminal : (93, 13 - 93, 23 : 2864 - 2874) "Identifier"
                                             Spacing : (93, 23 - 93, 24 : 2874 - 2875) : {}
                                                 Space : (93, 23 - 93, 24 : 2874 - 2875) : {}
@@ -1729,7 +1729,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                         @Tarminal : (93, 24 - 93, 25 : 2875 - 2876) "!"
                                     Suffix : (93, 25 - 93, 35 : 2876 - 2886) : {}
                                         Primary : (93, 25 - 93, 35 : 2876 - 2886) : {}
-                                            Identifier : (93, 25 - 93, 35 : 2876 - 2886) : {}
+                                            Identifier : (93, 25 - 93, 35 : 2876 - 2886) : {definition: Primary}
                                                 @Tarminal : (93, 25 - 93, 34 : 2876 - 2885) "LEFTARROW"
                                                 Spacing : (93, 34 - 93, 35 : 2885 - 2886) : {}
                                                     Space : (93, 34 - 93, 35 : 2885 - 2886) : {}
@@ -1740,7 +1740,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                         @Tarminal : (93, 35 - 93, 36 : 2886 - 2887) "!"
                                     Suffix : (93, 36 - 93, 42 : 2887 - 2893) : {}
                                         Primary : (93, 36 - 93, 42 : 2887 - 2893) : {}
-                                            Identifier : (93, 36 - 93, 42 : 2887 - 2893) : {}
+                                            Identifier : (93, 36 - 93, 42 : 2887 - 2893) : {definition: Primary}
                                                 @Tarminal : (93, 36 - 93, 41 : 2887 - 2892) "COLON"
                                                 Spacing : (93, 41 - 93, 42 : 2892 - 2893) : {}
                                                     Space : (93, 41 - 93, 42 : 2892 - 2893) : {}
@@ -1751,7 +1751,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                         @Tarminal : (93, 42 - 93, 43 : 2893 - 2894) "!"
                                     Suffix : (93, 43 - 94, 11 : 2894 - 2919) : {}
                                         Primary : (93, 43 - 94, 11 : 2894 - 2919) : {}
-                                            Identifier : (93, 43 - 94, 11 : 2894 - 2919) : {}
+                                            Identifier : (93, 43 - 94, 11 : 2894 - 2919) : {definition: Primary}
                                                 @Tarminal : (93, 43 - 93, 56 : 2894 - 2907) "SUB_LEFTARROW"
                                                 Spacing : (93, 56 - 94, 11 : 2907 - 2919) : {}
                                                     Space : (93, 56 - 94, 0 : 2907 - 2908) : {}
@@ -1790,7 +1790,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (94, 13 - 94, 29 : 2921 - 2937) : {}
                                 Suffix : (94, 13 - 94, 29 : 2921 - 2937) : {}
                                     Primary : (94, 13 - 94, 29 : 2921 - 2937) : {}
-                                        Identifier : (94, 13 - 94, 29 : 2921 - 2937) : {}
+                                        Identifier : (94, 13 - 94, 29 : 2921 - 2937) : {definition: Primary}
                                             @Tarminal : (94, 13 - 94, 28 : 2921 - 2936) "MacroIdentifier"
                                             Spacing : (94, 28 - 94, 29 : 2936 - 2937) : {}
                                                 Space : (94, 28 - 94, 29 : 2936 - 2937) : {}
@@ -1801,7 +1801,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                         @Tarminal : (94, 29 - 94, 30 : 2937 - 2938) "!"
                                     Suffix : (94, 30 - 94, 40 : 2938 - 2948) : {}
                                         Primary : (94, 30 - 94, 40 : 2938 - 2948) : {}
-                                            Identifier : (94, 30 - 94, 40 : 2938 - 2948) : {}
+                                            Identifier : (94, 30 - 94, 40 : 2938 - 2948) : {definition: Primary}
                                                 @Tarminal : (94, 30 - 94, 39 : 2938 - 2947) "LEFTARROW"
                                                 Spacing : (94, 39 - 94, 40 : 2947 - 2948) : {}
                                                     Space : (94, 39 - 94, 40 : 2947 - 2948) : {}
@@ -1812,7 +1812,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                         @Tarminal : (94, 40 - 94, 41 : 2948 - 2949) "!"
                                     Suffix : (94, 41 - 94, 47 : 2949 - 2955) : {}
                                         Primary : (94, 41 - 94, 47 : 2949 - 2955) : {}
-                                            Identifier : (94, 41 - 94, 47 : 2949 - 2955) : {}
+                                            Identifier : (94, 41 - 94, 47 : 2949 - 2955) : {definition: Primary}
                                                 @Tarminal : (94, 41 - 94, 46 : 2949 - 2954) "COLON"
                                                 Spacing : (94, 46 - 94, 47 : 2954 - 2955) : {}
                                                     Space : (94, 46 - 94, 47 : 2954 - 2955) : {}
@@ -1823,7 +1823,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                         @Tarminal : (94, 47 - 94, 48 : 2955 - 2956) "!"
                                     Suffix : (94, 48 - 95, 11 : 2956 - 2981) : {}
                                         Primary : (94, 48 - 95, 11 : 2956 - 2981) : {}
-                                            Identifier : (94, 48 - 95, 11 : 2956 - 2981) : {}
+                                            Identifier : (94, 48 - 95, 11 : 2956 - 2981) : {definition: Primary}
                                                 @Tarminal : (94, 48 - 94, 61 : 2956 - 2969) "SUB_LEFTARROW"
                                                 Spacing : (94, 61 - 95, 11 : 2969 - 2981) : {}
                                                     Space : (94, 61 - 95, 0 : 2969 - 2970) : {}
@@ -1862,7 +1862,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (95, 13 - 95, 18 : 2983 - 2988) : {}
                                 Suffix : (95, 13 - 95, 18 : 2983 - 2988) : {}
                                     Primary : (95, 13 - 95, 18 : 2983 - 2988) : {}
-                                        Identifier : (95, 13 - 95, 18 : 2983 - 2988) : {}
+                                        Identifier : (95, 13 - 95, 18 : 2983 - 2988) : {definition: Primary}
                                             @Tarminal : (95, 13 - 95, 17 : 2983 - 2987) "OPEN"
                                             Spacing : (95, 17 - 95, 18 : 2987 - 2988) : {}
                                                 Space : (95, 17 - 95, 18 : 2987 - 2988) : {}
@@ -1870,7 +1870,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (95, 18 - 95, 29 : 2988 - 2999) : {}
                                 Suffix : (95, 18 - 95, 29 : 2988 - 2999) : {}
                                     Primary : (95, 18 - 95, 29 : 2988 - 2999) : {}
-                                        Identifier : (95, 18 - 95, 29 : 2988 - 2999) : {}
+                                        Identifier : (95, 18 - 95, 29 : 2988 - 2999) : {definition: Primary}
                                             @Tarminal : (95, 18 - 95, 28 : 2988 - 2998) "Expression"
                                             Spacing : (95, 28 - 95, 29 : 2998 - 2999) : {}
                                                 Space : (95, 28 - 95, 29 : 2998 - 2999) : {}
@@ -1878,7 +1878,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (95, 29 - 96, 11 : 2999 - 3016) : {}
                                 Suffix : (95, 29 - 96, 11 : 2999 - 3016) : {}
                                     Primary : (95, 29 - 96, 11 : 2999 - 3016) : {}
-                                        Identifier : (95, 29 - 96, 11 : 2999 - 3016) : {}
+                                        Identifier : (95, 29 - 96, 11 : 2999 - 3016) : {definition: Primary}
                                             @Tarminal : (95, 29 - 95, 34 : 2999 - 3004) "CLOSE"
                                             Spacing : (95, 34 - 96, 11 : 3004 - 3016) : {}
                                                 Space : (95, 34 - 96, 0 : 3004 - 3005) : {}
@@ -1917,7 +1917,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (96, 13 - 98, 0 : 3018 - 3027) : {}
                                 Suffix : (96, 13 - 98, 0 : 3018 - 3027) : {}
                                     Primary : (96, 13 - 98, 0 : 3018 - 3027) : {}
-                                        Identifier : (96, 13 - 98, 0 : 3018 - 3027) : {}
+                                        Identifier : (96, 13 - 98, 0 : 3018 - 3027) : {definition: Primary}
                                             @Tarminal : (96, 13 - 96, 20 : 3018 - 3025) "Literal"
                                             Spacing : (96, 20 - 98, 0 : 3025 - 3027) : {}
                                                 Space : (96, 20 - 97, 0 : 3025 - 3026) : {}
@@ -1928,7 +1928,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     EndOfLine : (97, 0 - 98, 0 : 3026 - 3027) : {}
                                                         @Tarminal : (97, 0 - 98, 0 : 3026 - 3027) "
 "
-    Definition : (98, 0 - 104, 0 : 3027 - 3293) : {}
+    Definition : (98, 0 - 104, 0 : 3027 - 3293) : {expression: Identifier COLON OPEN Expression  COMMA Expression   CLOSE , name: IdentifierCall}
         DefinitionComment : (98, 0 - 102, 0 : 3027 - 3213) : {}
             Comment : (98, 0 - 99, 0 : 3027 - 3060) : {}
                 @Tarminal : (98, 0 - 98, 1 : 3027 - 3028) "#"
@@ -1972,7 +1972,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (102, 18 - 102, 29 : 3231 - 3242) : {}
                             Suffix : (102, 18 - 102, 29 : 3231 - 3242) : {}
                                 Primary : (102, 18 - 102, 29 : 3231 - 3242) : {}
-                                    Identifier : (102, 18 - 102, 29 : 3231 - 3242) : {}
+                                    Identifier : (102, 18 - 102, 29 : 3231 - 3242) : {definition: IdentifierCall}
                                         @Tarminal : (102, 18 - 102, 28 : 3231 - 3241) "Identifier"
                                         Spacing : (102, 28 - 102, 29 : 3241 - 3242) : {}
                                             Space : (102, 28 - 102, 29 : 3241 - 3242) : {}
@@ -1980,7 +1980,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (102, 29 - 102, 35 : 3242 - 3248) : {}
                             Suffix : (102, 29 - 102, 35 : 3242 - 3248) : {}
                                 Primary : (102, 29 - 102, 35 : 3242 - 3248) : {}
-                                    Identifier : (102, 29 - 102, 35 : 3242 - 3248) : {}
+                                    Identifier : (102, 29 - 102, 35 : 3242 - 3248) : {definition: IdentifierCall}
                                         @Tarminal : (102, 29 - 102, 34 : 3242 - 3247) "COLON"
                                         Spacing : (102, 34 - 102, 35 : 3247 - 3248) : {}
                                             Space : (102, 34 - 102, 35 : 3247 - 3248) : {}
@@ -1988,7 +1988,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (102, 35 - 102, 40 : 3248 - 3253) : {}
                             Suffix : (102, 35 - 102, 40 : 3248 - 3253) : {}
                                 Primary : (102, 35 - 102, 40 : 3248 - 3253) : {}
-                                    Identifier : (102, 35 - 102, 40 : 3248 - 3253) : {}
+                                    Identifier : (102, 35 - 102, 40 : 3248 - 3253) : {definition: IdentifierCall}
                                         @Tarminal : (102, 35 - 102, 39 : 3248 - 3252) "OPEN"
                                         Spacing : (102, 39 - 102, 40 : 3252 - 3253) : {}
                                             Space : (102, 39 - 102, 40 : 3252 - 3253) : {}
@@ -1996,7 +1996,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (102, 40 - 102, 51 : 3253 - 3264) : {}
                             Suffix : (102, 40 - 102, 51 : 3253 - 3264) : {}
                                 Primary : (102, 40 - 102, 51 : 3253 - 3264) : {}
-                                    Identifier : (102, 40 - 102, 51 : 3253 - 3264) : {}
+                                    Identifier : (102, 40 - 102, 51 : 3253 - 3264) : {definition: IdentifierCall}
                                         @Tarminal : (102, 40 - 102, 50 : 3253 - 3263) "Expression"
                                         Spacing : (102, 50 - 102, 51 : 3263 - 3264) : {}
                                             Space : (102, 50 - 102, 51 : 3263 - 3264) : {}
@@ -2016,7 +2016,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (102, 53 - 102, 59 : 3266 - 3272) : {}
                                                         Suffix : (102, 53 - 102, 59 : 3266 - 3272) : {}
                                                             Primary : (102, 53 - 102, 59 : 3266 - 3272) : {}
-                                                                Identifier : (102, 53 - 102, 59 : 3266 - 3272) : {}
+                                                                Identifier : (102, 53 - 102, 59 : 3266 - 3272) : {definition: IdentifierCall}
                                                                     @Tarminal : (102, 53 - 102, 58 : 3266 - 3271) "COMMA"
                                                                     Spacing : (102, 58 - 102, 59 : 3271 - 3272) : {}
                                                                         Space : (102, 58 - 102, 59 : 3271 - 3272) : {}
@@ -2024,7 +2024,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (102, 59 - 102, 70 : 3272 - 3283) : {}
                                                         Suffix : (102, 59 - 102, 70 : 3272 - 3283) : {}
                                                             Primary : (102, 59 - 102, 70 : 3272 - 3283) : {}
-                                                                Identifier : (102, 59 - 102, 70 : 3272 - 3283) : {}
+                                                                Identifier : (102, 59 - 102, 70 : 3272 - 3283) : {definition: IdentifierCall}
                                                                     @Tarminal : (102, 59 - 102, 69 : 3272 - 3282) "Expression"
                                                                     Spacing : (102, 69 - 102, 70 : 3282 - 3283) : {}
                                                                         Space : (102, 69 - 102, 70 : 3282 - 3283) : {}
@@ -2039,7 +2039,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (102, 73 - 104, 0 : 3286 - 3293) : {}
                             Suffix : (102, 73 - 104, 0 : 3286 - 3293) : {}
                                 Primary : (102, 73 - 104, 0 : 3286 - 3293) : {}
-                                    Identifier : (102, 73 - 104, 0 : 3286 - 3293) : {}
+                                    Identifier : (102, 73 - 104, 0 : 3286 - 3293) : {definition: IdentifierCall}
                                         @Tarminal : (102, 73 - 102, 78 : 3286 - 3291) "CLOSE"
                                         Spacing : (102, 78 - 104, 0 : 3291 - 3293) : {}
                                             Space : (102, 78 - 103, 0 : 3291 - 3292) : {}
@@ -2050,7 +2050,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (103, 0 - 104, 0 : 3292 - 3293) : {}
                                                     @Tarminal : (103, 0 - 104, 0 : 3292 - 3293) "
 "
-    Definition : (104, 0 - 109, 0 : 3293 - 3497) : {}
+    Definition : (104, 0 - 109, 0 : 3293 - 3497) : {expression: DefinitionComment MacroIdentifier Spacing LEFTARROW MacroExpression , name: MacroDefinition}
         DefinitionComment : (104, 0 - 107, 0 : 3293 - 3407) : {}
             Comment : (104, 0 - 105, 0 : 3293 - 3313) : {}
                 @Tarminal : (104, 0 - 104, 1 : 3293 - 3294) "#"
@@ -2089,7 +2089,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (107, 19 - 107, 38 : 3426 - 3445) : {}
                                 QuestionSuffix : (107, 19 - 107, 38 : 3426 - 3445) : {}
                                     Primary : (107, 19 - 107, 36 : 3426 - 3443) : {}
-                                        Identifier : (107, 19 - 107, 36 : 3426 - 3443) : {}
+                                        Identifier : (107, 19 - 107, 36 : 3426 - 3443) : {definition: MacroDefinition}
                                             @Tarminal : (107, 19 - 107, 36 : 3426 - 3443) "DefinitionComment"
                                     QUESTION : (107, 36 - 107, 38 : 3443 - 3445) : {}
                                         @Tarminal : (107, 36 - 107, 37 : 3443 - 3444) "?"
@@ -2099,7 +2099,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (107, 38 - 107, 54 : 3445 - 3461) : {}
                             Suffix : (107, 38 - 107, 54 : 3445 - 3461) : {}
                                 Primary : (107, 38 - 107, 54 : 3445 - 3461) : {}
-                                    Identifier : (107, 38 - 107, 54 : 3445 - 3461) : {}
+                                    Identifier : (107, 38 - 107, 54 : 3445 - 3461) : {definition: MacroDefinition}
                                         @Tarminal : (107, 38 - 107, 53 : 3445 - 3460) "MacroIdentifier"
                                         Spacing : (107, 53 - 107, 54 : 3460 - 3461) : {}
                                             Space : (107, 53 - 107, 54 : 3460 - 3461) : {}
@@ -2108,7 +2108,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (107, 54 - 107, 63 : 3461 - 3470) : {}
                                 QuestionSuffix : (107, 54 - 107, 63 : 3461 - 3470) : {}
                                     Primary : (107, 54 - 107, 61 : 3461 - 3468) : {}
-                                        Identifier : (107, 54 - 107, 61 : 3461 - 3468) : {}
+                                        Identifier : (107, 54 - 107, 61 : 3461 - 3468) : {definition: MacroDefinition}
                                             @Tarminal : (107, 54 - 107, 61 : 3461 - 3468) "Spacing"
                                     QUESTION : (107, 61 - 107, 63 : 3468 - 3470) : {}
                                         @Tarminal : (107, 61 - 107, 62 : 3468 - 3469) "?"
@@ -2118,7 +2118,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (107, 63 - 107, 73 : 3470 - 3480) : {}
                             Suffix : (107, 63 - 107, 73 : 3470 - 3480) : {}
                                 Primary : (107, 63 - 107, 73 : 3470 - 3480) : {}
-                                    Identifier : (107, 63 - 107, 73 : 3470 - 3480) : {}
+                                    Identifier : (107, 63 - 107, 73 : 3470 - 3480) : {definition: MacroDefinition}
                                         @Tarminal : (107, 63 - 107, 72 : 3470 - 3479) "LEFTARROW"
                                         Spacing : (107, 72 - 107, 73 : 3479 - 3480) : {}
                                             Space : (107, 72 - 107, 73 : 3479 - 3480) : {}
@@ -2126,7 +2126,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (107, 73 - 109, 0 : 3480 - 3497) : {}
                             Suffix : (107, 73 - 109, 0 : 3480 - 3497) : {}
                                 Primary : (107, 73 - 109, 0 : 3480 - 3497) : {}
-                                    Identifier : (107, 73 - 109, 0 : 3480 - 3497) : {}
+                                    Identifier : (107, 73 - 109, 0 : 3480 - 3497) : {definition: MacroDefinition}
                                         @Tarminal : (107, 73 - 107, 88 : 3480 - 3495) "MacroExpression"
                                         Spacing : (107, 88 - 109, 0 : 3495 - 3497) : {}
                                             Space : (107, 88 - 108, 0 : 3495 - 3496) : {}
@@ -2137,7 +2137,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (108, 0 - 109, 0 : 3496 - 3497) : {}
                                                     @Tarminal : (108, 0 - 109, 0 : 3496 - 3497) "
 "
-    Definition : (109, 0 - 110, 0 : 3497 - 3551) : {}
+    Definition : (109, 0 - 110, 0 : 3497 - 3551) : {expression: MacroSelection  MacroSequence , name: MacroExpression}
         DefinitionIdentifier : (109, 0 - 109, 20 : 3497 - 3517) : {}
             Identifier : (109, 0 - 109, 20 : 3497 - 3517) : {}
                 @Tarminal : (109, 0 - 109, 15 : 3497 - 3512) "MacroExpression"
@@ -2165,7 +2165,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (109, 23 - 109, 38 : 3520 - 3535) : {}
                                 Suffix : (109, 23 - 109, 38 : 3520 - 3535) : {}
                                     Primary : (109, 23 - 109, 38 : 3520 - 3535) : {}
-                                        Identifier : (109, 23 - 109, 38 : 3520 - 3535) : {}
+                                        Identifier : (109, 23 - 109, 38 : 3520 - 3535) : {definition: MacroExpression}
                                             @Tarminal : (109, 23 - 109, 37 : 3520 - 3534) "MacroSelection"
                                             Spacing : (109, 37 - 109, 38 : 3534 - 3535) : {}
                                                 Space : (109, 37 - 109, 38 : 3534 - 3535) : {}
@@ -2180,14 +2180,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (109, 40 - 110, 0 : 3537 - 3551) : {}
                                 Suffix : (109, 40 - 110, 0 : 3537 - 3551) : {}
                                     Primary : (109, 40 - 110, 0 : 3537 - 3551) : {}
-                                        Identifier : (109, 40 - 110, 0 : 3537 - 3551) : {}
+                                        Identifier : (109, 40 - 110, 0 : 3537 - 3551) : {definition: MacroExpression}
                                             @Tarminal : (109, 40 - 109, 53 : 3537 - 3550) "MacroSequence"
                                             Spacing : (109, 53 - 110, 0 : 3550 - 3551) : {}
                                                 Space : (109, 53 - 110, 0 : 3550 - 3551) : {}
                                                     EndOfLine : (109, 53 - 110, 0 : 3550 - 3551) : {}
                                                         @Tarminal : (109, 53 - 110, 0 : 3550 - 3551) "
 "
-    Definition : (110, 0 - 111, 0 : 3551 - 3613) : {}
+    Definition : (110, 0 - 111, 0 : 3551 - 3613) : {expression: MacroSequence  SLASH MacroSequence   , name: MacroSelection}
         DefinitionIdentifier : (110, 0 - 110, 20 : 3551 - 3571) : {}
             Identifier : (110, 0 - 110, 20 : 3551 - 3571) : {}
                 @Tarminal : (110, 0 - 110, 14 : 3551 - 3565) "MacroSelection"
@@ -2216,7 +2216,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (110, 23 - 110, 37 : 3574 - 3588) : {}
                             Suffix : (110, 23 - 110, 37 : 3574 - 3588) : {}
                                 Primary : (110, 23 - 110, 37 : 3574 - 3588) : {}
-                                    Identifier : (110, 23 - 110, 37 : 3574 - 3588) : {}
+                                    Identifier : (110, 23 - 110, 37 : 3574 - 3588) : {definition: MacroSelection}
                                         @Tarminal : (110, 23 - 110, 36 : 3574 - 3587) "MacroSequence"
                                         Spacing : (110, 36 - 110, 37 : 3587 - 3588) : {}
                                             Space : (110, 36 - 110, 37 : 3587 - 3588) : {}
@@ -2236,7 +2236,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (110, 39 - 110, 45 : 3590 - 3596) : {}
                                                         Suffix : (110, 39 - 110, 45 : 3590 - 3596) : {}
                                                             Primary : (110, 39 - 110, 45 : 3590 - 3596) : {}
-                                                                Identifier : (110, 39 - 110, 45 : 3590 - 3596) : {}
+                                                                Identifier : (110, 39 - 110, 45 : 3590 - 3596) : {definition: MacroSelection}
                                                                     @Tarminal : (110, 39 - 110, 44 : 3590 - 3595) "SLASH"
                                                                     Spacing : (110, 44 - 110, 45 : 3595 - 3596) : {}
                                                                         Space : (110, 44 - 110, 45 : 3595 - 3596) : {}
@@ -2244,7 +2244,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (110, 45 - 110, 59 : 3596 - 3610) : {}
                                                         Suffix : (110, 45 - 110, 59 : 3596 - 3610) : {}
                                                             Primary : (110, 45 - 110, 59 : 3596 - 3610) : {}
-                                                                Identifier : (110, 45 - 110, 59 : 3596 - 3610) : {}
+                                                                Identifier : (110, 45 - 110, 59 : 3596 - 3610) : {definition: MacroSelection}
                                                                     @Tarminal : (110, 45 - 110, 58 : 3596 - 3609) "MacroSequence"
                                                                     Spacing : (110, 58 - 110, 59 : 3609 - 3610) : {}
                                                                         Space : (110, 58 - 110, 59 : 3609 - 3610) : {}
@@ -2258,7 +2258,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (110, 61 - 111, 0 : 3612 - 3613) : {}
                                                     @Tarminal : (110, 61 - 111, 0 : 3612 - 3613) "
 "
-    Definition : (111, 0 - 112, 0 : 3613 - 3677) : {}
+    Definition : (111, 0 - 112, 0 : 3613 - 3677) : {expression: MacroMultiSequence  MacroSingleSequence , name: MacroSequence}
         DefinitionIdentifier : (111, 0 - 111, 20 : 3613 - 3633) : {}
             Identifier : (111, 0 - 111, 20 : 3613 - 3633) : {}
                 @Tarminal : (111, 0 - 111, 13 : 3613 - 3626) "MacroSequence"
@@ -2290,7 +2290,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (111, 23 - 111, 42 : 3636 - 3655) : {}
                                 Suffix : (111, 23 - 111, 42 : 3636 - 3655) : {}
                                     Primary : (111, 23 - 111, 42 : 3636 - 3655) : {}
-                                        Identifier : (111, 23 - 111, 42 : 3636 - 3655) : {}
+                                        Identifier : (111, 23 - 111, 42 : 3636 - 3655) : {definition: MacroSequence}
                                             @Tarminal : (111, 23 - 111, 41 : 3636 - 3654) "MacroMultiSequence"
                                             Spacing : (111, 41 - 111, 42 : 3654 - 3655) : {}
                                                 Space : (111, 41 - 111, 42 : 3654 - 3655) : {}
@@ -2305,14 +2305,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (111, 44 - 112, 0 : 3657 - 3677) : {}
                                 Suffix : (111, 44 - 112, 0 : 3657 - 3677) : {}
                                     Primary : (111, 44 - 112, 0 : 3657 - 3677) : {}
-                                        Identifier : (111, 44 - 112, 0 : 3657 - 3677) : {}
+                                        Identifier : (111, 44 - 112, 0 : 3657 - 3677) : {definition: MacroSequence}
                                             @Tarminal : (111, 44 - 111, 63 : 3657 - 3676) "MacroSingleSequence"
                                             Spacing : (111, 63 - 112, 0 : 3676 - 3677) : {}
                                                 Space : (111, 63 - 112, 0 : 3676 - 3677) : {}
                                                     EndOfLine : (111, 63 - 112, 0 : 3676 - 3677) : {}
                                                         @Tarminal : (111, 63 - 112, 0 : 3676 - 3677) "
 "
-    Definition : (112, 0 - 113, 0 : 3677 - 3721) : {}
+    Definition : (112, 0 - 113, 0 : 3677 - 3721) : {expression: MacroTerm MacroTerm , name: MacroMultiSequence}
         DefinitionIdentifier : (112, 0 - 112, 20 : 3677 - 3697) : {}
             Identifier : (112, 0 - 112, 20 : 3677 - 3697) : {}
                 @Tarminal : (112, 0 - 112, 18 : 3677 - 3695) "MacroMultiSequence"
@@ -2333,7 +2333,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (112, 23 - 112, 33 : 3700 - 3710) : {}
                             Suffix : (112, 23 - 112, 33 : 3700 - 3710) : {}
                                 Primary : (112, 23 - 112, 33 : 3700 - 3710) : {}
-                                    Identifier : (112, 23 - 112, 33 : 3700 - 3710) : {}
+                                    Identifier : (112, 23 - 112, 33 : 3700 - 3710) : {definition: MacroMultiSequence}
                                         @Tarminal : (112, 23 - 112, 32 : 3700 - 3709) "MacroTerm"
                                         Spacing : (112, 32 - 112, 33 : 3709 - 3710) : {}
                                             Space : (112, 32 - 112, 33 : 3709 - 3710) : {}
@@ -2342,7 +2342,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (112, 33 - 113, 0 : 3710 - 3721) : {}
                                 PlusSuffix : (112, 33 - 113, 0 : 3710 - 3721) : {}
                                     Primary : (112, 33 - 112, 42 : 3710 - 3719) : {}
-                                        Identifier : (112, 33 - 112, 42 : 3710 - 3719) : {}
+                                        Identifier : (112, 33 - 112, 42 : 3710 - 3719) : {definition: MacroMultiSequence}
                                             @Tarminal : (112, 33 - 112, 42 : 3710 - 3719) "MacroTerm"
                                     PLUS : (112, 42 - 113, 0 : 3719 - 3721) : {}
                                         @Tarminal : (112, 42 - 112, 43 : 3719 - 3720) "+"
@@ -2351,7 +2351,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (112, 43 - 113, 0 : 3720 - 3721) : {}
                                                     @Tarminal : (112, 43 - 113, 0 : 3720 - 3721) "
 "
-    Definition : (113, 0 - 114, 0 : 3721 - 3754) : {}
+    Definition : (113, 0 - 114, 0 : 3721 - 3754) : {expression: MacroTerm , name: MacroSingleSequence}
         DefinitionIdentifier : (113, 0 - 113, 20 : 3721 - 3741) : {}
             Identifier : (113, 0 - 113, 20 : 3721 - 3741) : {}
                 @Tarminal : (113, 0 - 113, 19 : 3721 - 3740) "MacroSingleSequence"
@@ -2370,14 +2370,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (113, 23 - 114, 0 : 3744 - 3754) : {}
                             Suffix : (113, 23 - 114, 0 : 3744 - 3754) : {}
                                 Primary : (113, 23 - 114, 0 : 3744 - 3754) : {}
-                                    Identifier : (113, 23 - 114, 0 : 3744 - 3754) : {}
+                                    Identifier : (113, 23 - 114, 0 : 3744 - 3754) : {definition: MacroSingleSequence}
                                         @Tarminal : (113, 23 - 113, 32 : 3744 - 3753) "MacroTerm"
                                         Spacing : (113, 32 - 114, 0 : 3753 - 3754) : {}
                                             Space : (113, 32 - 114, 0 : 3753 - 3754) : {}
                                                 EndOfLine : (113, 32 - 114, 0 : 3753 - 3754) : {}
                                                     @Tarminal : (113, 32 - 114, 0 : 3753 - 3754) "
 "
-    Definition : (114, 0 - 116, 0 : 3754 - 3790) : {}
+    Definition : (114, 0 - 116, 0 : 3754 - 3790) : {expression: MacroPrefix , name: MacroTerm}
         DefinitionIdentifier : (114, 0 - 114, 20 : 3754 - 3774) : {}
             Identifier : (114, 0 - 114, 20 : 3754 - 3774) : {}
                 @Tarminal : (114, 0 - 114, 9 : 3754 - 3763) "MacroTerm"
@@ -2416,7 +2416,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (114, 23 - 116, 0 : 3777 - 3790) : {}
                             Suffix : (114, 23 - 116, 0 : 3777 - 3790) : {}
                                 Primary : (114, 23 - 116, 0 : 3777 - 3790) : {}
-                                    Identifier : (114, 23 - 116, 0 : 3777 - 3790) : {}
+                                    Identifier : (114, 23 - 116, 0 : 3777 - 3790) : {definition: MacroTerm}
                                         @Tarminal : (114, 23 - 114, 34 : 3777 - 3788) "MacroPrefix"
                                         Spacing : (114, 34 - 116, 0 : 3788 - 3790) : {}
                                             Space : (114, 34 - 115, 0 : 3788 - 3789) : {}
@@ -2427,7 +2427,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (115, 0 - 116, 0 : 3789 - 3790) : {}
                                                     @Tarminal : (115, 0 - 116, 0 : 3789 - 3790) "
 "
-    Definition : (116, 0 - 117, 0 : 3790 - 3859) : {}
+    Definition : (116, 0 - 117, 0 : 3790 - 3859) : {expression: MacroAndPrefix  MacroNotPrefix  MacroSuffix , name: MacroPrefix}
         DefinitionIdentifier : (116, 0 - 116, 20 : 3790 - 3810) : {}
             Identifier : (116, 0 - 116, 20 : 3790 - 3810) : {}
                 @Tarminal : (116, 0 - 116, 11 : 3790 - 3801) "MacroPrefix"
@@ -2463,7 +2463,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (116, 23 - 116, 38 : 3813 - 3828) : {}
                                 Suffix : (116, 23 - 116, 38 : 3813 - 3828) : {}
                                     Primary : (116, 23 - 116, 38 : 3813 - 3828) : {}
-                                        Identifier : (116, 23 - 116, 38 : 3813 - 3828) : {}
+                                        Identifier : (116, 23 - 116, 38 : 3813 - 3828) : {definition: MacroPrefix}
                                             @Tarminal : (116, 23 - 116, 37 : 3813 - 3827) "MacroAndPrefix"
                                             Spacing : (116, 37 - 116, 38 : 3827 - 3828) : {}
                                                 Space : (116, 37 - 116, 38 : 3827 - 3828) : {}
@@ -2478,7 +2478,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (116, 40 - 116, 55 : 3830 - 3845) : {}
                                 Suffix : (116, 40 - 116, 55 : 3830 - 3845) : {}
                                     Primary : (116, 40 - 116, 55 : 3830 - 3845) : {}
-                                        Identifier : (116, 40 - 116, 55 : 3830 - 3845) : {}
+                                        Identifier : (116, 40 - 116, 55 : 3830 - 3845) : {definition: MacroPrefix}
                                             @Tarminal : (116, 40 - 116, 54 : 3830 - 3844) "MacroNotPrefix"
                                             Spacing : (116, 54 - 116, 55 : 3844 - 3845) : {}
                                                 Space : (116, 54 - 116, 55 : 3844 - 3845) : {}
@@ -2493,14 +2493,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (116, 57 - 117, 0 : 3847 - 3859) : {}
                                 Suffix : (116, 57 - 117, 0 : 3847 - 3859) : {}
                                     Primary : (116, 57 - 117, 0 : 3847 - 3859) : {}
-                                        Identifier : (116, 57 - 117, 0 : 3847 - 3859) : {}
+                                        Identifier : (116, 57 - 117, 0 : 3847 - 3859) : {definition: MacroPrefix}
                                             @Tarminal : (116, 57 - 116, 68 : 3847 - 3858) "MacroSuffix"
                                             Spacing : (116, 68 - 117, 0 : 3858 - 3859) : {}
                                                 Space : (116, 68 - 117, 0 : 3858 - 3859) : {}
                                                     EndOfLine : (116, 68 - 117, 0 : 3858 - 3859) : {}
                                                         @Tarminal : (116, 68 - 117, 0 : 3858 - 3859) "
 "
-    Definition : (117, 0 - 118, 0 : 3859 - 3904) : {}
+    Definition : (117, 0 - 118, 0 : 3859 - 3904) : {expression: AMPERSAND MacroSuffix , name: MacroAndPrefix}
         DefinitionIdentifier : (117, 0 - 117, 20 : 3859 - 3879) : {}
             Identifier : (117, 0 - 117, 20 : 3859 - 3879) : {}
                 @Tarminal : (117, 0 - 117, 14 : 3859 - 3873) "MacroAndPrefix"
@@ -2529,7 +2529,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (117, 23 - 117, 33 : 3882 - 3892) : {}
                             Suffix : (117, 23 - 117, 33 : 3882 - 3892) : {}
                                 Primary : (117, 23 - 117, 33 : 3882 - 3892) : {}
-                                    Identifier : (117, 23 - 117, 33 : 3882 - 3892) : {}
+                                    Identifier : (117, 23 - 117, 33 : 3882 - 3892) : {definition: MacroAndPrefix}
                                         @Tarminal : (117, 23 - 117, 32 : 3882 - 3891) "AMPERSAND"
                                         Spacing : (117, 32 - 117, 33 : 3891 - 3892) : {}
                                             Space : (117, 32 - 117, 33 : 3891 - 3892) : {}
@@ -2537,14 +2537,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (117, 33 - 118, 0 : 3892 - 3904) : {}
                             Suffix : (117, 33 - 118, 0 : 3892 - 3904) : {}
                                 Primary : (117, 33 - 118, 0 : 3892 - 3904) : {}
-                                    Identifier : (117, 33 - 118, 0 : 3892 - 3904) : {}
+                                    Identifier : (117, 33 - 118, 0 : 3892 - 3904) : {definition: MacroAndPrefix}
                                         @Tarminal : (117, 33 - 117, 44 : 3892 - 3903) "MacroSuffix"
                                         Spacing : (117, 44 - 118, 0 : 3903 - 3904) : {}
                                             Space : (117, 44 - 118, 0 : 3903 - 3904) : {}
                                                 EndOfLine : (117, 44 - 118, 0 : 3903 - 3904) : {}
                                                     @Tarminal : (117, 44 - 118, 0 : 3903 - 3904) "
 "
-    Definition : (118, 0 - 120, 0 : 3904 - 3952) : {}
+    Definition : (118, 0 - 120, 0 : 3904 - 3952) : {expression: EXCLAMATION MacroSuffix , name: MacroNotPrefix}
         DefinitionIdentifier : (118, 0 - 118, 20 : 3904 - 3924) : {}
             Identifier : (118, 0 - 118, 20 : 3904 - 3924) : {}
                 @Tarminal : (118, 0 - 118, 14 : 3904 - 3918) "MacroNotPrefix"
@@ -2573,7 +2573,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (118, 23 - 118, 35 : 3927 - 3939) : {}
                             Suffix : (118, 23 - 118, 35 : 3927 - 3939) : {}
                                 Primary : (118, 23 - 118, 35 : 3927 - 3939) : {}
-                                    Identifier : (118, 23 - 118, 35 : 3927 - 3939) : {}
+                                    Identifier : (118, 23 - 118, 35 : 3927 - 3939) : {definition: MacroNotPrefix}
                                         @Tarminal : (118, 23 - 118, 34 : 3927 - 3938) "EXCLAMATION"
                                         Spacing : (118, 34 - 118, 35 : 3938 - 3939) : {}
                                             Space : (118, 34 - 118, 35 : 3938 - 3939) : {}
@@ -2581,7 +2581,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (118, 35 - 120, 0 : 3939 - 3952) : {}
                             Suffix : (118, 35 - 120, 0 : 3939 - 3952) : {}
                                 Primary : (118, 35 - 120, 0 : 3939 - 3952) : {}
-                                    Identifier : (118, 35 - 120, 0 : 3939 - 3952) : {}
+                                    Identifier : (118, 35 - 120, 0 : 3939 - 3952) : {definition: MacroNotPrefix}
                                         @Tarminal : (118, 35 - 118, 46 : 3939 - 3950) "MacroSuffix"
                                         Spacing : (118, 46 - 120, 0 : 3950 - 3952) : {}
                                             Space : (118, 46 - 119, 0 : 3950 - 3951) : {}
@@ -2592,7 +2592,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (119, 0 - 120, 0 : 3951 - 3952) : {}
                                                     @Tarminal : (119, 0 - 120, 0 : 3951 - 3952) "
 "
-    Definition : (120, 0 - 125, 0 : 3952 - 4150) : {}
+    Definition : (120, 0 - 125, 0 : 3952 - 4150) : {expression: MacroQuestionSuffix  MacroStarSuffix  MacroPlusSuffix  MacroRepeatSuffix  MacroPrimary , name: MacroSuffix}
         DefinitionIdentifier : (120, 0 - 120, 20 : 3952 - 3972) : {}
             Identifier : (120, 0 - 120, 20 : 3952 - 3972) : {}
                 @Tarminal : (120, 0 - 120, 11 : 3952 - 3963) "MacroSuffix"
@@ -2628,7 +2628,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (120, 23 - 121, 21 : 3975 - 4016) : {}
                                 Suffix : (120, 23 - 121, 21 : 3975 - 4016) : {}
                                     Primary : (120, 23 - 121, 21 : 3975 - 4016) : {}
-                                        Identifier : (120, 23 - 121, 21 : 3975 - 4016) : {}
+                                        Identifier : (120, 23 - 121, 21 : 3975 - 4016) : {definition: MacroSuffix}
                                             @Tarminal : (120, 23 - 120, 42 : 3975 - 3994) "MacroQuestionSuffix"
                                             Spacing : (120, 42 - 121, 21 : 3994 - 4016) : {}
                                                 Space : (120, 42 - 121, 0 : 3994 - 3995) : {}
@@ -2687,7 +2687,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (121, 23 - 122, 21 : 4018 - 4055) : {}
                                 Suffix : (121, 23 - 122, 21 : 4018 - 4055) : {}
                                     Primary : (121, 23 - 122, 21 : 4018 - 4055) : {}
-                                        Identifier : (121, 23 - 122, 21 : 4018 - 4055) : {}
+                                        Identifier : (121, 23 - 122, 21 : 4018 - 4055) : {definition: MacroSuffix}
                                             @Tarminal : (121, 23 - 121, 38 : 4018 - 4033) "MacroStarSuffix"
                                             Spacing : (121, 38 - 122, 21 : 4033 - 4055) : {}
                                                 Space : (121, 38 - 122, 0 : 4033 - 4034) : {}
@@ -2746,7 +2746,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (122, 23 - 123, 21 : 4057 - 4094) : {}
                                 Suffix : (122, 23 - 123, 21 : 4057 - 4094) : {}
                                     Primary : (122, 23 - 123, 21 : 4057 - 4094) : {}
-                                        Identifier : (122, 23 - 123, 21 : 4057 - 4094) : {}
+                                        Identifier : (122, 23 - 123, 21 : 4057 - 4094) : {definition: MacroSuffix}
                                             @Tarminal : (122, 23 - 122, 38 : 4057 - 4072) "MacroPlusSuffix"
                                             Spacing : (122, 38 - 123, 21 : 4072 - 4094) : {}
                                                 Space : (122, 38 - 123, 0 : 4072 - 4073) : {}
@@ -2805,7 +2805,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (123, 23 - 124, 21 : 4096 - 4135) : {}
                                 Suffix : (123, 23 - 124, 21 : 4096 - 4135) : {}
                                     Primary : (123, 23 - 124, 21 : 4096 - 4135) : {}
-                                        Identifier : (123, 23 - 124, 21 : 4096 - 4135) : {}
+                                        Identifier : (123, 23 - 124, 21 : 4096 - 4135) : {definition: MacroSuffix}
                                             @Tarminal : (123, 23 - 123, 40 : 4096 - 4113) "MacroRepeatSuffix"
                                             Spacing : (123, 40 - 124, 21 : 4113 - 4135) : {}
                                                 Space : (123, 40 - 124, 0 : 4113 - 4114) : {}
@@ -2864,14 +2864,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (124, 23 - 125, 0 : 4137 - 4150) : {}
                                 Suffix : (124, 23 - 125, 0 : 4137 - 4150) : {}
                                     Primary : (124, 23 - 125, 0 : 4137 - 4150) : {}
-                                        Identifier : (124, 23 - 125, 0 : 4137 - 4150) : {}
+                                        Identifier : (124, 23 - 125, 0 : 4137 - 4150) : {definition: MacroSuffix}
                                             @Tarminal : (124, 23 - 124, 35 : 4137 - 4149) "MacroPrimary"
                                             Spacing : (124, 35 - 125, 0 : 4149 - 4150) : {}
                                                 Space : (124, 35 - 125, 0 : 4149 - 4150) : {}
                                                     EndOfLine : (124, 35 - 125, 0 : 4149 - 4150) : {}
                                                         @Tarminal : (124, 35 - 125, 0 : 4149 - 4150) "
 "
-    Definition : (125, 0 - 126, 0 : 4150 - 4195) : {}
+    Definition : (125, 0 - 126, 0 : 4150 - 4195) : {expression: MacroPrimary QUESTION , name: MacroQuestionSuffix}
         DefinitionIdentifier : (125, 0 - 125, 20 : 4150 - 4170) : {}
             Identifier : (125, 0 - 125, 20 : 4150 - 4170) : {}
                 @Tarminal : (125, 0 - 125, 19 : 4150 - 4169) "MacroQuestionSuffix"
@@ -2890,7 +2890,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (125, 23 - 125, 36 : 4173 - 4186) : {}
                             Suffix : (125, 23 - 125, 36 : 4173 - 4186) : {}
                                 Primary : (125, 23 - 125, 36 : 4173 - 4186) : {}
-                                    Identifier : (125, 23 - 125, 36 : 4173 - 4186) : {}
+                                    Identifier : (125, 23 - 125, 36 : 4173 - 4186) : {definition: MacroQuestionSuffix}
                                         @Tarminal : (125, 23 - 125, 35 : 4173 - 4185) "MacroPrimary"
                                         Spacing : (125, 35 - 125, 36 : 4185 - 4186) : {}
                                             Space : (125, 35 - 125, 36 : 4185 - 4186) : {}
@@ -2898,14 +2898,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (125, 36 - 126, 0 : 4186 - 4195) : {}
                             Suffix : (125, 36 - 126, 0 : 4186 - 4195) : {}
                                 Primary : (125, 36 - 126, 0 : 4186 - 4195) : {}
-                                    Identifier : (125, 36 - 126, 0 : 4186 - 4195) : {}
+                                    Identifier : (125, 36 - 126, 0 : 4186 - 4195) : {definition: MacroQuestionSuffix}
                                         @Tarminal : (125, 36 - 125, 44 : 4186 - 4194) "QUESTION"
                                         Spacing : (125, 44 - 126, 0 : 4194 - 4195) : {}
                                             Space : (125, 44 - 126, 0 : 4194 - 4195) : {}
                                                 EndOfLine : (125, 44 - 126, 0 : 4194 - 4195) : {}
                                                     @Tarminal : (125, 44 - 126, 0 : 4194 - 4195) "
 "
-    Definition : (126, 0 - 127, 0 : 4195 - 4236) : {}
+    Definition : (126, 0 - 127, 0 : 4195 - 4236) : {expression: MacroPrimary STAR , name: MacroStarSuffix}
         DefinitionIdentifier : (126, 0 - 126, 20 : 4195 - 4215) : {}
             Identifier : (126, 0 - 126, 20 : 4195 - 4215) : {}
                 @Tarminal : (126, 0 - 126, 15 : 4195 - 4210) "MacroStarSuffix"
@@ -2932,7 +2932,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (126, 23 - 126, 36 : 4218 - 4231) : {}
                             Suffix : (126, 23 - 126, 36 : 4218 - 4231) : {}
                                 Primary : (126, 23 - 126, 36 : 4218 - 4231) : {}
-                                    Identifier : (126, 23 - 126, 36 : 4218 - 4231) : {}
+                                    Identifier : (126, 23 - 126, 36 : 4218 - 4231) : {definition: MacroStarSuffix}
                                         @Tarminal : (126, 23 - 126, 35 : 4218 - 4230) "MacroPrimary"
                                         Spacing : (126, 35 - 126, 36 : 4230 - 4231) : {}
                                             Space : (126, 35 - 126, 36 : 4230 - 4231) : {}
@@ -2940,14 +2940,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (126, 36 - 127, 0 : 4231 - 4236) : {}
                             Suffix : (126, 36 - 127, 0 : 4231 - 4236) : {}
                                 Primary : (126, 36 - 127, 0 : 4231 - 4236) : {}
-                                    Identifier : (126, 36 - 127, 0 : 4231 - 4236) : {}
+                                    Identifier : (126, 36 - 127, 0 : 4231 - 4236) : {definition: MacroStarSuffix}
                                         @Tarminal : (126, 36 - 126, 40 : 4231 - 4235) "STAR"
                                         Spacing : (126, 40 - 127, 0 : 4235 - 4236) : {}
                                             Space : (126, 40 - 127, 0 : 4235 - 4236) : {}
                                                 EndOfLine : (126, 40 - 127, 0 : 4235 - 4236) : {}
                                                     @Tarminal : (126, 40 - 127, 0 : 4235 - 4236) "
 "
-    Definition : (127, 0 - 128, 0 : 4236 - 4277) : {}
+    Definition : (127, 0 - 128, 0 : 4236 - 4277) : {expression: MacroPrimary PLUS , name: MacroPlusSuffix}
         DefinitionIdentifier : (127, 0 - 127, 20 : 4236 - 4256) : {}
             Identifier : (127, 0 - 127, 20 : 4236 - 4256) : {}
                 @Tarminal : (127, 0 - 127, 15 : 4236 - 4251) "MacroPlusSuffix"
@@ -2974,7 +2974,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (127, 23 - 127, 36 : 4259 - 4272) : {}
                             Suffix : (127, 23 - 127, 36 : 4259 - 4272) : {}
                                 Primary : (127, 23 - 127, 36 : 4259 - 4272) : {}
-                                    Identifier : (127, 23 - 127, 36 : 4259 - 4272) : {}
+                                    Identifier : (127, 23 - 127, 36 : 4259 - 4272) : {definition: MacroPlusSuffix}
                                         @Tarminal : (127, 23 - 127, 35 : 4259 - 4271) "MacroPrimary"
                                         Spacing : (127, 35 - 127, 36 : 4271 - 4272) : {}
                                             Space : (127, 35 - 127, 36 : 4271 - 4272) : {}
@@ -2982,14 +2982,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (127, 36 - 128, 0 : 4272 - 4277) : {}
                             Suffix : (127, 36 - 128, 0 : 4272 - 4277) : {}
                                 Primary : (127, 36 - 128, 0 : 4272 - 4277) : {}
-                                    Identifier : (127, 36 - 128, 0 : 4272 - 4277) : {}
+                                    Identifier : (127, 36 - 128, 0 : 4272 - 4277) : {definition: MacroPlusSuffix}
                                         @Tarminal : (127, 36 - 127, 40 : 4272 - 4276) "PLUS"
                                         Spacing : (127, 40 - 128, 0 : 4276 - 4277) : {}
                                             Space : (127, 40 - 128, 0 : 4276 - 4277) : {}
                                                 EndOfLine : (127, 40 - 128, 0 : 4276 - 4277) : {}
                                                     @Tarminal : (127, 40 - 128, 0 : 4276 - 4277) "
 "
-    Definition : (128, 0 - 130, 0 : 4277 - 4324) : {}
+    Definition : (128, 0 - 130, 0 : 4277 - 4324) : {expression: MacroPrimary RepeatNum , name: MacroRepeatSuffix}
         DefinitionIdentifier : (128, 0 - 128, 20 : 4277 - 4297) : {}
             Identifier : (128, 0 - 128, 20 : 4277 - 4297) : {}
                 @Tarminal : (128, 0 - 128, 17 : 4277 - 4294) "MacroRepeatSuffix"
@@ -3012,7 +3012,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (128, 23 - 128, 36 : 4300 - 4313) : {}
                             Suffix : (128, 23 - 128, 36 : 4300 - 4313) : {}
                                 Primary : (128, 23 - 128, 36 : 4300 - 4313) : {}
-                                    Identifier : (128, 23 - 128, 36 : 4300 - 4313) : {}
+                                    Identifier : (128, 23 - 128, 36 : 4300 - 4313) : {definition: MacroRepeatSuffix}
                                         @Tarminal : (128, 23 - 128, 35 : 4300 - 4312) "MacroPrimary"
                                         Spacing : (128, 35 - 128, 36 : 4312 - 4313) : {}
                                             Space : (128, 35 - 128, 36 : 4312 - 4313) : {}
@@ -3020,7 +3020,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (128, 36 - 130, 0 : 4313 - 4324) : {}
                             Suffix : (128, 36 - 130, 0 : 4313 - 4324) : {}
                                 Primary : (128, 36 - 130, 0 : 4313 - 4324) : {}
-                                    Identifier : (128, 36 - 130, 0 : 4313 - 4324) : {}
+                                    Identifier : (128, 36 - 130, 0 : 4313 - 4324) : {definition: MacroRepeatSuffix}
                                         @Tarminal : (128, 36 - 128, 45 : 4313 - 4322) "RepeatNum"
                                         Spacing : (128, 45 - 130, 0 : 4322 - 4324) : {}
                                             Space : (128, 45 - 129, 0 : 4322 - 4323) : {}
@@ -3031,7 +3031,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (129, 0 - 130, 0 : 4323 - 4324) : {}
                                                     @Tarminal : (129, 0 - 130, 0 : 4323 - 4324) "
 "
-    Definition : (130, 0 - 134, 0 : 4324 - 4440) : {}
+    Definition : (130, 0 - 134, 0 : 4324 - 4440) : {expression: RegularExp  OPEN MacroExpression CLOSE  Literal , name: MacroPrimary}
         DefinitionIdentifier : (130, 0 - 130, 20 : 4324 - 4344) : {}
             Identifier : (130, 0 - 130, 20 : 4324 - 4344) : {}
                 @Tarminal : (130, 0 - 130, 12 : 4324 - 4336) "MacroPrimary"
@@ -3065,7 +3065,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (130, 23 - 131, 21 : 4347 - 4379) : {}
                                 Suffix : (130, 23 - 131, 21 : 4347 - 4379) : {}
                                     Primary : (130, 23 - 131, 21 : 4347 - 4379) : {}
-                                        Identifier : (130, 23 - 131, 21 : 4347 - 4379) : {}
+                                        Identifier : (130, 23 - 131, 21 : 4347 - 4379) : {definition: MacroPrimary}
                                             @Tarminal : (130, 23 - 130, 33 : 4347 - 4357) "RegularExp"
                                             Spacing : (130, 33 - 131, 21 : 4357 - 4379) : {}
                                                 Space : (130, 33 - 131, 0 : 4357 - 4358) : {}
@@ -3124,7 +3124,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (131, 23 - 131, 28 : 4381 - 4386) : {}
                                 Suffix : (131, 23 - 131, 28 : 4381 - 4386) : {}
                                     Primary : (131, 23 - 131, 28 : 4381 - 4386) : {}
-                                        Identifier : (131, 23 - 131, 28 : 4381 - 4386) : {}
+                                        Identifier : (131, 23 - 131, 28 : 4381 - 4386) : {definition: MacroPrimary}
                                             @Tarminal : (131, 23 - 131, 27 : 4381 - 4385) "OPEN"
                                             Spacing : (131, 27 - 131, 28 : 4385 - 4386) : {}
                                                 Space : (131, 27 - 131, 28 : 4385 - 4386) : {}
@@ -3132,7 +3132,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (131, 28 - 131, 44 : 4386 - 4402) : {}
                                 Suffix : (131, 28 - 131, 44 : 4386 - 4402) : {}
                                     Primary : (131, 28 - 131, 44 : 4386 - 4402) : {}
-                                        Identifier : (131, 28 - 131, 44 : 4386 - 4402) : {}
+                                        Identifier : (131, 28 - 131, 44 : 4386 - 4402) : {definition: MacroPrimary}
                                             @Tarminal : (131, 28 - 131, 43 : 4386 - 4401) "MacroExpression"
                                             Spacing : (131, 43 - 131, 44 : 4401 - 4402) : {}
                                                 Space : (131, 43 - 131, 44 : 4401 - 4402) : {}
@@ -3140,7 +3140,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (131, 44 - 132, 21 : 4402 - 4429) : {}
                                 Suffix : (131, 44 - 132, 21 : 4402 - 4429) : {}
                                     Primary : (131, 44 - 132, 21 : 4402 - 4429) : {}
-                                        Identifier : (131, 44 - 132, 21 : 4402 - 4429) : {}
+                                        Identifier : (131, 44 - 132, 21 : 4402 - 4429) : {definition: MacroPrimary}
                                             @Tarminal : (131, 44 - 131, 49 : 4402 - 4407) "CLOSE"
                                             Spacing : (131, 49 - 132, 21 : 4407 - 4429) : {}
                                                 Space : (131, 49 - 132, 0 : 4407 - 4408) : {}
@@ -3199,7 +3199,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (132, 23 - 134, 0 : 4431 - 4440) : {}
                                 Suffix : (132, 23 - 134, 0 : 4431 - 4440) : {}
                                     Primary : (132, 23 - 134, 0 : 4431 - 4440) : {}
-                                        Identifier : (132, 23 - 134, 0 : 4431 - 4440) : {}
+                                        Identifier : (132, 23 - 134, 0 : 4431 - 4440) : {definition: MacroPrimary}
                                             @Tarminal : (132, 23 - 132, 30 : 4431 - 4438) "Literal"
                                             Spacing : (132, 30 - 134, 0 : 4438 - 4440) : {}
                                                 Space : (132, 30 - 133, 0 : 4438 - 4439) : {}
@@ -3228,7 +3228,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                 EndOfLine : (136, 0 - 137, 0 : 4498 - 4499) : {}
                     @Tarminal : (136, 0 - 137, 0 : 4498 - 4499) "
 "
-    Definition : (137, 0 - 140, 0 : 4499 - 4623) : {}
+    Definition : (137, 0 - 140, 0 : 4499 - 4623) : {expression: REGPREFIX  SingleQuotesLiteral  DoubleQuotesLiteral  RegularExpOptions Spacing , name: RegularExp}
         DefinitionComment : (137, 0 - 138, 0 : 4499 - 4525) : {}
             Comment : (137, 0 - 138, 0 : 4499 - 4525) : {}
                 @Tarminal : (137, 0 - 137, 1 : 4499 - 4500) "#"
@@ -3254,7 +3254,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (138, 14 - 138, 24 : 4539 - 4549) : {}
                             Suffix : (138, 14 - 138, 24 : 4539 - 4549) : {}
                                 Primary : (138, 14 - 138, 24 : 4539 - 4549) : {}
-                                    Identifier : (138, 14 - 138, 24 : 4539 - 4549) : {}
+                                    Identifier : (138, 14 - 138, 24 : 4539 - 4549) : {definition: RegularExp}
                                         @Tarminal : (138, 14 - 138, 23 : 4539 - 4548) "REGPREFIX"
                                         Spacing : (138, 23 - 138, 24 : 4548 - 4549) : {}
                                             Space : (138, 23 - 138, 24 : 4548 - 4549) : {}
@@ -3274,7 +3274,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (138, 26 - 138, 46 : 4551 - 4571) : {}
                                                         Suffix : (138, 26 - 138, 46 : 4551 - 4571) : {}
                                                             Primary : (138, 26 - 138, 46 : 4551 - 4571) : {}
-                                                                Identifier : (138, 26 - 138, 46 : 4551 - 4571) : {}
+                                                                Identifier : (138, 26 - 138, 46 : 4551 - 4571) : {definition: RegularExp}
                                                                     @Tarminal : (138, 26 - 138, 45 : 4551 - 4570) "SingleQuotesLiteral"
                                                                     Spacing : (138, 45 - 138, 46 : 4570 - 4571) : {}
                                                                         Space : (138, 45 - 138, 46 : 4570 - 4571) : {}
@@ -3289,7 +3289,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (138, 48 - 138, 68 : 4573 - 4593) : {}
                                                         Suffix : (138, 48 - 138, 68 : 4573 - 4593) : {}
                                                             Primary : (138, 48 - 138, 68 : 4573 - 4593) : {}
-                                                                Identifier : (138, 48 - 138, 68 : 4573 - 4593) : {}
+                                                                Identifier : (138, 48 - 138, 68 : 4573 - 4593) : {definition: RegularExp}
                                                                     @Tarminal : (138, 48 - 138, 67 : 4573 - 4592) "DoubleQuotesLiteral"
                                                                     Spacing : (138, 67 - 138, 68 : 4592 - 4593) : {}
                                                                         Space : (138, 67 - 138, 68 : 4592 - 4593) : {}
@@ -3302,7 +3302,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (138, 70 - 138, 88 : 4595 - 4613) : {}
                             Suffix : (138, 70 - 138, 88 : 4595 - 4613) : {}
                                 Primary : (138, 70 - 138, 88 : 4595 - 4613) : {}
-                                    Identifier : (138, 70 - 138, 88 : 4595 - 4613) : {}
+                                    Identifier : (138, 70 - 138, 88 : 4595 - 4613) : {definition: RegularExp}
                                         @Tarminal : (138, 70 - 138, 87 : 4595 - 4612) "RegularExpOptions"
                                         Spacing : (138, 87 - 138, 88 : 4612 - 4613) : {}
                                             Space : (138, 87 - 138, 88 : 4612 - 4613) : {}
@@ -3311,7 +3311,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (138, 88 - 140, 0 : 4613 - 4623) : {}
                                 QuestionSuffix : (138, 88 - 140, 0 : 4613 - 4623) : {}
                                     Primary : (138, 88 - 138, 95 : 4613 - 4620) : {}
-                                        Identifier : (138, 88 - 138, 95 : 4613 - 4620) : {}
+                                        Identifier : (138, 88 - 138, 95 : 4613 - 4620) : {definition: RegularExp}
                                             @Tarminal : (138, 88 - 138, 95 : 4613 - 4620) "Spacing"
                                     QUESTION : (138, 95 - 140, 0 : 4620 - 4623) : {}
                                         @Tarminal : (138, 95 - 138, 96 : 4620 - 4621) "?"
@@ -3324,7 +3324,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (139, 0 - 140, 0 : 4622 - 4623) : {}
                                                     @Tarminal : (139, 0 - 140, 0 : 4622 - 4623) "
 "
-    Definition : (140, 0 - 158, 0 : 4623 - 5346) : {}
+    Definition : (140, 0 - 158, 0 : 4623 - 5346) : {expression:  COLON   , name: RegularExpOptions}
         DefinitionComment : (140, 0 - 156, 0 : 4623 - 5297) : {}
             Comment : (140, 0 - 141, 0 : 4623 - 4638) : {}
                 @Tarminal : (140, 0 - 140, 1 : 4623 - 4624) "#"
@@ -3452,7 +3452,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (156, 23 - 156, 29 : 5320 - 5326) : {}
                                                         Suffix : (156, 23 - 156, 29 : 5320 - 5326) : {}
                                                             Primary : (156, 23 - 156, 29 : 5320 - 5326) : {}
-                                                                Identifier : (156, 23 - 156, 29 : 5320 - 5326) : {}
+                                                                Identifier : (156, 23 - 156, 29 : 5320 - 5326) : {definition: RegularExpOptions}
                                                                     @Tarminal : (156, 23 - 156, 28 : 5320 - 5325) "COLON"
                                                                     Spacing : (156, 28 - 156, 29 : 5325 - 5326) : {}
                                                                         Space : (156, 28 - 156, 29 : 5325 - 5326) : {}
@@ -3485,7 +3485,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (157, 0 - 158, 0 : 5345 - 5346) : {}
                                                     @Tarminal : (157, 0 - 158, 0 : 5345 - 5346) "
 "
-    Definition : (158, 0 - 159, 0 : 5346 - 5410) : {}
+    Definition : (158, 0 - 159, 0 : 5346 - 5410) : {expression:   ENDOFFILE  Spacing , name: Identifier}
         DefinitionIdentifier : (158, 0 - 158, 11 : 5346 - 5357) : {}
             Identifier : (158, 0 - 158, 11 : 5346 - 5357) : {}
                 @Tarminal : (158, 0 - 158, 10 : 5346 - 5356) "Identifier"
@@ -3538,7 +3538,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (158, 43 - 158, 53 : 5389 - 5399) : {}
                                                         Suffix : (158, 43 - 158, 53 : 5389 - 5399) : {}
                                                             Primary : (158, 43 - 158, 53 : 5389 - 5399) : {}
-                                                                Identifier : (158, 43 - 158, 53 : 5389 - 5399) : {}
+                                                                Identifier : (158, 43 - 158, 53 : 5389 - 5399) : {definition: Identifier}
                                                                     @Tarminal : (158, 43 - 158, 52 : 5389 - 5398) "ENDOFFILE"
                                                                     Spacing : (158, 52 - 158, 53 : 5398 - 5399) : {}
                                                                         Space : (158, 52 - 158, 53 : 5398 - 5399) : {}
@@ -3552,7 +3552,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (158, 55 - 159, 0 : 5401 - 5410) : {}
                                 QuestionSuffix : (158, 55 - 159, 0 : 5401 - 5410) : {}
                                     Primary : (158, 55 - 158, 62 : 5401 - 5408) : {}
-                                        Identifier : (158, 55 - 158, 62 : 5401 - 5408) : {}
+                                        Identifier : (158, 55 - 158, 62 : 5401 - 5408) : {definition: Identifier}
                                             @Tarminal : (158, 55 - 158, 62 : 5401 - 5408) "Spacing"
                                     QUESTION : (158, 62 - 159, 0 : 5408 - 5410) : {}
                                         @Tarminal : (158, 62 - 158, 63 : 5408 - 5409) "?"
@@ -3561,7 +3561,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (158, 63 - 159, 0 : 5409 - 5410) : {}
                                                     @Tarminal : (158, 63 - 159, 0 : 5409 - 5410) "
 "
-    Definition : (159, 0 - 162, 0 : 5410 - 5502) : {}
+    Definition : (159, 0 - 162, 0 : 5410 - 5502) : {expression: Spacing , name: MacroIdentifier}
         DefinitionComment : (159, 0 - 161, 0 : 5410 - 5454) : {}
             Comment : (159, 0 - 160, 0 : 5410 - 5418) : {}
                 @Tarminal : (159, 0 - 159, 1 : 5410 - 5411) "#"
@@ -3609,7 +3609,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (161, 39 - 162, 0 : 5493 - 5502) : {}
                                 QuestionSuffix : (161, 39 - 162, 0 : 5493 - 5502) : {}
                                     Primary : (161, 39 - 161, 46 : 5493 - 5500) : {}
-                                        Identifier : (161, 39 - 161, 46 : 5493 - 5500) : {}
+                                        Identifier : (161, 39 - 161, 46 : 5493 - 5500) : {definition: MacroIdentifier}
                                             @Tarminal : (161, 39 - 161, 46 : 5493 - 5500) "Spacing"
                                     QUESTION : (161, 46 - 162, 0 : 5500 - 5502) : {}
                                         @Tarminal : (161, 46 - 161, 47 : 5500 - 5501) "?"
@@ -3630,7 +3630,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                 EndOfLine : (163, 0 - 164, 0 : 5555 - 5556) : {}
                     @Tarminal : (163, 0 - 164, 0 : 5555 - 5556) "
 "
-    Definition : (164, 0 - 169, 0 : 5556 - 5731) : {}
+    Definition : (164, 0 - 169, 0 : 5556 - 5731) : {expression:  SingleQuotesLiteral  DoubleQuotesLiteral  LiteralOption Spacing , name: Literal}
         DefinitionComment : (164, 0 - 168, 0 : 5556 - 5650) : {}
             Comment : (164, 0 - 165, 0 : 5556 - 5563) : {}
                 @Tarminal : (164, 0 - 164, 1 : 5556 - 5557) "#"
@@ -3686,7 +3686,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (168, 13 - 168, 33 : 5663 - 5683) : {}
                                                         Suffix : (168, 13 - 168, 33 : 5663 - 5683) : {}
                                                             Primary : (168, 13 - 168, 33 : 5663 - 5683) : {}
-                                                                Identifier : (168, 13 - 168, 33 : 5663 - 5683) : {}
+                                                                Identifier : (168, 13 - 168, 33 : 5663 - 5683) : {definition: Literal}
                                                                     @Tarminal : (168, 13 - 168, 32 : 5663 - 5682) "SingleQuotesLiteral"
                                                                     Spacing : (168, 32 - 168, 33 : 5682 - 5683) : {}
                                                                         Space : (168, 32 - 168, 33 : 5682 - 5683) : {}
@@ -3701,7 +3701,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     Prefix : (168, 35 - 168, 55 : 5685 - 5705) : {}
                                                         Suffix : (168, 35 - 168, 55 : 5685 - 5705) : {}
                                                             Primary : (168, 35 - 168, 55 : 5685 - 5705) : {}
-                                                                Identifier : (168, 35 - 168, 55 : 5685 - 5705) : {}
+                                                                Identifier : (168, 35 - 168, 55 : 5685 - 5705) : {definition: Literal}
                                                                     @Tarminal : (168, 35 - 168, 54 : 5685 - 5704) "DoubleQuotesLiteral"
                                                                     Spacing : (168, 54 - 168, 55 : 5704 - 5705) : {}
                                                                         Space : (168, 54 - 168, 55 : 5704 - 5705) : {}
@@ -3715,7 +3715,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (168, 57 - 168, 72 : 5707 - 5722) : {}
                                 QuestionSuffix : (168, 57 - 168, 72 : 5707 - 5722) : {}
                                     Primary : (168, 57 - 168, 70 : 5707 - 5720) : {}
-                                        Identifier : (168, 57 - 168, 70 : 5707 - 5720) : {}
+                                        Identifier : (168, 57 - 168, 70 : 5707 - 5720) : {definition: Literal}
                                             @Tarminal : (168, 57 - 168, 70 : 5707 - 5720) "LiteralOption"
                                     QUESTION : (168, 70 - 168, 72 : 5720 - 5722) : {}
                                         @Tarminal : (168, 70 - 168, 71 : 5720 - 5721) "?"
@@ -3726,7 +3726,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (168, 72 - 169, 0 : 5722 - 5731) : {}
                                 QuestionSuffix : (168, 72 - 169, 0 : 5722 - 5731) : {}
                                     Primary : (168, 72 - 168, 79 : 5722 - 5729) : {}
-                                        Identifier : (168, 72 - 168, 79 : 5722 - 5729) : {}
+                                        Identifier : (168, 72 - 168, 79 : 5722 - 5729) : {definition: Literal}
                                             @Tarminal : (168, 72 - 168, 79 : 5722 - 5729) "Spacing"
                                     QUESTION : (168, 79 - 169, 0 : 5729 - 5731) : {}
                                         @Tarminal : (168, 79 - 168, 80 : 5729 - 5730) "?"
@@ -3735,7 +3735,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (168, 80 - 169, 0 : 5730 - 5731) : {}
                                                     @Tarminal : (168, 80 - 169, 0 : 5730 - 5731) "
 "
-    Definition : (169, 0 - 170, 0 : 5731 - 5790) : {}
+    Definition : (169, 0 - 170, 0 : 5731 - 5790) : {expression: SingleQuotesLiteralContents , name: SingleQuotesLiteral}
         DefinitionIdentifier : (169, 0 - 169, 20 : 5731 - 5751) : {}
             Identifier : (169, 0 - 169, 20 : 5731 - 5751) : {}
                 @Tarminal : (169, 0 - 169, 19 : 5731 - 5750) "SingleQuotesLiteral"
@@ -3766,7 +3766,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (169, 27 - 169, 55 : 5758 - 5786) : {}
                             Suffix : (169, 27 - 169, 55 : 5758 - 5786) : {}
                                 Primary : (169, 27 - 169, 55 : 5758 - 5786) : {}
-                                    Identifier : (169, 27 - 169, 55 : 5758 - 5786) : {}
+                                    Identifier : (169, 27 - 169, 55 : 5758 - 5786) : {definition: SingleQuotesLiteral}
                                         @Tarminal : (169, 27 - 169, 54 : 5758 - 5785) "SingleQuotesLiteralContents"
                                         Spacing : (169, 54 - 169, 55 : 5785 - 5786) : {}
                                             Space : (169, 54 - 169, 55 : 5785 - 5786) : {}
@@ -3785,7 +3785,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (169, 58 - 170, 0 : 5789 - 5790) : {}
                                                     @Tarminal : (169, 58 - 170, 0 : 5789 - 5790) "
 "
-    Definition : (170, 0 - 171, 0 : 5790 - 5838) : {}
+    Definition : (170, 0 - 171, 0 : 5790 - 5838) : {expression: , name: SingleQuotesLiteralContents}
         DefinitionIdentifier : (170, 0 - 170, 28 : 5790 - 5818) : {}
             Identifier : (170, 0 - 170, 28 : 5790 - 5818) : {}
                 @Tarminal : (170, 0 - 170, 27 : 5790 - 5817) "SingleQuotesLiteralContents"
@@ -3818,7 +3818,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (170, 47 - 171, 0 : 5837 - 5838) : {}
                                                     @Tarminal : (170, 47 - 171, 0 : 5837 - 5838) "
 "
-    Definition : (171, 0 - 172, 0 : 5838 - 5897) : {}
+    Definition : (171, 0 - 172, 0 : 5838 - 5897) : {expression: DoubleQuotesLiteralContents , name: DoubleQuotesLiteral}
         DefinitionIdentifier : (171, 0 - 171, 20 : 5838 - 5858) : {}
             Identifier : (171, 0 - 171, 20 : 5838 - 5858) : {}
                 @Tarminal : (171, 0 - 171, 19 : 5838 - 5857) "DoubleQuotesLiteral"
@@ -3849,7 +3849,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (171, 27 - 171, 55 : 5865 - 5893) : {}
                             Suffix : (171, 27 - 171, 55 : 5865 - 5893) : {}
                                 Primary : (171, 27 - 171, 55 : 5865 - 5893) : {}
-                                    Identifier : (171, 27 - 171, 55 : 5865 - 5893) : {}
+                                    Identifier : (171, 27 - 171, 55 : 5865 - 5893) : {definition: DoubleQuotesLiteral}
                                         @Tarminal : (171, 27 - 171, 54 : 5865 - 5892) "DoubleQuotesLiteralContents"
                                         Spacing : (171, 54 - 171, 55 : 5892 - 5893) : {}
                                             Space : (171, 54 - 171, 55 : 5892 - 5893) : {}
@@ -3868,7 +3868,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (171, 58 - 172, 0 : 5896 - 5897) : {}
                                                     @Tarminal : (171, 58 - 172, 0 : 5896 - 5897) "
 "
-    Definition : (172, 0 - 173, 0 : 5897 - 5945) : {}
+    Definition : (172, 0 - 173, 0 : 5897 - 5945) : {expression: , name: DoubleQuotesLiteralContents}
         DefinitionIdentifier : (172, 0 - 172, 28 : 5897 - 5925) : {}
             Identifier : (172, 0 - 172, 28 : 5897 - 5925) : {}
                 @Tarminal : (172, 0 - 172, 27 : 5897 - 5924) "DoubleQuotesLiteralContents"
@@ -3901,7 +3901,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (172, 47 - 173, 0 : 5944 - 5945) : {}
                                                     @Tarminal : (172, 47 - 173, 0 : 5944 - 5945) "
 "
-    Definition : (173, 0 - 175, 0 : 5945 - 5973) : {}
+    Definition : (173, 0 - 175, 0 : 5945 - 5973) : {expression: COLON , name: LiteralOption}
         DefinitionIdentifier : (173, 0 - 173, 14 : 5945 - 5959) : {}
             Identifier : (173, 0 - 173, 14 : 5945 - 5959) : {}
                 @Tarminal : (173, 0 - 173, 13 : 5945 - 5958) "LiteralOption"
@@ -3920,7 +3920,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (173, 17 - 173, 23 : 5962 - 5968) : {}
                             Suffix : (173, 17 - 173, 23 : 5962 - 5968) : {}
                                 Primary : (173, 17 - 173, 23 : 5962 - 5968) : {}
-                                    Identifier : (173, 17 - 173, 23 : 5962 - 5968) : {}
+                                    Identifier : (173, 17 - 173, 23 : 5962 - 5968) : {definition: LiteralOption}
                                         @Tarminal : (173, 17 - 173, 22 : 5962 - 5967) "COLON"
                                         Spacing : (173, 22 - 173, 23 : 5967 - 5968) : {}
                                             Space : (173, 22 - 173, 23 : 5967 - 5968) : {}
@@ -3943,7 +3943,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (174, 0 - 175, 0 : 5972 - 5973) : {}
                                                     @Tarminal : (174, 0 - 175, 0 : 5972 - 5973) "
 "
-    Definition : (175, 0 - 178, 0 : 5973 - 6015) : {}
+    Definition : (175, 0 - 178, 0 : 5973 - 6015) : {expression: Spacing , name: Number}
         DefinitionComment : (175, 0 - 176, 0 : 5973 - 5978) : {}
             Comment : (175, 0 - 176, 0 : 5973 - 5978) : {}
                 @Tarminal : (175, 0 - 175, 1 : 5973 - 5974) "#"
@@ -3985,7 +3985,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (176, 27 - 178, 0 : 6005 - 6015) : {}
                                 QuestionSuffix : (176, 27 - 178, 0 : 6005 - 6015) : {}
                                     Primary : (176, 27 - 176, 34 : 6005 - 6012) : {}
-                                        Identifier : (176, 27 - 176, 34 : 6005 - 6012) : {}
+                                        Identifier : (176, 27 - 176, 34 : 6005 - 6012) : {definition: Number}
                                             @Tarminal : (176, 27 - 176, 34 : 6005 - 6012) "Spacing"
                                     QUESTION : (176, 34 - 178, 0 : 6012 - 6015) : {}
                                         @Tarminal : (176, 34 - 176, 35 : 6012 - 6013) "?"
@@ -3998,7 +3998,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (177, 0 - 178, 0 : 6014 - 6015) : {}
                                                     @Tarminal : (177, 0 - 178, 0 : 6014 - 6015) "
 "
-    Definition : (178, 0 - 181, 0 : 6015 - 6064) : {}
+    Definition : (178, 0 - 181, 0 : 6015 - 6064) : {expression: Spacing , name: ENDOFFILE}
         DefinitionComment : (178, 0 - 179, 0 : 6015 - 6034) : {}
             Comment : (178, 0 - 179, 0 : 6015 - 6034) : {}
                 @Tarminal : (178, 0 - 178, 1 : 6015 - 6016) "#"
@@ -4037,7 +4037,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (179, 20 - 181, 0 : 6054 - 6064) : {}
                                 QuestionSuffix : (179, 20 - 181, 0 : 6054 - 6064) : {}
                                     Primary : (179, 20 - 179, 27 : 6054 - 6061) : {}
-                                        Identifier : (179, 20 - 179, 27 : 6054 - 6061) : {}
+                                        Identifier : (179, 20 - 179, 27 : 6054 - 6061) : {definition: ENDOFFILE}
                                             @Tarminal : (179, 20 - 179, 27 : 6054 - 6061) "Spacing"
                                     QUESTION : (179, 27 - 181, 0 : 6061 - 6064) : {}
                                         @Tarminal : (179, 27 - 179, 28 : 6061 - 6062) "?"
@@ -4050,7 +4050,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (180, 0 - 181, 0 : 6063 - 6064) : {}
                                                     @Tarminal : (180, 0 - 181, 0 : 6063 - 6064) "
 "
-    Definition : (181, 0 - 182, 0 : 6064 - 6091) : {}
+    Definition : (181, 0 - 182, 0 : 6064 - 6091) : {expression: Spacing , name: LEFTARROW}
         DefinitionIdentifier : (181, 0 - 181, 10 : 6064 - 6074) : {}
             Identifier : (181, 0 - 181, 10 : 6064 - 6074) : {}
                 @Tarminal : (181, 0 - 181, 9 : 6064 - 6073) "LEFTARROW"
@@ -4082,7 +4082,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (181, 18 - 182, 0 : 6082 - 6091) : {}
                                 QuestionSuffix : (181, 18 - 182, 0 : 6082 - 6091) : {}
                                     Primary : (181, 18 - 181, 25 : 6082 - 6089) : {}
-                                        Identifier : (181, 18 - 181, 25 : 6082 - 6089) : {}
+                                        Identifier : (181, 18 - 181, 25 : 6082 - 6089) : {definition: LEFTARROW}
                                             @Tarminal : (181, 18 - 181, 25 : 6082 - 6089) "Spacing"
                                     QUESTION : (181, 25 - 182, 0 : 6089 - 6091) : {}
                                         @Tarminal : (181, 25 - 181, 26 : 6089 - 6090) "?"
@@ -4091,7 +4091,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (181, 26 - 182, 0 : 6090 - 6091) : {}
                                                     @Tarminal : (181, 26 - 182, 0 : 6090 - 6091) "
 "
-    Definition : (182, 0 - 185, 0 : 6091 - 6141) : {}
+    Definition : (182, 0 - 185, 0 : 6091 - 6141) : {expression: Spacing , name: SUB_LEFTARROW}
         DefinitionComment : (182, 0 - 183, 0 : 6091 - 6108) : {}
             Comment : (182, 0 - 183, 0 : 6091 - 6108) : {}
                 @Tarminal : (182, 0 - 182, 1 : 6091 - 6092) "#"
@@ -4130,7 +4130,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (183, 23 - 185, 0 : 6131 - 6141) : {}
                                 QuestionSuffix : (183, 23 - 185, 0 : 6131 - 6141) : {}
                                     Primary : (183, 23 - 183, 30 : 6131 - 6138) : {}
-                                        Identifier : (183, 23 - 183, 30 : 6131 - 6138) : {}
+                                        Identifier : (183, 23 - 183, 30 : 6131 - 6138) : {definition: SUB_LEFTARROW}
                                             @Tarminal : (183, 23 - 183, 30 : 6131 - 6138) "Spacing"
                                     QUESTION : (183, 30 - 185, 0 : 6138 - 6141) : {}
                                         @Tarminal : (183, 30 - 183, 31 : 6138 - 6139) "?"
@@ -4143,7 +4143,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (184, 0 - 185, 0 : 6140 - 6141) : {}
                                                     @Tarminal : (184, 0 - 185, 0 : 6140 - 6141) "
 "
-    Definition : (185, 0 - 186, 0 : 6141 - 6163) : {}
+    Definition : (185, 0 - 186, 0 : 6141 - 6163) : {expression: Spacing , name: SLASH}
         DefinitionIdentifier : (185, 0 - 185, 6 : 6141 - 6147) : {}
             Identifier : (185, 0 - 185, 6 : 6141 - 6147) : {}
                 @Tarminal : (185, 0 - 185, 5 : 6141 - 6146) "SLASH"
@@ -4175,7 +4175,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (185, 13 - 186, 0 : 6154 - 6163) : {}
                                 QuestionSuffix : (185, 13 - 186, 0 : 6154 - 6163) : {}
                                     Primary : (185, 13 - 185, 20 : 6154 - 6161) : {}
-                                        Identifier : (185, 13 - 185, 20 : 6154 - 6161) : {}
+                                        Identifier : (185, 13 - 185, 20 : 6154 - 6161) : {definition: SLASH}
                                             @Tarminal : (185, 13 - 185, 20 : 6154 - 6161) "Spacing"
                                     QUESTION : (185, 20 - 186, 0 : 6161 - 6163) : {}
                                         @Tarminal : (185, 20 - 185, 21 : 6161 - 6162) "?"
@@ -4184,7 +4184,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (185, 21 - 186, 0 : 6162 - 6163) : {}
                                                     @Tarminal : (185, 21 - 186, 0 : 6162 - 6163) "
 "
-    Definition : (186, 0 - 187, 0 : 6163 - 6189) : {}
+    Definition : (186, 0 - 187, 0 : 6163 - 6189) : {expression: Spacing , name: AMPERSAND}
         DefinitionIdentifier : (186, 0 - 186, 10 : 6163 - 6173) : {}
             Identifier : (186, 0 - 186, 10 : 6163 - 6173) : {}
                 @Tarminal : (186, 0 - 186, 9 : 6163 - 6172) "AMPERSAND"
@@ -4216,7 +4216,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (186, 17 - 187, 0 : 6180 - 6189) : {}
                                 QuestionSuffix : (186, 17 - 187, 0 : 6180 - 6189) : {}
                                     Primary : (186, 17 - 186, 24 : 6180 - 6187) : {}
-                                        Identifier : (186, 17 - 186, 24 : 6180 - 6187) : {}
+                                        Identifier : (186, 17 - 186, 24 : 6180 - 6187) : {definition: AMPERSAND}
                                             @Tarminal : (186, 17 - 186, 24 : 6180 - 6187) "Spacing"
                                     QUESTION : (186, 24 - 187, 0 : 6187 - 6189) : {}
                                         @Tarminal : (186, 24 - 186, 25 : 6187 - 6188) "?"
@@ -4225,7 +4225,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (186, 25 - 187, 0 : 6188 - 6189) : {}
                                                     @Tarminal : (186, 25 - 187, 0 : 6188 - 6189) "
 "
-    Definition : (187, 0 - 188, 0 : 6189 - 6217) : {}
+    Definition : (187, 0 - 188, 0 : 6189 - 6217) : {expression: Spacing , name: EXCLAMATION}
         DefinitionIdentifier : (187, 0 - 187, 12 : 6189 - 6201) : {}
             Identifier : (187, 0 - 187, 12 : 6189 - 6201) : {}
                 @Tarminal : (187, 0 - 187, 11 : 6189 - 6200) "EXCLAMATION"
@@ -4257,7 +4257,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (187, 19 - 188, 0 : 6208 - 6217) : {}
                                 QuestionSuffix : (187, 19 - 188, 0 : 6208 - 6217) : {}
                                     Primary : (187, 19 - 187, 26 : 6208 - 6215) : {}
-                                        Identifier : (187, 19 - 187, 26 : 6208 - 6215) : {}
+                                        Identifier : (187, 19 - 187, 26 : 6208 - 6215) : {definition: EXCLAMATION}
                                             @Tarminal : (187, 19 - 187, 26 : 6208 - 6215) "Spacing"
                                     QUESTION : (187, 26 - 188, 0 : 6215 - 6217) : {}
                                         @Tarminal : (187, 26 - 187, 27 : 6215 - 6216) "?"
@@ -4266,7 +4266,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (187, 27 - 188, 0 : 6216 - 6217) : {}
                                                     @Tarminal : (187, 27 - 188, 0 : 6216 - 6217) "
 "
-    Definition : (188, 0 - 190, 0 : 6217 - 6253) : {}
+    Definition : (188, 0 - 190, 0 : 6217 - 6253) : {expression: Spacing , name: MUCH_GREATER_THAN}
         DefinitionIdentifier : (188, 0 - 188, 18 : 6217 - 6235) : {}
             Identifier : (188, 0 - 188, 18 : 6217 - 6235) : {}
                 @Tarminal : (188, 0 - 188, 17 : 6217 - 6234) "MUCH_GREATER_THAN"
@@ -4298,7 +4298,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (188, 26 - 190, 0 : 6243 - 6253) : {}
                                 QuestionSuffix : (188, 26 - 190, 0 : 6243 - 6253) : {}
                                     Primary : (188, 26 - 188, 33 : 6243 - 6250) : {}
-                                        Identifier : (188, 26 - 188, 33 : 6243 - 6250) : {}
+                                        Identifier : (188, 26 - 188, 33 : 6243 - 6250) : {definition: MUCH_GREATER_THAN}
                                             @Tarminal : (188, 26 - 188, 33 : 6243 - 6250) "Spacing"
                                     QUESTION : (188, 33 - 190, 0 : 6250 - 6253) : {}
                                         @Tarminal : (188, 33 - 188, 34 : 6250 - 6251) "?"
@@ -4311,7 +4311,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (189, 0 - 190, 0 : 6252 - 6253) : {}
                                                     @Tarminal : (189, 0 - 190, 0 : 6252 - 6253) "
 "
-    Definition : (190, 0 - 191, 0 : 6253 - 6278) : {}
+    Definition : (190, 0 - 191, 0 : 6253 - 6278) : {expression: Spacing , name: QUESTION}
         DefinitionIdentifier : (190, 0 - 190, 9 : 6253 - 6262) : {}
             Identifier : (190, 0 - 190, 9 : 6253 - 6262) : {}
                 @Tarminal : (190, 0 - 190, 8 : 6253 - 6261) "QUESTION"
@@ -4343,7 +4343,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (190, 16 - 191, 0 : 6269 - 6278) : {}
                                 QuestionSuffix : (190, 16 - 191, 0 : 6269 - 6278) : {}
                                     Primary : (190, 16 - 190, 23 : 6269 - 6276) : {}
-                                        Identifier : (190, 16 - 190, 23 : 6269 - 6276) : {}
+                                        Identifier : (190, 16 - 190, 23 : 6269 - 6276) : {definition: QUESTION}
                                             @Tarminal : (190, 16 - 190, 23 : 6269 - 6276) "Spacing"
                                     QUESTION : (190, 23 - 191, 0 : 6276 - 6278) : {}
                                         @Tarminal : (190, 23 - 190, 24 : 6276 - 6277) "?"
@@ -4352,7 +4352,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (190, 24 - 191, 0 : 6277 - 6278) : {}
                                                     @Tarminal : (190, 24 - 191, 0 : 6277 - 6278) "
 "
-    Definition : (191, 0 - 192, 0 : 6278 - 6299) : {}
+    Definition : (191, 0 - 192, 0 : 6278 - 6299) : {expression: Spacing , name: STAR}
         DefinitionIdentifier : (191, 0 - 191, 5 : 6278 - 6283) : {}
             Identifier : (191, 0 - 191, 5 : 6278 - 6283) : {}
                 @Tarminal : (191, 0 - 191, 4 : 6278 - 6282) "STAR"
@@ -4384,7 +4384,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (191, 12 - 192, 0 : 6290 - 6299) : {}
                                 QuestionSuffix : (191, 12 - 192, 0 : 6290 - 6299) : {}
                                     Primary : (191, 12 - 191, 19 : 6290 - 6297) : {}
-                                        Identifier : (191, 12 - 191, 19 : 6290 - 6297) : {}
+                                        Identifier : (191, 12 - 191, 19 : 6290 - 6297) : {definition: STAR}
                                             @Tarminal : (191, 12 - 191, 19 : 6290 - 6297) "Spacing"
                                     QUESTION : (191, 19 - 192, 0 : 6297 - 6299) : {}
                                         @Tarminal : (191, 19 - 191, 20 : 6297 - 6298) "?"
@@ -4393,7 +4393,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (191, 20 - 192, 0 : 6298 - 6299) : {}
                                                     @Tarminal : (191, 20 - 192, 0 : 6298 - 6299) "
 "
-    Definition : (192, 0 - 193, 0 : 6299 - 6320) : {}
+    Definition : (192, 0 - 193, 0 : 6299 - 6320) : {expression: Spacing , name: PLUS}
         DefinitionIdentifier : (192, 0 - 192, 5 : 6299 - 6304) : {}
             Identifier : (192, 0 - 192, 5 : 6299 - 6304) : {}
                 @Tarminal : (192, 0 - 192, 4 : 6299 - 6303) "PLUS"
@@ -4425,7 +4425,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (192, 12 - 193, 0 : 6311 - 6320) : {}
                                 QuestionSuffix : (192, 12 - 193, 0 : 6311 - 6320) : {}
                                     Primary : (192, 12 - 192, 19 : 6311 - 6318) : {}
-                                        Identifier : (192, 12 - 192, 19 : 6311 - 6318) : {}
+                                        Identifier : (192, 12 - 192, 19 : 6311 - 6318) : {definition: PLUS}
                                             @Tarminal : (192, 12 - 192, 19 : 6311 - 6318) "Spacing"
                                     QUESTION : (192, 19 - 193, 0 : 6318 - 6320) : {}
                                         @Tarminal : (192, 19 - 192, 20 : 6318 - 6319) "?"
@@ -4434,7 +4434,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (192, 20 - 193, 0 : 6319 - 6320) : {}
                                                     @Tarminal : (192, 20 - 193, 0 : 6319 - 6320) "
 "
-    Definition : (193, 0 - 194, 0 : 6320 - 6341) : {}
+    Definition : (193, 0 - 194, 0 : 6320 - 6341) : {expression: Spacing , name: OPEN}
         DefinitionIdentifier : (193, 0 - 193, 5 : 6320 - 6325) : {}
             Identifier : (193, 0 - 193, 5 : 6320 - 6325) : {}
                 @Tarminal : (193, 0 - 193, 4 : 6320 - 6324) "OPEN"
@@ -4466,7 +4466,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (193, 12 - 194, 0 : 6332 - 6341) : {}
                                 QuestionSuffix : (193, 12 - 194, 0 : 6332 - 6341) : {}
                                     Primary : (193, 12 - 193, 19 : 6332 - 6339) : {}
-                                        Identifier : (193, 12 - 193, 19 : 6332 - 6339) : {}
+                                        Identifier : (193, 12 - 193, 19 : 6332 - 6339) : {definition: OPEN}
                                             @Tarminal : (193, 12 - 193, 19 : 6332 - 6339) "Spacing"
                                     QUESTION : (193, 19 - 194, 0 : 6339 - 6341) : {}
                                         @Tarminal : (193, 19 - 193, 20 : 6339 - 6340) "?"
@@ -4475,7 +4475,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (193, 20 - 194, 0 : 6340 - 6341) : {}
                                                     @Tarminal : (193, 20 - 194, 0 : 6340 - 6341) "
 "
-    Definition : (194, 0 - 195, 0 : 6341 - 6363) : {}
+    Definition : (194, 0 - 195, 0 : 6341 - 6363) : {expression: Spacing , name: CLOSE}
         DefinitionIdentifier : (194, 0 - 194, 6 : 6341 - 6347) : {}
             Identifier : (194, 0 - 194, 6 : 6341 - 6347) : {}
                 @Tarminal : (194, 0 - 194, 5 : 6341 - 6346) "CLOSE"
@@ -4507,7 +4507,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (194, 13 - 195, 0 : 6354 - 6363) : {}
                                 QuestionSuffix : (194, 13 - 195, 0 : 6354 - 6363) : {}
                                     Primary : (194, 13 - 194, 20 : 6354 - 6361) : {}
-                                        Identifier : (194, 13 - 194, 20 : 6354 - 6361) : {}
+                                        Identifier : (194, 13 - 194, 20 : 6354 - 6361) : {definition: CLOSE}
                                             @Tarminal : (194, 13 - 194, 20 : 6354 - 6361) "Spacing"
                                     QUESTION : (194, 20 - 195, 0 : 6361 - 6363) : {}
                                         @Tarminal : (194, 20 - 194, 21 : 6361 - 6362) "?"
@@ -4516,7 +4516,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (194, 21 - 195, 0 : 6362 - 6363) : {}
                                                     @Tarminal : (194, 21 - 195, 0 : 6362 - 6363) "
 "
-    Definition : (195, 0 - 196, 0 : 6363 - 6390) : {}
+    Definition : (195, 0 - 196, 0 : 6363 - 6390) : {expression: Spacing , name: CURL_OPEN}
         DefinitionIdentifier : (195, 0 - 195, 10 : 6363 - 6373) : {}
             Identifier : (195, 0 - 195, 10 : 6363 - 6373) : {}
                 @Tarminal : (195, 0 - 195, 9 : 6363 - 6372) "CURL_OPEN"
@@ -4550,7 +4550,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (195, 18 - 196, 0 : 6381 - 6390) : {}
                                 QuestionSuffix : (195, 18 - 196, 0 : 6381 - 6390) : {}
                                     Primary : (195, 18 - 195, 25 : 6381 - 6388) : {}
-                                        Identifier : (195, 18 - 195, 25 : 6381 - 6388) : {}
+                                        Identifier : (195, 18 - 195, 25 : 6381 - 6388) : {definition: CURL_OPEN}
                                             @Tarminal : (195, 18 - 195, 25 : 6381 - 6388) "Spacing"
                                     QUESTION : (195, 25 - 196, 0 : 6388 - 6390) : {}
                                         @Tarminal : (195, 25 - 195, 26 : 6388 - 6389) "?"
@@ -4559,7 +4559,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (195, 26 - 196, 0 : 6389 - 6390) : {}
                                                     @Tarminal : (195, 26 - 196, 0 : 6389 - 6390) "
 "
-    Definition : (196, 0 - 197, 0 : 6390 - 6417) : {}
+    Definition : (196, 0 - 197, 0 : 6390 - 6417) : {expression: Spacing , name: CURL_CLOSE}
         DefinitionIdentifier : (196, 0 - 196, 11 : 6390 - 6401) : {}
             Identifier : (196, 0 - 196, 11 : 6390 - 6401) : {}
                 @Tarminal : (196, 0 - 196, 10 : 6390 - 6400) "CURL_CLOSE"
@@ -4591,7 +4591,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (196, 18 - 197, 0 : 6408 - 6417) : {}
                                 QuestionSuffix : (196, 18 - 197, 0 : 6408 - 6417) : {}
                                     Primary : (196, 18 - 196, 25 : 6408 - 6415) : {}
-                                        Identifier : (196, 18 - 196, 25 : 6408 - 6415) : {}
+                                        Identifier : (196, 18 - 196, 25 : 6408 - 6415) : {definition: CURL_CLOSE}
                                             @Tarminal : (196, 18 - 196, 25 : 6408 - 6415) "Spacing"
                                     QUESTION : (196, 25 - 197, 0 : 6415 - 6417) : {}
                                         @Tarminal : (196, 25 - 196, 26 : 6415 - 6416) "?"
@@ -4600,7 +4600,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (196, 26 - 197, 0 : 6416 - 6417) : {}
                                                     @Tarminal : (196, 26 - 197, 0 : 6416 - 6417) "
 "
-    Definition : (197, 0 - 198, 0 : 6417 - 6439) : {}
+    Definition : (197, 0 - 198, 0 : 6417 - 6439) : {expression: Spacing , name: COLON}
         DefinitionIdentifier : (197, 0 - 197, 6 : 6417 - 6423) : {}
             Identifier : (197, 0 - 197, 6 : 6417 - 6423) : {}
                 @Tarminal : (197, 0 - 197, 5 : 6417 - 6422) "COLON"
@@ -4632,7 +4632,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (197, 13 - 198, 0 : 6430 - 6439) : {}
                                 QuestionSuffix : (197, 13 - 198, 0 : 6430 - 6439) : {}
                                     Primary : (197, 13 - 197, 20 : 6430 - 6437) : {}
-                                        Identifier : (197, 13 - 197, 20 : 6430 - 6437) : {}
+                                        Identifier : (197, 13 - 197, 20 : 6430 - 6437) : {definition: COLON}
                                             @Tarminal : (197, 13 - 197, 20 : 6430 - 6437) "Spacing"
                                     QUESTION : (197, 20 - 198, 0 : 6437 - 6439) : {}
                                         @Tarminal : (197, 20 - 197, 21 : 6437 - 6438) "?"
@@ -4641,7 +4641,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (197, 21 - 198, 0 : 6438 - 6439) : {}
                                                     @Tarminal : (197, 21 - 198, 0 : 6438 - 6439) "
 "
-    Definition : (198, 0 - 199, 0 : 6439 - 6461) : {}
+    Definition : (198, 0 - 199, 0 : 6439 - 6461) : {expression: Spacing , name: COMMA}
         DefinitionIdentifier : (198, 0 - 198, 6 : 6439 - 6445) : {}
             Identifier : (198, 0 - 198, 6 : 6439 - 6445) : {}
                 @Tarminal : (198, 0 - 198, 5 : 6439 - 6444) "COMMA"
@@ -4673,7 +4673,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (198, 13 - 199, 0 : 6452 - 6461) : {}
                                 QuestionSuffix : (198, 13 - 199, 0 : 6452 - 6461) : {}
                                     Primary : (198, 13 - 198, 20 : 6452 - 6459) : {}
-                                        Identifier : (198, 13 - 198, 20 : 6452 - 6459) : {}
+                                        Identifier : (198, 13 - 198, 20 : 6452 - 6459) : {definition: COMMA}
                                             @Tarminal : (198, 13 - 198, 20 : 6452 - 6459) "Spacing"
                                     QUESTION : (198, 20 - 199, 0 : 6459 - 6461) : {}
                                         @Tarminal : (198, 20 - 198, 21 : 6459 - 6460) "?"
@@ -4682,7 +4682,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (198, 21 - 199, 0 : 6460 - 6461) : {}
                                                     @Tarminal : (198, 21 - 199, 0 : 6460 - 6461) "
 "
-    Definition : (199, 0 - 204, 0 : 6461 - 6547) : {}
+    Definition : (199, 0 - 204, 0 : 6461 - 6547) : {expression: , name: REGPREFIX}
         DefinitionComment : (199, 0 - 202, 0 : 6461 - 6529) : {}
             Comment : (199, 0 - 200, 0 : 6461 - 6484) : {}
                 @Tarminal : (199, 0 - 199, 1 : 6461 - 6462) "#"
@@ -4735,7 +4735,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (203, 0 - 204, 0 : 6546 - 6547) : {}
                                                     @Tarminal : (203, 0 - 204, 0 : 6546 - 6547) "
 "
-    Definition : (204, 0 - 206, 0 : 6547 - 6566) : {}
+    Definition : (204, 0 - 206, 0 : 6547 - 6566) : {expression: Space , name: Spacing}
         DefinitionIdentifier : (204, 0 - 204, 8 : 6547 - 6555) : {}
             Identifier : (204, 0 - 204, 8 : 6547 - 6555) : {}
                 @Tarminal : (204, 0 - 204, 7 : 6547 - 6554) "Spacing"
@@ -4755,7 +4755,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Suffix : (204, 11 - 206, 0 : 6558 - 6566) : {}
                                 PlusSuffix : (204, 11 - 206, 0 : 6558 - 6566) : {}
                                     Primary : (204, 11 - 204, 16 : 6558 - 6563) : {}
-                                        Identifier : (204, 11 - 204, 16 : 6558 - 6563) : {}
+                                        Identifier : (204, 11 - 204, 16 : 6558 - 6563) : {definition: Spacing}
                                             @Tarminal : (204, 11 - 204, 16 : 6558 - 6563) "Space"
                                     PLUS : (204, 16 - 206, 0 : 6563 - 6566) : {}
                                         @Tarminal : (204, 16 - 204, 17 : 6563 - 6564) "+"
@@ -4768,7 +4768,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                 EndOfLine : (205, 0 - 206, 0 : 6565 - 6566) : {}
                                                     @Tarminal : (205, 0 - 206, 0 : 6565 - 6566) "
 "
-    Definition : (206, 0 - 207, 0 : 6566 - 6603) : {}
+    Definition : (206, 0 - 207, 0 : 6566 - 6603) : {expression: EndOfLine , name: Comment}
         DefinitionIdentifier : (206, 0 - 206, 8 : 6566 - 6574) : {}
             Identifier : (206, 0 - 206, 8 : 6566 - 6574) : {}
                 @Tarminal : (206, 0 - 206, 7 : 6566 - 6573) "Comment"
@@ -4814,14 +4814,14 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                         Prefix : (206, 27 - 207, 0 : 6593 - 6603) : {}
                             Suffix : (206, 27 - 207, 0 : 6593 - 6603) : {}
                                 Primary : (206, 27 - 207, 0 : 6593 - 6603) : {}
-                                    Identifier : (206, 27 - 207, 0 : 6593 - 6603) : {}
+                                    Identifier : (206, 27 - 207, 0 : 6593 - 6603) : {definition: Comment}
                                         @Tarminal : (206, 27 - 206, 36 : 6593 - 6602) "EndOfLine"
                                         Spacing : (206, 36 - 207, 0 : 6602 - 6603) : {}
                                             Space : (206, 36 - 207, 0 : 6602 - 6603) : {}
                                                 EndOfLine : (206, 36 - 207, 0 : 6602 - 6603) : {}
                                                     @Tarminal : (206, 36 - 207, 0 : 6602 - 6603) "
 "
-    Definition : (207, 0 - 209, 0 : 6603 - 6637) : {}
+    Definition : (207, 0 - 209, 0 : 6603 - 6637) : {expression:   EndOfLine , name: Space}
         DefinitionIdentifier : (207, 0 - 207, 6 : 6603 - 6609) : {}
             Identifier : (207, 0 - 207, 6 : 6603 - 6609) : {}
                 @Tarminal : (207, 0 - 207, 5 : 6603 - 6608) "Space"
@@ -4882,7 +4882,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                             Prefix : (207, 23 - 209, 0 : 6626 - 6637) : {}
                                 Suffix : (207, 23 - 209, 0 : 6626 - 6637) : {}
                                     Primary : (207, 23 - 209, 0 : 6626 - 6637) : {}
-                                        Identifier : (207, 23 - 209, 0 : 6626 - 6637) : {}
+                                        Identifier : (207, 23 - 209, 0 : 6626 - 6637) : {definition: Space}
                                             @Tarminal : (207, 23 - 207, 32 : 6626 - 6635) "EndOfLine"
                                             Spacing : (207, 32 - 209, 0 : 6635 - 6637) : {}
                                                 Space : (207, 32 - 208, 0 : 6635 - 6636) : {}
@@ -4893,7 +4893,7 @@ ExPeg : (1, 0 - 210, 1 : 0 - 6665) : {}
                                                     EndOfLine : (208, 0 - 209, 0 : 6636 - 6637) : {}
                                                         @Tarminal : (208, 0 - 209, 0 : 6636 - 6637) "
 "
-    Definition : (209, 0 - 210, 1 : 6637 - 6665) : {}
+    Definition : (209, 0 - 210, 1 : 6637 - 6665) : {expression: , name: EndOfLine}
         DefinitionIdentifier : (209, 0 - 209, 10 : 6637 - 6647) : {}
             Identifier : (209, 0 - 209, 10 : 6637 - 6647) : {}
                 @Tarminal : (209, 0 - 209, 9 : 6637 - 6646) "EndOfLine"
