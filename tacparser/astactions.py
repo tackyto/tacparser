@@ -67,12 +67,13 @@ class AstActions(object):
             アクション定義ファイル
         """
         try:
+            self.logger.info("Start AstActions read_file. \"{0}\"".format(filepath))
             with open(filepath, "r", encoding=encoding) as f:
                 self.read_action(f.read())
+            self.logger.info("End AstActions read_file.")
         except (FileNotFoundError, IOError):
             self.logger.critical("Wrong file or file path. \"{0}\"".format(filepath))
             raise
-        pass
 
     def read_action(self, actions_str:str) -> list["_ActionDefinition"]:
         """
@@ -118,8 +119,10 @@ class AstActions(object):
         node : Node
             読み込んだアクションを node に適用します。
         """
+        self.logger.info("Start AstActions apply for Node:{0}".format(node))
         for actiondef in self.actions:
             actiondef.apply_actions(node)
+        self.logger.info("End AstActions apply")
         return node
 
     def _get_selector_func(self, 
@@ -655,10 +658,6 @@ class AstActions(object):
         if val_target.type =="RootNode":
             get_val_f = lambda root, target, r_idx, t_idx: root
         elif val_target.type =="TargetNode":
-            dictionary_nodes = val_target.get_childnode("TypeDictionary")
-            type_dict = {}
-            if len(dictionary_nodes) > 0:
-                type_dict = self._get_typedictionary(dictionary_nodes[0])
             get_val_f = lambda root, target, r_idx, t_idx: target
         else:
             raise ActionException(
@@ -699,6 +698,7 @@ class _ActionDefinition(object):
     def apply_actions(self, node:Node) -> bool:
         # 順にselector を適用
         action_nodes = []
+        ret = True
         for selector, selector_str in self.__selectors:
             try:
                 action_nodes.extend(selector(node))
@@ -718,8 +718,9 @@ class _ActionDefinition(object):
                         self.__logger.warn(str(e))
                         self.__logger.warn("Node:{} から Node:{} のアクション \"{}\"に失敗しました。"
                                 .format(start_node, tartget_node, action_str))
-                        return False
-        return True
+                        ret = False
+                        continue
+        return ret
 
 
 class ActionException(Exception):

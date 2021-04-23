@@ -197,7 +197,6 @@ Substitution <- Variable >>EQUAL Value
 Variable <- RootValue / TargetValue
 
 # TODO : int , list の操作
-# Value <- Number / Literal / EmptyList / RootValue / TargetValue
 Value <- AddValueTerms
        / ValueTerm
        / ListValue
@@ -217,8 +216,6 @@ TargetIndex <- >>INDEX >>OPEN >>TARGET >>CLOSE
 
 RootNode <- >>ROOT
 TargetNode <- >>TARGET
-
-EmptyList <- >>'[' >>S? >>']' >>S?
 
 AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
 

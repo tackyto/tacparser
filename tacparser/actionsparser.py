@@ -82,7 +82,6 @@ class ActionsParser(Parser):
                          "TargetIndex": self.p_targetindex,
                          "RootNode": self.p_rootnode,
                          "TargetNode": self.p_targetnode,
-                         "EmptyList": self.p_emptylist,
                          "AppendList": self.p_appendlist,
                          "Literal": self.p_literal,
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
@@ -629,7 +628,6 @@ class ActionsParser(Parser):
 
     def p_value(self):
         # # TODO : int , list の操作
-        # # Value <- Number / Literal / EmptyList / RootValue / TargetValue
         # Value <- AddValueTerms
         #        / ValueTerm
         #        / ListValue
@@ -703,14 +701,6 @@ class ActionsParser(Parser):
     def p_targetnode(self):
         # TargetNode <- >>TARGET
         return self._skip(self._p(self.p_target, "TARGET"))
-
-    def p_emptylist(self):
-        # EmptyList <- >>'[' >>S? >>']' >>S?
-        return self._seq(self._skip(self._l('[')),
-                         self._skip(self._opt(self._p(self.p_s, "S"))),
-                         self._skip(self._l(']')),
-                         self._skip(self._opt(self._p(self.p_s, "S")))
-                         )
 
     def p_appendlist(self):
         # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE

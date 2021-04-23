@@ -17,3 +17,6 @@ ExPeg >> Definition {
     target.root_exp.append("<root>" + root.name + "</root>");
     target.plus_num = 1000000 + target.number;
 }
+ExPeg >> RootDefinition {
+    target.unknown = root.unknown + 1;
+}

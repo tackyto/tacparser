@@ -248,6 +248,54 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
 
+    def test_get_action_func_err4(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Value", (
+                                    NonTerminalNode("ValueTerm", (
+                                        NonTerminalNode("Unknown", (
+                                        )),
+                                    )),
+                                )),
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("RootValue", (
+                                        NonTerminalNode("ParameterName", (
+                                        )),
+                                    )),
+                                ))
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "ValueTermの子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_action_func_err5(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Value", (
+                                    NonTerminalNode("NodeValue", (
+                                        NonTerminalNode("Unknown", (
+                                        )),
+                                    )),
+                                )),
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("RootValue", (
+                                        NonTerminalNode("ParameterName", (
+                                        )),
+                                    )),
+                                ))
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "NodeValueの子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
     def test_get_typedictionary(self):
         node = NonTerminalNode("Unknown", ())
         with self.assertRaises(ActionException) as err:
@@ -256,6 +304,29 @@ class TestASTActionsNode(unittest.TestCase):
         msg = err.exception.args[0]
         expstr = "_get_typedictionary に想定しないノード\"Unknown\"が指定されました。"
         self.assertEqual(msg, expstr)
+
+    def test_get_append_list_func_err01(self):
+        child_nodes =   (   NonTerminalNode("AppendList", (
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("Unknown", (
+                                    )),
+                                )),
+                                NonTerminalNode("Value", (
+                                    NonTerminalNode("NodeValue", (
+                                        NonTerminalNode("RootNode", (
+                                        )),
+                                    )),
+                                )),
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "Variableの子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
 
 
 
