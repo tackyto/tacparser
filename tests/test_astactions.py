@@ -2,13 +2,13 @@ import filecmp
 import os
 import importlib
 import unittest
-from unittest.mock import Mock
+from unittest.mock import MagicMock
 
 from logging import config, getLogger
 from tacparser import expegparser
 
 from tacparser.actionsparser import ActionsParser
-from tacparser.astactions import AstActions, ActionException
+from tacparser.astactions import AstActions, ActionException, _ActionDefinition
 from tacparser.node import NonTerminalNode, TerminalNode
 from tacparser.parsergenerator import ParserGenerator
 from tacparser.expegparser import ExPegParser
@@ -17,6 +17,22 @@ from tests.testmodules import astactionstest
 
 config.fileConfig(os.path.join(os.path.dirname(__file__), 'logging.conf'))
 test_logger = getLogger(__name__)
+
+
+class Test_ActionDefinition(unittest.TestCase):
+    def setUP(self):
+        pass
+    
+    def test_apply_actions(self):
+        actiondef = _ActionDefinition(test_logger)
+        err_selector = MagicMock(side_effect=ActionException("Sample"))
+        actiondef.append_selector(err_selector, "Error Selector")
+
+        child_nodes = (NonTerminalNode("Unknown", ()),)
+        node = NonTerminalNode("Test", child_nodes)
+
+        self.assertFalse(actiondef.apply_actions(node))
+        
 
 
 class TestASTActionsNode(unittest.TestCase):

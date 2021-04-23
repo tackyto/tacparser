@@ -44,7 +44,7 @@ class AstActions(object):
     >>> actions.apply(node)                     # node に対してアクションを実行
 
     """
-    def __init__(self, logger=default_logger) -> None:
+    def __init__(self, logger:Logger=default_logger) -> None:
         """
         AstActions の初期化
 
@@ -91,15 +91,18 @@ class AstActions(object):
         ret = []
         action_list = root_node.get_childnode("ActionDefinition")
         for actiondef_node in action_list:
-            actiondef = _ActionDefinition()
+            actiondef = _ActionDefinition(self.logger)
             selectors_node = actiondef_node.get_childnode("Selector")
             for selector in selectors_node:
-                actiondef.selectors.append(self._get_selector_func(selector))
+                selector_str = self.parser.get_contents(selector)
+                selector_func = self._get_selector_func(selector)
+                actiondef.append_selector(selector_func, selector_str)
 
             actions_node = actiondef_node.get_childnode("Action")
             for action in actions_node:
+                action_str = self.parser.get_contents(action)
                 action_func = self._get_action_func(action)
-                actiondef.actions.append(action_func)
+                actiondef.append_action(action_func, action_str)
 
             ret.append(actiondef)
         
@@ -566,8 +569,11 @@ class AstActions(object):
                 _target:NonTerminalNode, _r_idx:int, _t_idx:int):
 
             ret = flist[0](_root, _target, _r_idx, _t_idx)
-            for _f in flist[1:]:
-                ret = ret + _f(_root, _target, _r_idx, _t_idx)
+            try:
+                for _f in flist[1:]:
+                    ret = ret + _f(_root, _target, _r_idx, _t_idx)
+            except TypeError as e:
+                raise ActionException(str(e))
             return ret
         
         return lambda root, target, r_idx, t_idx: \
@@ -677,21 +683,43 @@ class AstActions(object):
 
 
 class _ActionDefinition(object):
-    def __init__(self) -> None:
-        self.selectors:list[StartSelectorFuncType] = []
-        self.actions:list[ActionFuncType] = []
+    def __init__(self, logger:Logger = default_logger) -> None:
+        self.__selectors:list[StartSelectorFuncType] = []
+        self.__actions:list[ActionFuncType] = []
+        self.__logger:Logger = logger
+    
+    def append_selector(self, 
+            selector:StartSelectorFuncType, 
+            selector_str:str) -> None:
+        self.__selectors.append((selector, selector_str))
 
-    def apply_actions(self, node:Node):
+    def append_action(self, action:ActionFuncType, action_str:str) -> None:
+        self.__actions.append((action, action_str))
+
+    def apply_actions(self, node:Node) -> bool:
         # 順にselector を適用
         action_nodes = []
-        for selector in self.selectors:
-            action_nodes.extend(selector(node))
-        
+        for selector, selector_str in self.__selectors:
+            try:
+                action_nodes.extend(selector(node))
+            except ActionException as e:
+                self.__logger.warn(str(e))
+                self.__logger.warn("セレクタ \"{}\"に失敗しました。"
+                        .format(selector_str))
+            return False
+
         for start_index, node_tuple in enumerate(action_nodes):
             start_node, target_nodes = node_tuple
             for target_index, tartget_node in enumerate(target_nodes):
-                for action in self.actions:
-                    action(start_node, tartget_node, start_index, target_index)
+                for action, action_str in self.__actions:
+                    try:
+                        action(start_node, tartget_node, start_index, target_index)
+                    except ActionException as e:
+                        self.__logger.warn(str(e))
+                        self.__logger.warn("Node:{} から Node:{} のアクション \"{}\"に失敗しました。"
+                                .format(start_node, tartget_node, action_str))
+                        return False
+        return True
 
 
 class ActionException(Exception):

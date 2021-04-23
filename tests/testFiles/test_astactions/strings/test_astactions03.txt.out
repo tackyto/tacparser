@@ -3,7 +3,7 @@ ASTActionsTest : (1, 0 - 14, 2 : 0 - 541) : {}
         SocietyName : (1, 0 - 1, 9 : 0 - 9) : {}
             Literal : (1, 0 - 1, 9 : 0 - 9) : {}
                 @Tarminal : (1, 1 - 1, 7 : 1 - 7) "Test01"
-        Family : (2, 4 - 8, 4 : 15 - 291) : {order: Top, rightneighbor: FamilyName02}
+        Family : (2, 4 - 8, 4 : 15 - 291) : {}
             FamilyName : (2, 4 - 2, 19 : 15 - 30) : {}
                 Literal : (2, 4 - 2, 19 : 15 - 30) : {}
                     @Tarminal : (2, 5 - 2, 17 : 16 - 28) "FamilyName01"
@@ -57,7 +57,7 @@ ASTActionsTest : (1, 0 - 14, 2 : 0 - 541) : {}
                 Sex : (6, 39 - 6, 46 : 272 - 279) : {}
                     MorF : (6, 45 - 6, 46 : 278 - 279) : {}
                         Female : (6, 45 - 6, 46 : 278 - 279) : {}
-        Family : (8, 4 - 14, 0 : 291 - 539) : {leftneighbor: FamilyName01, order: Bottom}
+        Family : (8, 4 - 14, 0 : 291 - 539) : {}
             FamilyName : (8, 4 - 8, 19 : 291 - 306) : {}
                 Literal : (8, 4 - 8, 19 : 291 - 306) : {}
                     @Tarminal : (8, 5 - 8, 17 : 292 - 304) "FamilyName02"
