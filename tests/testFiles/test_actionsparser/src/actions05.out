@@ -27,20 +27,23 @@ Actions : (Ln 1, Col 0)
                     TargetValue : (Ln 1, Col 26)
                         ParameterName : (Ln 1, Col 33)
                             @Tarminal : (Ln 1, Col 33) "familyname"
-                Value : (Ln 1, Col 46)
-                    ValueTerm : (Ln 1, Col 46)
-                        RootString : (Ln 1, Col 46)
-                            TypeDictionary : (Ln 1, Col 59)
-                                TypeDictItems : (Ln 1, Col 60)
-                                    TypeItem : (Ln 1, Col 60)
-                                        Identifier : (Ln 1, Col 60)
-                                            @Tarminal : (Ln 1, Col 60) "Spacing"
-                                        TypeValueString : (Ln 1, Col 70)
-                                            Literal : (Ln 1, Col 70)
-                                                DoubleQuotesLiteral : (Ln 1, Col 70)
-                                                    @Tarminal : (Ln 1, Col 70) """
-                                                    @Tarminal : (Ln 1, Col 71) ""
-                                                    @Tarminal : (Ln 1, Col 71) """
+                Expression : (Ln 1, Col 46)
+                    Primary : (Ln 1, Col 46)
+                        ExpTerms : (Ln 1, Col 46)
+                            SimpleExpTerm : (Ln 1, Col 46)
+                                ValueTerm : (Ln 1, Col 46)
+                                    RootString : (Ln 1, Col 46)
+                                        TypeDictionary : (Ln 1, Col 59)
+                                            TypeDictItems : (Ln 1, Col 60)
+                                                TypeItem : (Ln 1, Col 60)
+                                                    Identifier : (Ln 1, Col 60)
+                                                        @Tarminal : (Ln 1, Col 60) "Spacing"
+                                                    TypeValueString : (Ln 1, Col 70)
+                                                        Literal : (Ln 1, Col 70)
+                                                            DoubleQuotesLiteral : (Ln 1, Col 70)
+                                                                @Tarminal : (Ln 1, Col 70) """
+                                                                @Tarminal : (Ln 1, Col 71) ""
+                                                                @Tarminal : (Ln 1, Col 71) """
     ActionDefinition : (Ln 2, Col 0)
         Selector : (Ln 2, Col 0)
             Descendants : (Ln 2, Col 0)
@@ -80,29 +83,32 @@ Actions : (Ln 1, Col 0)
                     TargetValue : (Ln 2, Col 44)
                         ParameterName : (Ln 2, Col 51)
                             @Tarminal : (Ln 2, Col 51) "name"
-                Value : (Ln 2, Col 58)
-                    ValueTerm : (Ln 2, Col 58)
-                        RootString : (Ln 2, Col 58)
-                            TypeDictionary : (Ln 2, Col 71)
-                                TypeDictItems : (Ln 3, Col 2)
-                                    TypeItem : (Ln 3, Col 2)
-                                        Identifier : (Ln 3, Col 2)
-                                            @Tarminal : (Ln 3, Col 2) "Spacing"
-                                        TypeValueString : (Ln 3, Col 12)
-                                            Literal : (Ln 3, Col 12)
-                                                DoubleQuotesLiteral : (Ln 3, Col 12)
-                                                    @Tarminal : (Ln 3, Col 12) """
-                                                    @Tarminal : (Ln 3, Col 13) ""
-                                                    @Tarminal : (Ln 3, Col 13) """
-                                    TypeItem : (Ln 4, Col 3)
-                                        Identifier : (Ln 4, Col 3)
-                                            @Tarminal : (Ln 4, Col 3) "Tab"
-                                        TypeValueString : (Ln 4, Col 9)
-                                            Literal : (Ln 4, Col 9)
-                                                DoubleQuotesLiteral : (Ln 4, Col 9)
-                                                    @Tarminal : (Ln 4, Col 9) """
-                                                    @Tarminal : (Ln 4, Col 10) "\t\t\n"
-                                                    @Tarminal : (Ln 4, Col 16) """
+                Expression : (Ln 2, Col 58)
+                    Primary : (Ln 2, Col 58)
+                        ExpTerms : (Ln 2, Col 58)
+                            SimpleExpTerm : (Ln 2, Col 58)
+                                ValueTerm : (Ln 2, Col 58)
+                                    RootString : (Ln 2, Col 58)
+                                        TypeDictionary : (Ln 2, Col 71)
+                                            TypeDictItems : (Ln 3, Col 2)
+                                                TypeItem : (Ln 3, Col 2)
+                                                    Identifier : (Ln 3, Col 2)
+                                                        @Tarminal : (Ln 3, Col 2) "Spacing"
+                                                    TypeValueString : (Ln 3, Col 12)
+                                                        Literal : (Ln 3, Col 12)
+                                                            DoubleQuotesLiteral : (Ln 3, Col 12)
+                                                                @Tarminal : (Ln 3, Col 12) """
+                                                                @Tarminal : (Ln 3, Col 13) ""
+                                                                @Tarminal : (Ln 3, Col 13) """
+                                                TypeItem : (Ln 4, Col 3)
+                                                    Identifier : (Ln 4, Col 3)
+                                                        @Tarminal : (Ln 4, Col 3) "Tab"
+                                                    TypeValueString : (Ln 4, Col 9)
+                                                        Literal : (Ln 4, Col 9)
+                                                            DoubleQuotesLiteral : (Ln 4, Col 9)
+                                                                @Tarminal : (Ln 4, Col 9) """
+                                                                @Tarminal : (Ln 4, Col 10) "\t\t\n"
+                                                                @Tarminal : (Ln 4, Col 16) """
     ActionDefinition : (Ln 5, Col 0)
         Selector : (Ln 5, Col 0)
             Descendants : (Ln 5, Col 0)
@@ -143,20 +149,23 @@ Actions : (Ln 1, Col 0)
                     TargetValue : (Ln 5, Col 42)
                         ParameterName : (Ln 5, Col 49)
                             @Tarminal : (Ln 5, Col 49) "age"
-                Value : (Ln 5, Col 55)
-                    ValueTerm : (Ln 5, Col 55)
-                        RootString : (Ln 5, Col 55)
-                            TypeDictionary : (Ln 5, Col 68)
-                                TypeDictItems : (Ln 5, Col 70)
-                                    TypeItem : (Ln 5, Col 70)
-                                        Identifier : (Ln 5, Col 70)
-                                            @Tarminal : (Ln 5, Col 70) "Nodetype"
-                                        TypeValueString : (Ln 5, Col 81)
-                                            Literal : (Ln 5, Col 81)
-                                                DoubleQuotesLiteral : (Ln 5, Col 81)
-                                                    @Tarminal : (Ln 5, Col 81) """
-                                                    @Tarminal : (Ln 5, Col 82) "aaaaabbbb日本語"
-                                                    @Tarminal : (Ln 5, Col 94) """
+                Expression : (Ln 5, Col 55)
+                    Primary : (Ln 5, Col 55)
+                        ExpTerms : (Ln 5, Col 55)
+                            SimpleExpTerm : (Ln 5, Col 55)
+                                ValueTerm : (Ln 5, Col 55)
+                                    RootString : (Ln 5, Col 55)
+                                        TypeDictionary : (Ln 5, Col 68)
+                                            TypeDictItems : (Ln 5, Col 70)
+                                                TypeItem : (Ln 5, Col 70)
+                                                    Identifier : (Ln 5, Col 70)
+                                                        @Tarminal : (Ln 5, Col 70) "Nodetype"
+                                                    TypeValueString : (Ln 5, Col 81)
+                                                        Literal : (Ln 5, Col 81)
+                                                            DoubleQuotesLiteral : (Ln 5, Col 81)
+                                                                @Tarminal : (Ln 5, Col 81) """
+                                                                @Tarminal : (Ln 5, Col 82) "aaaaabbbb日本語"
+                                                                @Tarminal : (Ln 5, Col 94) """
     ActionDefinition : (Ln 7, Col 0)
         Selector : (Ln 7, Col 0)
             Descendants : (Ln 7, Col 0)
@@ -220,27 +229,30 @@ Actions : (Ln 1, Col 0)
                     TargetValue : (Ln 8, Col 5)
                         ParameterName : (Ln 8, Col 12)
                             @Tarminal : (Ln 8, Col 12) "name"
-                Value : (Ln 8, Col 19)
-                    ValueTerm : (Ln 8, Col 19)
-                        RootString : (Ln 8, Col 19)
-                            TypeDictionary : (Ln 8, Col 32)
-                                TypeDictItems : (Ln 9, Col 2)
-                                    TypeItem : (Ln 9, Col 2)
-                                        Identifier : (Ln 9, Col 2)
-                                            @Tarminal : (Ln 9, Col 2) "Spacing"
-                                        TypeValueString : (Ln 9, Col 12)
-                                            Literal : (Ln 9, Col 12)
-                                                DoubleQuotesLiteral : (Ln 9, Col 12)
-                                                    @Tarminal : (Ln 9, Col 12) """
-                                                    @Tarminal : (Ln 9, Col 13) ""
-                                                    @Tarminal : (Ln 9, Col 13) """
-                                    TypeItem : (Ln 10, Col 3)
-                                        Identifier : (Ln 10, Col 3)
-                                            @Tarminal : (Ln 10, Col 3) "Tab"
-                                        TypeValueString : (Ln 10, Col 9)
-                                            Literal : (Ln 10, Col 9)
-                                                DoubleQuotesLiteral : (Ln 10, Col 9)
-                                                    @Tarminal : (Ln 10, Col 9) """
-                                                    @Tarminal : (Ln 10, Col 10) "\t\t\n"
-                                                    @Tarminal : (Ln 10, Col 16) """
+                Expression : (Ln 8, Col 19)
+                    Primary : (Ln 8, Col 19)
+                        ExpTerms : (Ln 8, Col 19)
+                            SimpleExpTerm : (Ln 8, Col 19)
+                                ValueTerm : (Ln 8, Col 19)
+                                    RootString : (Ln 8, Col 19)
+                                        TypeDictionary : (Ln 8, Col 32)
+                                            TypeDictItems : (Ln 9, Col 2)
+                                                TypeItem : (Ln 9, Col 2)
+                                                    Identifier : (Ln 9, Col 2)
+                                                        @Tarminal : (Ln 9, Col 2) "Spacing"
+                                                    TypeValueString : (Ln 9, Col 12)
+                                                        Literal : (Ln 9, Col 12)
+                                                            DoubleQuotesLiteral : (Ln 9, Col 12)
+                                                                @Tarminal : (Ln 9, Col 12) """
+                                                                @Tarminal : (Ln 9, Col 13) ""
+                                                                @Tarminal : (Ln 9, Col 13) """
+                                                TypeItem : (Ln 10, Col 3)
+                                                    Identifier : (Ln 10, Col 3)
+                                                        @Tarminal : (Ln 10, Col 3) "Tab"
+                                                    TypeValueString : (Ln 10, Col 9)
+                                                        Literal : (Ln 10, Col 9)
+                                                            DoubleQuotesLiteral : (Ln 10, Col 9)
+                                                                @Tarminal : (Ln 10, Col 9) """
+                                                                @Tarminal : (Ln 10, Col 10) "\t\t\n"
+                                                                @Tarminal : (Ln 10, Col 16) """
     _EOF : (Ln 10, Col 22)

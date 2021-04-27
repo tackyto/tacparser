@@ -22,11 +22,14 @@ Actions : (Ln 1, Col 0)
                     RootValue : (Ln 2, Col 1)
                         ParameterName : (Ln 2, Col 6)
                             @Tarminal : (Ln 2, Col 6) "variable"
-                Value : (Ln 2, Col 17)
-                    ValueTerm : (Ln 2, Col 17)
-                        Literal : (Ln 2, Col 17)
-                            DoubleQuotesLiteral : (Ln 2, Col 17)
-                                @Tarminal : (Ln 2, Col 17) """
-                                @Tarminal : (Ln 2, Col 18) "value"
-                                @Tarminal : (Ln 2, Col 23) """
+                Expression : (Ln 2, Col 17)
+                    Primary : (Ln 2, Col 17)
+                        ExpTerms : (Ln 2, Col 17)
+                            SimpleExpTerm : (Ln 2, Col 17)
+                                ValueTerm : (Ln 2, Col 17)
+                                    Literal : (Ln 2, Col 17)
+                                        DoubleQuotesLiteral : (Ln 2, Col 17)
+                                            @Tarminal : (Ln 2, Col 17) """
+                                            @Tarminal : (Ln 2, Col 18) "value"
+                                            @Tarminal : (Ln 2, Col 23) """
     _EOF : (Ln 2, Col 26)

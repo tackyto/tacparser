@@ -30,8 +30,8 @@ class TestActionsParser(unittest.TestCase):
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
 
-        pathoutfile = os.path.join(self.test_dir, "actions01_src.out")
-        pathoutfile_dist = os.path.join(self.test_dir, "actions01_dist.out")
+        pathoutfile = os.path.join(self.test_dir, "src", "actions01.out")
+        pathoutfile_dist = os.path.join(self.test_dir, "dist", "actions01.out")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(node.print_tree())
@@ -44,8 +44,8 @@ class TestActionsParser(unittest.TestCase):
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
 
-        pathoutfile = os.path.join(self.test_dir, "actions02_src.out")
-        pathoutfile_dist = os.path.join(self.test_dir, "actions02_dist.out")
+        pathoutfile = os.path.join(self.test_dir, "src", "actions02.out")
+        pathoutfile_dist = os.path.join(self.test_dir, "dist", "actions02.out")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(node.print_tree())
@@ -62,8 +62,8 @@ class TestActionsParser(unittest.TestCase):
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
 
-        pathoutfile = os.path.join(self.test_dir, "actions03_src.out")
-        pathoutfile_dist = os.path.join(self.test_dir, "actions03_dist.out")
+        pathoutfile = os.path.join(self.test_dir, "src", "actions03.out")
+        pathoutfile_dist = os.path.join(self.test_dir, "dist", "actions03.out")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(node.print_tree())
@@ -78,8 +78,8 @@ class TestActionsParser(unittest.TestCase):
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
 
-        pathoutfile = os.path.join(self.test_dir, "actions04_src.out")
-        pathoutfile_dist = os.path.join(self.test_dir, "actions04_dist.out")
+        pathoutfile = os.path.join(self.test_dir,"src", "actions04.out")
+        pathoutfile_dist = os.path.join(self.test_dir, "dist", "actions04.out")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(node.print_tree())
@@ -96,8 +96,8 @@ class TestActionsParser(unittest.TestCase):
         flg, node = self.parser.parse_string(action_str, self.parser.p_actions ,"Actions")
         self.assertTrue(flg)
 
-        pathoutfile = os.path.join(self.test_dir, "actions05_src.out")
-        pathoutfile_dist = os.path.join(self.test_dir, "actions05_dist.out")
+        pathoutfile = os.path.join(self.test_dir, "src","actions05.out")
+        pathoutfile_dist = os.path.join(self.test_dir, "dist", "actions05.out")
 
         with open(pathoutfile, "w", encoding="utf-8", newline="\n") as fout:
             fout.write(node.print_tree())

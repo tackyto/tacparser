@@ -99,7 +99,7 @@ Slice <- FromTo / Number
 FromTo <- StartNumber >>COLON EndNumber
 StartNumber <- Number?
 EndNumber <- Number?
-Number <- '-'? r"0|[1-9][0-9]*" >>S?
+Number <- ('+' / '-')? r"0|[1-9][0-9]*" >>S?
 
 LineColumnLimitation <- GraterLimitation 
                       / LessLimitation 
@@ -192,32 +192,40 @@ AttributeValue <- Literal
 # root は最初の条件式に一致するノードのパラメータ
 # ----------------------------------------
 Action <- Substitution 
-        / AppendList
-Substitution <- Variable >>EQUAL Value
+        / Expression
+Substitution <- Variable >>EQUAL Expression
 Variable <- RootValue / TargetValue
 
-# TODO : int , list の操作
-Value <- AddValueTerms
-       / ValueTerm
-       / ListValue
-       / NodeValue
+Expression <- Primary ( PlusPrimary / MinusPrimary )*
+PlusPrimary <- >>PLUS Primary
+MinusPrimary <- >>MINUS Primary
 
-AddValueTerms <- ValueTerm (PLUS ValueTerm)+
-ValueTerm <- Literal / Number
+Primary <- MinusExpTerms / ExpTerms
+MinusExpTerms <- >>MINUS ExpTerms
+ExpTerms <- SimpleExpTerm ( MultiExpTerm / DivExpTerm )*
+MultiExpTerm <- >>MULTI SimpleExpTerm
+DivExpTerm   <- >>DIV SimpleExpTerm
+
+SimpleExpTerm <- >>OPEN Expression >>CLOSE 
+               / ValueTerm ( CallFunction / TermMember )*
+CallFunction <- >>DOT FunctionName >>OPEN Parameters? >>CLOSE
+Parameters <- Expression ( >>COMMA Expression)*
+FunctionName <- ParameterName
+TermMember <- >>DOT ParameterName
+
+ValueTerm <- Literal / Number / ListValue
            / RootString / TargetString 
            / RootValue / TargetValue 
            / RootIndex / TargetIndex
+           / RootNode  / TargetNode
 
-ListValue <- >>'[' >>S? ( ValueTerm >>COMMA)* >>']' >>S?
-NodeValue <- RootNode / TargetNode
+ListValue <- >>'[' >>S? ( Expression >>COMMA)* >>']' >>S?
 
 RootIndex <- >>INDEX >>OPEN >>ROOT >>CLOSE
 TargetIndex <- >>INDEX >>OPEN >>TARGET >>CLOSE
 
 RootNode <- >>ROOT
 TargetNode <- >>TARGET
-
-AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
 
 Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
 SingleQuotesLiteral <- "'" r"(\\.|[^'\\])*" "'" >>S?
@@ -233,12 +241,11 @@ TypeValueString <- Literal
 
 RootValue <- >>ROOT >>DOT ParameterName
 TargetValue <- >>TARGET >>DOT ParameterName
-ParameterName <- r"[a-z][a-z_]*" >>S?
+ParameterName <- r"[a-z][a-z0-9_]*" >>S?
 
 INDEX <- 'index' S?
 ROOT <- 'root' S?
 TARGET <- 'target' S?
-APPEND <- 'append' S?
 
 # ----------------------------------------
 # Terminal
@@ -268,6 +275,9 @@ PLUS        <- '+' S?
 MINUS       <- '-' S?
 PLUSPLUS    <- '++' S?
 MINUSMINUS  <- '--' S?
+
+MULTI       <- '*' S?
+DIV         <- '/' S?
 
 GREATER_THAN  <- '>'  S?
 GREATER_EQUAL <- '>=' S?

@@ -73,16 +73,25 @@ class ActionsParser(Parser):
                          "Action": self.p_action,
                          "Substitution": self.p_substitution,
                          "Variable": self.p_variable,
-                         "Value": self.p_value,
-                         "AddValueTerms": self.p_addvalueterms,
+                         "Expression": self.p_expression,
+                         "PlusPrimary": self.p_plusprimary,
+                         "MinusPrimary": self.p_minusprimary,
+                         "Primary": self.p_primary,
+                         "MinusExpTerms": self.p_minusexpterms,
+                         "ExpTerms": self.p_expterms,
+                         "MultiExpTerm": self.p_multiexpterm,
+                         "DivExpTerm": self.p_divexpterm,
+                         "SimpleExpTerm": self.p_simpleexpterm,
+                         "CallFunction": self.p_callfunction,
+                         "Parameters": self.p_parameters,
+                         "FunctionName": self.p_functionname,
+                         "TermMember": self.p_termmember,
                          "ValueTerm": self.p_valueterm,
                          "ListValue": self.p_listvalue,
-                         "NodeValue": self.p_nodevalue,
                          "RootIndex": self.p_rootindex,
                          "TargetIndex": self.p_targetindex,
                          "RootNode": self.p_rootnode,
                          "TargetNode": self.p_targetnode,
-                         "AppendList": self.p_appendlist,
                          "Literal": self.p_literal,
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
                          "DoubleQuotesLiteral": self.p_doublequotesliteral,
@@ -98,7 +107,6 @@ class ActionsParser(Parser):
                          "INDEX": self.p_index,
                          "ROOT": self.p_root,
                          "TARGET": self.p_target,
-                         "APPEND": self.p_append,
                          "S": self.p_s,
                          "EndOfLine": self.p_endofline,
                          "OPEN": self.p_open,
@@ -120,6 +128,8 @@ class ActionsParser(Parser):
                          "MINUS": self.p_minus,
                          "PLUSPLUS": self.p_plusplus,
                          "MINUSMINUS": self.p_minusminus,
+                         "MULTI": self.p_multi,
+                         "DIV": self.p_div,
                          "GREATER_THAN": self.p_greater_than,
                          "GREATER_EQUAL": self.p_greater_equal,
                          "LESS_THAN": self.p_less_than,
@@ -325,8 +335,10 @@ class ActionsParser(Parser):
     _reg_p_number0 = regex.compile("0|[1-9][0-9]*", regex.M)
 
     def p_number(self):
-        # Number <- '-'? r"0|[1-9][0-9]*" >>S?
-        return self._seq(self._opt(self._l('-')),
+        # Number <- ('+' / '-')? r"0|[1-9][0-9]*" >>S?
+        return self._seq(self._opt(self._sel(self._l('+'),
+                                             self._l('-')
+                                             )),
                          self._r(self._reg_p_number0),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
@@ -608,16 +620,16 @@ class ActionsParser(Parser):
         # # root は最初の条件式に一致するノードのパラメータ
         # # ----------------------------------------
         # Action <- Substitution 
-        #         / AppendList
+        #         / Expression
         return self._sel(self._p(self.p_substitution, "Substitution"),
-                         self._p(self.p_appendlist, "AppendList")
+                         self._p(self.p_expression, "Expression")
                          )
 
     def p_substitution(self):
-        # Substitution <- Variable >>EQUAL Value
+        # Substitution <- Variable >>EQUAL Expression
         return self._seq(self._p(self.p_variable, "Variable"),
                          self._skip(self._p(self.p_equal, "EQUAL")),
-                         self._p(self.p_value, "Value")
+                         self._p(self.p_expression, "Expression")
                          )
 
     def p_variable(self):
@@ -626,56 +638,127 @@ class ActionsParser(Parser):
                          self._p(self.p_targetvalue, "TargetValue")
                          )
 
-    def p_value(self):
-        # # TODO : int , list の操作
-        # Value <- AddValueTerms
-        #        / ValueTerm
-        #        / ListValue
-        #        / NodeValue
-        return self._sel(self._p(self.p_addvalueterms, "AddValueTerms"),
-                         self._p(self.p_valueterm, "ValueTerm"),
-                         self._p(self.p_listvalue, "ListValue"),
-                         self._p(self.p_nodevalue, "NodeValue")
+    def p_expression(self):
+        # Expression <- Primary ( PlusPrimary / MinusPrimary )*
+        return self._seq(self._p(self.p_primary, "Primary"),
+                         self._rpt(self._sel(self._p(self.p_plusprimary, "PlusPrimary"),
+                                             self._p(self.p_minusprimary, "MinusPrimary")
+                                             ), 0)
                          )
 
-    def p_addvalueterms(self):
-        # AddValueTerms <- ValueTerm (PLUS ValueTerm)+
-        return self._seq(self._p(self.p_valueterm, "ValueTerm"),
-                         self._rpt(self._seq(self._p(self.p_plus, "PLUS"),
-                                             self._p(self.p_valueterm, "ValueTerm")
-                                             ), 1)
+    def p_plusprimary(self):
+        # PlusPrimary <- >>PLUS Primary
+        return self._seq(self._skip(self._p(self.p_plus, "PLUS")),
+                         self._p(self.p_primary, "Primary")
+                         )
+
+    def p_minusprimary(self):
+        # MinusPrimary <- >>MINUS Primary
+        return self._seq(self._skip(self._p(self.p_minus, "MINUS")),
+                         self._p(self.p_primary, "Primary")
+                         )
+
+    def p_primary(self):
+        # Primary <- MinusExpTerms / ExpTerms
+        return self._sel(self._p(self.p_minusexpterms, "MinusExpTerms"),
+                         self._p(self.p_expterms, "ExpTerms")
+                         )
+
+    def p_minusexpterms(self):
+        # MinusExpTerms <- >>MINUS ExpTerms
+        return self._seq(self._skip(self._p(self.p_minus, "MINUS")),
+                         self._p(self.p_expterms, "ExpTerms")
+                         )
+
+    def p_expterms(self):
+        # ExpTerms <- SimpleExpTerm ( MultiExpTerm / DivExpTerm )*
+        return self._seq(self._p(self.p_simpleexpterm, "SimpleExpTerm"),
+                         self._rpt(self._sel(self._p(self.p_multiexpterm, "MultiExpTerm"),
+                                             self._p(self.p_divexpterm, "DivExpTerm")
+                                             ), 0)
+                         )
+
+    def p_multiexpterm(self):
+        # MultiExpTerm <- >>MULTI SimpleExpTerm
+        return self._seq(self._skip(self._p(self.p_multi, "MULTI")),
+                         self._p(self.p_simpleexpterm, "SimpleExpTerm")
+                         )
+
+    def p_divexpterm(self):
+        # DivExpTerm   <- >>DIV SimpleExpTerm
+        return self._seq(self._skip(self._p(self.p_div, "DIV")),
+                         self._p(self.p_simpleexpterm, "SimpleExpTerm")
+                         )
+
+    def p_simpleexpterm(self):
+        # SimpleExpTerm <- >>OPEN Expression >>CLOSE 
+        #                / ValueTerm ( CallFunction / TermMember )*
+        return self._sel(self._seq(self._skip(self._p(self.p_open, "OPEN")),
+                                   self._p(self.p_expression, "Expression"),
+                                   self._skip(self._p(self.p_close, "CLOSE"))
+                                   ),
+                         self._seq(self._p(self.p_valueterm, "ValueTerm"),
+                                   self._rpt(self._sel(self._p(self.p_callfunction, "CallFunction"),
+                                                       self._p(self.p_termmember, "TermMember")
+                                                       ), 0)
+                                   )
+                         )
+
+    def p_callfunction(self):
+        # CallFunction <- >>DOT FunctionName >>OPEN Parameters? >>CLOSE
+        return self._seq(self._skip(self._p(self.p_dot, "DOT")),
+                         self._p(self.p_functionname, "FunctionName"),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._opt(self._p(self.p_parameters, "Parameters")),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_parameters(self):
+        # Parameters <- Expression ( >>COMMA Expression)*
+        return self._seq(self._p(self.p_expression, "Expression"),
+                         self._rpt(self._seq(self._skip(self._p(self.p_comma, "COMMA")),
+                                             self._p(self.p_expression, "Expression")
+                                             ), 0)
+                         )
+
+    def p_functionname(self):
+        # FunctionName <- ParameterName
+        return self._p(self.p_parametername, "ParameterName")
+
+    def p_termmember(self):
+        # TermMember <- >>DOT ParameterName
+        return self._seq(self._skip(self._p(self.p_dot, "DOT")),
+                         self._p(self.p_parametername, "ParameterName")
                          )
 
     def p_valueterm(self):
-        # ValueTerm <- Literal / Number
+        # ValueTerm <- Literal / Number / ListValue
         #            / RootString / TargetString 
         #            / RootValue / TargetValue 
         #            / RootIndex / TargetIndex
+        #            / RootNode  / TargetNode
         return self._sel(self._p(self.p_literal, "Literal"),
                          self._p(self.p_number, "Number"),
+                         self._p(self.p_listvalue, "ListValue"),
                          self._p(self.p_rootstring, "RootString"),
                          self._p(self.p_targetstring, "TargetString"),
                          self._p(self.p_rootvalue, "RootValue"),
                          self._p(self.p_targetvalue, "TargetValue"),
                          self._p(self.p_rootindex, "RootIndex"),
-                         self._p(self.p_targetindex, "TargetIndex")
+                         self._p(self.p_targetindex, "TargetIndex"),
+                         self._p(self.p_rootnode, "RootNode"),
+                         self._p(self.p_targetnode, "TargetNode")
                          )
 
     def p_listvalue(self):
-        # ListValue <- >>'[' >>S? ( ValueTerm >>COMMA)* >>']' >>S?
+        # ListValue <- >>'[' >>S? ( Expression >>COMMA)* >>']' >>S?
         return self._seq(self._skip(self._l('[')),
                          self._skip(self._opt(self._p(self.p_s, "S"))),
-                         self._rpt(self._seq(self._p(self.p_valueterm, "ValueTerm"),
+                         self._rpt(self._seq(self._p(self.p_expression, "Expression"),
                                              self._skip(self._p(self.p_comma, "COMMA"))
                                              ), 0),
                          self._skip(self._l(']')),
                          self._skip(self._opt(self._p(self.p_s, "S")))
-                         )
-
-    def p_nodevalue(self):
-        # NodeValue <- RootNode / TargetNode
-        return self._sel(self._p(self.p_rootnode, "RootNode"),
-                         self._p(self.p_targetnode, "TargetNode")
                          )
 
     def p_rootindex(self):
@@ -701,16 +784,6 @@ class ActionsParser(Parser):
     def p_targetnode(self):
         # TargetNode <- >>TARGET
         return self._skip(self._p(self.p_target, "TARGET"))
-
-    def p_appendlist(self):
-        # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
-        return self._seq(self._p(self.p_variable, "Variable"),
-                         self._skip(self._p(self.p_dot, "DOT")),
-                         self._skip(self._p(self.p_append, "APPEND")),
-                         self._skip(self._p(self.p_open, "OPEN")),
-                         self._p(self.p_value, "Value"),
-                         self._skip(self._p(self.p_close, "CLOSE"))
-                         )
 
     def p_literal(self):
         # Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
@@ -800,10 +873,10 @@ class ActionsParser(Parser):
                          self._p(self.p_parametername, "ParameterName")
                          )
 
-    _reg_p_parametername0 = regex.compile("[a-z][a-z_]*", regex.M)
+    _reg_p_parametername0 = regex.compile("[a-z][a-z0-9_]*", regex.M)
 
     def p_parametername(self):
-        # ParameterName <- r"[a-z][a-z_]*" >>S?
+        # ParameterName <- r"[a-z][a-z0-9_]*" >>S?
         return self._seq(self._r(self._reg_p_parametername0),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
@@ -823,12 +896,6 @@ class ActionsParser(Parser):
     def p_target(self):
         # TARGET <- 'target' S?
         return self._seq(self._l('target'),
-                         self._opt(self._p(self.p_s, "S"))
-                         )
-
-    def p_append(self):
-        # APPEND <- 'append' S?
-        return self._seq(self._l('append'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 
@@ -958,6 +1025,18 @@ class ActionsParser(Parser):
     def p_minusminus(self):
         # MINUSMINUS  <- '--' S?
         return self._seq(self._l('--'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_multi(self):
+        # MULTI       <- '*' S?
+        return self._seq(self._l('*'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_div(self):
+        # DIV         <- '/' S?
+        return self._seq(self._l('/'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 

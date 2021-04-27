@@ -1,5 +1,6 @@
 import os
 
+from numbers import Number
 from collections.abc import Callable
 from logging import config, getLogger, Logger
 
@@ -466,29 +467,28 @@ class AstActions(object):
     def _get_action_func(self, node:NonTerminalNode) -> ActionFuncType:
         # 代入式を実行する関数を返す
         # Action <- Substitution 
-        #         / AppendList
-
+        #         / Expression
         action_type_node = node.children[0]
         if action_type_node.type == "Substitution":
             return self._get_substitution_func(action_type_node)
-        if action_type_node.type == "AppendList":
-            return self._get_append_list_func(action_type_node)
+        if action_type_node.type == "Expression":
+            return self._get_expression_func(action_type_node)
         else:
             raise ActionException("想定しない Action が指定されました。")
     
 
     def _get_substitution_func(self, _node:NonTerminalNode) -> ActionFuncType:
-        # Substitution <- Variable >>EQUAL Value
-        # Variable <- RootValue / TargetValue
-        # Value <- AddValueTerms
-        #        / ValueTerm
-        #        / ListValue
-        #        / NodeValue
-        val_n = _node.get_childnode("Value")[0]
-        get_val_f = self._get_value_func(val_n)
+        # Substitution <- Variable >>EQUAL Expression
+        expression_n = _node.get_childnode("Expression")
+        if not expression_n:
+            raise ActionException("Substitution に \"Expression\" がありません。")
+        get_val_f = self._get_expression_func(expression_n[0])
 
-        var_n = _node.get_childnode("Variable")[0]
-        var_target = var_n.children[0]
+        variable_n = _node.get_childnode("Variable")
+        if not variable_n:
+            raise ActionException("Substitution に \"Variable\" がありません。")
+
+        var_target = variable_n[0].children[0]
         get_subst_f:ActionFuncType = None
         if var_target.type =="RootValue":
             var_param = var_target.get_childnode("ParameterName")[0].get_str()
@@ -505,94 +505,324 @@ class AstActions(object):
         
         return lambda root, target, r_idx, t_idx: get_subst_f(root, target, r_idx, t_idx)
 
-    def _get_append_list_func(self, _append_list_node:NonTerminalNode) -> ActionFuncType:
-        """
-        AppendList ノードから、値を取得する関数を取得
-        """
-        # AppendList <- Variable >>DOT >>APPEND >>OPEN Value >>CLOSE
-        val_n = _append_list_node.get_childnode("Value")[0]
-        get_val_f = self._get_value_func(val_n)
 
-        def append_node_attr(_node:NonTerminalNode, _param:str,
-                    _root:NonTerminalNode, 
-                    _target:NonTerminalNode,
-                    _r_idx:int, _t_idx:int ):
-            list_value:list = _node.get_attr(_param)
-            value = get_val_f(_root, _target, _r_idx, _t_idx)
-            list_value.append(value)
-
-        var_n = _append_list_node.get_childnode("Variable")[0]
-        var_target = var_n.children[0]
-        get_subst_f:ActionFuncType = None
-        if var_target.type =="RootValue":
-            var_param = var_target.get_childnode("ParameterName")[0].get_str()
-            get_subst_f = lambda _root, _target, _r_idx, _t_idx: \
-                        append_node_attr(_root, var_param, _root, _target, _r_idx, _t_idx)
-        elif var_target.type =="TargetValue":
-            var_param = var_target.get_childnode("ParameterName")[0].get_str()
-            get_subst_f = lambda _root, _target, _r_idx, _t_idx: \
-                        append_node_attr(_target, var_param, _root, _target, _r_idx, _t_idx)
-        else:
+    def _get_expression_func(self, _expression_node:NonTerminalNode) -> ActionFuncType:
+        """
+        Expression ノードから、値を取得する関数を取得
+        """
+        # Expression <- Primary ( PlusPrimary / MinusPrimary )*
+        primary_node = _expression_node.children[0]
+        if primary_node.type != "Primary":
             raise ActionException(
-                "Variableの子に想定しないノード\"{}\"が指定されました。"
-                .format(var_target.type))
+                "Expressionの子に想定しないノード\"{}\"が指定されました。"
+                .format(primary_node.type))
+            
+        prev_primary_func = self._get_primary_func(primary_node)
+        for primary_node in _expression_node.children[1:]:
+            if primary_node.type == "PlusPrimary":
+                prev_primary_func = self._get_plus_primary_func(prev_primary_func, primary_node)
+            elif primary_node.type == "MinusPrimary":
+                prev_primary_func = self._get_minus_primary_func(prev_primary_func, primary_node)
+            else:
+                raise ActionException(
+                        "Expression 式の子に想定しないノード\"{}\"が指定されました。"
+                        .format(primary_node.type))
         
-        return lambda root, target, r_idx, t_idx: \
-                    get_subst_f(root, target, r_idx, t_idx)
+        return prev_primary_func
 
-    def _get_value_func(self, _value_node:NonTerminalNode) -> ActionFuncType:
-        val_target = _value_node.children[0]
-        get_val_f = None
-        if val_target.type == "AddValueTerms":
-            get_val_f = self._get_add_value_teams_func(val_target)
-        elif val_target.type == "ValueTerm":
-            get_val_f = self._get_value_term_func(val_target)
-        elif val_target.type == "ListValue":
-            get_val_f = self._get_list_value_func(val_target)
-        elif val_target.type == "NodeValue":
-            get_val_f = self._get_node_value_func(val_target)
-        else:
-            raise ActionException(
-                "Valueの子に想定しないノード\"{}\"が指定されました。"
-                .format(val_target.type))
-        
-        return get_val_f
 
-    def _get_add_value_teams_func(self, _add_value_terms_node:NonTerminalNode) -> ActionFuncType:
+    def _get_plus_primary_func(self, 
+            root_primary_func:ActionFuncType,
+            _plus_primary_func:NonTerminalNode) -> ActionFuncType:
         """
-        AddValueTerms ノードから、値を取得する関数を取得
+        PlusPrimary ノードから、値を取得する関数を取得
         """
-        # AddValueTerms <- ValueTerm (PLUS ValueTerm)+
-        list_valueterms = _add_value_terms_node.get_childnode("ValueTerm")
-        flist = [self._get_value_term_func(value_term_node) \
-                    for value_term_node in list_valueterms]
+        # PlusPrimary <- >>PLUS Primary
+        primary_node = _plus_primary_func.children[0]
+        primary_func = self._get_primary_func(primary_node)
 
-        def add_value_func(_flist:list[ActionFuncType], 
+        def plus_primary(
+                _root_primary_func:ActionFuncType,
+                _primary_func:ActionFuncType,
                 _root:NonTerminalNode, 
                 _target:NonTerminalNode, _r_idx:int, _t_idx:int):
-
-            ret = flist[0](_root, _target, _r_idx, _t_idx)
-            try:
-                for _f in flist[1:]:
-                    ret = ret + _f(_root, _target, _r_idx, _t_idx)
-            except TypeError as e:
-                raise ActionException(str(e))
-            return ret
-        
+            root_value = _root_primary_func(_root, _target, _r_idx, _t_idx)
+            primary = _primary_func(_root, _target, _r_idx, _t_idx)
+            if not isinstance(root_value, Number) and not isinstance(root_value, str):
+                raise ActionException("{} は演算 + を適用できません。".format(root_value))
+            if not isinstance(primary, Number) and not isinstance(primary, str):
+                raise ActionException("{} は演算 + を適用できません。".format(primary))
+            return root_value + primary
+            
         return lambda root, target, r_idx, t_idx: \
-                    add_value_func(flist, root, target, r_idx,t_idx)
+                plus_primary(root_primary_func, primary_func, \
+                        root, target, r_idx, t_idx)
+
+
+    def _get_minus_primary_func(self, 
+            root_primary_func:ActionFuncType,
+            _minus_primary_func:NonTerminalNode) -> ActionFuncType:
+        """
+        MinusPrimary ノードから、値を取得する関数を取得
+        """
+        # MinusPrimary <- >>MINUS Primary
+        primary_node = _minus_primary_func.children[0]
+        primary_func = self._get_primary_func(primary_node)
+        def minus_primary(
+                _root_primary_func:ActionFuncType,
+                _primary_func:ActionFuncType,
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+            root_value = _root_primary_func(_root, _target, _r_idx, _t_idx)
+            primary = _primary_func(_root, _target, _r_idx, _t_idx)
+            if not isinstance(root_value, Number):
+                raise ActionException("{} は数値ではありません。".format(root_value))
+            if not isinstance(primary, Number):
+                raise ActionException("{} は数値ではありません。".format(primary))
+            return root_value - primary
+            
+        return lambda root, target, r_idx, t_idx: \
+                minus_primary(root_primary_func, primary_func, \
+                        root, target, r_idx, t_idx)
+
+
+    def _get_primary_func(self, _primary_node:NonTerminalNode) -> ActionFuncType:
+        """
+        Primary ノードから、値を取得する関数を取得
+        """
+        # Primary <- MinusExpTerms / ExpTerms
+        exp_term_node = _primary_node.children[0]
+        if exp_term_node.type == "MinusExpTerms":
+            return self._get_minus_exp_terms_func(exp_term_node)
+        elif exp_term_node.type == "ExpTerms":
+            return self._get_exp_terms_func(exp_term_node)
+
+
+    def _get_minus_exp_terms_func(self,
+            _minus_exp_terms_node:NonTerminalNode) -> ActionFuncType:
+        """
+        MinusExpTerms ノードから、値を取得する関数を取得
+        """
+        # MinusExpTerms <- >>MINUS ExpTerms
+        exp_term_node = _minus_exp_terms_node.children[0]
+        exp_term_func = self._get_exp_terms_func(exp_term_node)
+        def minus_exp_term(
+                _value_term_func:ActionFuncType,
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+            value_term = _value_term_func(_root, _target, _r_idx, _t_idx)
+            if not isinstance(value_term, Number):
+                raise ActionException("{} は数値ではありません。".format(value_term))
+            return -value_term
+            
+        return lambda root, target, r_idx, t_idx: \
+                minus_exp_term(exp_term_func, root, target, r_idx, t_idx)
+
+
+    def _get_exp_terms_func(self, _expterms_node:NonTerminalNode) -> ActionFuncType:
+        """
+        ExpTerms ノードから、値を取得する関数を取得
+        """
+        # ExpTerms <- SimpleExpTerm ( MultiExpTerm / DivExpTerm )*
+        simple_exp_term_node = _expterms_node.children[0]
+        if simple_exp_term_node.type != "SimpleExpTerm":
+            raise ActionException(
+                "ExpTermsの子に想定しないノード\"{}\"が指定されました。"
+                .format(simple_exp_term_node.type))
+            
+        prev_term_func = self._get_simple_exp_term_func(simple_exp_term_node)
+        for term_node in _expterms_node.children[1:]:
+            if term_node.type == "MultiExpTerm":
+                prev_term_func = self._get_multi_exp_term_func(prev_term_func, term_node)
+            elif term_node.type == "DivExpTerm":
+                prev_term_func = self._get_div_exp_term_func(prev_term_func, term_node)
+            else:
+                raise ActionException(
+                        "ExpTerms 式の子に想定しないノード\"{}\"が指定されました。"
+                        .format(term_node.type))
+        
+        return prev_term_func
+
+    def _get_multi_exp_term_func(self, 
+            root_exp_term:ActionFuncType,
+            _multi_exp_term_node:NonTerminalNode) -> ActionFuncType:
+        """
+        MultiExpTerm ノードから、値を取得する関数を取得
+        """
+        # MultiExpTerm <- >>MULTI SimpleExpTerm
+        simple_exp_term_node = _multi_exp_term_node.get_childnode("SimpleExpTerm")[0]
+        simple_exp_term_func = self._get_simple_exp_term_func(simple_exp_term_node)
+
+        def multi_exp(_root_exp_term:ActionFuncType,
+                _simple_exp_term_func:ActionFuncType,
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+            root_value = _root_exp_term(_root, _target, _r_idx, _t_idx)
+            multi_value = _simple_exp_term_func(_root, _target, _r_idx, _t_idx)
+            if not isinstance(root_value, Number):
+                raise ActionException("{} は数値ではありません。".format(root_value))
+            if not isinstance(multi_value, Number):
+                raise ActionException("{} は数値ではありません。".format(multi_value))
+            return root_value * multi_value
+
+        return lambda root, target, r_idx, t_idx: multi_exp(
+                    root_exp_term, simple_exp_term_func,
+                    root, target, r_idx, t_idx)
+
+    def _get_div_exp_term_func(self, 
+            root_exp_term:ActionFuncType,
+            _div_exp_term_node:NonTerminalNode) -> ActionFuncType:
+        """
+        DivExpTerm ノードから、値を取得する関数を取得
+        """
+        # DivExpTerm   <- >>DIV SimpleExpTerm
+        simple_exp_term_node = _div_exp_term_node.get_childnode("SimpleExpTerm")[0]
+        simple_exp_term_func = self._get_simple_exp_term_func(simple_exp_term_node)
+        
+        def div_exp(_root_exp_term:ActionFuncType,
+                _simple_exp_term_func:ActionFuncType,
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+            root_value = _root_exp_term(_root, _target, _r_idx, _t_idx)
+            div_value = _simple_exp_term_func(_root, _target, _r_idx, _t_idx)
+            if not isinstance(root_value, Number):
+                raise ActionException("{} は数値ではありません。".format(root_value))
+            if not isinstance(div_value, Number):
+                raise ActionException("{} は数値ではありません。".format(div_value))
+            return root_value / div_value
+
+        return lambda root, target, r_idx, t_idx: div_exp(
+                    root_exp_term, simple_exp_term_func,
+                    root, target, r_idx, t_idx)
+
+    def _get_simple_exp_term_func(self, _simple_exp_term_node:NonTerminalNode) -> ActionFuncType:
+        """
+        SimpleExpTerm ノードから、値を取得する関数を取得
+        """
+        # SimpleExpTerm <- >>OPEN Expression >>CLOSE 
+        #                / ValueTerm ( CallFunction / TermMember )*
+
+        # Expression の場合
+        expression_node = _simple_exp_term_node.get_childnode("Expression")
+        if len(expression_node) > 0:
+            return self._get_expression_func(expression_node[0])
+        
+        value_term_node = _simple_exp_term_node.children[0]
+        prev_member_func = self._get_value_term_func(value_term_node)
+        for member_node in _simple_exp_term_node.children[1:]:
+            if member_node.type == "CallFunction":
+                prev_member_func = self._get_call_function_func(prev_member_func, member_node)
+            elif member_node.type == "TermMember":
+                prev_member_func = self._get_term_member_func(prev_member_func, member_node)
+            else:
+                raise ActionException(
+                        "SimpleExpTerm 式の子に想定しないノード\"{}\"が指定されました。"
+                        .format(member_node.type))
+
+        return prev_member_func
+    
+    def _get_call_function_func(self, 
+            root_exp_func:ActionFuncType,
+            _call_function_node:NonTerminalNode) -> ActionFuncType:
+        """
+        CallFunction ノードから、値を取得する関数を取得
+        """
+        # CallFunction <- >>DOT FunctionName >>OPEN Parameters? >>CLOSE
+        # FunctionName <- ParameterName
+        function_name = _call_function_node.get_childnode("FunctionName")[0].get_str()
+        parameters_node = _call_function_node.get_childnode("Parameters")
+
+        parameters_func = self._get_parameters_func(parameters_node[0]) if parameters_node else None
+            
+
+        def call_func(
+                _root_exp_func:ActionFuncType,
+                _function_name:str,
+                _parameters_func:ActionFuncType,
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+            
+            root_value = _root_exp_func(_root, _target, _r_idx, _t_idx)
+            params = _parameters_func(_root, _target, _r_idx, _t_idx) if _parameters_func else []
+            if hasattr(root_value, _function_name) \
+                    and callable(getattr(root_value, _function_name)):
+                # root_value が呼び出し可能な属性（メソッド）を持っている 
+                return getattr(root_value, _function_name)(*params)
+            elif isinstance(root_value, NonTerminalNode) \
+                    and root_value.get_attr(_function_name) \
+                    and callable(root_value.get_attr(_function_name)):
+                # NonterminalNode かつ呼び出し可能
+                return root_value.get_attr(_function_name)(*params)
+            else:
+                raise ActionException("{} はメソッド {} を持っていません。"
+                        .format(str(root_value), _function_name))
+
+        return lambda root, target, r_idx, t_idx: \
+                call_func(root_exp_func, function_name, parameters_func, 
+                        root, target, r_idx, t_idx)
+
+    def _get_parameters_func(self, 
+            _parameters_node:NonTerminalNode) -> ActionFuncType:
+        """
+        Parameters ノードから、値を取得する関数を取得
+        """
+        # Parameters <- Expression ( >>COMMA Expression)*
+        expression_nodes = _parameters_node.children
+        expression_func_list = [self._get_expression_func(expression_node)
+                    for expression_node in expression_nodes]
+
+        return lambda root, target, r_idx, t_idx: \
+                [f(root, target, r_idx, t_idx) for f in expression_func_list]
+
+    def _get_term_member_func(self, 
+            root_exp_func:ActionFuncType,
+            _term_member_node:NonTerminalNode) -> ActionFuncType:
+        """
+        TermMember ノードから、値を取得する関数を取得
+        """
+        # TermMember <- >>DOT ParameterName
+        member_name = _term_member_node.get_childnode("ParameterName")[0].get_str()
+        def member_func(
+                _root_exp_func:ActionFuncType,
+                _member_name:str,
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+            
+            root_value = _root_exp_func(_root, _target, _r_idx, _t_idx)
+            if hasattr(root_value, _member_name):
+                # root_value が属性を持っている 
+                return getattr(root_value, _member_name)
+            elif isinstance(root_value, NonTerminalNode) \
+                    and root_value.get_attr(_member_name):
+                # NonterminalNode かつ呼び出し可能
+                return root_value.get_attr(_member_name)
+            else:
+                raise ActionException("{} は属性 {} を持っていません。"
+                        .format(str(root_value), _member_name))
+
+        return lambda root, target, r_idx, t_idx: \
+                member_func(root_exp_func, member_name, root, target, r_idx, t_idx)
 
     def _get_value_term_func(self, _value_term_node:NonTerminalNode) -> ActionFuncType:
         """
         ValueTerm ノードから、値を取得する関数を取得
         """
-        # ValueTerm <- Literal / Number
+        # ValueTerm <- Literal / Number / ListValue
         #            / RootString / TargetString 
         #            / RootValue / TargetValue 
         #            / RootIndex / TargetIndex
+        #            / RootNode  / TargetNode
         val_target = _value_term_node.children[0]
         get_val_f:Callable[[NonTerminalNode, NonTerminalNode], str] = None
-        if val_target.type =="RootString":
+        if val_target.type =="Literal":
+            val = eval(val_target.get_str())
+            get_val_f = lambda root, target, r_idx, t_idx: val
+        elif val_target.type =="Number":
+            val = eval(val_target.get_str())
+            get_val_f = lambda root, target, r_idx, t_idx: val
+        elif val_target.type =="ListValue":
+            get_val_f = self._get_list_value_func(val_target)
+        elif val_target.type =="RootString":
             dictionary_nodes = val_target.get_childnode("TypeDictionary")
             type_dict = {}
             if len(dictionary_nodes) > 0:
@@ -614,16 +844,14 @@ class AstActions(object):
             val_param = val_target.get_childnode("ParameterName")[0].get_str()
             get_val_f = lambda root, target, r_idx, t_idx: \
                         target.get_attr(val_param)
-        elif val_target.type =="Literal":
-            val = eval(val_target.get_str())
-            get_val_f = lambda root, target, r_idx, t_idx: val
-        elif val_target.type =="Number":
-            val = eval(val_target.get_str())
-            get_val_f = lambda root, target, r_idx, t_idx: val
         elif val_target.type =="RootIndex":
             get_val_f = lambda root, target, r_idx, t_idx: r_idx
         elif val_target.type =="TargetIndex":
             get_val_f = lambda root, target, r_idx, t_idx: t_idx
+        elif val_target.type =="RootNode":
+            get_val_f = lambda root, target, r_idx, t_idx: root
+        elif val_target.type =="TargetNode":
+            get_val_f = lambda root, target, r_idx, t_idx: target
         else:
             raise ActionException(
                 "ValueTermの子に想定しないノード\"{}\"が指定されました。"
@@ -635,10 +863,10 @@ class AstActions(object):
         """
         ListValue ノードから、値を取得する関数を取得
         """
-        # ListValue <- >>'[' >>S? ( ValueTerm >>COMMA)* >>']' >>S?
-        list_valueterms = _list_value_node.get_childnode("ValueTerm")
-        flist = [self._get_value_term_func(value_term_node) \
-                    for value_term_node in list_valueterms]
+        # ListValue <- >>'[' >>S? ( Expression >>COMMA)* >>']' >>S?
+        list_expression = _list_value_node.get_childnode("Expression")
+        flist = [self._get_expression_func(expression_node) \
+                    for expression_node in list_expression]
 
         def list_value_func(_flist:list[ActionFuncType], 
                 _root:NonTerminalNode, 
@@ -647,24 +875,6 @@ class AstActions(object):
         
         return lambda root, target, r_idx, t_idx: \
                     list_value_func(flist, root, target, r_idx,t_idx)
-
-    def _get_node_value_func(self, _node_value_node:NonTerminalNode) -> ActionFuncType:
-        """
-        NodeValue ノードから、値を取得する関数を取得
-        """
-        # NodeValue <- RootNode / TargetNode
-        val_target = _node_value_node.children[0]
-        get_val_f:ActionFuncType = None
-        if val_target.type =="RootNode":
-            get_val_f = lambda root, target, r_idx, t_idx: root
-        elif val_target.type =="TargetNode":
-            get_val_f = lambda root, target, r_idx, t_idx: target
-        else:
-            raise ActionException(
-                "NodeValueの子に想定しないノード\"{}\"が指定されました。"
-                .format(val_target.type))
-        
-        return get_val_f
 
     def _get_typedictionary(self, node:NonTerminalNode) -> dict[str, str]:
         if node.type != "TypeDictionary":
