@@ -195,6 +195,8 @@ Action <- Substitution
         / Expression
 Substitution <- Variable >>EQUAL Expression
 Variable <- RootValue / TargetValue
+RootValue <- >>ROOT >>DOT ParameterName
+TargetValue <- >>TARGET >>DOT ParameterName
 
 Expression <- Primary ( PlusPrimary / MinusPrimary )*
 PlusPrimary <- >>PLUS Primary
@@ -207,15 +209,19 @@ MultiExpTerm <- >>MULTI SimpleExpTerm
 DivExpTerm   <- >>DIV SimpleExpTerm
 
 SimpleExpTerm <- >>OPEN Expression >>CLOSE 
-               / ValueTerm ( CallFunction / TermMember )*
+               / ( ValueTerm / DefaultPyFunc) 
+                 ( CallFunction / TermMember )*
+
+DefaultPyFunc <- IntFunc
+IntFunc <- >>INT >>OPEN Parameters >>CLOSE
+
 CallFunction <- >>DOT FunctionName >>OPEN Parameters? >>CLOSE
 Parameters <- Expression ( >>COMMA Expression)*
 FunctionName <- ParameterName
 TermMember <- >>DOT ParameterName
 
-ValueTerm <- Literal / Number / ListValue
-           / RootString / TargetString 
-           / RootValue / TargetValue 
+ValueTerm <- Literal / Number 
+           / ListValue / TypeDictionary
            / RootIndex / TargetIndex
            / RootNode  / TargetNode
 
@@ -231,21 +237,18 @@ Literal <- SingleQuotesLiteral / DoubleQuotesLiteral
 SingleQuotesLiteral <- "'" r"(\\.|[^'\\])*" "'" >>S?
 DoubleQuotesLiteral <- '"' r'(\\.|[^"\\])*' '"' >>S?
 
-RootString <- >>ROOT >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
-TargetString <- >>TARGET >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
+TypeDictionary <- >>CURL_OPEN (
+                      TypeItem ( >>COMMA TypeItem )*
+                  )? >>CURL_CLOSE
+TypeItem <- Identifier >>COLON Expression
 
-TypeDictionary <- >>CURL_OPEN TypeDictItems? >>CURL_CLOSE
-TypeDictItems <- TypeItem ( >>COMMA TypeItem )*
-TypeItem <- Identifier >>COLON TypeValueString
-TypeValueString <- Literal
-
-RootValue <- >>ROOT >>DOT ParameterName
-TargetValue <- >>TARGET >>DOT ParameterName
 ParameterName <- r"[a-z][a-z0-9_]*" >>S?
 
 INDEX <- 'index' S?
 ROOT <- 'root' S?
 TARGET <- 'target' S?
+
+INT <- 'int' S?
 
 # ----------------------------------------
 # Terminal

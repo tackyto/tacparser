@@ -32,7 +32,8 @@ Actions : (Ln 1, Col 0)
                         ExpTerms : (Ln 3, Col 17)
                             SimpleExpTerm : (Ln 3, Col 17)
                                 ValueTerm : (Ln 3, Col 17)
-                                    RootValue : (Ln 3, Col 17)
-                                        ParameterName : (Ln 3, Col 22)
-                                            @Tarminal : (Ln 3, Col 22) "value"
+                                    RootNode : (Ln 3, Col 17)
+                                TermMember : (Ln 3, Col 21)
+                                    ParameterName : (Ln 3, Col 22)
+                                        @Tarminal : (Ln 3, Col 22) "value"
     _EOF : (Ln 4, Col 1)

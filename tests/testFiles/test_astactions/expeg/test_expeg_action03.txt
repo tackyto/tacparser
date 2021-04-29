@@ -1,0 +1,23 @@
+ExPeg >> RootDefinition >> DefinitionIdentifier > Identifier {
+    root.name = target.get_str({Spacing : ""});
+}
+Definition {
+    root.number = index(root);
+    root.identifiers = [];
+    root.root_exp = [];
+}
+Definition >> DefinitionIdentifier {
+    root.definitionidentifier = target;
+}
+ExPeg >> Definition {
+    target.err_num = root + target.number;
+    target.num_float = target.number / 10;
+    target.space = " " * "4";
+    target.def = (int("10") + (4 + 6)) / 10;
+    target.err_num2 = 1 + root;
+    target.err_multi = "_" * "not_int";
+    target.err_num_float = target.number / target;
+}
+ExPeg >> RootDefinition {
+    target.unknown = root.unknown + 1;
+}

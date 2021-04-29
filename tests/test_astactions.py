@@ -214,7 +214,7 @@ class TestASTActionsNode(unittest.TestCase):
                                 NonTerminalNode("Variable", (
                                     NonTerminalNode("RootValue", (
                                         NonTerminalNode("ParameterName", (
-                                            TerminalNode("param")
+                                            TerminalNode("param"),
                                         )),
                                     )),
                                 )),
@@ -285,7 +285,7 @@ class TestASTActionsNode(unittest.TestCase):
                                 NonTerminalNode("Variable", (
                                     NonTerminalNode("RootValue", (
                                         NonTerminalNode("ParameterName", (
-                                            TerminalNode("param")
+                                            TerminalNode("param"),
                                         )),
                                     )),
                                 )),
@@ -308,7 +308,7 @@ class TestASTActionsNode(unittest.TestCase):
                                 NonTerminalNode("Variable", (
                                     NonTerminalNode("RootValue", (
                                         NonTerminalNode("ParameterName", (
-                                            TerminalNode("param")
+                                            TerminalNode("param"),
                                         )),
                                     )),
                                 )),
@@ -335,6 +335,191 @@ class TestASTActionsNode(unittest.TestCase):
         msg = err.exception.args[0]
         expstr = "Expression 式の子に想定しないノード\"Unknown\"が指定されました。"
         self.assertEqual(msg, expstr)
+
+    def test_get_exp_terms_func_err1(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("RootValue", (
+                                        NonTerminalNode("ParameterName", (
+                                            TerminalNode("param"),
+                                        )),
+                                    )),
+                                )),
+                                NonTerminalNode("Expression", (
+                                    NonTerminalNode("Primary", (
+                                        NonTerminalNode("ExpTerms", (
+                                            NonTerminalNode("Unknown", (
+                                            )),
+                                        )),
+                                    )),
+                                )),
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "ExpTermsの子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_exp_terms_func_err2(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("RootValue", (
+                                        NonTerminalNode("ParameterName", (
+                                            TerminalNode("param"),
+                                        )),
+                                    )),
+                                )),
+                                NonTerminalNode("Expression", (
+                                    NonTerminalNode("Primary", (
+                                        NonTerminalNode("ExpTerms", (
+                                            NonTerminalNode("SimpleExpTerm", (
+                                                NonTerminalNode("ValueTerm", (
+                                                    NonTerminalNode("RootNode", (
+                                                    )),
+                                                )),
+                                            )),
+                                            NonTerminalNode("Unknown", (
+                                            )),
+                                        )),
+                                    )),
+                                )),
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "ExpTerms 式の子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_simple_exp_term_func_err1(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("RootValue", (
+                                        NonTerminalNode("ParameterName", (
+                                            TerminalNode("param"),
+                                        )),
+                                    )),
+                                )),
+                                NonTerminalNode("Expression", (
+                                    NonTerminalNode("Primary", (
+                                        NonTerminalNode("ExpTerms", (
+                                            NonTerminalNode("SimpleExpTerm", (
+                                                NonTerminalNode("Unknown", (
+                                                )),
+                                            )),
+                                        )),
+                                    )),
+                                )),
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "SimpleExpTerm 式の子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_simple_exp_term_func_err2(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("RootValue", (
+                                        NonTerminalNode("ParameterName", (
+                                            TerminalNode("param"),
+                                        )),
+                                    )),
+                                )),
+                                NonTerminalNode("Expression", (
+                                    NonTerminalNode("Primary", (
+                                        NonTerminalNode("ExpTerms", (
+                                            NonTerminalNode("SimpleExpTerm", (
+                                                NonTerminalNode("ValueTerm", (
+                                                    NonTerminalNode("RootNode", (
+                                                    )),
+                                                )),
+                                                NonTerminalNode("Unknown", (
+                                                )),
+                                            )),
+                                        )),
+                                    )),
+                                )),
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "SimpleExpTerm 式の子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_value_term_func_err1(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("RootValue", (
+                                        NonTerminalNode("ParameterName", (
+                                            TerminalNode("param"),
+                                        )),
+                                    )),
+                                )),
+                                NonTerminalNode("Expression", (
+                                    NonTerminalNode("Primary", (
+                                        NonTerminalNode("ExpTerms", (
+                                            NonTerminalNode("SimpleExpTerm", (
+                                                NonTerminalNode("ValueTerm", (
+                                                    NonTerminalNode("Unknown", (
+                                                    )),
+                                                )),
+                                            )),
+                                        )),
+                                    )),
+                                )),
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "ValueTermの子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_default_py_func_func_err1(self):
+        child_nodes =   (   NonTerminalNode("Substitution", (
+                                NonTerminalNode("Variable", (
+                                    NonTerminalNode("RootValue", (
+                                        NonTerminalNode("ParameterName", (
+                                            TerminalNode("param"),
+                                        )),
+                                    )),
+                                )),
+                                NonTerminalNode("Expression", (
+                                    NonTerminalNode("Primary", (
+                                        NonTerminalNode("ExpTerms", (
+                                            NonTerminalNode("SimpleExpTerm", (
+                                                NonTerminalNode("DefaultPyFunc", (
+                                                    NonTerminalNode("Unknown", (
+                                                    )),
+                                                )),
+                                            )),
+                                        )),
+                                    )),
+                                )),
+                            )),
+                        )
+        node = NonTerminalNode("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "DefaultPyFunc の子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
 
 
 class TestASTActionsString(unittest.TestCase):
@@ -500,6 +685,11 @@ class TestASTActionsExpeg(unittest.TestCase):
         actionfilename = "test_expeg_action02.txt"
         self.apply_expegaction_file(datafilename, actionfilename)
 
+    def test_actions_expeg_file_03(self):
+        datafilename = "test_expeg_data.txt"
+        actionfilename = "test_expeg_action03.txt"
+        self.apply_expegaction_file(datafilename, actionfilename)
+
     def apply_expegaction_file(self, sourcefilename, actionfilename):
         filepath = os.path.join(self.test_dir, "expeg", sourcefilename)
         actionfilepath = os.path.join(self.test_dir, "expeg", actionfilename)
@@ -518,9 +708,6 @@ class TestASTActionsExpeg(unittest.TestCase):
             fout.write(test_node.print_tree(detail_flg=True))
 
         self.assertTrue(filecmp.cmp(pathoutfile, pathoutfile_dist))
-
-
-
 
 
 def generate():

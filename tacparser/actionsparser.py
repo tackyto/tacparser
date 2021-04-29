@@ -73,6 +73,8 @@ class ActionsParser(Parser):
                          "Action": self.p_action,
                          "Substitution": self.p_substitution,
                          "Variable": self.p_variable,
+                         "RootValue": self.p_rootvalue,
+                         "TargetValue": self.p_targetvalue,
                          "Expression": self.p_expression,
                          "PlusPrimary": self.p_plusprimary,
                          "MinusPrimary": self.p_minusprimary,
@@ -82,6 +84,8 @@ class ActionsParser(Parser):
                          "MultiExpTerm": self.p_multiexpterm,
                          "DivExpTerm": self.p_divexpterm,
                          "SimpleExpTerm": self.p_simpleexpterm,
+                         "DefaultPyFunc": self.p_defaultpyfunc,
+                         "IntFunc": self.p_intfunc,
                          "CallFunction": self.p_callfunction,
                          "Parameters": self.p_parameters,
                          "FunctionName": self.p_functionname,
@@ -95,18 +99,13 @@ class ActionsParser(Parser):
                          "Literal": self.p_literal,
                          "SingleQuotesLiteral": self.p_singlequotesliteral,
                          "DoubleQuotesLiteral": self.p_doublequotesliteral,
-                         "RootString": self.p_rootstring,
-                         "TargetString": self.p_targetstring,
                          "TypeDictionary": self.p_typedictionary,
-                         "TypeDictItems": self.p_typedictitems,
                          "TypeItem": self.p_typeitem,
-                         "TypeValueString": self.p_typevaluestring,
-                         "RootValue": self.p_rootvalue,
-                         "TargetValue": self.p_targetvalue,
                          "ParameterName": self.p_parametername,
                          "INDEX": self.p_index,
                          "ROOT": self.p_root,
                          "TARGET": self.p_target,
+                         "INT": self.p_int,
                          "S": self.p_s,
                          "EndOfLine": self.p_endofline,
                          "OPEN": self.p_open,
@@ -638,6 +637,20 @@ class ActionsParser(Parser):
                          self._p(self.p_targetvalue, "TargetValue")
                          )
 
+    def p_rootvalue(self):
+        # RootValue <- >>ROOT >>DOT ParameterName
+        return self._seq(self._skip(self._p(self.p_root, "ROOT")),
+                         self._skip(self._p(self.p_dot, "DOT")),
+                         self._p(self.p_parametername, "ParameterName")
+                         )
+
+    def p_targetvalue(self):
+        # TargetValue <- >>TARGET >>DOT ParameterName
+        return self._seq(self._skip(self._p(self.p_target, "TARGET")),
+                         self._skip(self._p(self.p_dot, "DOT")),
+                         self._p(self.p_parametername, "ParameterName")
+                         )
+
     def p_expression(self):
         # Expression <- Primary ( PlusPrimary / MinusPrimary )*
         return self._seq(self._p(self.p_primary, "Primary"),
@@ -692,16 +705,31 @@ class ActionsParser(Parser):
 
     def p_simpleexpterm(self):
         # SimpleExpTerm <- >>OPEN Expression >>CLOSE 
-        #                / ValueTerm ( CallFunction / TermMember )*
+        #                / ( ValueTerm / DefaultPyFunc) 
+        #                  ( CallFunction / TermMember )*
         return self._sel(self._seq(self._skip(self._p(self.p_open, "OPEN")),
                                    self._p(self.p_expression, "Expression"),
                                    self._skip(self._p(self.p_close, "CLOSE"))
                                    ),
-                         self._seq(self._p(self.p_valueterm, "ValueTerm"),
+                         self._seq(self._sel(self._p(self.p_valueterm, "ValueTerm"),
+                                             self._p(self.p_defaultpyfunc, "DefaultPyFunc")
+                                             ),
                                    self._rpt(self._sel(self._p(self.p_callfunction, "CallFunction"),
                                                        self._p(self.p_termmember, "TermMember")
                                                        ), 0)
                                    )
+                         )
+
+    def p_defaultpyfunc(self):
+        # DefaultPyFunc <- IntFunc
+        return self._p(self.p_intfunc, "IntFunc")
+
+    def p_intfunc(self):
+        # IntFunc <- >>INT >>OPEN Parameters >>CLOSE
+        return self._seq(self._skip(self._p(self.p_int, "INT")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._p(self.p_parameters, "Parameters"),
+                         self._skip(self._p(self.p_close, "CLOSE"))
                          )
 
     def p_callfunction(self):
@@ -732,18 +760,14 @@ class ActionsParser(Parser):
                          )
 
     def p_valueterm(self):
-        # ValueTerm <- Literal / Number / ListValue
-        #            / RootString / TargetString 
-        #            / RootValue / TargetValue 
+        # ValueTerm <- Literal / Number 
+        #            / ListValue / TypeDictionary
         #            / RootIndex / TargetIndex
         #            / RootNode  / TargetNode
         return self._sel(self._p(self.p_literal, "Literal"),
                          self._p(self.p_number, "Number"),
                          self._p(self.p_listvalue, "ListValue"),
-                         self._p(self.p_rootstring, "RootString"),
-                         self._p(self.p_targetstring, "TargetString"),
-                         self._p(self.p_rootvalue, "RootValue"),
-                         self._p(self.p_targetvalue, "TargetValue"),
+                         self._p(self.p_typedictionary, "TypeDictionary"),
                          self._p(self.p_rootindex, "RootIndex"),
                          self._p(self.p_targetindex, "TargetIndex"),
                          self._p(self.p_rootnode, "RootNode"),
@@ -811,66 +835,24 @@ class ActionsParser(Parser):
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
 
-    def p_rootstring(self):
-        # RootString <- >>ROOT >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
-        return self._seq(self._skip(self._p(self.p_root, "ROOT")),
-                         self._skip(self._p(self.p_dot, "DOT")),
-                         self._skip(self._l('get_str')),
-                         self._skip(self._p(self.p_open, "OPEN")),
-                         self._opt(self._p(self.p_typedictionary, "TypeDictionary")),
-                         self._skip(self._p(self.p_close, "CLOSE")),
-                         self._skip(self._opt(self._p(self.p_s, "S")))
-                         )
-
-    def p_targetstring(self):
-        # TargetString <- >>TARGET >>DOT >>'get_str' >>OPEN TypeDictionary? >>CLOSE >>S?
-        return self._seq(self._skip(self._p(self.p_target, "TARGET")),
-                         self._skip(self._p(self.p_dot, "DOT")),
-                         self._skip(self._l('get_str')),
-                         self._skip(self._p(self.p_open, "OPEN")),
-                         self._opt(self._p(self.p_typedictionary, "TypeDictionary")),
-                         self._skip(self._p(self.p_close, "CLOSE")),
-                         self._skip(self._opt(self._p(self.p_s, "S")))
-                         )
-
     def p_typedictionary(self):
-        # TypeDictionary <- >>CURL_OPEN TypeDictItems? >>CURL_CLOSE
+        # TypeDictionary <- >>CURL_OPEN (
+        #                       TypeItem ( >>COMMA TypeItem )*
+        #                   )? >>CURL_CLOSE
         return self._seq(self._skip(self._p(self.p_curl_open, "CURL_OPEN")),
-                         self._opt(self._p(self.p_typedictitems, "TypeDictItems")),
+                         self._opt(self._seq(self._p(self.p_typeitem, "TypeItem"),
+                                             self._rpt(self._seq(self._skip(self._p(self.p_comma, "COMMA")),
+                                                                 self._p(self.p_typeitem, "TypeItem")
+                                                                 ), 0)
+                                             )),
                          self._skip(self._p(self.p_curl_close, "CURL_CLOSE"))
                          )
 
-    def p_typedictitems(self):
-        # TypeDictItems <- TypeItem ( >>COMMA TypeItem )*
-        return self._seq(self._p(self.p_typeitem, "TypeItem"),
-                         self._rpt(self._seq(self._skip(self._p(self.p_comma, "COMMA")),
-                                             self._p(self.p_typeitem, "TypeItem")
-                                             ), 0)
-                         )
-
     def p_typeitem(self):
-        # TypeItem <- Identifier >>COLON TypeValueString
+        # TypeItem <- Identifier >>COLON Expression
         return self._seq(self._p(self.p_identifier, "Identifier"),
                          self._skip(self._p(self.p_colon, "COLON")),
-                         self._p(self.p_typevaluestring, "TypeValueString")
-                         )
-
-    def p_typevaluestring(self):
-        # TypeValueString <- Literal
-        return self._p(self.p_literal, "Literal")
-
-    def p_rootvalue(self):
-        # RootValue <- >>ROOT >>DOT ParameterName
-        return self._seq(self._skip(self._p(self.p_root, "ROOT")),
-                         self._skip(self._p(self.p_dot, "DOT")),
-                         self._p(self.p_parametername, "ParameterName")
-                         )
-
-    def p_targetvalue(self):
-        # TargetValue <- >>TARGET >>DOT ParameterName
-        return self._seq(self._skip(self._p(self.p_target, "TARGET")),
-                         self._skip(self._p(self.p_dot, "DOT")),
-                         self._p(self.p_parametername, "ParameterName")
+                         self._p(self.p_expression, "Expression")
                          )
 
     _reg_p_parametername0 = regex.compile("[a-z][a-z0-9_]*", regex.M)
@@ -896,6 +878,12 @@ class ActionsParser(Parser):
     def p_target(self):
         # TARGET <- 'target' S?
         return self._seq(self._l('target'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_int(self):
+        # INT <- 'int' S?
+        return self._seq(self._l('int'),
                          self._opt(self._p(self.p_s, "S"))
                          )
 

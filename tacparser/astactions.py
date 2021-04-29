@@ -429,8 +429,9 @@ class AstActions(object):
                 match = lambda n: n.get_attr(attrname) is not None
             elif match_type_node.type == "AttributeSimpleNot":
                 match = lambda n: n.get_attr(attrname) is None
-            else: raise ActionException("AttributeLimitation の子ノード に想定していないノード\"{}\"が存在します。"
-                            .format(match_type_node.type))
+            else: raise ActionException(
+                        "AttributeLimitation の子ノード に想定していないノード\"{}\"が存在します。"
+                        .format(match_type_node.type))
             return lambda node_list: list(filter(match, node_list))
 
         type_name = conditions_node.get_childnode("Identifier")[0].get_str()
@@ -544,13 +545,15 @@ class AstActions(object):
         def plus_primary(
                 _root_primary_func:ActionFuncType,
                 _primary_func:ActionFuncType,
-                _root:NonTerminalNode, 
-                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+                _root:NonTerminalNode, _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+
             root_value = _root_primary_func(_root, _target, _r_idx, _t_idx)
             primary = _primary_func(_root, _target, _r_idx, _t_idx)
-            if not isinstance(root_value, Number) and not isinstance(root_value, str):
+            if not isinstance(root_value, Number) \
+                    and not isinstance(root_value, str):
                 raise ActionException("{} は演算 + を適用できません。".format(root_value))
-            if not isinstance(primary, Number) and not isinstance(primary, str):
+            if not isinstance(primary, Number) \
+                    and not isinstance(primary, str):
                 raise ActionException("{} は演算 + を適用できません。".format(primary))
             return root_value + primary
             
@@ -571,8 +574,8 @@ class AstActions(object):
         def minus_primary(
                 _root_primary_func:ActionFuncType,
                 _primary_func:ActionFuncType,
-                _root:NonTerminalNode, 
-                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+                _root:NonTerminalNode, _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+
             root_value = _root_primary_func(_root, _target, _r_idx, _t_idx)
             primary = _primary_func(_root, _target, _r_idx, _t_idx)
             if not isinstance(root_value, Number):
@@ -586,7 +589,8 @@ class AstActions(object):
                         root, target, r_idx, t_idx)
 
 
-    def _get_primary_func(self, _primary_node:NonTerminalNode) -> ActionFuncType:
+    def _get_primary_func(self, 
+            _primary_node:NonTerminalNode) -> ActionFuncType:
         """
         Primary ノードから、値を取得する関数を取得
         """
@@ -612,14 +616,15 @@ class AstActions(object):
                 _target:NonTerminalNode, _r_idx:int, _t_idx:int):
             value_term = _value_term_func(_root, _target, _r_idx, _t_idx)
             if not isinstance(value_term, Number):
-                raise ActionException("{} は数値ではありません。".format(value_term))
+                raise ActionException("{} は数値ではありません。".format(str(value_term)))
             return -value_term
             
         return lambda root, target, r_idx, t_idx: \
                 minus_exp_term(exp_term_func, root, target, r_idx, t_idx)
 
 
-    def _get_exp_terms_func(self, _expterms_node:NonTerminalNode) -> ActionFuncType:
+    def _get_exp_terms_func(self, 
+            _expterms_node:NonTerminalNode) -> ActionFuncType:
         """
         ExpTerms ノードから、値を取得する関数を取得
         """
@@ -630,12 +635,15 @@ class AstActions(object):
                 "ExpTermsの子に想定しないノード\"{}\"が指定されました。"
                 .format(simple_exp_term_node.type))
             
-        prev_term_func = self._get_simple_exp_term_func(simple_exp_term_node)
+        prev_term_func = self._get_simple_exp_term_func(
+                                simple_exp_term_node)
         for term_node in _expterms_node.children[1:]:
             if term_node.type == "MultiExpTerm":
-                prev_term_func = self._get_multi_exp_term_func(prev_term_func, term_node)
+                prev_term_func = self._get_multi_exp_term_func(
+                                        prev_term_func, term_node)
             elif term_node.type == "DivExpTerm":
-                prev_term_func = self._get_div_exp_term_func(prev_term_func, term_node)
+                prev_term_func = self._get_div_exp_term_func(
+                                        prev_term_func, term_node)
             else:
                 raise ActionException(
                         "ExpTerms 式の子に想定しないノード\"{}\"が指定されました。"
@@ -650,8 +658,10 @@ class AstActions(object):
         MultiExpTerm ノードから、値を取得する関数を取得
         """
         # MultiExpTerm <- >>MULTI SimpleExpTerm
-        simple_exp_term_node = _multi_exp_term_node.get_childnode("SimpleExpTerm")[0]
-        simple_exp_term_func = self._get_simple_exp_term_func(simple_exp_term_node)
+        simple_exp_term_node = _multi_exp_term_node.get_childnode(
+                                    "SimpleExpTerm")[0]
+        simple_exp_term_func = self._get_simple_exp_term_func(
+                                    simple_exp_term_node)
 
         def multi_exp(_root_exp_term:ActionFuncType,
                 _simple_exp_term_func:ActionFuncType,
@@ -659,11 +669,16 @@ class AstActions(object):
                 _target:NonTerminalNode, _r_idx:int, _t_idx:int):
             root_value = _root_exp_term(_root, _target, _r_idx, _t_idx)
             multi_value = _simple_exp_term_func(_root, _target, _r_idx, _t_idx)
-            if not isinstance(root_value, Number):
-                raise ActionException("{} は数値ではありません。".format(root_value))
-            if not isinstance(multi_value, Number):
-                raise ActionException("{} は数値ではありません。".format(multi_value))
-            return root_value * multi_value
+            if isinstance(root_value, Number) and isinstance(multi_value, Number):
+                return root_value * multi_value
+            elif isinstance(root_value, str):
+                try:
+                    multi_value = int(multi_value)
+                    return root_value * multi_value
+                except (TypeError, ValueError) as e:
+                    pass
+            raise ActionException("{} と {} に * の演算を適用できません。"
+                        .format(str(root_value), str(multi_value)))
 
         return lambda root, target, r_idx, t_idx: multi_exp(
                     root_exp_term, simple_exp_term_func,
@@ -676,44 +691,58 @@ class AstActions(object):
         DivExpTerm ノードから、値を取得する関数を取得
         """
         # DivExpTerm   <- >>DIV SimpleExpTerm
-        simple_exp_term_node = _div_exp_term_node.get_childnode("SimpleExpTerm")[0]
-        simple_exp_term_func = self._get_simple_exp_term_func(simple_exp_term_node)
+        simple_exp_term_node = _div_exp_term_node.get_childnode(
+                                    "SimpleExpTerm")[0]
+        simple_exp_term_func = self._get_simple_exp_term_func(
+                                    simple_exp_term_node)
         
         def div_exp(_root_exp_term:ActionFuncType,
                 _simple_exp_term_func:ActionFuncType,
-                _root:NonTerminalNode, 
-                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+                _root:NonTerminalNode, _target:NonTerminalNode, _r_idx:int, _t_idx:int):
             root_value = _root_exp_term(_root, _target, _r_idx, _t_idx)
             div_value = _simple_exp_term_func(_root, _target, _r_idx, _t_idx)
-            if not isinstance(root_value, Number):
-                raise ActionException("{} は数値ではありません。".format(root_value))
-            if not isinstance(div_value, Number):
-                raise ActionException("{} は数値ではありません。".format(div_value))
-            return root_value / div_value
+            try:
+                return root_value / div_value
+            except (TypeError, ZeroDivisionError):
+                raise ActionException("{} と {} に '/' の演算を適用できません。"
+                        .format(str(root_value), str(div_value)))
 
         return lambda root, target, r_idx, t_idx: div_exp(
                     root_exp_term, simple_exp_term_func,
                     root, target, r_idx, t_idx)
 
-    def _get_simple_exp_term_func(self, _simple_exp_term_node:NonTerminalNode) -> ActionFuncType:
+    def _get_simple_exp_term_func(self, 
+            _simple_exp_term_node:NonTerminalNode) -> ActionFuncType:
         """
         SimpleExpTerm ノードから、値を取得する関数を取得
         """
         # SimpleExpTerm <- >>OPEN Expression >>CLOSE 
-        #                / ValueTerm ( CallFunction / TermMember )*
+        #             / ( ValueTerm / DefaultPyFunc) 
+        #                 ( CallFunction / TermMember )*
 
         # Expression の場合
         expression_node = _simple_exp_term_node.get_childnode("Expression")
         if len(expression_node) > 0:
             return self._get_expression_func(expression_node[0])
-        
-        value_term_node = _simple_exp_term_node.children[0]
-        prev_member_func = self._get_value_term_func(value_term_node)
+
+        root_term_node = _simple_exp_term_node.children[0]
+        if root_term_node.type == "ValueTerm":
+            # ValueTerm
+            prev_member_func = self._get_value_term_func(root_term_node)
+        elif root_term_node.type == "DefaultPyFunc":
+            # DefaultPyFunc
+            prev_member_func = self._get_default_py_func_func(root_term_node)
+        else:
+            raise ActionException(
+                    "SimpleExpTerm 式の子に想定しないノード\"{}\"が指定されました。"
+                    .format(root_term_node.type))
         for member_node in _simple_exp_term_node.children[1:]:
             if member_node.type == "CallFunction":
-                prev_member_func = self._get_call_function_func(prev_member_func, member_node)
+                prev_member_func = self._get_call_function_func(
+                                        prev_member_func, member_node)
             elif member_node.type == "TermMember":
-                prev_member_func = self._get_term_member_func(prev_member_func, member_node)
+                prev_member_func = self._get_term_member_func(
+                                        prev_member_func, member_node)
             else:
                 raise ActionException(
                         "SimpleExpTerm 式の子に想定しないノード\"{}\"が指定されました。"
@@ -729,21 +758,24 @@ class AstActions(object):
         """
         # CallFunction <- >>DOT FunctionName >>OPEN Parameters? >>CLOSE
         # FunctionName <- ParameterName
-        function_name = _call_function_node.get_childnode("FunctionName")[0].get_str()
+        function_name = _call_function_node \
+                        .get_childnode("FunctionName")[0].get_str()
         parameters_node = _call_function_node.get_childnode("Parameters")
 
-        parameters_func = self._get_parameters_func(parameters_node[0]) if parameters_node else None
-            
+        parameters_func = None
+        if parameters_node:
+            parameters_func = self._get_parameters_func(parameters_node[0]) 
 
         def call_func(
                 _root_exp_func:ActionFuncType,
                 _function_name:str,
                 _parameters_func:ActionFuncType,
-                _root:NonTerminalNode, 
-                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+                _root:NonTerminalNode, _target:NonTerminalNode, _r_idx:int, _t_idx:int):
             
             root_value = _root_exp_func(_root, _target, _r_idx, _t_idx)
-            params = _parameters_func(_root, _target, _r_idx, _t_idx) if _parameters_func else []
+            params = []
+            if _parameters_func:
+                 params = _parameters_func(_root, _target, _r_idx, _t_idx)
             if hasattr(root_value, _function_name) \
                     and callable(getattr(root_value, _function_name)):
                 # root_value が呼び出し可能な属性（メソッド）を持っている 
@@ -793,7 +825,7 @@ class AstActions(object):
                 # root_value が属性を持っている 
                 return getattr(root_value, _member_name)
             elif isinstance(root_value, NonTerminalNode) \
-                    and root_value.get_attr(_member_name):
+                    and root_value.get_attr(_member_name) is not None:
                 # NonterminalNode かつ呼び出し可能
                 return root_value.get_attr(_member_name)
             else:
@@ -803,15 +835,15 @@ class AstActions(object):
         return lambda root, target, r_idx, t_idx: \
                 member_func(root_exp_func, member_name, root, target, r_idx, t_idx)
 
-    def _get_value_term_func(self, _value_term_node:NonTerminalNode) -> ActionFuncType:
+    def _get_value_term_func(self, 
+            _value_term_node:NonTerminalNode) -> ActionFuncType:
         """
         ValueTerm ノードから、値を取得する関数を取得
         """
-        # ValueTerm <- Literal / Number / ListValue
-        #            / RootString / TargetString 
-        #            / RootValue / TargetValue 
-        #            / RootIndex / TargetIndex
-        #            / RootNode  / TargetNode
+        # ValueTerm <- Literal / Number 
+        #         / ListValue / TypeDictionary
+        #         / RootIndex / TargetIndex
+        #         / RootNode  / TargetNode
         val_target = _value_term_node.children[0]
         get_val_f:Callable[[NonTerminalNode, NonTerminalNode], str] = None
         if val_target.type =="Literal":
@@ -822,28 +854,8 @@ class AstActions(object):
             get_val_f = lambda root, target, r_idx, t_idx: val
         elif val_target.type =="ListValue":
             get_val_f = self._get_list_value_func(val_target)
-        elif val_target.type =="RootString":
-            dictionary_nodes = val_target.get_childnode("TypeDictionary")
-            type_dict = {}
-            if len(dictionary_nodes) > 0:
-                type_dict = self._get_typedictionary(dictionary_nodes[0])
-            get_val_f = lambda root, target, r_idx, t_idx: \
-                        root.get_str(type_dict)
-        elif val_target.type =="TargetString":
-            dictionary_nodes = val_target.get_childnode("TypeDictionary")
-            type_dict = {}
-            if len(dictionary_nodes) > 0:
-                type_dict = self._get_typedictionary(dictionary_nodes[0])
-            get_val_f = lambda root, target, r_idx, t_idx: \
-                        target.get_str(type_dict)
-        elif val_target.type =="RootValue":
-            val_param = val_target.get_childnode("ParameterName")[0].get_str()
-            get_val_f = lambda root, target, r_idx, t_idx: \
-                        root.get_attr(val_param)
-        elif val_target.type =="TargetValue":
-            val_param = val_target.get_childnode("ParameterName")[0].get_str()
-            get_val_f = lambda root, target, r_idx, t_idx: \
-                        target.get_attr(val_param)
+        elif val_target.type =="TypeDictionary":
+            get_val_f = self._get_type_dictionary_func(val_target)
         elif val_target.type =="RootIndex":
             get_val_f = lambda root, target, r_idx, t_idx: r_idx
         elif val_target.type =="TargetIndex":
@@ -858,8 +870,27 @@ class AstActions(object):
                 .format(val_target.type))
         
         return get_val_f
-    
-    def _get_list_value_func(self, _list_value_node:NonTerminalNode) -> ActionFuncType:
+
+    def _get_default_py_func_func(self, 
+            _default_py_func_node:NonTerminalNode) -> ActionFuncType:
+        """
+        DefaultPyFunc ノードから、値を取得する関数を取得
+        """
+        # DefaultPyFunc <- IntFunc
+        # IntFunc <- >>INT >>OPEN Parameters >>CLOSE
+        func_node = _default_py_func_node.children[0]
+        if func_node.type == "IntFunc":
+            params_node = func_node.get_childnode("Parameters")[0]
+            params_func = self._get_parameters_func(params_node)
+            return lambda root, target, r_idx, t_idx: \
+                    int(params_func(root, target, r_idx, t_idx))
+        else:
+            raise ActionException(
+                "DefaultPyFunc の子に想定しないノード\"{}\"が指定されました。"
+                .format(func_node.type))
+
+    def _get_list_value_func(self, 
+            _list_value_node:NonTerminalNode) -> ActionFuncType:
         """
         ListValue ノードから、値を取得する関数を取得
         """
@@ -876,19 +907,33 @@ class AstActions(object):
         return lambda root, target, r_idx, t_idx: \
                     list_value_func(flist, root, target, r_idx,t_idx)
 
-    def _get_typedictionary(self, node:NonTerminalNode) -> dict[str, str]:
-        if node.type != "TypeDictionary":
-            raise ActionException("_get_typedictionary に想定しないノード\"{}\"が指定されました。"
-                .format(node.type))
-        
-        typeitems = node.search_node("TypeItem")
-        ret_dict = {}
+    def _get_type_dictionary_func(self, 
+            _type_dictionary_node:NonTerminalNode) -> dict[str, str]:
+        """
+        TypeDictionary ノードから、値を取得する関数を取得
+        """
+        # TypeDictionary <- >>CURL_OPEN (
+        #                 TypeItem ( >>COMMA TypeItem )*))? 
+        #                 >>CURL_CLOSE
+        # TypeItem <- Identifier >>COLON Expression
+        typeitems = _type_dictionary_node.get_childnode("TypeItem")
+        fdict = {}
         for typeitem in typeitems:
-            typename = typeitem.search_node("Identifier")[0].get_str()
-            literal_node = typeitem.search_node("Literal")[0]
-            literal_value = eval(literal_node.get_str())
-            ret_dict[typename] = literal_value
-        return ret_dict
+            typename = typeitem.children[0].get_str()
+            expression_node = typeitem.children[1]
+            expression_func = self._get_expression_func(expression_node)
+            fdict[typename] = expression_func
+
+        def dict_value_func(_fdict:dict,
+                _root:NonTerminalNode, 
+                _target:NonTerminalNode, _r_idx:int, _t_idx:int):
+            return_dict = {}
+            for k, v in _fdict.items():
+                return_dict[k] = v(_root, _target, _r_idx, _t_idx)
+            return return_dict
+        
+        return lambda root, target, r_idx, t_idx: \
+                    dict_value_func(fdict, root, target, r_idx,t_idx)
 
 
 class _ActionDefinition(object):
@@ -911,6 +956,8 @@ class _ActionDefinition(object):
         ret = True
         for selector, selector_str in self.__selectors:
             try:
+                self.__logger.debug(
+                        "セレクタ\"{}\"を適用します。".format(selector_str))
                 action_nodes.extend(selector(node))
             except ActionException as e:
                 self.__logger.warn(str(e))
@@ -923,13 +970,22 @@ class _ActionDefinition(object):
             for target_index, tartget_node in enumerate(target_nodes):
                 for action, action_str in self.__actions:
                     try:
+                        self.__logger.debug(
+                                "Node:{} から Node:{} のアクション \"{}\" を実行します。"
+                                .format(start_node, tartget_node, action_str))
                         action(start_node, tartget_node, start_index, target_index)
                     except ActionException as e:
                         self.__logger.warn(str(e))
-                        self.__logger.warn("Node:{} から Node:{} のアクション \"{}\"に失敗しました。"
+                        self.__logger.warn(
+                                "Node:{} から Node:{} のアクション \"{}\"に失敗しました。"
                                 .format(start_node, tartget_node, action_str))
                         ret = False
                         continue
+                    except Exception as e:
+                        self.__logger.error(e.__class__.__name__ + " : " + str(e))
+                        ret = False
+                        continue
+
         return ret
 
 
