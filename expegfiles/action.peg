@@ -3,7 +3,7 @@
 # ----------------------------------------
 # AST をこの順に探索して記載した処理を行う
 # ----------------------------------------
-Actions <- ( ActionDefinition / >>Comment / >>S )* _EOF
+Actions <- ( ActionDefinition / >>S )* _EOF
 
 
 # ----------------------------------------
@@ -19,7 +19,7 @@ ActionDefinition <- Selector ( >>COMMA Selector)*
 
 # C likeな行コメントと範囲コメントを使う
 Comment <- LINE_COMMENT_START ArbitraryText EndOfLine
-         / COMMENT_START (!COMMENT_END r".")* COMMENT_END
+         / COMMENT_START (!COMMENT_END r".":S )* COMMENT_END
 ArbitraryText <- r"[^\r\n]*"
 
 # ----------------------------------------
@@ -202,30 +202,73 @@ Expression <- Primary ( PlusPrimary / MinusPrimary )*
 PlusPrimary <- >>PLUS Primary
 MinusPrimary <- >>MINUS Primary
 
-Primary <- MinusExpTerms / ExpTerms
-MinusExpTerms <- >>MINUS ExpTerms
-ExpTerms <- SimpleExpTerm ( MultiExpTerm / DivExpTerm )*
-MultiExpTerm <- >>MULTI SimpleExpTerm
-DivExpTerm   <- >>DIV SimpleExpTerm
+Primary <- ExpTerms ( MultiExpTerm / DivExpTerm )*
+ExpTerms <- MinusExpTerms / SimpleExpTerm
+MultiExpTerm <- >>MULTI ExpTerms
+DivExpTerm   <- >>DIV ExpTerms
 
+MinusExpTerms <- >>MINUS SimpleExpTerm
 SimpleExpTerm <- >>OPEN Expression >>CLOSE 
-               / ( ValueTerm / DefaultPyFunc) 
-                 ( CallFunction / TermMember )*
+               / ValueTerm ( CallFunction / TermMember )*
 
-DefaultPyFunc <- IntFunc
+ValueTerm <- Literal / FloatNumber / Integer 
+           / ListValue / TypeDictionary
+           / RootIndex / TargetIndex
+           / RootNode  / TargetNode
+           / DefaultFunc
+
+DefaultFunc <- IntFunc / FloatFunc / BinFunc / HexFunc
+             / OctFunc / StrFunc / LenFunc
+
 IntFunc <- >>INT >>OPEN Parameters >>CLOSE
+FloatFunc <- >>FLOAT >>OPEN Parameters >>CLOSE
+BinFunc <- >>BIN >>OPEN Parameters >>CLOSE
+OctFunc <- >>OCT >>OPEN Parameters >>CLOSE
+HexFunc <- >>HEX >>OPEN Parameters >>CLOSE
+StrFunc <- >>STR >>OPEN Parameters >>CLOSE
+LenFunc <- >>LEN >>OPEN Parameters >>CLOSE
+
+INT <- 'int' S?
+FLOAT <- 'float' S?
+BIN <- 'bin' S?
+OCT <- 'oct' S?
+HEX <- 'hex' S?
+STR <- 'str' S?
+LEN <- 'len' S?
 
 CallFunction <- >>DOT FunctionName >>OPEN Parameters? >>CLOSE
 Parameters <- Expression ( >>COMMA Expression)*
 FunctionName <- ParameterName
 TermMember <- >>DOT ParameterName
 
-ValueTerm <- Literal / Number 
-           / ListValue / TypeDictionary
-           / RootIndex / TargetIndex
-           / RootNode  / TargetNode
+# integer      ::=  decinteger | bininteger | octinteger | hexinteger
+Integer <- _DEC_INTEGER >>S? / _BIN_INTEGER >>S? / _OCT_INTEGER >>S? / _HEX_INTEGER >>S?
 
-ListValue <- >>'[' >>S? ( Expression >>COMMA)* >>']' >>S?
+# decinteger   ::=  nonzerodigit (["_"] digit)* | "0"+ (["_"] "0")*
+# bininteger   ::=  "0" ("b" | "B") (["_"] bindigit)+
+# octinteger   ::=  "0" ("o" | "O") (["_"] octdigit)+
+# hexinteger   ::=  "0" ("x" | "X") (["_"] hexdigit)+
+_DEC_INTEGER <- r"[1-9][0-9]*" / r"0"
+_BIN_INTEGER <- r"0b[01]+":I 
+_OCT_INTEGER <- r"0o[0-7]+":I 
+_HEX_INTEGER <- r"0x[0-9a-f]+":I 
+
+# floatnumber   ::=  pointfloat | exponentfloat
+FloatNumber <- _POINT_FLOAT >>S? / _EXPONENT_FLOAT >>S?
+
+# pointfloat    ::=  [digitpart] fraction | digitpart "."
+# exponentfloat ::=  (digitpart | pointfloat) exponent
+# digitpart     ::=  digit (["_"] digit)*
+# fraction      ::=  "." digitpart
+# exponent      ::=  ("e" | "E") ["+" | "-"] digitpart
+_POINT_FLOAT <- r"[0-9]+"? "." r"[0-9]+" / r"[0-9]+" "." 
+_EXPONENT_FLOAT <- (r"[0-9]+" / (r"[0-9]+"? "." r"[0-9]+" / r"[0-9]+" "." )) 
+                   "e":I ("+" / "-")? r"[0-9]+"
+
+
+ListValue <- >>'[' >>S? 
+             ( Expression ( >>COMMA Expression)* )? 
+             >>']' >>S?
 
 RootIndex <- >>INDEX >>OPEN >>ROOT >>CLOSE
 TargetIndex <- >>INDEX >>OPEN >>TARGET >>CLOSE
@@ -248,12 +291,10 @@ INDEX <- 'index' S?
 ROOT <- 'root' S?
 TARGET <- 'target' S?
 
-INT <- 'int' S?
-
 # ----------------------------------------
 # Terminal
 # ----------------------------------------
-S <- ( ' ' / r"\t" / EndOfLine )+
+S <- ( ' ' / r"\t" / Comment / EndOfLine )+
 EndOfLine <- r"\r\n|\n|\r"
 
 OPEN <- '(' S?

@@ -9,7 +9,7 @@ from tacparser import expegparser
 
 from tacparser.actionsparser import ActionsParser
 from tacparser.astactions import AstActions, ActionException, _ActionDefinition
-from tacparser.node import NonTerminalNode, TerminalNode
+from tacparser.node import NonTerminalNode as ntn, TerminalNode as tn
 from tacparser.parsergenerator import ParserGenerator
 from tacparser.expegparser import ExPegParser
 
@@ -28,8 +28,8 @@ class Test_ActionDefinition(unittest.TestCase):
         err_selector = MagicMock(side_effect=ActionException("Sample"))
         actiondef.append_selector(err_selector, "Error Selector")
 
-        child_nodes = (NonTerminalNode("Unknown", ()),)
-        node = NonTerminalNode("Test", child_nodes)
+        child_nodes = (ntn("Unknown", ()),)
+        node = ntn("Test", child_nodes)
 
         self.assertFalse(actiondef.apply_actions(node))
         
@@ -40,8 +40,8 @@ class TestASTActionsNode(unittest.TestCase):
         self.actions= AstActions(test_logger)
 
     def test_get_selector_func(self):
-        child_nodes = (NonTerminalNode("Unknown", ()),)
-        node = NonTerminalNode("Selector", child_nodes)
+        child_nodes = (ntn("Unknown", ()),)
+        node = ntn("Selector", child_nodes)
 
         with self.assertRaises(ActionException) as err:
             self.actions._get_selector_func(node)
@@ -52,25 +52,21 @@ class TestASTActionsNode(unittest.TestCase):
 
     
     def test_get_LineColumnLimitation_err01(self):
-        child_nodes =   (   NonTerminalNode("Identifier", (
-                                TerminalNode("attrname"), 
-                            )), 
-                            NonTerminalNode("OrCondition", (
-                                NonTerminalNode("SingleCondition", (
-                                    NonTerminalNode("LineColumnLimitation", (
-                                        NonTerminalNode("GraterLimitation", (
-                                            NonTerminalNode("LineOrColumn", 
-                                                ( NonTerminalNode("Unknown", () ), )
-                                            ), 
-                                            NonTerminalNode("PositiveNumber", 
-                                                ( TerminalNode("12"), )
-                                            )
-                                        )),
-                                    )),
-                                )), 
-                            ))
-                        )
-        node = NonTerminalNode("Conditions", child_nodes)
+        child_nodes = ( ntn("Identifier", (
+                            tn("attrname"), 
+                        )), 
+                        ntn("OrCondition", (
+                            ntn("SingleCondition", (
+                                ntn("LineColumnLimitation", (
+                                    ntn("GraterLimitation", (
+                                        ntn("LineOrColumn", (
+                                            ntn("Unknown", (
+                                        )), )),
+                                        ntn("PositiveNumber", (
+                                            tn("12"),
+                        )), )), )), )), )),
+                    )
+        node = ntn("Conditions", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_Conditions(node)
 
@@ -79,25 +75,22 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_LineColumnLimitation_err02(self):
-        child_nodes =   (   NonTerminalNode("Identifier", (
-                                TerminalNode("attrname"), 
-                            )), 
-                            NonTerminalNode("OrCondition", (
-                                NonTerminalNode("SingleCondition", (
-                                    NonTerminalNode("LineColumnLimitation", (
-                                        NonTerminalNode("Unknown", (
-                                            NonTerminalNode("LineOrColumn", 
-                                                ( NonTerminalNode("StartLine", () ), )
-                                            ), 
-                                            NonTerminalNode("PositiveNumber", 
-                                                ( TerminalNode("12"), )
-                                            )
-                                        )),
-                                    )),
-                                )), 
-                            ))
-                        )
-        node = NonTerminalNode("Conditions", child_nodes)
+        child_nodes = ( ntn("Identifier", (
+                            tn("attrname"), 
+                        )), 
+                        ntn("OrCondition", (
+                            ntn("SingleCondition", (
+                                ntn("LineColumnLimitation", (
+                                    ntn("Unknown", (
+                                        ntn("LineOrColumn", (
+                                            ntn("StartLine", (
+                                            )),
+                                        )), 
+                                        ntn("PositiveNumber", (
+                                            tn("12"), 
+                        )), )), )), )), )),
+                    )
+        node = ntn("Conditions", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_Conditions(node)
 
@@ -107,25 +100,21 @@ class TestASTActionsNode(unittest.TestCase):
 
 
     def test_get_AttributeLimitation_err01(self):
-        child_nodes =   (   NonTerminalNode("Identifier", (
-                                TerminalNode("attrname"), 
-                            )), 
-                            NonTerminalNode("OrCondition", (
-                                NonTerminalNode("SingleCondition", (
-                                    NonTerminalNode("AttributeLimitation", (
-                                        NonTerminalNode("AttributeStartsWith", (
-                                            NonTerminalNode("AttributeName", 
-                                                (TerminalNode("name"), )
-                                            ),
-                                            NonTerminalNode("Unknown", 
-                                                (TerminalNode("12"), )
-                                            )
-                                        )),
-                                    )),
-                                )), 
-                            ))
-                        )
-        node = NonTerminalNode("Conditions", child_nodes)
+        child_nodes = ( ntn("Identifier", (
+                            tn("attrname"), 
+                        )), 
+                        ntn("OrCondition", (
+                            ntn("SingleCondition", (
+                                ntn("AttributeLimitation", (
+                                    ntn("AttributeStartsWith", (
+                                        ntn("AttributeName", 
+                                            (tn("name"), )
+                                        ),
+                                        ntn("Unknown", (
+                                            tn("12"), 
+                        )), )), )), )), )),
+                    )
+        node = ntn("Conditions", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_Conditions(node)
 
@@ -134,25 +123,21 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_AttributeLimitation_err02(self):
-        child_nodes =   (   NonTerminalNode("Identifier", (
-                                TerminalNode("attrname"), 
-                            )), 
-                            NonTerminalNode("OrCondition", (
-                                NonTerminalNode("SingleCondition", (
-                                    NonTerminalNode("AttributeLimitation", (
-                                        NonTerminalNode("Unknown", (
-                                            NonTerminalNode("AttributeName", 
-                                                (TerminalNode("name"), )
-                                            ),
-                                            NonTerminalNode("AttributeValue", 
-                                                (TerminalNode("12"), )
-                                            )
+        child_nodes = ( ntn("Identifier", (
+                            tn("attrname"), 
+                        )), 
+                        ntn("OrCondition", (
+                            ntn("SingleCondition", (
+                                ntn("AttributeLimitation", (
+                                    ntn("Unknown", (
+                                        ntn("AttributeName", (
+                                            tn("name"), 
                                         )),
-                                    )),
-                                )), 
-                            ))
-                        )
-        node = NonTerminalNode("Conditions", child_nodes)
+                                        ntn("AttributeValue", (
+                                            tn("12"),
+                        )), )), )), )), )),
+                    )
+        node = ntn("Conditions", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_Conditions(node)
 
@@ -161,16 +146,14 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_Conditions_err01(self):
-        child_nodes =   (   NonTerminalNode("Identifier", (
-                                TerminalNode("attrname"), 
-                            )), 
-                            NonTerminalNode("OrCondition", (
-                                NonTerminalNode("SingleCondition", (
-                                    NonTerminalNode("Unknown", ()),
-                                )),
-                            ))
-                        )
-        node = NonTerminalNode("Conditions", child_nodes)
+        child_nodes = ( ntn("Identifier", ( tn("attrname"), 
+                        )), 
+                        ntn("OrCondition", (
+                            ntn("SingleCondition", (
+                                ntn("Unknown", ()),
+                        )), )),
+                    )
+        node = ntn("Conditions", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_Conditions(node)
 
@@ -180,18 +163,16 @@ class TestASTActionsNode(unittest.TestCase):
 
 
     def test_get_Conditions_err02(self):
-        child_nodes =   (   NonTerminalNode("Identifier", (
-                                TerminalNode("attrname"), 
-                            )), 
-                            NonTerminalNode("OrCondition", (
-                                NonTerminalNode("SingleCondition", (
-                                    NonTerminalNode("Slice", (
-                                        NonTerminalNode("Unknown", ( )),
-                                    )),
-                                )), 
-                            ))
-                        )
-        node = NonTerminalNode("Conditions", child_nodes)
+        child_nodes = ( ntn("Identifier", (
+                            tn("attrname"), 
+                        )), 
+                        ntn("OrCondition", (
+                            ntn("SingleCondition", (
+                                ntn("Slice", (
+                                    ntn("Unknown", ( )),
+                        )), )), )),
+                    )
+        node = ntn("Conditions", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_Conditions(node)
 
@@ -200,8 +181,8 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_action_func_err1(self):
-        child_nodes = ( NonTerminalNode("Unknown", ()) ,)
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Unknown", ()) ,)
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -210,17 +191,14 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_substitution_func_err1(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("RootValue", (
+                                    ntn("ParameterName", (
+                                        tn("param"),
+                        )), )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -229,22 +207,16 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_substitution_func_err2(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("SimpleExpTerm", (
-                                                NonTerminalNode("ValueTerm", (
-                                                    NonTerminalNode("RootNode", (
-                                                    )),
-                                                )),
-                                            )),
-                                        )),
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Expression", (
+                                ntn("Primary", (
+                                    ntn("ExpTerms", (
+                                        ntn("SimpleExpTerm", (
+                                            ntn("ValueTerm", (
+                                                ntn("RootNode", (
+                        )), )), )), )), )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -253,26 +225,19 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_substitution_func_err3(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("Unknown", (
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("SimpleExpTerm", (
-                                                NonTerminalNode("ValueTerm", (
-                                                    NonTerminalNode("RootNode", (
-                                                    )),
-                                                )),
-                                            )),
-                                        )),
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("Unknown", (
+                            )), )),
+                            ntn("Expression", (
+                                ntn("Primary", (
+                                    ntn("ExpTerms", (
+                                        ntn("SimpleExpTerm", (
+                                            ntn("ValueTerm", (
+                                                ntn("RootNode", (
+                        )), )), )), )), )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -281,21 +246,17 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_expression_func_err1(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Unknown", (
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("RootValue", (
+                                    ntn("ParameterName", (
+                                        tn("param"),
+                            )), )), )),
+                            ntn("Expression", (
+                                ntn("Unknown", (
+                        )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -304,31 +265,22 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_expression_func_err2(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("SimpleExpTerm", (
-                                                NonTerminalNode("ValueTerm", (
-                                                    NonTerminalNode("RootNode", (
-                                                    )),
-                                                )),
-                                            )),
-                                        )),
-                                    )),
-                                    NonTerminalNode("Unknown", (
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("RootValue", (
+                                    ntn("ParameterName", ( tn("param"), )),
+                            )), )),
+                            ntn("Expression", (
+                                ntn("Primary", (
+                                    ntn("ExpTerms", (
+                                        ntn("SimpleExpTerm", (
+                                            ntn("ValueTerm", (
+                                                ntn("RootNode", ()),
+                                    )), )), )), )),
+                                ntn("Unknown", (
+                        )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -337,25 +289,20 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_exp_terms_func_err1(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("Unknown", (
-                                            )),
-                                        )),
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("RootValue", (
+                                    ntn("ParameterName", (
+                                        tn("param"),
+                            )), )), )),
+                            ntn("Expression", (
+                                ntn("Primary", (
+                                    ntn("ExpTerms", (
+                                        ntn("Unknown", (
+                            )), )), )), )),
+                        )),
+                    )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -363,61 +310,67 @@ class TestASTActionsNode(unittest.TestCase):
         expstr = "ExpTermsの子に想定しないノード\"Unknown\"が指定されました。"
         self.assertEqual(msg, expstr)
 
+
     def test_get_exp_terms_func_err2(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("SimpleExpTerm", (
-                                                NonTerminalNode("ValueTerm", (
-                                                    NonTerminalNode("RootNode", (
-                                                    )),
-                                                )),
-                                            )),
-                                            NonTerminalNode("Unknown", (
-                                            )),
-                                        )),
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("RootValue", (
+                                    ntn("ParameterName", (
+                                        tn("param"),
+                            )), )), )),
+                            ntn("Expression", (
+                                ntn("Primary", (
+                                    ntn("Unknown", (
+                        )), )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
         msg = err.exception.args[0]
-        expstr = "ExpTerms 式の子に想定しないノード\"Unknown\"が指定されました。"
+        expstr = "Primaryの子に想定しないノード\"Unknown\"が指定されました。"
+        self.assertEqual(msg, expstr)
+
+    def test_get_exp_terms_func_err3(self):
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("RootValue", (
+                                    ntn("ParameterName", (
+                                        tn("param"),
+                            )), )), )),
+                            ntn("Expression", (
+                                ntn("Primary", (
+                                    ntn("ExpTerms", (
+                                        ntn("SimpleExpTerm", (
+                                            ntn("ValueTerm", (
+                                                ntn("RootNode", (
+                                    )), )), )), )),
+                                    ntn("Unknown", (
+                        )), )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
+        with self.assertRaises(ActionException) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "Primary 式の子に想定しないノード\"Unknown\"が指定されました。"
         self.assertEqual(msg, expstr)
 
     def test_get_simple_exp_term_func_err1(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("SimpleExpTerm", (
-                                                NonTerminalNode("Unknown", (
-                                                )),
-                                            )),
-                                        )),
-                                    )),
-                                )),
-                            )),
+        child_nodes =   (   ntn("Substitution", (
+                                ntn("Variable", (
+                                    ntn("RootValue", (
+                                        ntn("ParameterName", (
+                                            tn("param"),
+                                )), )), )),
+                                ntn("Expression", (
+                                    ntn("Primary", (
+                                        ntn("ExpTerms", (
+                                            ntn("SimpleExpTerm", (
+                                                ntn("Unknown", (
+                            )), )), )), )), )), )),
                         )
-        node = NonTerminalNode("Action", child_nodes)
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -426,31 +379,23 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_simple_exp_term_func_err2(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("SimpleExpTerm", (
-                                                NonTerminalNode("ValueTerm", (
-                                                    NonTerminalNode("RootNode", (
-                                                    )),
-                                                )),
-                                                NonTerminalNode("Unknown", (
-                                                )),
-                                            )),
-                                        )),
-                                    )),
-                                )),
-                            )),
+        child_nodes =   (   ntn("Substitution", (
+                                ntn("Variable", (
+                                    ntn("RootValue", (
+                                        ntn("ParameterName", (
+                                            tn("param"),
+                                )), )), )),
+                                ntn("Expression", (
+                                    ntn("Primary", (
+                                        ntn("ExpTerms", (
+                                            ntn("SimpleExpTerm", (
+                                                ntn("ValueTerm", (
+                                                    ntn("RootNode", (
+                                                )), )),
+                                                ntn("Unknown", (
+                            )), )), )), )), )), )),
                         )
-        node = NonTerminalNode("Action", child_nodes)
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -459,29 +404,21 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_value_term_func_err1(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("SimpleExpTerm", (
-                                                NonTerminalNode("ValueTerm", (
-                                                    NonTerminalNode("Unknown", (
-                                                    )),
-                                                )),
-                                            )),
-                                        )),
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("RootValue", (
+                                    ntn("ParameterName", (
+                                        tn("param"),
+                            )), )), )),
+                            ntn("Expression", (
+                                ntn("Primary", (
+                                    ntn("ExpTerms", (
+                                        ntn("SimpleExpTerm", (
+                                            ntn("ValueTerm", (
+                                                ntn("Unknown", (
+                        )), )), )), )), )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
@@ -490,35 +427,61 @@ class TestASTActionsNode(unittest.TestCase):
         self.assertEqual(msg, expstr)
 
     def test_get_default_py_func_func_err1(self):
-        child_nodes =   (   NonTerminalNode("Substitution", (
-                                NonTerminalNode("Variable", (
-                                    NonTerminalNode("RootValue", (
-                                        NonTerminalNode("ParameterName", (
-                                            TerminalNode("param"),
-                                        )),
-                                    )),
-                                )),
-                                NonTerminalNode("Expression", (
-                                    NonTerminalNode("Primary", (
-                                        NonTerminalNode("ExpTerms", (
-                                            NonTerminalNode("SimpleExpTerm", (
-                                                NonTerminalNode("DefaultPyFunc", (
-                                                    NonTerminalNode("Unknown", (
-                                                    )),
-                                                )),
-                                            )),
-                                        )),
-                                    )),
-                                )),
-                            )),
-                        )
-        node = NonTerminalNode("Action", child_nodes)
+        child_nodes = ( ntn("Substitution", (
+                            ntn("Variable", (
+                                ntn("RootValue", (
+                                    ntn("ParameterName", (
+                                        tn("param"),
+                            )), )), )),
+                            ntn("Expression", (
+                                ntn("Primary", (
+                                    ntn("ExpTerms", (
+                                        ntn("SimpleExpTerm", (
+                                            ntn("ValueTerm", (
+                                                ntn("DefaultFunc", (
+                                                    ntn("Unknown", (
+                        )), )), )), )), )), )), )), )),
+                    )
+        node = ntn("Action", child_nodes)
+        with self.assertRaises(IndexError) as err:
+            self.actions._get_action_func(node)
+
+        msg = err.exception.args[0]
+        expstr = "list index out of range"
+        self.assertEqual(msg, expstr)
+
+    def test_get_default_py_func_func_err2(self):
+        child_nodes = ( \
+            ntn("Substitution", (
+                ntn("Variable", (
+                    ntn("RootValue", (
+                        ntn("ParameterName", (
+                            tn("param"),
+                )), )), )),
+                ntn("Expression", ( 
+                    ntn("Primary", (
+                        ntn("ExpTerms", (
+                            ntn("SimpleExpTerm", (
+                                ntn("ValueTerm", (
+                                    ntn("DefaultFunc", (
+                                        ntn("UnknownFunc", (
+                                            ntn("Parameters", (
+                                                ntn("Expression", (
+                                                    ntn("Primary", (
+                                                        ntn("ExpTerms", (
+                                                            ntn("SimpleExpTerm", (
+                                                                ntn("ValueTerm", (
+                                                                    ntn("RootNode", (
+            )), )), )), )), )), )), )), )), )), )), )), )), )), )), )),
+        )
+        node = ntn("Action", child_nodes)
         with self.assertRaises(ActionException) as err:
             self.actions._get_action_func(node)
 
         msg = err.exception.args[0]
-        expstr = "DefaultPyFunc の子に想定しないノード\"Unknown\"が指定されました。"
+        expstr = "DefaultFunc の子に想定しないノード\"UnknownFunc\"が指定されました。"
         self.assertEqual(msg, expstr)
+
 
 
 

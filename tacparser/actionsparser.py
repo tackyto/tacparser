@@ -79,18 +79,33 @@ class ActionsParser(Parser):
                          "PlusPrimary": self.p_plusprimary,
                          "MinusPrimary": self.p_minusprimary,
                          "Primary": self.p_primary,
-                         "MinusExpTerms": self.p_minusexpterms,
                          "ExpTerms": self.p_expterms,
                          "MultiExpTerm": self.p_multiexpterm,
                          "DivExpTerm": self.p_divexpterm,
+                         "MinusExpTerms": self.p_minusexpterms,
                          "SimpleExpTerm": self.p_simpleexpterm,
-                         "DefaultPyFunc": self.p_defaultpyfunc,
+                         "ValueTerm": self.p_valueterm,
+                         "DefaultFunc": self.p_defaultfunc,
                          "IntFunc": self.p_intfunc,
+                         "FloatFunc": self.p_floatfunc,
+                         "BinFunc": self.p_binfunc,
+                         "OctFunc": self.p_octfunc,
+                         "HexFunc": self.p_hexfunc,
+                         "StrFunc": self.p_strfunc,
+                         "LenFunc": self.p_lenfunc,
+                         "INT": self.p_int,
+                         "FLOAT": self.p_float,
+                         "BIN": self.p_bin,
+                         "OCT": self.p_oct,
+                         "HEX": self.p_hex,
+                         "STR": self.p_str,
+                         "LEN": self.p_len,
                          "CallFunction": self.p_callfunction,
                          "Parameters": self.p_parameters,
                          "FunctionName": self.p_functionname,
                          "TermMember": self.p_termmember,
-                         "ValueTerm": self.p_valueterm,
+                         "Integer": self.p_integer,
+                         "FloatNumber": self.p_floatnumber,
                          "ListValue": self.p_listvalue,
                          "RootIndex": self.p_rootindex,
                          "TargetIndex": self.p_targetindex,
@@ -105,7 +120,6 @@ class ActionsParser(Parser):
                          "INDEX": self.p_index,
                          "ROOT": self.p_root,
                          "TARGET": self.p_target,
-                         "INT": self.p_int,
                          "S": self.p_s,
                          "EndOfLine": self.p_endofline,
                          "OPEN": self.p_open,
@@ -143,9 +157,8 @@ class ActionsParser(Parser):
         # # ----------------------------------------
         # # AST をこの順に探索して記載した処理を行う
         # # ----------------------------------------
-        # Actions <- ( ActionDefinition / >>Comment / >>S )* _EOF
+        # Actions <- ( ActionDefinition / >>S )* _EOF
         return self._seq(self._rpt(self._sel(self._p(self.p_actiondefinition, "ActionDefinition"),
-                                             self._skip(self._p(self.p_comment, "Comment")),
                                              self._skip(self._p(self.p_s, "S"))
                                              ), 0),
                          self._p(self._eof, "_EOF")
@@ -175,12 +188,12 @@ class ActionsParser(Parser):
                          self._skip(self._p(self.p_curl_close, "CURL_CLOSE"))
                          )
 
-    _reg_p_comment0 = regex.compile(".", regex.M)
+    _reg_p_comment0 = regex.compile(".", regex.M | regex.S)
 
     def p_comment(self):
         # # C likeな行コメントと範囲コメントを使う
         # Comment <- LINE_COMMENT_START ArbitraryText EndOfLine
-        #          / COMMENT_START (!COMMENT_END r".")* COMMENT_END
+        #          / COMMENT_START (!COMMENT_END r".":S )* COMMENT_END
         return self._sel(self._seq(self._p(self.p_line_comment_start, "LINE_COMMENT_START"),
                                    self._p(self.p_arbitrarytext, "ArbitraryText"),
                                    self._p(self.p_endofline, "EndOfLine")
@@ -672,57 +685,80 @@ class ActionsParser(Parser):
                          )
 
     def p_primary(self):
-        # Primary <- MinusExpTerms / ExpTerms
-        return self._sel(self._p(self.p_minusexpterms, "MinusExpTerms"),
-                         self._p(self.p_expterms, "ExpTerms")
-                         )
-
-    def p_minusexpterms(self):
-        # MinusExpTerms <- >>MINUS ExpTerms
-        return self._seq(self._skip(self._p(self.p_minus, "MINUS")),
-                         self._p(self.p_expterms, "ExpTerms")
-                         )
-
-    def p_expterms(self):
-        # ExpTerms <- SimpleExpTerm ( MultiExpTerm / DivExpTerm )*
-        return self._seq(self._p(self.p_simpleexpterm, "SimpleExpTerm"),
+        # Primary <- ExpTerms ( MultiExpTerm / DivExpTerm )*
+        return self._seq(self._p(self.p_expterms, "ExpTerms"),
                          self._rpt(self._sel(self._p(self.p_multiexpterm, "MultiExpTerm"),
                                              self._p(self.p_divexpterm, "DivExpTerm")
                                              ), 0)
                          )
 
-    def p_multiexpterm(self):
-        # MultiExpTerm <- >>MULTI SimpleExpTerm
-        return self._seq(self._skip(self._p(self.p_multi, "MULTI")),
+    def p_expterms(self):
+        # ExpTerms <- MinusExpTerms / SimpleExpTerm
+        return self._sel(self._p(self.p_minusexpterms, "MinusExpTerms"),
                          self._p(self.p_simpleexpterm, "SimpleExpTerm")
                          )
 
+    def p_multiexpterm(self):
+        # MultiExpTerm <- >>MULTI ExpTerms
+        return self._seq(self._skip(self._p(self.p_multi, "MULTI")),
+                         self._p(self.p_expterms, "ExpTerms")
+                         )
+
     def p_divexpterm(self):
-        # DivExpTerm   <- >>DIV SimpleExpTerm
+        # DivExpTerm   <- >>DIV ExpTerms
         return self._seq(self._skip(self._p(self.p_div, "DIV")),
+                         self._p(self.p_expterms, "ExpTerms")
+                         )
+
+    def p_minusexpterms(self):
+        # MinusExpTerms <- >>MINUS SimpleExpTerm
+        return self._seq(self._skip(self._p(self.p_minus, "MINUS")),
                          self._p(self.p_simpleexpterm, "SimpleExpTerm")
                          )
 
     def p_simpleexpterm(self):
         # SimpleExpTerm <- >>OPEN Expression >>CLOSE 
-        #                / ( ValueTerm / DefaultPyFunc) 
-        #                  ( CallFunction / TermMember )*
+        #                / ValueTerm ( CallFunction / TermMember )*
         return self._sel(self._seq(self._skip(self._p(self.p_open, "OPEN")),
                                    self._p(self.p_expression, "Expression"),
                                    self._skip(self._p(self.p_close, "CLOSE"))
                                    ),
-                         self._seq(self._sel(self._p(self.p_valueterm, "ValueTerm"),
-                                             self._p(self.p_defaultpyfunc, "DefaultPyFunc")
-                                             ),
+                         self._seq(self._p(self.p_valueterm, "ValueTerm"),
                                    self._rpt(self._sel(self._p(self.p_callfunction, "CallFunction"),
                                                        self._p(self.p_termmember, "TermMember")
                                                        ), 0)
                                    )
                          )
 
-    def p_defaultpyfunc(self):
-        # DefaultPyFunc <- IntFunc
-        return self._p(self.p_intfunc, "IntFunc")
+    def p_valueterm(self):
+        # ValueTerm <- Literal / FloatNumber / Integer 
+        #            / ListValue / TypeDictionary
+        #            / RootIndex / TargetIndex
+        #            / RootNode  / TargetNode
+        #            / DefaultFunc
+        return self._sel(self._p(self.p_literal, "Literal"),
+                         self._p(self.p_floatnumber, "FloatNumber"),
+                         self._p(self.p_integer, "Integer"),
+                         self._p(self.p_listvalue, "ListValue"),
+                         self._p(self.p_typedictionary, "TypeDictionary"),
+                         self._p(self.p_rootindex, "RootIndex"),
+                         self._p(self.p_targetindex, "TargetIndex"),
+                         self._p(self.p_rootnode, "RootNode"),
+                         self._p(self.p_targetnode, "TargetNode"),
+                         self._p(self.p_defaultfunc, "DefaultFunc")
+                         )
+
+    def p_defaultfunc(self):
+        # DefaultFunc <- IntFunc / FloatFunc / BinFunc / HexFunc
+        #              / OctFunc / StrFunc / LenFunc
+        return self._sel(self._p(self.p_intfunc, "IntFunc"),
+                         self._p(self.p_floatfunc, "FloatFunc"),
+                         self._p(self.p_binfunc, "BinFunc"),
+                         self._p(self.p_hexfunc, "HexFunc"),
+                         self._p(self.p_octfunc, "OctFunc"),
+                         self._p(self.p_strfunc, "StrFunc"),
+                         self._p(self.p_lenfunc, "LenFunc")
+                         )
 
     def p_intfunc(self):
         # IntFunc <- >>INT >>OPEN Parameters >>CLOSE
@@ -730,6 +766,96 @@ class ActionsParser(Parser):
                          self._skip(self._p(self.p_open, "OPEN")),
                          self._p(self.p_parameters, "Parameters"),
                          self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_floatfunc(self):
+        # FloatFunc <- >>FLOAT >>OPEN Parameters >>CLOSE
+        return self._seq(self._skip(self._p(self.p_float, "FLOAT")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._p(self.p_parameters, "Parameters"),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_binfunc(self):
+        # BinFunc <- >>BIN >>OPEN Parameters >>CLOSE
+        return self._seq(self._skip(self._p(self.p_bin, "BIN")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._p(self.p_parameters, "Parameters"),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_octfunc(self):
+        # OctFunc <- >>OCT >>OPEN Parameters >>CLOSE
+        return self._seq(self._skip(self._p(self.p_oct, "OCT")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._p(self.p_parameters, "Parameters"),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_hexfunc(self):
+        # HexFunc <- >>HEX >>OPEN Parameters >>CLOSE
+        return self._seq(self._skip(self._p(self.p_hex, "HEX")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._p(self.p_parameters, "Parameters"),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_strfunc(self):
+        # StrFunc <- >>STR >>OPEN Parameters >>CLOSE
+        return self._seq(self._skip(self._p(self.p_str, "STR")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._p(self.p_parameters, "Parameters"),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_lenfunc(self):
+        # LenFunc <- >>LEN >>OPEN Parameters >>CLOSE
+        return self._seq(self._skip(self._p(self.p_len, "LEN")),
+                         self._skip(self._p(self.p_open, "OPEN")),
+                         self._p(self.p_parameters, "Parameters"),
+                         self._skip(self._p(self.p_close, "CLOSE"))
+                         )
+
+    def p_int(self):
+        # INT <- 'int' S?
+        return self._seq(self._l('int'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_float(self):
+        # FLOAT <- 'float' S?
+        return self._seq(self._l('float'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_bin(self):
+        # BIN <- 'bin' S?
+        return self._seq(self._l('bin'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_oct(self):
+        # OCT <- 'oct' S?
+        return self._seq(self._l('oct'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_hex(self):
+        # HEX <- 'hex' S?
+        return self._seq(self._l('hex'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_str(self):
+        # STR <- 'str' S?
+        return self._seq(self._l('str'),
+                         self._opt(self._p(self.p_s, "S"))
+                         )
+
+    def p_len(self):
+        # LEN <- 'len' S?
+        return self._seq(self._l('len'),
+                         self._opt(self._p(self.p_s, "S"))
                          )
 
     def p_callfunction(self):
@@ -759,28 +885,129 @@ class ActionsParser(Parser):
                          self._p(self.p_parametername, "ParameterName")
                          )
 
-    def p_valueterm(self):
-        # ValueTerm <- Literal / Number 
-        #            / ListValue / TypeDictionary
-        #            / RootIndex / TargetIndex
-        #            / RootNode  / TargetNode
-        return self._sel(self._p(self.p_literal, "Literal"),
-                         self._p(self.p_number, "Number"),
-                         self._p(self.p_listvalue, "ListValue"),
-                         self._p(self.p_typedictionary, "TypeDictionary"),
-                         self._p(self.p_rootindex, "RootIndex"),
-                         self._p(self.p_targetindex, "TargetIndex"),
-                         self._p(self.p_rootnode, "RootNode"),
-                         self._p(self.p_targetnode, "TargetNode")
+    def p_integer(self):
+        # # integer      ::=  decinteger | bininteger | octinteger | hexinteger
+        # Integer <- _DEC_INTEGER >>S? / _BIN_INTEGER >>S? / _OCT_INTEGER >>S? / _HEX_INTEGER >>S?
+        return self._sel(self._seq(self._trm(self.t__dec_integer),
+                                   self._skip(self._opt(self._p(self.p_s, "S")))
+                                   ),
+                         self._seq(self._trm(self.t__bin_integer),
+                                   self._skip(self._opt(self._p(self.p_s, "S")))
+                                   ),
+                         self._seq(self._trm(self.t__oct_integer),
+                                   self._skip(self._opt(self._p(self.p_s, "S")))
+                                   ),
+                         self._seq(self._trm(self.t__hex_integer),
+                                   self._skip(self._opt(self._p(self.p_s, "S")))
+                                   )
+                         )
+
+    _reg_t__dec_integer0 = regex.compile("[1-9][0-9]*", regex.M)
+
+    _reg_t__dec_integer1 = regex.compile("0", regex.M)
+
+    def t__dec_integer(self):
+        # # decinteger   ::=  nonzerodigit (["_"] digit)* | "0"+ (["_"] "0")*
+        # # bininteger   ::=  "0" ("b" | "B") (["_"] bindigit)+
+        # # octinteger   ::=  "0" ("o" | "O") (["_"] octdigit)+
+        # # hexinteger   ::=  "0" ("x" | "X") (["_"] hexdigit)+
+        # _DEC_INTEGER <- r"[1-9][0-9]*" / r"0"
+        return self._sel(self._r(self._reg_t__dec_integer0),
+                         self._r(self._reg_t__dec_integer1)
+                         )
+
+    _reg_t__bin_integer0 = regex.compile("0b[01]+", regex.I | regex.M)
+
+    def t__bin_integer(self):
+        # _BIN_INTEGER <- r"0b[01]+":I 
+        return self._r(self._reg_t__bin_integer0)
+
+    _reg_t__oct_integer0 = regex.compile("0o[0-7]+", regex.I | regex.M)
+
+    def t__oct_integer(self):
+        # _OCT_INTEGER <- r"0o[0-7]+":I 
+        return self._r(self._reg_t__oct_integer0)
+
+    _reg_t__hex_integer0 = regex.compile("0x[0-9a-f]+", regex.I | regex.M)
+
+    def t__hex_integer(self):
+        # _HEX_INTEGER <- r"0x[0-9a-f]+":I 
+        return self._r(self._reg_t__hex_integer0)
+
+    def p_floatnumber(self):
+        # # floatnumber   ::=  pointfloat | exponentfloat
+        # FloatNumber <- _POINT_FLOAT >>S? / _EXPONENT_FLOAT >>S?
+        return self._sel(self._seq(self._trm(self.t__point_float),
+                                   self._skip(self._opt(self._p(self.p_s, "S")))
+                                   ),
+                         self._seq(self._trm(self.t__exponent_float),
+                                   self._skip(self._opt(self._p(self.p_s, "S")))
+                                   )
+                         )
+
+    _reg_t__point_float0 = regex.compile("[0-9]+", regex.M)
+
+    _reg_t__point_float1 = regex.compile("[0-9]+", regex.M)
+
+    _reg_t__point_float2 = regex.compile("[0-9]+", regex.M)
+
+    def t__point_float(self):
+        # # pointfloat    ::=  [digitpart] fraction | digitpart "."
+        # # exponentfloat ::=  (digitpart | pointfloat) exponent
+        # # digitpart     ::=  digit (["_"] digit)*
+        # # fraction      ::=  "." digitpart
+        # # exponent      ::=  ("e" | "E") ["+" | "-"] digitpart
+        # _POINT_FLOAT <- r"[0-9]+"? "." r"[0-9]+" / r"[0-9]+" "." 
+        return self._sel(self._seq(self._opt(self._r(self._reg_t__point_float2)),
+                                   self._l("."),
+                                   self._r(self._reg_t__point_float2)
+                                   ),
+                         self._seq(self._r(self._reg_t__point_float2),
+                                   self._l(".")
+                                   )
+                         )
+
+    _reg_t__exponent_float0 = regex.compile("[0-9]+", regex.M)
+
+    _reg_t__exponent_float1 = regex.compile("[0-9]+", regex.M)
+
+    _reg_t__exponent_float2 = regex.compile("[0-9]+", regex.M)
+
+    _reg_t__exponent_float3 = regex.compile("[0-9]+", regex.M)
+
+    _reg_t__exponent_float4 = regex.compile("[0-9]+", regex.M)
+
+    def t__exponent_float(self):
+        # _EXPONENT_FLOAT <- (r"[0-9]+" / (r"[0-9]+"? "." r"[0-9]+" / r"[0-9]+" "." )) 
+        #                    "e":I ("+" / "-")? r"[0-9]+"
+        return self._seq(self._sel(self._r(self._reg_t__exponent_float4),
+                                   self._sel(self._seq(self._opt(self._r(self._reg_t__exponent_float4)),
+                                                       self._l("."),
+                                                       self._r(self._reg_t__exponent_float4)
+                                                       ),
+                                             self._seq(self._r(self._reg_t__exponent_float4),
+                                                       self._l(".")
+                                                       )
+                                             )
+                                   ),
+                         self._l("e", nocase=True),
+                         self._opt(self._sel(self._l("+"),
+                                             self._l("-")
+                                             )),
+                         self._r(self._reg_t__exponent_float4)
                          )
 
     def p_listvalue(self):
-        # ListValue <- >>'[' >>S? ( Expression >>COMMA)* >>']' >>S?
+        # ListValue <- >>'[' >>S? 
+        #              ( Expression ( >>COMMA Expression)* )? 
+        #              >>']' >>S?
         return self._seq(self._skip(self._l('[')),
                          self._skip(self._opt(self._p(self.p_s, "S"))),
-                         self._rpt(self._seq(self._p(self.p_expression, "Expression"),
-                                             self._skip(self._p(self.p_comma, "COMMA"))
-                                             ), 0),
+                         self._opt(self._seq(self._p(self.p_expression, "Expression"),
+                                             self._rpt(self._seq(self._skip(self._p(self.p_comma, "COMMA")),
+                                                                 self._p(self.p_expression, "Expression")
+                                                                 ), 0)
+                                             )),
                          self._skip(self._l(']')),
                          self._skip(self._opt(self._p(self.p_s, "S")))
                          )
@@ -881,21 +1108,16 @@ class ActionsParser(Parser):
                          self._opt(self._p(self.p_s, "S"))
                          )
 
-    def p_int(self):
-        # INT <- 'int' S?
-        return self._seq(self._l('int'),
-                         self._opt(self._p(self.p_s, "S"))
-                         )
-
     _reg_p_s0 = regex.compile("\\t", regex.M)
 
     def p_s(self):
         # # ----------------------------------------
         # # Terminal
         # # ----------------------------------------
-        # S <- ( ' ' / r"\t" / EndOfLine )+
+        # S <- ( ' ' / r"\t" / Comment / EndOfLine )+
         return self._rpt(self._sel(self._l(' '),
                                    self._r(self._reg_p_s0),
+                                   self._p(self.p_comment, "Comment"),
                                    self._p(self.p_endofline, "EndOfLine")
                                    ), 1)
 

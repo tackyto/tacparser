@@ -1,1 +1,36 @@
 Name < Person {target.name = root.get_str();} // name 属性を設定
+Person > Age {
+    root.age = int(target.get_str());
+}
+Society {
+    root.ave_count = float("0.0");
+    root.bin_test = bin(13);
+    root.oct_test = oct(13);
+    root.hex_test = hex(13);
+    root.str_test = str(13);
+    root.len_test = len(["a", "b", "c", "d"]);
+    root.bin_err_test = bin("13");
+}
+Society >> Person >> Male {
+    root.count_m = root.count_m + 1;
+}
+Society >> Person >> Female {
+    root.count_f = root.count_f + 1;
+}
+Family {
+    root.count = 0;
+    root.age_total = 0;
+    root.ave_age = 0.0;
+}
+Family > Person {
+    root.count = root.count + 1;
+    root.age_total = root.age_total + target.age;
+}
+Family {
+    root.ave_age = root.age_total / root.count; // 行コメント
+}
+/* 範囲コメントテスト
+Society {
+    root.test_value = 1;
+}
+*/

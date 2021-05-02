@@ -221,16 +221,36 @@ for node in nodes:
 ### 記載例
 sample_acitons.txt
 ```
-Person > Name { root.name = target.get_str(); }
-Family > Name { root.name = target.get_str({Spacing : "", Comment : ""}); }
-Person[name=="Aaaa"] { root.is_all_a = "1"; }
+// 行コメント
+Family {
+    target.familyid = index(target); // 行コメント
+}
+Family >> Person {
+    target.personid = str(root.familyid) + "-" + str(index(target));
+}
+Person > Name {
+    root.name = target.get_str();
+}
+Family > Name {
+    root.name = target.get_str({Spacing : "", Comment : ""});
+}
+Person[name=="Aaaa"] {
+    root.is_all_a = "1";
+}
+/* 範囲コメント
+Person[name=="Bbbb"] {
+    root.is_all_b = "1";
+}
+*/
 ```
 
 ここで、セレクタ部は `{...}` の前の部分、アクション部は `{...}` の内部です。  
 
-１行目：ルートノードから、Personを取得し、さらにその子ノードName を取得したうえで、Nameの文字列を Personノードの name 付加属性として追加  
-２行目：ルートノードから、Familyを取得し、さらにその子ノードName を取得したうえで、Nameの文字列を Familyノードの name 付加属性として追加  
-３行目：ルートノードから、Personを取得し`[name="Aaaa"]` により、name属性を持ち、かつその値が "Aaaa" であるものを限定して抽出しています。抽出したノードに付加属性 is_all_a を `1` に設定  
+１行目：ルートノードから、Familyを取得し、各 Family に対して Familyノードの出現順(index)を familyid に付加属性として追加  
+２行目：ルートノードから、Familyを取得し、さらにその子ノードPerson を取得したうえで、文字列 familyid + "-" + (Familyノードから見たPersonの出現 index) を personid に付加属性として追加  
+３行目：ルートノードから、Personを取得し、さらにその子ノードName を取得したうえで、Nameの文字列を Personノードの name 付加属性として追加  
+４行目：ルートノードから、Familyを取得し、さらにその子ノードName を取得したうえで、Nameの文字列を Familyノードの name 付加属性として追加  
+５行目：ルートノードから、Personを取得し`[name="Aaaa"]` により、name属性を持ち、かつその値が "Aaaa" であるものを限定して抽出しています。抽出したノードに付加属性 is_all_a を `1` に設定  
 
 セレクタ部では、取得したいノードのノードタイプ(type)を指定します。結合子(上記 `>`）を用いて取得したいノード間の関係を限定することができます。（上記の例では Person ノードや Familyノード、それぞれの子ノードに限定した Name ノードを取得しています。)
 
@@ -294,14 +314,19 @@ Person[name=="Aaaa"] { root.is_all_a = "1"; }
 
 ### アクション部の書き方
 
-アクション部は、現在代入操作のみ行えます。  
-ここでの `root` は最初に指定したセレクタ （`Type[Condidion][Condition...]` までのまとまりで見つかったもの）で見つかったノードが、`target` は最後の纏まりで見つかったノードを示しています。  
+アクション部では、代入操作と関数の実行などが行えます。  
+
+ここでは、`root` および　`target` により、セレクタで見つかったノードを参照することができます。  
+ * `root` は最初に指定したセレクタ （`Type[Condidion][Condition...]` までのまとまり）で見つかったノード
+ * `target` は最後の纏まりで見つかったノード  
+を示しています。  
 `get_str()` により、そのノードの文字列を取得できます。またリテラルを直接代入することもできます。（記載例を参照）  
-また、`get_str()` には、辞書形式の記載で、探索時に配下の特定のノードを指定の文字列に変換して出力する機能があります。
+また、`get_str()` には、辞書形式の記載で、探索時に配下の特定のノードを指定の文字列に変換して出力する機能があります。  
+python標準関数の int, float, bin, oct, hex, str, len を使用することができます。  
 
 
 ## 実装予定
 
-1. 追加データは現状文字列型のみしか扱えないが、intとかlistとかdictとか各種クラスとかいっそメソッド（ラムダ式）とか登録できるようにしたい
+1. 追加データでラムダ式を登録できるようにしたい
+1. 条件部で文字列型以外に int, float, list, dict, node などを扱えるようにしたい
 1. PEG.js のセマンティックアクションとは別方向で、ただし、ノードの特定要素を実行して結果が出力できるのはあり
-1. セレクタやアクションに記述ミスがある場合をどうにか検出してせめて警告を出力したい。
